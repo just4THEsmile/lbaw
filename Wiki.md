@@ -18,8 +18,8 @@
 
 * Group member 1 name, email
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
-* Group member 3 name, email
+* Group member 3 Rodrigo Póvoa, up202108890@fe.up.pt
 * Group member 4 name, email
 
 ***
-GROUP2357, DD/MM/2021
+GROUP2357, 21/09/2021
