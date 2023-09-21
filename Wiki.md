@@ -1,4 +1,4 @@
-```markdown
+
 # Product name (e.g. MediaLibrary)
 
 > Project vision.
@@ -23,4 +23,3 @@
 
 ***
 GROUP21gg, DD/MM/2021
-```
