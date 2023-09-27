@@ -10,8 +10,76 @@
 > There will be a team of administrators / moderators that will be responsible to manage the application , whether it's making sure that the app is running smoothly or ensuring that the illegal content is removed and punishing the user accordingly.
 - Motivation.  
 > With the development of the new technologies, it's starting to be noticeable that most Q&A sites are becoming more and more outdated and depecrated. So we decided to build a new web application where we innovate the way the Q&A works, so that it attracts new and old users.
-- Main features.  
-- User profiles.
+- Main features.
+    - User
+        - View Top Questions
+
+        - View Recent Questions
+
+        - Browse Questions
+
+        - Browse Questions by Tags
+
+        - View Question Details
+
+        - View User Profiles
+    - Authenticated User
+        - View Personal Feed
+
+        - Post Question
+
+        - Post Answer
+
+        - Vote on Questions
+
+        - Vote on Answers
+
+        - Comment on Questions
+
+        - Comment on Answers
+
+        - View My Questions
+
+        - View My Answers
+
+        - Follow Question
+
+        - Follow Tags
+
+        - Report Content
+
+        - Support User Badges
+    - {Question, Answer, Comment} Author
+        - Edit Question
+
+        - Delete Question
+
+        - Edit Answer
+
+        - Delete Answer
+
+        - Edit Comment
+
+        - Delete Comment
+
+    - Question Author
+        - Edit Question Tags
+
+        - Mark Answer as Correct
+    - Moderator
+        - Delete Content
+
+        - Edit Question Tags
+
+        - Manage Content Reports
+    - Notifications
+        - Answer to Question
+
+        - Vote on Content
+
+        - Badge Award
+    - Administrator
+        - Manage Tags
 
 
 ---
