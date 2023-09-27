@@ -11,8 +11,47 @@
 - Motivation.  
 > With the development of the new technologies, it's starting to be noticeable that most Q&A sites are becoming more and more outdated and depecrated. So we decided to build a new web application where we innovate the way the Q&A works, so that it attracts new and old users.
 - Main features.
+    - User Profile
+
+        - View Profile
+
+        - Edit Profile
+
+        - Support Profile Picture
+        
+        - Appeal for Unblock
+    - Search
+        - Exact Match Search
+
+        - Full-text Search 
+
+        - Search over Multiple Attributes
+
+        - Search Filters
+    
+        - Ordering of Results
+    - help 
+        - Placeholders in Form Inputs
+
+        - Contextual Error Messages
+
+        - Contextual Help
+    - Product Information
+        - About US
+
+        - Main Features
+
+        - Contacts
     - User
         - View Top Questions
+
+        - Login/Logout
+        
+        - Registration
+
+        - Recover Password
+
+        - Delete Account
 
         - View Recent Questions
 
@@ -24,6 +63,9 @@
 
         - View User Profiles
     - Authenticated User
+
+        - View Personal Notifications
+
         - View Personal Feed
 
         - Post Question
@@ -67,6 +109,14 @@
 
         - Mark Answer as Correct
     - Moderator
+        - Administrator Accounts
+
+        - Administer User Accounts (search, view, edit, create) 
+        
+        - Block and Unblock User Accounts
+
+        - Delete User Account
+
         - Delete Content
 
         - Edit Question Tags
@@ -80,6 +130,7 @@
         - Badge Award
     - Administrator
         - Manage Tags
+- User profiles.
 
 
 ---
@@ -87,53 +138,25 @@
 
 ## A2: Actors and User stories
 
-> The Actors and the User Stories manage the dependencies/specifications about the type of users of the Collaborative Q&A. We can use this as a feasible and simple documentation to the project requirements and necessities.
+> Brief presentation of the artifact goals.
 
 
 ### 1. Actors
 
-> For our app, Collaborative Q&A, the actors belonging to it are represented bellow:
-
-![actors](uploads/ac5daac19d53155dda9c14a29524466c/actors.png)
-*Image 1:  Collaborative Q&A Actors Diagram*
-
-> The table bellow will describe succinctly each one of the actors:
-
-|Actor|Description|
-|----|----|
-|User| Broad user that has acess to the app.|
-|Visitors|Generic  users that can see most of public information and features and they aren't signed in the app. |
-|Authenticated|Authenticated users that can do what the previous can , plus acess to more information and features, such as giving likes/dislikes and creating questions.|
-|Comment Author| Authenticated Users that can edit or delete their comment.|
-|Question Author| Authenticated Users that can edit or delete their question.|
-|Answer Author| Authenticated Users that can edit or delete their answer in another user's question.|
-|Moderator|Authenticated Users that can delete any sort of content (Comment, Question and Answer) and edit Question Tags.|
-|Administrator|Authenticated User that is responsible to manage Tags.|~
-
-*Table 1:  Collaborative Q&A Actors Description*
-
-
+> Diagram identifying actors and their relationships.  
+> Table identifying actors, including a brief description.
 
 
 ### 2. User Stories
 
-> For each one of our features of the app, there is associated user story.
+> User stories organized by actor.  
+> For each actor, a table containing a line for each user story, and for each user story: an identifier, a name, a priority, and a description (following the recommended pattern).
 
-#### 2.1. User
+#### 2.1. Actor 1
 
-#### 2.2. Visitor
+#### 2.2. Actor 2
 
-#### 2.3. Authenticated User
-
-#### 2.3. Comment Author
-
-#### 2.3. Question Author
-
-#### 2.3. Answer Author
-
-#### 2.3. Moderator
-
-#### 2.3. Administrator
+#### 2.N. Actor n
 
 
 ### 3. Supplementary Requirements
