@@ -148,24 +148,123 @@
 
 ### 2. User Stories
 
-> User stories organized by actor.  
-> For each actor, a table containing a line for each user story, and for each user story: an identifier, a name, a priority, and a description (following the recommended pattern).
+> For each one of our features of the app, there is associated user story.
 
-#### 2.1. Actor 1
+#### 2.1. User  
 
-#### 2.2. Actor 2
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+|FR.101|View Top Questions |High||
+|FR.102|View Recent Questions|High||
+|FR.103|Browse Questions|High||
+|FR.104|Browse Questions by Tags|Medium||
+|FR.105|View Question Details|Medium||
+|FR.106|View User Profiles|Medium||
 
-#### 2.N. Actor n
+#### 2.2. Visitor
+
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+
+
+#### 2.3. Authenticated User
+
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+|FR.011|Login/Logout|High||
+|FR.012|Registration|High||
+|FR.021|View Profile|High||
+|FR.022|Edit Profile|High||
+|FR.031|Exact Match Search|High||
+|FR.032|Full-text Search|High||
+|FR.201|View Personal Feed|High||
+|FR.202|Post Question|High||
+|FR.203|Post Answer|High||
+|FR.208|View My Questions|High||
+|FR.209|View My Answers|High||
+|FR.013|Recover Password|Medium||
+|FR.014|Delete Account|Medium||
+|FR.023|Support Profile Picture|Medium||
+|FR.024|View Personal Notifications|Medium||
+|FR.033|Search over Multiple Attributes|Medium||
+|FR.034|Search Filters|Medium||
+|FR.204|Vote on Questions|Medium||
+|FR.205|Vote on Answers|Medium||
+|FR.206|Comment on Questions|Medium||
+|FR.207|Comment on Answers|Medium||
+|FR.210|Follow Question|Medium||
+|FR.211|Follow Tags|Medium||
+|FR.051|Placeholders in Form Inputs|Medium||
+|FR.052|Contextual Error Messages|Medium||
+|FR.053|Contextual Help|Medium||
+|FR.061|About US|Medium||
+|FR.062|Main Features|Medium||
+|FR.063|Contacts|Medium||
+|FR.025|Appeal for Unblock|Low||
+|FR.035|Ordering of the results|Low||
+|FR.221|Report Content|Low||
+|FR.222|Support User Badges|Low||
+
+
+#### 2.4. Comment, Question, Answer Author
+
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+|FR.401|Edit Question|High|| 
+|FR.402|Delete Question|High|| 
+|FR.403|Edit Answer|High|| 
+|FR.404|Delete Answer|High|| 
+|FR.405|Edit Comment|Medium||
+|FR.406|Delete Comment|Medium||
+
+#### 2.4. Question Author
+
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+|FR.501|Edit Question Tags|Medium||
+|FR.502|Mark Answer as Correct|Medium||
+
+
+#### 2.5. Moderator
+
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+|FR.601|Delete Content|Medium||
+|FR.602|Edit Question Tags|Medium||
+|FR.611|Manage Content Reports|Low||
+
+#### 2.6. Administrator
+
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+|FR.042| Administer User Accounts (search, view, edit, create)|High||
+|FR.801|Manage Tags|Medium||
+|FR.041|Administrator Accounts|Medium||
+|FR.043|Block and Unblock User Accounts|Medium||
+|FR.044|Delete User Account|Medium||
+
+
 
 
 ### 3. Supplementary Requirements
 
-> Section including business rules, technical requirements, and restrictions.  
-> For each subsection, a table containing identifiers, names, and descriptions for each requirement.
-
 #### 3.1. Business rules
 
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+|BR.011|Upon account deletion, shared user data is kept but is made anonymous|Medium||
+|BR.101|Administrators are participating members of the community, i.e. can post or vote on questions or answers.|Medium||
+|BR.102|Questions and answers edited after being posted should have a clear indication of the editions.|Medium||
+|BR.103|User badges are dependent on the likes and dislikes received on his questions and answers, and also on actions made by the user (first question, first answer, etc).|Medium||
+
 #### 3.2. Technical requirements
+
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+|TR.01|Performance|Medium||
+|TR.02|Robustness|Medium||
+|TR.03|Scalability|Medium||
+|TR.04|Accessibility|Medium||
 
 #### 3.3. Restrictions
 
