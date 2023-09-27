@@ -87,25 +87,53 @@
 
 ## A2: Actors and User stories
 
-> Brief presentation of the artifact goals.
+> The Actors and the User Stories manage the dependencies/specifications about the type of users of the Collaborative Q&A. We can use this as a feasible and simple documentation to the project requirements and necessities.
 
 
 ### 1. Actors
 
-> Diagram identifying actors and their relationships.  
-> Table identifying actors, including a brief description.
+> For our app, Collaborative Q&A, the actors belonging to it are represented bellow:
+
+![actors](uploads/ac5daac19d53155dda9c14a29524466c/actors.png)
+*Image 1:  Collaborative Q&A Actors Diagram*
+
+> The table bellow will describe succinctly each one of the actors:
+
+|Actor|Description|
+|----|----|
+|User| Broad user that has acess to the app.|
+|Visitors|Generic  users that can see most of public information and features and they aren't signed in the app. |
+|Authenticated|Authenticated users that can do what the previous can , plus acess to more information and features, such as giving likes/dislikes and creating questions.|
+|Comment Author| Authenticated Users that can edit or delete their comment.|
+|Question Author| Authenticated Users that can edit or delete their question.|
+|Answer Author| Authenticated Users that can edit or delete their answer in another user's question.|
+|Moderator|Authenticated Users that can delete any sort of content (Comment, Question and Answer) and edit Question Tags.|
+|Administrator|Authenticated User that is responsible to manage Tags.|~
+
+*Table 1:  Collaborative Q&A Actors Description*
+
+
 
 
 ### 2. User Stories
 
-> User stories organized by actor.  
-> For each actor, a table containing a line for each user story, and for each user story: an identifier, a name, a priority, and a description (following the recommended pattern).
+> For each one of our features of the app, there is associated user story.
 
-#### 2.1. Actor 1
+#### 2.1. User
 
-#### 2.2. Actor 2
+#### 2.2. Visitor
 
-#### 2.N. Actor n
+#### 2.3. Authenticated User
+
+#### 2.3. Comment Author
+
+#### 2.3. Question Author
+
+#### 2.3. Answer Author
+
+#### 2.3. Moderator
+
+#### 2.3. Administrator
 
 
 ### 3. Supplementary Requirements
