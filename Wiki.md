@@ -1,5 +1,5 @@
 
-# Product name (e.g. MediaLibrary)
+# Product name
 
 > Collaborative Q&A.
 
