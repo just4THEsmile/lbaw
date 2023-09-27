@@ -1,13 +1,17 @@
 # ER: Requirements Specification Component
 
-> Project vision.
+- Project Vision
+> The application has in the sight to manage a community of collaborative questions and answers, where anyone can submit questions or answers, in which has the objective to facilitate the discussion of ideas/resources between the users, easing the communication.
 
-## A1: Project Name
+## A1: Collaborative Q&A
 
-> Goals, business context and environment.  
-> Motivation.  
-> Main features.  
-> User profiles.
+- Goals, business context and environment.  
+> The main target of Collaborative Q&A is to create a information system with a web interface to manage a community of collaborative questions and answers. Any resgistered user can submit questions and answers. The questions and answers can be voted on by the rest of the community. It's also possible to associate brief comments to the questions or the answers. Each user has an associated score that is calculated considering the votes on its questions and answers.
+> There will be a team of administrators / moderators that will be responsible to manage the application , whether it's making sure that the app is running smoothly or ensuring that the illegal content is removed and punishing the user accordingly.
+- Motivation.  
+> With the development of the new technologies, it's starting to be noticeable that most Q&A sites are becoming more and more outdated and depecrated. So we decided to build a new web application where we innovate the way the Q&A works, so that it attracts new and old users.
+- Main features.  
+- User profiles.
 
 
 ---
