@@ -1,7 +1,7 @@
 
 # Product name (e.g. MediaLibrary)
 
-> Project vision.
+> Collaborative Q&A.
 
 ## Project Components
 
