@@ -130,7 +130,6 @@
         - Badge Award
     - Administrator
         - Manage Tags
-- User profiles.
 
 
 ---
