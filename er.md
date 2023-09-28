@@ -129,8 +129,11 @@
 
         - Badge Award
     - Administrator
-        - Manage Tags
-
+        - Manage Tags  
+<p>&nbsp;</p>
+        
+- Identified User Groups
+> The users of the app will be separated in various groups such as: Users (generic), Authenticated Users (Users that are logged in the webapp), Visitors(Users that aren't logged in the webapp), {Question, Answer, Comment} Author (Users that can interact with their specific content), Moderators(Users that can delete any sort of innapropriate content) and Administrators(Users that can edit tags, having full acess and privileges of the webapp).
 
 ---
 
@@ -159,7 +162,7 @@
 |Question Author| Authenticated Users that can edit or delete their question.|
 |Answer Author| Authenticated Users that can edit or delete their answer in another user's question.|
 |Moderator|Authenticated Users that can delete any sort of content (Comment, Question and Answer) and edit Question Tags.|
-|Administrator|Authenticated User that is responsible to manage Tags.|~
+|Administrator|Authenticated User that is responsible to manage Tags.|
 
 *Table 1:  Collaborative Q&A Actors Description*
 
