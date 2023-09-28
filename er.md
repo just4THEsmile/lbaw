@@ -142,13 +142,13 @@
 
 ### 1. Actors
 
->For our app, Collaborative Q&A, the actors belonging to it are represented bellow:
+>For our app, Collaborative Q&A, the actors belonging to it are represented below:
 
 ![actors](uploads/ac5daac19d53155dda9c14a29524466c/actors.png)
 
 *Image 1:  Collaborative Q&A Actors Diagram*
 
->The table bellow will describe succinctly each one of the actors:
+>The table below will describe succinctly each one of the actors:
 
 |Actor|Description|
 |----|----|
@@ -179,12 +179,17 @@
 |FR.105|View Question Details|Medium|As a User, I want the ability to view the full details of a question on the app, so that it allows me to access all information and answers related to a specific question.|
 |FR.106|View User Profiles|Medium|As a User, I want the ability to view the profiles of other users on the app, so that it allows me to learn more about the members of the community.|
 
+*Table 2:  User User stories*
+
 #### 2.2. Visitor
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
 |FR.011|Login/Logout|High|As a Visitor, I want the ability to log in and log out of my user account, so that it allows me to see more information and get acess to more features, while logging out will secure my account when I'm not using the app.|
 |FR.012|Registration|High|As a Visitor, I want the ability to register for a User account, so that it allows me to access personalized features, interact with the community, and maintain my profile.|
+
+*Table 3:  Visitor User Stories*
+
 
 #### 2.3. Authenticated User
 
@@ -222,6 +227,9 @@
 |FR.221|Report Content|Low|As an Authenticated User, I want to have the ability to report content on the app that I find inappropriate, offensive, or in violation of community guidelines or policies, so that it enables me to contribute to the app's content moderation.|
 |FR.222|Support User Badges|Low|As an Authenticated User, I want to be able to earn and display user badges based on my contributions and activities within the community, so that I can get recognized for my achievements and increasing my reputation.|
 
+*Table 3:  Authenticated User User Stories*
+
+
 
 #### 2.4. {Comment, Question, Answer} Author
 
@@ -234,6 +242,8 @@
 |FR.405|Edit Comment|Medium||
 |FR.406|Delete Comment|Medium||
 
+*Table 4:  {Comment, Question, Answer} Author User Stories*
+
 #### 2.4. Question Author
 
 |Identifier|Name|Priority|Description|
@@ -241,26 +251,30 @@
 |FR.501|Edit Question Tags|Medium||
 |FR.502|Mark Answer as Correct|Medium||
 
+*Table 5:  Question Author User Stories*
 
 #### 2.5. Moderator
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.601|Delete Content|Medium||
-|FR.602|Edit Question Tags|Medium||
-|FR.611|Manage Content Reports|Low||
+|FR.601|Delete Content|Medium|As a Moderator i want to be able to delete content, so that i can delete content that does not follow our guidelines|
+|FR.602|Edit Question Tags|Medium|As a Moderator i want to be able to delete questions tags, so that i can remove tags that do not suit the question|
+|FR.611|Manage Content Reports|Low|As a Moderator i want to be able to manage content reports, so that i can manage reported content|
+
+*Table 6:  Moderator User Stories*
 
 #### 2.6. Administrator
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.042| Administer User Accounts (search, view, edit, create)|High||
-|FR.801|Manage Tags|Medium||
-|FR.041|Administrator Accounts|Medium||
-|FR.043|Block and Unblock User Accounts|Medium||
-|FR.044|Delete User Account|Medium||
+|FR.042|Administer User Accounts (search, view, edit, create)|High|As a administrator i want to administrate user accounts|
+|FR.801|Manage Tags|Medium|As a Administrator i want to manage tags, so that i can add tags on hot topics or remove on slow paced|
+|FR.041|Administrator Accounts|Medium|As a Administrator i want to have administrator, account so that it helps me administrate the platform with administrative privileges|
+|FR.043|Block and Unblock User Accounts|Medium|As a Administrator i want to block or unblock a User, so that i can punish a User that does not follow the guidelines|
+|FR.044|Delete User Account|Medium|As a Administrator i want to delete an account, so that i can remove a User that does not follow the guidelines|
 
 
+*Table 7:  Administrator User Stories*
 
 
 ### 3. Supplementary Requirements
@@ -269,36 +283,46 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|BR.011|Upon account deletion, shared user data is kept but is made anonymous|Medium||
-|BR.101|Administrators are participating members of the community, i.e. can post or vote on questions or answers.|Medium||
-|BR.102|Questions and answers edited after being posted should have a clear indication of the editions.|Medium||
-|BR.103|User badges are dependent on the likes and dislikes received on his questions and answers, and also on actions made by the user (first question, first answer, etc).|Medium||
+|BR.011|Upon account deletion, shared user data is kept but is made anonymous|Medium|After account deletion we will only keep shared user data but will be made anonymous|
+|BR.101|Administrators are participating members of the community, i.e. can post or vote on questions or answers.|Medium|The administrators can interact with the community just like a regular user|
+|BR.102|Questions and answers edited after being posted should have a clear indication of the editions.|Medium|Edited questions or answers should have time of edit|
+|BR.103|User badges are dependent on the likes and dislikes received on his questions and answers, and also on actions made by the user (first question, first answer, etc).|Medium|The user should be rewarded by the amount of interactions with the comunity|
+
+
+*Table 8:  Business Rules*
 
 #### 3.2. Technical requirements
 
+
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|TR.01|Performance|Medium||
-|TR.02|Robustness|Medium||
-|TR.03|Scalability|Medium||
-|TR.04|Accessibility|Medium||
+|TR.01|Performance|Medium|The system should have low response times|
+|TR.02|Robustness|Medium|The system should be able to handle diferent types of errors|
+|TR.03|Scalability|Medium|The system should be able to scale|
+|TR.04|Accessibility|Medium|The system should be accessible easily on diferent hardware and software|
+
+*Table 9:  Technical Requirements*
 
 #### 3.3. Restrictions
 
+|Identifier|Name|Priority|Description|
+|---|---|---|---|
+|C01|Deadline|High|The system should be ready to be used at the week of 11 Dez.
 
----
-
+*Table 10:  Restrictions*
 
 ## A3: Information Architecture
 
-> Brief presentation of the artifact goals.
+> This artifact gives a quick look at how the new system will be organized. It aims to do the following:
+> * Recognizing and explaining user needs while also bringing up any new ones.
+> * Check and try out the product's user interface to make sure it works well
+> * Allow for rapid and repeated changes to the user interface design.
 
+>This artifact will have 2 elements: The Sitemap and the Wireframes, which both will be described below.
 
 ### 1. Sitemap
 
-> Sitemap presenting the overall structure of the web application.  
-> Each page must be identified in the sitemap.  
-> Multiple instances of the same page (e.g. student profile in SIGARRA) are presented as page stacks.
+> The image below shows the webpages that are going to be present in our application and the way they are going to be used / acessed:
 
 
 ### 2. Wireframes
