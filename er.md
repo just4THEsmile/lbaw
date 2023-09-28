@@ -109,6 +109,14 @@
 
         - Mark Answer as Correct
     - Moderator
+        - Administrator Accounts
+
+        - Administer User Accounts (search, view, edit, create) 
+        
+        - Block and Unblock User Accounts
+
+        - Delete User Account
+
         - Delete Content
 
         - Edit Question Tags
@@ -121,14 +129,6 @@
 
         - Badge Award
     - Administrator
-        - Administrator Accounts
-
-        - Administer User Accounts (search, view, edit, create) 
-        
-        - Block and Unblock User Accounts
-
-        - Delete User Account
-
         - Manage Tags
 
 
@@ -177,54 +177,53 @@
 |FR.103|Browse Questions|High|As a User, I want the ability to easily browse and explore questions on the app, so that it allows me to discover a range of topics and find questions that interest me.|
 |FR.104|Browse Questions by Tags|Medium|As User, I want the ability to browse questions on the app based on specific tags, so that it helps me find questions that I'm interested the most.|
 |FR.105|View Question Details|Medium|As a User, I want the ability to view the full details of a question on the app, so that it allows me to access all information and answers related to a specific question.|
-|FR.106|View User Profiles|Medium|As a User, I want the ability to view the profiles of other users on the platform, so that it allows me to learn more about the members of the community.|
+|FR.106|View User Profiles|Medium|As a User, I want the ability to view the profiles of other users on the app, so that it allows me to learn more about the members of the community.|
 
 #### 2.2. Visitor
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-
+|FR.011|Login/Logout|High|As a Visitor, I want the ability to log in and log out of my user account, so that it allows me to see more information and get acess to more features, while logging out will secure my account when I'm not using the app.|
+|FR.012|Registration|High|As a Visitor, I want the ability to register for a User account, so that it allows me to access personalized features, interact with the community, and maintain my profile.|
 
 #### 2.3. Authenticated User
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.011|Login/Logout|High||
-|FR.012|Registration|High||
-|FR.021|View Profile|High||
-|FR.022|Edit Profile|High||
-|FR.031|Exact Match Search|High||
-|FR.032|Full-text Search|High||
-|FR.201|View Personal Feed|High||
-|FR.202|Post Question|High||
-|FR.203|Post Answer|High||
-|FR.208|View My Questions|High||
-|FR.209|View My Answers|High||
-|FR.013|Recover Password|Medium||
-|FR.014|Delete Account|Medium||
-|FR.023|Support Profile Picture|Medium||
-|FR.024|View Personal Notifications|Medium||
-|FR.033|Search over Multiple Attributes|Medium||
-|FR.034|Search Filters|Medium||
-|FR.204|Vote on Questions|Medium||
-|FR.205|Vote on Answers|Medium||
-|FR.206|Comment on Questions|Medium||
-|FR.207|Comment on Answers|Medium||
-|FR.210|Follow Question|Medium||
-|FR.211|Follow Tags|Medium||
-|FR.051|Placeholders in Form Inputs|Medium||
-|FR.052|Contextual Error Messages|Medium||
-|FR.053|Contextual Help|Medium||
-|FR.061|About US|Medium||
-|FR.062|Main Features|Medium||
-|FR.063|Contacts|Medium||
-|FR.025|Appeal for Unblock|Low||
-|FR.035|Ordering of the results|Low||
-|FR.221|Report Content|Low||
-|FR.222|Support User Badges|Low||
+|FR.021|View Profile|High|As an Authenticated User, I want to be able to view my own profile as well of other users, so that it allows me to see and manage my own information, and learn more about other members of the app.|
+|FR.022|Edit Profile|High|As an Authenticated User, I want to be able to edit my own profile, so that it allows me to update my information.|
+|FR.031|Exact Match Search|High|As an Authenticated User, I want to be able to perform an exact match search on the app, so that I can find specific questions, answers, or user profiles with precision.|
+|FR.032|Full-text Search|High|As an Authenticated User, I want to be able to perform a full-text search on the app, so that I can find relevant questions, answers, or user profiles based on keywords, etc...|
+|FR.201|View Personal Feed|High|As an Authenticated User, I want to be able to view my personalized feed on the app, so that I can stay updated with content and discussions that are relevant to my interests and recent activity.|
+|FR.202|Post Question|High|As an Authenticated User, I want to be able to post questions on the app, so that I can initiate discussions and contribute to the community.|
+|FR.203|Post Answer|High|As an Authenticated User, I want to be able to post answers to questions on the app, so that I can provide helpful information, contribute to discussions, and assist other community members.|
+|FR.208|View My Questions|High|As an Authenticated User, I want to have the ability to view a list of all the questions I've posted, so that I can easily access and manage the questions I've asked.|
+|FR.209|View My Answers|High|As an Authenticated User, I want to have the ability to view a list of all the answers I've posted, so that I can easily access and manage the answers I've provided.|
+|FR.013|Recover Password|Medium|As an Authenticated User, I want to have the ability to recover my password in case I forget it, so that I can regain access to my account.|
+|FR.014|Delete Account|Medium|As an Authenticated User, I want to have the ability to delete my user account on the app, so that I can permanently remove my presence and  anonymize data from the app.|
+|FR.023|Support Profile Picture|Medium|As an Authenticated User, I want to have the ability to set and display a profile picture on my user profile, so that I can personalize my presence on the app and make it more unique.|
+|FR.024|View Personal Notifications|Medium|As an Authenticated User, I want to have the ability to view my personal notifications on the app, so that I can stay updated with recent interactions related to my account.|
+|FR.033|Search over Multiple Attributes|Medium|As an Authenticated User, I want to have the ability to perform a search that yields multiple attributes or criteria simultaneously, so that I can find specific content or profiles that match that combination.|
+|FR.034|Search Filters|Medium|As an Authenticated User, I want to have the ability to apply various filters when performing searches on the app, so that I can refine my search results based on specific filters.|
+|FR.204|Vote on Questions|Medium|As an Authenticated User, I want to be able to vote on questions, whether it's giving a like or a dislike, so that I can express my opinion.|
+|FR.205|Vote on Answers|Medium|As an Authenticated User, I want to be able to vote on answers, whether it's giving a like or a dislike, so that I can express my opinion.|
+|FR.206|Comment on Questions|Medium|As an Authenticated User, I want to be able to give comments on questions, so that I can express my ideas and opinions via text.|
+|FR.207|Comment on Answers|Medium|As an Authenticated User, I want to be able to give comments on questions, so that I can express my ideas and opinions via text.|
+|FR.210|Follow Question|Medium|As an Authenticated User, I want to be able to follow questions, so that I don't miss any new activity revolving it.|
+|FR.211|Follow Tags|Medium|As an Authenticated User, I want to be able to follow Tags, so that I don't miss any new activity, whether it's a new question or a new answer.|
+|FR.051|Placeholders in Form Inputs|Medium|As an Authenticated User, I want to have descriptive placeholders within various forms and input fields so that I can easily understand the information expected or how to fill out each field.|
+|FR.052|Contextual Error Messages|Medium|As an Authenticated User, I want to receive contextual error messages when I encounter issues or make mistakes while using the app, so that I can understand better what went wrong.|
+|FR.053|Contextual Help|Medium|As an Authenticated User, I want to receive contextual help messages when I encounter issues or make mistakes while using the app, so that I can understand better what I have to do to solve it.|
+|FR.061|About US|Medium|As an Authenticated User, I want to have access to an "About Us" section that provides information about the app's purpose, mission, team, and any other relevant details, so that it helps me understand the app's goals.|
+|FR.062|Main Features|Medium|As an Authenticated User, I want to have access to a "Main Features" section that provides an overview of the app's key features and functionalities, so that I understand what the app can offer.|
+|FR.063|Contacts|Medium|As an Authenticated User, I want to have access to a "Contacts" section that provides a list of relevant contacts, so that I know who to go if anything doesn't go according to the plan.|
+|FR.025|Appeal for Unblock|Low|As an Authenticated User, I want to have the ability to appeal for unblocking my account in case it has been temporarily or permanently suspended, so that it allows me to provide context and request a review of the submission.|
+|FR.035|Ordering of the results|Low|As an Authenticated User, I want to have the ability to customize the ordering of search results and lists of content on the app, so that I can quickly find the content I'm searching for.|
+|FR.221|Report Content|Low|As an Authenticated User, I want to have the ability to report content on the app that I find inappropriate, offensive, or in violation of community guidelines or policies, so that it enables me to contribute to the app's content moderation.|
+|FR.222|Support User Badges|Low|As an Authenticated User, I want to be able to earn and display user badges based on my contributions and activities within the community, so that I can get recognized for my achievements and increasing my reputation.|
 
 
-#### 2.4. Comment, Question, Answer Author
+#### 2.4. {Comment, Question, Answer} Author
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
