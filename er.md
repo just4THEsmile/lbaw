@@ -188,7 +188,7 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.011|Login/Logout|High|As a Visitor, I want the ability to log in and log out of my user account, so that it allows me to see more information and get acess to more features, while logging out will secure my account when I'm not using the app.|
+|FR.011a|Login|High|As a Visitor, I want the ability to log in of my user account, so that it allows me to see more information and get acess to more features.|
 |FR.012|Registration|High|As a Visitor, I want the ability to register for a User account, so that it allows me to access personalized features, interact with the community, and maintain my profile.|
 
 *Table 3:  Visitor User Stories*
@@ -198,6 +198,7 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
+|FR.011b|Logout|High|As a Authenticated User, I want the ability to log out of my user account, so that it will secure my account when I'm not using the app.|
 |FR.021|View Profile|High|As an Authenticated User, I want to be able to view my own profile as well of other users, so that it allows me to see and manage my own information, and learn more about other members of the app.|
 |FR.022|Edit Profile|High|As an Authenticated User, I want to be able to edit my own profile, so that it allows me to update my information.|
 |FR.031|Exact Match Search|High|As an Authenticated User, I want to be able to perform an exact match search on the app, so that I can find specific questions, answers, or user profiles with precision.|
@@ -286,10 +287,12 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|BR.011|Upon account deletion, shared user data is kept but is made anonymous|Medium|After account deletion we will only keep shared user data but will be made anonymous|
-|BR.101|Administrators are participating members of the community, i.e. can post or vote on questions or answers.|Medium|The administrators can interact with the community just like a regular user|
-|BR.102|Questions and answers edited after being posted should have a clear indication of the editions.|Medium|Edited questions or answers should have time of edit|
-|BR.103|User badges are dependent on the likes and dislikes received on his questions and answers, and also on actions made by the user (first question, first answer, etc).|Medium|The user should be rewarded by the amount of interactions with the comunity|
+|BR.011|Upon account deletion, shared user data is kept but is made anonymous|Medium|After account deletion we will only keep shared user data but will be made anonymous.|
+|BR.101|Administrators are participating members of the community, i.e. can post or vote on questions or answers.|Medium|The administrators can interact with the community just like a regular user.|
+|BR.102|Questions and answers edited after being posted should have a clear indication of the editions.|Medium|Edited questions or answers should have time of edit.|
+|BR.103|User badges are dependent on the likes and dislikes received on his questions and answers, and also on actions made by the user (first question, first answer, etc).|Medium|The user should be rewarded by the amount of interactions with the comunity.|
+|BR.104|User can vote/comment/review it's own content.|Medium|The user will be able to interact with it's own content, whether it's voting/commenting/reviewing. However, it won't be tracked towards badges and achievements.|
+|BR.105|Any content on the webapp will have a date associated with it.|Medium|Any content on the page will have a date associated, making it easier for the users to understand when the content was released.|
 
 
 *Table 8:  Business Rules*
@@ -299,10 +302,10 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|TR.01|Performance|Medium|The system should have low response times|
-|TR.02|Robustness|Medium|The system should be able to handle diferent types of errors|
-|TR.03|Scalability|Medium|The system should be able to scale|
-|TR.04|Accessibility|Medium|The system should be accessible easily on diferent hardware and software|
+|TR.01|Performance|Medium|The system should have low response times.|
+|TR.02|Robustness|Medium|The system should be able to handle diferent types of errors.|
+|TR.03|Scalability|Medium|The system should be able to scale.|
+|TR.04|Accessibility|Medium|The system should be accessible easily on diferent hardware and software.|
 
 *Table 9:  Technical Requirements*
 
