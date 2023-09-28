@@ -137,13 +137,31 @@
 
 ## A2: Actors and User stories
 
-> Brief presentation of the artifact goals.
+> The Actors and the User Stories manage the dependencies/specifications about the type of users of the Collaborative Q&A. We can use this as a feasible and simple documentation to the project requirements and necessities.
 
 
 ### 1. Actors
 
-> Diagram identifying actors and their relationships.  
-> Table identifying actors, including a brief description.
+>For our app, Collaborative Q&A, the actors belonging to it are represented bellow:
+
+![actors](uploads/ac5daac19d53155dda9c14a29524466c/actors.png)
+
+*Image 1:  Collaborative Q&A Actors Diagram*
+
+>The table bellow will describe succinctly each one of the actors:
+
+|Actor|Description|
+|----|----|
+|User| Broad user that has acess to the app.|
+|Visitors|Generic  users that can see most of public information and features and they aren't signed in the app. |
+|Authenticated|Authenticated users that can do what the previous can , plus acess to more information and features, such as giving likes/dislikes and creating questions.|
+|Comment Author| Authenticated Users that can edit or delete their comment.|
+|Question Author| Authenticated Users that can edit or delete their question.|
+|Answer Author| Authenticated Users that can edit or delete their answer in another user's question.|
+|Moderator|Authenticated Users that can delete any sort of content (Comment, Question and Answer) and edit Question Tags.|
+|Administrator|Authenticated User that is responsible to manage Tags.|~
+
+*Table 1:  Collaborative Q&A Actors Description*
 
 
 ### 2. User Stories
@@ -154,12 +172,12 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.101|View Top Questions |High||
-|FR.102|View Recent Questions|High||
-|FR.103|Browse Questions|High||
-|FR.104|Browse Questions by Tags|Medium||
-|FR.105|View Question Details|Medium||
-|FR.106|View User Profiles|Medium||
+|FR.101|View Top Questions |High|As a User, I want to be able to view the top questions on the app, so that it allows me to quickly find the most popular questions.|
+|FR.102|View Recent Questions|High|As a User, I want to be able to view the most recent questions on the app, so that it enables me to stay updated with the latest discussions within the community.|
+|FR.103|Browse Questions|High|As a User, I want the ability to easily browse and explore questions on the app, so that it allows me to discover a range of topics and find questions that interest me.|
+|FR.104|Browse Questions by Tags|Medium|As User, I want the ability to browse questions on the app based on specific tags, so that it helps me find questions that I'm interested the most.|
+|FR.105|View Question Details|Medium|As a User, I want the ability to view the full details of a question on the app, so that it allows me to access all information and answers related to a specific question.|
+|FR.106|View User Profiles|Medium|As a User, I want the ability to view the profiles of other users on the platform, so that it allows me to learn more about the members of the community.|
 
 #### 2.2. Visitor
 
@@ -305,8 +323,8 @@ Changes made to the first submission:
 1. ...
 
 ***
-GROUPYYgg, DD/MM/20YY
+GROUPYYgg, 28/09/2023
 
-* Group member 1 name, email (Editor)
-* Group member 2 name, email
-* ...
+* Group member 1 Diogo Sarmento, email (Editor)
+* Group member 2 Tomás Sarmento, up202108778@fe.up.pt
+* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt (Editor)
