@@ -109,14 +109,6 @@
 
         - Mark Answer as Correct
     - Moderator
-        - Administrator Accounts
-
-        - Administer User Accounts (search, view, edit, create) 
-        
-        - Block and Unblock User Accounts
-
-        - Delete User Account
-
         - Delete Content
 
         - Edit Question Tags
@@ -129,6 +121,14 @@
 
         - Badge Award
     - Administrator
+        - Administrator Accounts
+
+        - Administer User Accounts (search, view, edit, create) 
+        
+        - Block and Unblock User Accounts
+
+        - Delete User Account
+
         - Manage Tags
 
 
