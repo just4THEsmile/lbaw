@@ -3,13 +3,13 @@
 - Project Vision
 > The application has in the sight to manage a community of collaborative questions and answers, where anyone can submit questions or answers, in which has the objective to facilitate the discussion of ideas/resources between the users, easing the communication.
 
-## A1: Collaborative Q&A
+## A1: QthenA
 
 - Goals, business context and environment.  
-> The main target of Collaborative Q&A is to create a information system with a web interface to manage a community of collaborative questions and answers. Any resgistered user can submit questions and answers. The questions and answers can be voted on by the rest of the community. It's also possible to associate brief comments to the questions or the answers. Each user has an associated score that is calculated considering the votes on its questions and answers.
-> There will be a team of administrators / moderators that will be responsible to manage the application , whether it's making sure that the app is running smoothly or ensuring that the illegal content is removed and punishing the user accordingly.
+> The primary goal of QthenA is to establish an information system accessible through a web interface, designed for managing a community-driven platform of questions and answers. Registered users have the ability to submit questions and provide answers. The community can then vote on these questions and answers, and users can also add concise comments to either the questions or the answers. Each user is assigned a score, which is calculated based on the votes received for their questions and answers.
+> In addition, there will be a team of administrators and moderators responsible for overseeing the application. Their duties include ensuring the smooth operation of the app and promptly addressing any technical issues, as well as monitoring the content to remove illegal materials and taking appropriate actions against users who violate the rules.
 - Motivation.  
-> With the development of the new technologies, it's starting to be noticeable that most Q&A sites are becoming more and more outdated and depecrated. So we decided to build a new web application where we innovate the way the Q&A works, so that it attracts new and old users.
+> In response to the evolving digital and physical landscape, we're crafting a new web application that remakes the way Q&A works. Our motivation is to create an engaging platform where curiosity meets experience. By innovating traditional methods, we're creating a place where asking questions isn't just a search for answers; it's a pathway to deeper understanding and meaningful connections.
 - Main features.
     - User Profile
 
@@ -30,7 +30,7 @@
         - Search Filters
     
         - Ordering of Results
-    - help 
+    - Help 
         - Placeholders in Form Inputs
 
         - Contextual Error Messages
@@ -140,17 +140,17 @@
 
 ## A2: Actors and User stories
 
-> The Actors and the User Stories manage the dependencies/specifications about the type of users of the Collaborative Q&A. We can use this as a feasible and simple documentation to the project requirements and necessities.
+> The Actors and the User Stories manage the dependencies/specifications about the type of users of the QthenA. We can use this as a feasible and simple documentation to the project requirements and necessities.
 
 
 ### 1. Actors
 
->For our app, Collaborative Q&A, the actors belonging to it are represented below:
+>For our app, QthenA, the actors belonging to it are represented below:
 
 ![actorss](uploads/7d2ce068f436e29f8f2d12c90a390778/actorss.png)
 
 
-*Image 1:  Collaborative Q&A Actors Diagram*
+*Image 1:  QthenA Actors Diagram*
 
 >The table below will describe succinctly each one of the actors:
 
@@ -165,7 +165,7 @@
 |Moderator|Authenticated Users that can delete any sort of content (Comment, Question and Answer) and edit Question Tags.|
 |Administrator|Authenticated User that is responsible to manage Tags.|
 
-*Table 1:  Collaborative Q&A Actors Description*
+*Table 1:  QthenA Actors Description*
 
 
 ### 2. User Stories
@@ -240,12 +240,12 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.401|Edit Question|High|As a Author i want to edit my question so that i can correct spelling or grammar mistakes and explain the question better| 
-|FR.402|Delete Question|High|As a Author i want to delete my question so that i can remove a question i placed by mistake| 
-|FR.403|Edit Answer|High|As a Author i want to edit my answer previously so that i can correct spelling or grammar mistakes and explain the answer better| 
-|FR.404|Delete Answer|High|As a Author i want to delete my answer so that i can remove a answer i made by mistake| 
-|FR.405|Edit Comment|Medium|As a Author i want to edit my comment so that i can correct spelling or grammar mistakes or even change it|
-|FR.406|Delete Comment|Medium|As a Author i want to delete my comment so that i can remove  a comment i made by mistake|
+|FR.401|Edit Question|High|As a Author, I want to edit my question, so that I can correct spelling or grammar mistakes and explain the question better| 
+|FR.402|Delete Question|High|As a Author, I want to delete my question, so that I can remove a question I placed by mistake| 
+|FR.403|Edit Answer|High|As a Author, I want to edit my answer previously, so that I can correct spelling or grammar mistakes and explain the answer better| 
+|FR.404|Delete Answer|High|As a Author, I want to delete my answer, so that I can remove a answer I made by mistake| 
+|FR.405|Edit Comment|Medium|As a Author, I want to edit my comment, so that I can correct spelling or grammar mistakes or even change it|
+|FR.406|Delete Comment|Medium|As a Author, I want to delete my comment, so that I can remove a comment I made by mistake|
 
 *Table 4:  {Comment, Question, Answer} Author User Stories*
 
@@ -253,8 +253,8 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.501|Edit Question Tags|Medium|As a Question Author I want to edit question tags so that i can add more suitable tags and remove less suitable tags|
-|FR.502|Mark Answer as Correct|Medium|As a Question Author I want to mark the answer correct so that other people can check the correct answer instead of others wrong answers|
+|FR.501|Edit Question Tags|Medium|As a Question Author, I want to edit question tags, so that I can add more suitable tags and remove less suitable tags|
+|FR.502|Mark Answer as Correct|Medium|As a Question Author I want to mark the answer correct, so that other people can check the correct answer instead of others wrong answers|
 
 *Table 5:  Question Author User Stories*
 
@@ -289,7 +289,7 @@
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
 |BR.011|Upon account deletion, shared user data is kept but is made anonymous|Medium|After account deletion we will only keep shared user data but will be made anonymous.|
-|BR.101|Administrators are participating members of the community, i.e. can post or vote on questions or answers.|Medium|The administrators can interact with the community just like a regular user.|
+|BR.101|Administrators are participating members of the community, I.e. can post or vote on questions or answers.|Medium|The administrators can interact with the community just like a regular Authenticated User.|
 |BR.102|Questions and answers edited after being posted should have a clear indication of the editions.|Medium|Edited questions or answers should have time of edit.|
 |BR.103|User badges are dependent on the likes and dislikes received on his questions and answers, and also on actions made by the user (first question, first answer, etc).|Medium|The user should be rewarded by the amount of interactions with the comunity.|
 |BR.104|User can vote/comment/review it's own content.|Medium|The user will be able to interact with it's own content, whether it's voting/commenting/reviewing. However, it won't be tracked towards badges and achievements.|
@@ -355,6 +355,6 @@ Changes made to the first submission:
 ***
 GROUP2357, 28/09/2023
 
-* Group member 1 Diogo Sarmento, up202109663@fe.up.pt 
+* Group member 1 Diogo Sarmento, email (Editor)
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
-* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt 
+* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt (Editor)
