@@ -147,7 +147,8 @@
 
 >For our app, Collaborative Q&A, the actors belonging to it are represented below:
 
-![actors](uploads/ac5daac19d53155dda9c14a29524466c/actors.png)
+![actorss](uploads/7d2ce068f436e29f8f2d12c90a390778/actorss.png)
+
 
 *Image 1:  Collaborative Q&A Actors Diagram*
 
@@ -261,9 +262,9 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.601|Delete Content|Medium|As a Moderator i want to be able to delete content, so that i can delete content that does not follow our guidelines|
-|FR.602|Edit Question Tags|Medium|As a Moderator i want to be able to delete questions tags, so that i can remove tags that do not suit the question|
-|FR.611|Manage Content Reports|Low|As a Moderator i want to be able to manage content reports, so that i can manage reported content|
+|FR.601|Delete Content|Medium|As a Moderator I want to be able to delete content, so that I can delete content that does not follow our guidelines|
+|FR.602|Edit Question Tags|Medium|As a Moderator I want to be able to delete questions tags, so that I can remove tags that do not suit the question|
+|FR.611|Manage Content Reports|Low|As a Moderator I want to be able to manage content reports, so that I can manage reported content|
 
 *Table 6:  Moderator User Stories*
 
@@ -271,11 +272,11 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.042|Administer User Accounts (search, view, edit, create)|High|As a administrator i want to administrate user accounts|
-|FR.801|Manage Tags|Medium|As a Administrator i want to manage tags, so that i can add tags on hot topics or remove on slow paced|
-|FR.041|Administrator Accounts|Medium|As a Administrator i want to have administrator, account so that it helps me administrate the platform with administrative privileges|
-|FR.043|Block and Unblock User Accounts|Medium|As a Administrator i want to block or unblock a User, so that i can punish a User that does not follow the guidelines|
-|FR.044|Delete User Account|Medium|As a Administrator i want to delete an account, so that i can remove a User that does not follow the guidelines|
+|FR.042|Administer User Accounts (search, view, edit, create)|High|As a Administrator, I want to administrate user accounts|
+|FR.801|Manage Tags|Medium|As a Administrator I want to manage tags, so that I can add tags on hot topics or remove on slow paced|
+|FR.041|Administrator Accounts|Medium|As a Administrator I want to have administrator account, so that it helps me administrate the platform with administrative privileges|
+|FR.043|Block and Unblock User Accounts|Medium|As a Administrator I want to block or unblock a User, so that I can punish a User that does not follow the guidelines|
+|FR.044|Delete User Account|Medium|As a Administrator I want to delete an account, so that I can remove a User that does not follow the guidelines|
 
 
 *Table 7:  Administrator User Stories*
@@ -352,7 +353,7 @@ Changes made to the first submission:
 1. ...
 
 ***
-GROUPYYgg, 28/09/2023
+GROUP2357, 28/09/2023
 
 * Group member 1 Diogo Sarmento, email (Editor)
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
