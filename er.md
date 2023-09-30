@@ -355,6 +355,6 @@ Changes made to the first submission:
 ***
 GROUP2357, 28/09/2023
 
-* Group member 1 Diogo Sarmento, email (Editor)
+* Group member 1 Diogo Sarmento, up202109663@fe.up.pt
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
-* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt (Editor)
+* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt 
