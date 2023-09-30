@@ -240,12 +240,12 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.401|Edit Question|High|| 
-|FR.402|Delete Question|High|| 
-|FR.403|Edit Answer|High|| 
-|FR.404|Delete Answer|High|| 
-|FR.405|Edit Comment|Medium||
-|FR.406|Delete Comment|Medium||
+|FR.401|Edit Question|High|As a Author i want to edit my question so that i can correct spelling or grammar mistakes and explain the question better| 
+|FR.402|Delete Question|High|As a Author i want to delete my question so that i can remove a question i placed by mistake| 
+|FR.403|Edit Answer|High|As a Author i want to edit my answer previously so that i can correct spelling or grammar mistakes and explain the answer better| 
+|FR.404|Delete Answer|High|As a Author i want to delete my answer so that i can remove a answer i made by mistake| 
+|FR.405|Edit Comment|Medium|As a Author i want to edit my comment so that i can correct spelling or grammar mistakes or even change it|
+|FR.406|Delete Comment|Medium|As a Author i want to delete my comment so that i can remove  a comment i made by mistake|
 
 *Table 4:  {Comment, Question, Answer} Author User Stories*
 
@@ -253,8 +253,8 @@
 
 |Identifier|Name|Priority|Description|
 |---|---|---|---|
-|FR.501|Edit Question Tags|Medium||
-|FR.502|Mark Answer as Correct|Medium||
+|FR.501|Edit Question Tags|Medium|As a Question Author I want to edit question tags so that i can add more suitable tags and remove less suitable tags|
+|FR.502|Mark Answer as Correct|Medium|As a Question Author I want to mark the answer correct so that other people can check the correct answer instead of others wrong answers|
 
 *Table 5:  Question Author User Stories*
 
@@ -355,6 +355,6 @@ Changes made to the first submission:
 ***
 GROUP2357, 28/09/2023
 
-* Group member 1 Diogo Sarmento, email (Editor)
+* Group member 1 Diogo Sarmento, up202109663@fe.up.pt 
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
-* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt (Editor)
+* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt 
