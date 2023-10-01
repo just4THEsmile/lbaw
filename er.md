@@ -331,8 +331,7 @@
 
 > The image below shows the webpages that are going to be present in our application and the way they are going to be used / acessed:
 
-![sitemap](uploads/f6753e24952e09e2875ad9777fd8691b/sitemap.png)
-
+![sitemap](uploads/bfd21083e49ba975fdd39c925f27662e/Untitled_Diagram.drawio__1_.png)
 *Image 2:  QthenA Sitemap*
 
 ### 2. Wireframes
@@ -360,4 +359,4 @@ GROUP2357, 28/09/2023
 
 * Group member 1 Diogo Sarmento, up202109663@fe.up.pt
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
-* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt 
+* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt![Untitled_Diagram.drawio__1_]
