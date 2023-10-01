@@ -1,7 +1,7 @@
 
 # Product name
 
-> Collaborative Q&A.
+> QthenA.
 
 ## Project Components
 
