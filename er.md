@@ -331,6 +331,9 @@
 
 > The image below shows the webpages that are going to be present in our application and the way they are going to be used / acessed:
 
+![sitemap](uploads/f6753e24952e09e2875ad9777fd8691b/sitemap.png)
+
+*Image 2:  QthenA Sitemap*
 
 ### 2. Wireframes
 
