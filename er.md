@@ -332,7 +332,7 @@
 
 ### 1. Sitemap
 
-> The image below shows the webpages that are going to be present in our application and the way they are going to be used / acessed:
+> The QthenA system is organized in five main areas, the static pages that provide general information about the system (Static Pages), the pages used to explore and access the questions and anwsers (General Pages), the pages where online authenticated users can access(User Pages),the pages with administration features (Admin Pages),and the pages with Authetication pages used to autheticate the user (Authetication Pages).
 
 ![sitemap](uploads/bfd21083e49ba975fdd39c925f27662e/Untitled_Diagram.drawio__1_.png)
 
