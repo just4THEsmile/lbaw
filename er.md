@@ -323,12 +323,6 @@
 
 ## A3: Information Architecture
 
-> This artifact gives a quick look at how the new system will be organized. It aims to do the following:
-> * Recognizing and explaining user needs while also bringing up any new ones.
-> * Check and try out the product's user interface to make sure it works well
-> * Allow for rapid and repeated changes to the user interface design.
-
->This artifact will have 2 elements: The Sitemap and the Wireframes, which both will be described below.
 
 ### 1. Sitemap
 
