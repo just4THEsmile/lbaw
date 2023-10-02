@@ -231,6 +231,10 @@
 |FR.035|Ordering of the results|Low|As an Authenticated User, I want to have the ability to customize the ordering of search results and lists of content on the app, so that I can quickly find the content I'm searching for.|
 |FR.221|Report Content|Low|As an Authenticated User, I want to have the ability to report content on the app that I find inappropriate, offensive, or in violation of community guidelines or policies, so that it enables me to contribute to the app's content moderation.|
 |FR.222|Support User Badges|Low|As an Authenticated User, I want to be able to earn and display user badges based on my contributions and activities within the community, so that I can get recognized for my achievements and increasing my reputation.|
+|FR.223|Donations|Low|As an Authenticated User, I want to be able to make donations to other users within the application, so that I can express my appreciation and support for their valuable contributions.|
+|FR.224|Bounties Points|Low|As an Authenticated User, I want the ability to create and offer bounties within the application that offer User Points, so that I can incentivize specific contributions from the community.|
+|FR.225|User Points|Low|As an Authenticated User, I want the application to implement a User Points system, so that I can be recognized and rewarded for my active participation in the community.|
+
 
 *Table 3:  Authenticated User User Stories*
 
@@ -280,7 +284,6 @@
 
 
 *Table 7:  Administrator User Stories*
-
 
 ### 3. Supplementary Requirements
 
@@ -332,6 +335,7 @@
 > The image below shows the webpages that are going to be present in our application and the way they are going to be used / acessed:
 
 ![sitemap](uploads/bfd21083e49ba975fdd39c925f27662e/Untitled_Diagram.drawio__1_.png)
+
 *Image 2:  QthenA Sitemap*
 
 ### 2. Wireframes
@@ -359,4 +363,4 @@ GROUP2357, 28/09/2023
 
 * Group member 1 Diogo Sarmento, up202109663@fe.up.pt
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
-* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt![Untitled_Diagram.drawio__1_]
+* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt 
