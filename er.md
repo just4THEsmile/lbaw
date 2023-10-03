@@ -348,6 +348,7 @@
 #### UI11: User Profile (Of the user logged in)
 ![user_edit](uploads/9e6105b87ee3b1e0d2d05f4317fcaa2f/user_edit.jpg)
 *Image 6:  User Profile*
+
 ---
 
 
