@@ -369,8 +369,6 @@
 ## Revision history
 
 Changes made to the first submission:
-1. Item 1
-1. ...
 
 ***
 GROUP2357, 28/09/2023
