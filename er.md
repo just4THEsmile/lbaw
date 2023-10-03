@@ -336,14 +336,18 @@
 > Do not include trivial use cases (e.g. about page, contacts).
 
 
-#### UI01: Page Home Page
+#### UI01: Home Page
 ![Home Page](uploads/e1e9b9f8889c7f22e56deeed1ce777fc/foto1.jpg)
+*Image 3:  Home Page*
 #### UI07: Q&A Page
 ![q_a](uploads/8629faf98d5e7ff8cbb8b1e6a743adfb/q_a.jpg)
+*Image 4:  Q&A Page*
 #### UI20: User
 ![user](uploads/f04f24402242375edb4697c39d53d7f2/user.jpg)
+*Image 5:  User*
 #### UI11: User Profile (Of the user logged in)
 ![user_edit](uploads/9e6105b87ee3b1e0d2d05f4317fcaa2f/user_edit.jpg)
+*Image 6:  User Profile*
 ---
 
 
