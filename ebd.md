@@ -1,0 +1,1 @@
+# EBD: Database Specification Component
