@@ -4,12 +4,15 @@
 
 ## A4: Conceptual Data Model
 
-> Brief presentation of the artifact goals.
+> This section will explain better the relations between entities that are present in our QthenA project and some database specification.
 
 ### 1. Class diagram
 
-> UML class diagram containing the classes, associations, multiplicity and roles.  
-> For each class, the attributes, associations and constraints are included in the class diagram.
+> The image below represents a class diagram where it shows the principal entities and their attributes, the relations between them, the domains and rules.
+
+![Alt text](image.png)
+
+*Image 7:  QthenA Class Diagram*
 
 ### 2. Additional Business Rules
  
@@ -17,21 +20,18 @@
 
 
 ---
-
-
 ## A5: Relational Schema, validation and schema refinement
 
-> Brief presentation of the artifact goals.
+> This portion displays the relational schema derived from the conceptual data model through analysis. It presents each relational schema, along with attributes, domains, primary keys, foreign keys, and essential integrity rules like unique, default, not null, and check constraints.
 
 ### 1. Relational Schema
 
-> The Relational Schema includes the relation schemas, attributes, domains, primary keys, foreign keys and other integrity rules: UNIQUE, DEFAULT, NOT NULL, CHECK.  
-> Relation schemas are specified in the compact notation:  
+> The Relational Schema includes the relation schemas, attributes, domains, primary keys, foreign keys and other integrity rules: UNIQUE, DEFAULT, NOT NULL, CHECK.   
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01                | Table1(<ins>id</ins>, attribute **NN**)                     |
-| R02                | Table2(<ins>id</ins>, attribute → Table1 **NN**)            |
+| R01                | User(<ins>id</ins> **PK**, name **UK NN**, email **UK NN**, password **NN**, bio, points **NN**, nquestion **NN**, nanswer **NN**, profilepicture **NN**, paylink **UK**)                     |
+| R02                | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**)            |
 | R03                | Table3(<ins>id</ins>, id2 → Table2, attribute **UK NN**)   |
 | R04                | Table4((<ins>id1</ins>, <ins>id2</ins>) → Table3, id3, attribute **CK** attribute > 0) |
 
