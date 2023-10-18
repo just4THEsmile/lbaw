@@ -26,35 +26,54 @@
 
 ### 1. Relational Schema
 
-> The Relational Schema includes the relation schemas, attributes, domains, primary keys, foreign keys and other integrity rules: UNIQUE, DEFAULT, NOT NULL, CHECK.   
+> The Relational Schema includes the relation schemas, attributes, domains, primary keys, foreign keys and other integrity rules: PRIMARY KEY, UNIQUE, DEFAULT, NOT NULL, CHECK.   
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01                | User(<ins>id</ins> **PK**, name **UK NN**, email **UK NN**, password **NN**, bio, points **NN**, nquestion **NN**, nanswer **NN**, profilepicture **NN**, paylink **UK**)                     |
-| R02                | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**)            |
-| R03                | Table3(<ins>id</ins>, id2 → Table2, attribute **UK NN**)   |
-| R04                | Table4((<ins>id1</ins>, <ins>id2</ins>) → Table3, id3, attribute **CK** attribute > 0) |
+| R01 | User(<ins>id</ins> **PK**, name **UK NN**, email **UK NN**, password **NN**, bio, points **NN**, nquestion **NN**, nanswer **NN**, profilepicture **NN**, paylink **UK**) |
+| R02 | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**) |
+| R03 | Badge(<ins>id</ins> **PK**, name **UK NN**, description **NN**) |
+| R04 | UserBadges((<ins>user_id</ins>→ User, <ins>badge_id</ins>→ Badge) **PK**) |
+| R05 | UnblockRequest(<ins>id1</ins> **PK**, user_id→ User **NN**, title **NN**, description **NN**) |
+| R06 | Content(<ins>id</ins> **PK**, user_id→ User **NN**, content **NN**, reports, date **NN CK** date <= today, edited **DF** false) |
+| R07 | Question(<ins>id</ins> **PK**, content_id→ Content **NN**, title **NN**, votes **NN**) |
+| R08 | Answer(<ins>id</ins> **PK**, content_id→ Content **NN**, question_id→ Question **NN**, votes **NN**) |
+| R09 | Comment(<ins>id</ins> **PK**, content_id→ Content **NN**, answer_id→ Answer **NN**)|
+| R10 | Tags(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
+| R11 | QuestionTags((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tags) **PK**)
+| R12 | Notification(<ins>id</ins> **PK**, user_id→ User **NN**, date **NN CK** date <= today, viewed **NN** DF false)|
+| R13 | AnswerToQuestion(<ins>id</ins> **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**, notification_id→ Notification **NN**)|
+| R14 | CommentonAnswer(<ins>id</ins> **PK**, answer_id→ Answer **NN**, comment_id→ Comment **NN**, notification_id→ Notification **NN**)|
 
-### 2. Domains
+*Table 11:  QthenA Relational Schema*
 
-> The specification of additional domains can also be made in a compact form, using the notation:  
+Legend:
+- PK: Primary Key.
+- UK : Unique.
+- NN : Not Null
+- CK : Check
+- DF : Default
+
+### 2. Domains 
+
+Definition of additional Domains.
 
 | Domain Name | Domain Specification           |
 | ----------- | ------------------------------ |
 | Today	      | DATE DEFAULT CURRENT_DATE      |
-| Priority    | ENUM ('High', 'Medium', 'Low') |
+
+*Table 12:  QthenA Domains*
+
 
 ### 3. Schema validation
 
-> To validate the Relational Schema obtained from the Conceptual Model, all functional dependencies are identified and the normalization of all relation schemas is accomplished. Should it be necessary, in case the scheme is not in the Boyce–Codd Normal Form (BCNF), the relational schema is refined using normalization.  
+>All functional dependencies are identified and the normalization of all relation schemas is accomplished.
 
 | **TABLE R01**   | User               |
 | --------------  | ---                |
-| **Keys**        | { id }, { email }  |
+| **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
 | FD0101          | id → {email, name} |
-| FD0102          | email → {id, name} |
-| ...             | ...                |
 | **NORMAL FORM** | BCNF               |
 
 > If necessary, description of the changes necessary to convert the schema to BCNF.  
