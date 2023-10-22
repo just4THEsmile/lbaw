@@ -9,8 +9,8 @@
 ### 1. Class diagram
 
 > The image below represents a class diagram where it shows the principal entities and their attributes, the relations between them, the domains and rules.
-![lbawclass](uploads/5ef18937d01d1551be9e6aff2548c137/lbawclass3.drawio.png)
 
+![lbawclass](uploads/5ef18937d01d1551be9e6aff2548c137/lbawclass3.drawio.png)
 *Image 7:  QthenA Class Diagram*
 
 ### 2. Additional Business Rules
@@ -72,11 +72,132 @@ Definition of additional Domains.
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
-| FD0101          | id → {email, name} |
+| FD0101          | id → {name, username, email, password, bio, points, nquestion, nanswer, profilepicture, paylink} |
 | **NORMAL FORM** | BCNF               |
 
-> If necessary, description of the changes necessary to convert the schema to BCNF.  
-> Justification of the BCNF.  
+*Table 13:  User Schema Validation*
+
+| **TABLE R02**   | FAQ                |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD0201         | id → {question, answer} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 14:  Faq Schema Validation*
+
+| **TABLE R03**   | Badge              |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD0301         | id → {name, description} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 14:  Badge Schema Validation*
+
+| **TABLE R04**   | UserBadges         |
+| --------------  | ---                |
+| **Keys**        | { user_id, badge_id }|
+| **Functional Dependencies:** |None   |
+| **NORMAL FORM** | BCNF               |
+
+*Table 15:  UserBadges Schema Validation*
+
+| **TABLE R05**   | UnblockRequest     |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD0501         | id → {user_id, title, description} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 16:  UnblockRequest Schema Validation*
+
+| **TABLE R06**   | Content            |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD0601         | id → {user_id, content, reports, date, edited} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 17:  Content Validation*
+
+
+| **TABLE R07**   | Question           |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD0701         | id → {content_id, title, votes} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 18:  Question Schema Validation*
+
+| **TABLE R08**   | Answer           |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD0801         | id → {content_id, question_id, votes} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 19:  Answer Schema Validation*
+
+| **TABLE R09**   | Comment           |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD0901         | id → {content_id, answer_id} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 20:  Comment Schema Validation*
+
+| **TABLE R10**   | Tags           |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD1001         | id → {title, description} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 21:  Tags Schema Validation*
+
+
+| **TABLE R11**   | QuestionTags           |
+| --------------  | ---                |
+| **Keys**        | { question_id, tag_id }             |
+| **Functional Dependencies:** |None       |
+| **NORMAL FORM** | BCNF               |
+
+*Table 22:  QuestionTags Schema Validation*
+
+
+| **TABLE R12**   | Notification       |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD1201         | id → {user_id, date, viewed} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 23:  Notification Schema Validation*
+
+| **TABLE R13**   | AnswerToQuestion   |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD1301         | id → {question_id, answer_id, notification_id} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 24:  AnswerToQuestion Schema Validation*
+
+| **TABLE R14**   | CommentonAnswer           |
+| --------------  | ---                |
+| **Keys**        | { id }             |
+| **Functional Dependencies:** |       |
+| FD1401         | id → {answer_id, comment_id, notification_id} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 25:  CommentonAnswer Schema Validation*
+
+
+
+Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relational schema is inherently in BCNF. Hence, there is no need for further normalization of the schema.
 
 
 ---
@@ -182,4 +303,4 @@ GROUPYYgg, DD/MM/20YY
  
 * Group member 1 name, email (Editor)
 * Group member 2 name, email
-* ..
+* ...
