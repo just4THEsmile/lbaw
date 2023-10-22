@@ -10,7 +10,7 @@
 
 > The image below represents a class diagram where it shows the principal entities and their attributes, the relations between them, the domains and rules.
 
-![Alt text](image.png)
+![lbawclass](uploads/8fdc9831ee756ebe790d0d76eaf48a74/lbawclass1.drawio.png)
 
 *Image 7:  QthenA Class Diagram*
 
@@ -183,4 +183,4 @@ GROUPYYgg, DD/MM/20YY
  
 * Group member 1 name, email (Editor)
 * Group member 2 name, email
-* ...
+* ..
