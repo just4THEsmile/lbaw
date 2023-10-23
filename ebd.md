@@ -9,7 +9,8 @@
 ### 1. Class diagram
 
 > The image below represents a class diagram where it shows the principal entities and their attributes, the relations between them, the domains and rules.
-![lbawclass](uploads/f9a40b268affcfe319041c9a0a0e7db3/lbawclass7.png)
+![lbawclass](uploads/6839a569e70e034d36b698b254d138d3/lbawclass1.png)
+
 *Image 7:  QthenA Class Diagram*
 
 ### 2. Additional Business Rules
