@@ -28,20 +28,23 @@
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01 | User(<ins>id</ins> **PK**, name **UK NN**, email **UK NN**, password **NN**, bio, points **NN**, nquestion **NN**, nanswer **NN**, profilepicture **NN**, paylink **UK**) |
+| R01 | User(<ins>id</ins> **PK**, name **NN**, username **UK NN**, email **UK NN**, password **NN**, bio, points **NN CK** points >= 0 **DF** points = 0, nquestion **NN** **CK** nquestion >=0 **DF** nquestion = 0, nanswer **NN** **CK** nanswer >=0 **DF** nanswer = 0, profilepicture **NN**, paylink **UK**) |
 | R02 | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**) |
 | R03 | Badge(<ins>id</ins> **PK**, name **UK NN**, description **NN**) |
-| R04 | UserBadges((<ins>user_id</ins>→ User, <ins>badge_id</ins>→ Badge) **PK**) |
+| R04 | AtaintementDate((<ins>user_id</ins>→ User, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
 | R05 | UnblockRequest(<ins>id1</ins> **PK**, user_id→ User **NN**, title **NN**, description **NN**) |
-| R06 | Content(<ins>id</ins> **PK**, user_id→ User **NN**, content **NN**, reports, date **NN CK** date <= today, edited **DF** false) |
-| R07 | Question(<ins>id</ins> **PK**, content_id→ Content **NN**, title **NN**, votes **NN**) |
-| R08 | Answer(<ins>id</ins> **PK**, content_id→ Content **NN**, question_id→ Question **NN**, votes **NN**) |
-| R09 | Comment(<ins>id</ins> **PK**, content_id→ Content **NN**, answer_id→ Answer **NN**)|
-| R10 | Tags(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
-| R11 | QuestionTags((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tags) **PK**)
-| R12 | Notification(<ins>id</ins> **PK**, user_id→ User **NN**, date **NN CK** date <= today, viewed **NN** DF false)|
-| R13 | AnswerToQuestion(<ins>id</ins> **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**, notification_id→ Notification **NN**)|
-| R14 | CommentonAnswer(<ins>id</ins> **PK**, answer_id→ Answer **NN**, comment_id→ Comment **NN**, notification_id→ Notification **NN**)|
+| R06 | Content(<ins>id</ins> **PK**, user_id→ User **NN**, content **NN**, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false) |
+| R07 | Commentable(<ins>content_id</ins>→ Content **PK**) |
+| R08 | Question(<ins>commentable_id</ins>→ Commentable **PK**, title **NN**, votes **NN** **DF** votes = 0,correct_anwser_id→Anwser) |
+| R09 | Answer(<ins>commentable_id</ins>→ Commentable **PK**, question_id→ Question **NN**, votes **NN** **DF** votes = 0) |
+| R10 | Comment(<ins>content_id</ins>→ Content **PK**,  commentable_id→ Commentable **NN**)|
+| R11 | Tags(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
+| R12 | QuestionTags((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tags) **PK**)
+| R13 | Notification(<ins>id</ins> **PK**, user_id→ User **NN**, date **NN CK** date <= today, viewed **NN** **DF** false)|
+| R14 | AnswerToQuestion(<ins>notification_id</ins>→ Notification **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**)|
+| R15 | Comment(<ins>notification_id</ins>→ Notification **PK**, commentable_id→ Commentable **NN**, comment_id→ Comment **NN**)|
+| R16 | Report((<ins>user_id</ins>→ User, <ins>comment_id</ins>→ Comment) **PK**)|
+| R17 | Like((<ins>user_id</ins>→ User, <ins>comment_id</ins>→ Comment) **PK**, Like **NN**)|
 
 *Table 11:  QthenA Relational Schema*
 
