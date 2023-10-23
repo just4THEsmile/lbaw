@@ -32,7 +32,7 @@
 | R01 | User(<ins>id</ins> **PK**, name **NN**, username **UK NN**, email **UK NN**, password **NN**, bio, points **NN CK** points >= 0 **DF** points = 0, nquestion **NN** **CK** nquestion >=0 **DF** nquestion = 0, nanswer **NN** **CK** nanswer >=0 **DF** nanswer = 0, profilepicture **NN**, paylink **UK**) |
 | R02 | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**) |
 | R03 | Badge(<ins>id</ins> **PK**, name **UK NN**, description **NN**) |
-| R04 | AtaintementDate((<ins>user_id</ins>→ User, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
+| R04 | BadgeAttainment((<ins>user_id</ins>→ User, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
 | R05 | UnblockRequest(<ins>id1</ins> **PK**, user_id→ User **NN**, title **NN**, description **NN**) |
 | R06 | Content(<ins>id</ins> **PK**, user_id→ User **NN**, content **NN**, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false) |
 | R07 | Commentable(<ins>content_id</ins>→ Content **PK**) |
@@ -42,8 +42,8 @@
 | R11 | Tags(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
 | R12 | QuestionTags((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tags) **PK**)
 | R13 | Notification(<ins>id</ins> **PK**, user_id→ User **NN**, date **NN CK** date <= today, viewed **NN** **DF** false)|
-| R14 | AnswerToQuestion(<ins>notification_id</ins>→ Notification **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**)|
-| R15 | Comment(<ins>notification_id</ins>→ Notification **PK**, commentable_id→ Commentable **NN**, comment_id→ Comment **NN**)|
+| R14 | AnswerNotification(<ins>notification_id</ins>→ Notification **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**)|
+| R15 | CommentNotification(<ins>notification_id</ins>→ Notification **PK**, comment_id→ Comment **NN**)|
 | R16 | Report((<ins>user_id</ins>→ User, <ins>comment_id</ins>→ Comment) **PK**)|
 | R17 | Like((<ins>user_id</ins>→ User, <ins>comment_id</ins>→ Comment) **PK**, Like **NN**)|
 
@@ -98,13 +98,14 @@ Definition of additional Domains.
 
 *Table 14:  Badge Schema Validation*
 
-| **TABLE R04**   | UserBadges         |
+| **TABLE R04**   | BadgeAttainment         |
 | --------------  | ---                |
 | **Keys**        | { user_id, badge_id }|
-| **Functional Dependencies:** |None   |
+| **Functional Dependencies:** |   |
+| FD0401         | { user_id, badge_id } → {date} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 15:  UserBadges Schema Validation*
+*Table 15:  BadgeAttainment Schema Validation*
 
 | **TABLE R05**   | UnblockRequest     |
 | --------------  | ---                |
@@ -122,81 +123,105 @@ Definition of additional Domains.
 | FD0601         | id → {user_id, content, reports, date, edited} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 17:  Content Validation*
+*Table 17:  Content Schema Validation*
 
+| **TABLE R07**   | Commentable        |
+| --------------  | ---                |
+| **Keys**        | { content_id }             |
+| **Functional Dependencies:** |  None |
+| **NORMAL FORM** | BCNF               |
 
-| **TABLE R07**   | Question           |
+*Table 20: Commentable Schema Validation*
+
+| **TABLE R08**   | Question           |
+| --------------  | ---                |
+| **Keys**        | { commentable_id }             |
+| **Functional Dependencies:** |       |
+| FD0801         | commentable_id → {title, votes} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 21:  Question Schema Validation*
+
+| **TABLE R09**   | Answer           |
+| --------------  | ---                |
+| **Keys**        | { commentable_id }             |
+| **Functional Dependencies:** |       |
+| FD0901         | commentable_id → {question_id, votes} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 21:  Answer Schema Validation*
+
+| **TABLE R10**   | Comment           |
+| --------------  | ---                |
+| **Keys**        | { content_id }             |
+| **Functional Dependencies:** |       |
+| FD1001         | content_id → {commentable_id} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 22:  Comment Schema Validation*
+
+| **TABLE R11**   | Tags           |
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
-| FD0701         | id → {content_id, title, votes} |
+| FD1101         | id → {title, description} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 18:  Question Schema Validation*
-
-| **TABLE R08**   | Answer           |
-| --------------  | ---                |
-| **Keys**        | { id }             |
-| **Functional Dependencies:** |       |
-| FD0801         | id → {content_id, question_id, votes} |
-| **NORMAL FORM** | BCNF               |
-
-*Table 19:  Answer Schema Validation*
-
-| **TABLE R09**   | Comment           |
-| --------------  | ---                |
-| **Keys**        | { id }             |
-| **Functional Dependencies:** |       |
-| FD0901         | id → {content_id, answer_id} |
-| **NORMAL FORM** | BCNF               |
-
-*Table 20:  Comment Schema Validation*
-
-| **TABLE R10**   | Tags           |
-| --------------  | ---                |
-| **Keys**        | { id }             |
-| **Functional Dependencies:** |       |
-| FD1001         | id → {title, description} |
-| **NORMAL FORM** | BCNF               |
-
-*Table 21:  Tags Schema Validation*
+*Table 23:  Tags Schema Validation*
 
 
-| **TABLE R11**   | QuestionTags           |
+| **TABLE R12**   | QuestionTags           |
 | --------------  | ---                |
 | **Keys**        | { question_id, tag_id }             |
 | **Functional Dependencies:** |None       |
 | **NORMAL FORM** | BCNF               |
 
-*Table 22:  QuestionTags Schema Validation*
+*Table 24:  QuestionTags Schema Validation*
 
 
-| **TABLE R12**   | Notification       |
+| **TABLE R13**   | Notification       |
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
-| FD1201         | id → {user_id, date, viewed} |
+| FD1301         | id → {user_id, date, viewed} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 23:  Notification Schema Validation*
+*Table 25:  Notification Schema Validation*
 
-| **TABLE R13**   | AnswerToQuestion   |
+| **TABLE R14**   | AnswerNotification
 | --------------  | ---                |
-| **Keys**        | { id }             |
+| **Keys**        | { notification_id }             |
 | **Functional Dependencies:** |       |
-| FD1301         | id → {question_id, answer_id, notification_id} |
+| FD1401         | notification_id → {question_id, answer_id} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 24:  AnswerToQuestion Schema Validation*
+*Table 26:  AnswerNotification Schema Validation*
 
-| **TABLE R14**   | CommentonAnswer           |
+| **TABLE R15**   | CommentNotification           |
 | --------------  | ---                |
-| **Keys**        | { id }             |
+| **Keys**        | { notification_id}             |
 | **Functional Dependencies:** |       |
-| FD1401         | id → {answer_id, comment_id, notification_id} |
+| FD1501         | notification_id → { comment_id} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 25:  CommentonAnswer Schema Validation*
+*Table 27:  CommentNotification Schema Validation*
+
+| **TABLE R16**   | Report             |
+| --------------  | ---                |
+| **Keys**        | { user_id , comment_id } |
+| **Functional Dependencies:** |    None   |
+| **NORMAL FORM** | BCNF               |
+
+*Table 28:  Report Schema Validation*
+
+| **TABLE R17**   | Like             |
+| --------------  | ---                |
+| **Keys**        | { user_id , comment_id } |
+| **Functional Dependencies:** |       |
+| FD1701         | { user_id , comment_id } → {like} |
+| **NORMAL FORM** | BCNF               |
+
+*Table 29:  Like Schema Validation*
 
 
 
@@ -204,7 +229,6 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 
 
 ---
-
 
 ## A6: Indexes, triggers, transactions and database population
 
