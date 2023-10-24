@@ -9,8 +9,7 @@
 ### 1. Class diagram
 
 > The image below represents a class diagram where it shows the principal entities and their attributes, the relations between them, the domains and rules
-![lbawclass2o](uploads/319ef10af7386d454e4f543a1cc833f4/lbawclass2o.png)
-
+![lbawclass2](uploads/9085a5ec30a3abadf57cb3dd3b7ecd5e/lbawclass2.png)
 
 *Image 7:  QthenA Class Diagram*
 
