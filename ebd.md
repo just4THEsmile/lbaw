@@ -39,8 +39,8 @@
 | R08 | Question(<ins>commentable_id</ins>→ Commentable **PK**, title **NN**,correct_anwser_id→Anwser) |
 | R09 | Answer(<ins>commentable_id</ins>→ Commentable **PK**, question_id→ Question **NN**) |
 | R10 | Comment(<ins>content_id</ins>→ Content **PK**,  commentable_id→ Commentable **NN**)|
-| R11 | Tags(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
-| R12 | QuestionTags((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tags) **PK**)
+| R11 | Tag(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
+| R12 | QuestionTag((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tag) **PK**)
 | R13 | Notification(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, date **NN CK** date <= today, viewed **NN** **DF** false)|
 | R14 | AnswerNotification(<ins>notification_id</ins>→ Notification **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**)|
 | R15 | CommentNotification(<ins>notification_id</ins>→ Notification **PK**, comment_id→ Comment **NN**)|
@@ -164,23 +164,23 @@ Definition of additional Domains.
 
 *Table 22:  Comment Schema Validation*
 
-| **TABLE R11**   | Tags           |
+| **TABLE R11**   | Tag           |
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
 | FD1101         | id → {title, description} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 23:  Tags Schema Validation*
+*Table 23:  Tag Schema Validation*
 
 
-| **TABLE R12**   | QuestionTags           |
+| **TABLE R12**   | QuestionTag           |
 | --------------  | ---                |
 | **Keys**        | { question_id, tag_id }             |
 | **Functional Dependencies:** |None       |
 | **NORMAL FORM** | BCNF               |
 
-*Table 24:  QuestionTags Schema Validation*
+*Table 24:  QuestionTag Schema Validation*
 
 
 | **TABLE R13**   | Notification       |
@@ -291,8 +291,8 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 |**RS8**       | Question            | 1k             |100   |
 |**RS9**       | Answer              | 1k             |100   |
 | **RS10**     | Comment             | 1k             |100   |
-| **RS11**     | Tags                | 10             |1     |
-| **RS12**     | QuestionTags        | 10             |1     |
+| **RS11**     | Tag                | 10             |1     |
+| **RS12**     | QuestionTag        | 10             |1     |
 | **RS13**     | Notification        | 10k            |1k    |
 | **RS14**     | AnswerNotification  | 10k            |1k    |
 | **RS15**     | CommentNotification | 1k             |1k    |
@@ -364,7 +364,7 @@ A hash type index would be best suited need clustering as clustering is not avai
 | **Attribute**       | title ,description   |
 | **Type**            | GIN              |
 | **Clustering**      | No                |
-| **Justification**   | To provide full-text search features for the search of the tag or the description helping to find the tag the user is looking for and minimissing its time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times|
+| **Justification**   | To provide full-text search features for the search of the tag or the description helping to find the tag the user is looking for and minimissing its time, the drawback is that it will take longer to and new tag,delete or update but the tag will be for the most part stable and will only be changed very few times|
 
 ```sql
     
@@ -500,13 +500,13 @@ EXECUTE PROCEDURE select_correct_answer();
 SQL Code: 
 ```sql         
 
-CREATE FUNCTION question_minimum_tags() RETURNS TRIGGER AS
+CREATE FUNCTION question_minimum_tag() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     -- Checks if the question has one tag at minimum
     IF NOT EXISTS (
         SELECT 1
-        FROM QuestionTags
+        FROM QuestionTag
         WHERE question_id = NEW.commentable_id
     ) THEN
         RAISE EXCEPTION 'A question must have at least one tag.';
@@ -517,14 +517,14 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER question_minimum_tags_trigger
+CREATE TRIGGER question_minimum_tag_trigger
 BEFORE INSERT OR UPDATE ON Question
 FOR EACH ROW
-EXECUTE PROCEDURE question_minimum_tags();
+EXECUTE PROCEDURE question_minimum_tag();
 
 ```
 
-*Table 38: Minimum question tags Trigger*
+*Table 38: Minimum question tag Trigger*
 
 ---
 
