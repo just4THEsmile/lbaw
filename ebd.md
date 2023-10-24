@@ -46,7 +46,7 @@
 | R14 | AnswerNotification(<ins>notification_id</ins>→ Notification **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**)|
 | R15 | CommentNotification(<ins>notification_id</ins>→ Notification **PK**, comment_id→ Comment **NN**)|
 | R16 | Report((<ins>appuser_id</ins>→ AppUser, <ins>comment_id</ins>→ Comment) **PK**)|
-| R17 | Like((<ins>appuser_id</ins>→ appUser, <ins>content_id</ins>→ Content) **PK**, Like **NN**)|
+| R17 | Vote((<ins>appuser_id</ins>→ appUser, <ins>content_id</ins>→ Content) **PK**, Vote **NN**)|
 
 *Table 11:  QthenA Relational Schema*
 
@@ -215,14 +215,14 @@ Definition of additional Domains.
 
 *Table 28:  Report Schema Validation*
 
-| **TABLE R17**   | Like             |
+| **TABLE R17**   | Vote             |
 | --------------  | ---                |
 | **Keys**        | { appuser_id , content_id } |
 | **Functional Dependencies:** |       |
-| FD1701         | { appuser_id , content_id } → {like} |
+| FD1701         | { appuser_id , content_id } → {up/down} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 29:  Like Schema Validation*
+*Table 29:  Vote Schema Validation*
 
 
 
