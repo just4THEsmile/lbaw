@@ -342,7 +342,6 @@ A hash type index would be best suited need clustering as clustering is not avai
 
 | **Trigger**      | TRIGGER01                              |
 | ---              | ---                                    |
-```markdown
 | **Description**  | A user can only like a content once. If they vote again, the vote is removed. |
 
 SQL Code: 
@@ -952,6 +951,3 @@ GROUP2357, 24/10/2023
 * Group member 1 Diogo Sarmento, up202109663@fe.up.pt
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
 * Group member 3 Rodrigo Povoa , up202108890@fe.up.pt
-
-
-
