@@ -316,7 +316,7 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 | **Cardinality**     | medium
 | **Clustering**      | Yes                |
 | **Justification**   | The Table is very large, and the queries associated with this index relation are recurrent. It doesn't need range query support so is a very good candidate for clustering as its cardinality is medium.|
-|
+
 ```sql
     CREATE INDEX notification_user ON Notification USING btree(appuser_id);
     CLUSTER Notification USING notification_user;
@@ -330,7 +330,7 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 | **Cardinality**     | medium
 | **Clustering**      | Yes                |
 | **Justification**   | The Table is very large,there is a query that searches the comments of a commentable and this query will be repeated a lot so we will make it This is done by exact match, thus an hash type index would be best suited but we need clustering as clustering is not avaiable in hash we choose b-tree.|
-|
+
 ```sql
     CREATE INDEX comment_commentable ON Comment USING btree(commentable_id);
         CLUSTER Comment USING comment_commentable;
@@ -347,7 +347,7 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 | **Clustering**      | Yes                |
 | **Justification**   | The Table is very large,there are queries that searches for all the commentables (Questions and Awnsers) and this query will be repeated a lot. 
 A hash type index would be best suited need clustering as clustering is not avaiable in hash we choose b-tree.|
-|
+
 ```sql
     CREATE INDEX appuser_content ON Content USING btree(appuser_id);
     CLUSTER Content USING appuser_content;
@@ -365,7 +365,7 @@ A hash type index would be best suited need clustering as clustering is not avai
 | **Type**            | GIN              |
 | **Clustering**      | No                |
 | **Justification**   | To provide full-text search features for the search of the tag or the description helping to find the tag the user is looking for and minimissing its time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times|
-| 
+
 ```sql
     
 
