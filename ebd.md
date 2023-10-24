@@ -8,26 +8,15 @@
 
 ### 1. Class diagram
 
-> The image below represents a class diagram where it shows the principal entities and their attributes, the relations between them, the domains and rules
-![lbawclass2](uploads/9085a5ec30a3abadf57cb3dd3b7ecd5e/lbawclass2.png)
+> The image below represents a class diagram where it shows the principal entities and their attributes, the relations between them, the domains and rule
+![lbawclass4](uploads/ecd63f9aeba6eeab40b4cc35b925ddb4/lbawclass4.png)
+
 
 *Image 7:  QthenA Class Diagram*
 
 ### 2. Additional Business Rules
  
-> Business rules that cannot.be conveyed in the UML class diagram
-
-|**identifier**| **Description** |
-|---|---|
-|**BR12** |A user cannot report another user more than once.|
-|**BR13** |A user cannot like their own post.  
-|**BR14** |A user can only have either one vote up or vote down in one post   |   
-|**BR15**| A question must have at least one Tag |
-|**BR16** |If a content gets many reports, will be removed|
-|**BR17** |Only the creator of the answer can select the correct answer|
-|**BR18** |A user will get badges based on their interactions with community|
-
-*Table 11: Business Rules Table*
+> Business rules can be included in the UML diagram as UML notes or in a table in this section.
 
 ---
 ## A5: Relational Schema, validation and schema refinement
@@ -44,7 +33,7 @@
 | R02 | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**) |
 | R03 | Badge(<ins>id</ins> **PK**, name **UK NN**, description **NN**) |
 | R04 | BadgeAttainment((<ins>appuser_id</ins>→ AppUser, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
-| R05 | UnblockRequest(<ins>id1</ins> **PK**, appuser_id→ AppUser **NN**, title **NN**, description **NN**) |
+| R05 | UnblockRequest(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, title **NN**, description **NN**) |
 | R06 | Content(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, content **NN**, votes **NN** **DF** votes = 0, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false) |
 | R07 | Commentable(<ins>content_id</ins>→ Content **PK**) |
 | R08 | Question(<ins>commentable_id</ins>→ Commentable **PK**, title **NN**,correct_anwser_id→Anwser) |
@@ -57,7 +46,10 @@
 | R15 | CommentNotification(<ins>notification_id</ins>→ Notification **PK**, comment_id→ Comment **NN**)|
 | R16 | Report((<ins>appuser_id</ins>→ AppUser, <ins>content_id</ins>→ Content) **PK**)|
 | R17 | Vote((<ins>appuser_id</ins>→ appUser, <ins>content_id</ins>→ Content) **PK**, Vote **NN**)|
-
+| R18 | VoteNotification(<ins>notification_id</ins>→ Notification **PK**, (appuser_id,content_id)→ Vote **NN**)|
+| R19 | BadgeAttatinmentNotification(<ins>notification_id</ins>→ Notification **PK**,(appuser_id,badge_id)→ BadgeAttainment **NN**)|
+| R20 | FollowTag((<ins>appuser_id</ins>→ appUser, <ins>tag_id</ins>→ Content) **PK**)|
+| R21 | FollowQuestion((<ins>appuser_id</ins>→ appUser, <ins>question_id</ins>→ Question) **PK**)|
 *Table 11:  QthenA Relational Schema*
 
 Legend:
@@ -160,7 +152,7 @@ Definition of additional Domains.
 | FD0901         | commentable_id → {question_id,title} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 22:  Answer Schema Validation*
+*Table 21:  Answer Schema Validation*
 
 | **TABLE R10**   | Comment           |
 | --------------  | ---                |
@@ -169,7 +161,7 @@ Definition of additional Domains.
 | FD1001         | content_id → {commentable_id} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 23:  Comment Schema Validation*
+*Table 22:  Comment Schema Validation*
 
 | **TABLE R11**   | Tags           |
 | --------------  | ---                |
@@ -178,7 +170,7 @@ Definition of additional Domains.
 | FD1101         | id → {title, description} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 24:  Tags Schema Validation*
+*Table 23:  Tags Schema Validation*
 
 
 | **TABLE R12**   | QuestionTags           |
@@ -187,7 +179,7 @@ Definition of additional Domains.
 | **Functional Dependencies:** |None       |
 | **NORMAL FORM** | BCNF               |
 
-*Table 25:  QuestionTags Schema Validation*
+*Table 24:  QuestionTags Schema Validation*
 
 
 | **TABLE R13**   | Notification       |
@@ -197,7 +189,7 @@ Definition of additional Domains.
 | FD1301         | id → {appuser_id, date, viewed} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 26:  Notification Schema Validation*
+*Table 25:  Notification Schema Validation*
 
 | **TABLE R14**   | AnswerNotification
 | --------------  | ---                |
@@ -206,7 +198,7 @@ Definition of additional Domains.
 | FD1401         | notification_id → {question_id, answer_id} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 27:  AnswerNotification Schema Validation*
+*Table 26:  AnswerNotification Schema Validation*
 
 | **TABLE R15**   | CommentNotification           |
 | --------------  | ---                |
@@ -215,7 +207,7 @@ Definition of additional Domains.
 | FD1501         | notification_id → { comment_id} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 28:  CommentNotification Schema Validation*
+*Table 27:  CommentNotification Schema Validation*
 
 | **TABLE R16**   | Report             |
 | --------------  | ---                |
@@ -223,7 +215,7 @@ Definition of additional Domains.
 | **Functional Dependencies:** |    None   |
 | **NORMAL FORM** | BCNF               |
 
-*Table 29:  Report Schema Validation*
+*Table 28:  Report Schema Validation*
 
 | **TABLE R17**   | Vote             |
 | --------------  | ---                |
@@ -232,7 +224,7 @@ Definition of additional Domains.
 | FD1701         | { appuser_id , content_id } → {up/down} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 30:  Vote Schema Validation*
+*Table 29:  Vote Schema Validation*
 
 
 
@@ -270,8 +262,6 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 | **RS16**     | Report              | 100            |10    |
 |**RS17**      | Vote                | 100k           |10k   |
 
-*Table 31: Database Workload Table*
-
 
 ### 2. Proposed Indices
 
@@ -295,9 +285,6 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
     CLUSTER Notification USING notification_user;
 
 ```   
-
-*Table 32: Notification Index*
-
 | **Index**           | IDX02                                  |
 | ---                 | ---                                    |
 | **Relation**        | Comment|
@@ -312,7 +299,7 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
         CLUSTER Comment USING comment_commentable;
 
 ```                
-*Table 33: Comment Index*                               
+                               
  
 | **Index**           | IDX03                               |
 | ---                 | ---                                    |
@@ -330,8 +317,6 @@ A hash type index would be best suited need clustering as clustering is not avai
 
 ```   
 
-*Table 34: Context Index* 
-
 #### 2.2. Full-text Search Indices 
 
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
@@ -344,6 +329,10 @@ A hash type index would be best suited need clustering as clustering is not avai
 | **Clustering**      | No                |
 | **Justification**   | To provide full-text search features for the search of the tag or the description helping to find the tag the user is looking for and minimissing its time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times|
 | 
+```sql
+    
+
+```
 
 ### 3. Triggers
  
@@ -351,569 +340,8 @@ A hash type index would be best suited need clustering as clustering is not avai
 
 | **Trigger**      | TRIGGER01                              |
 | ---              | ---                                    |
-| **Description**  | A user can only like a content once. If they vote again, the vote is removed. |
-
-SQL Code: 
-```sql         
-CREATE FUNCTION enforce_vote() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    IF EXISTS (
-        SELECT 1
-        FROM Vote
-        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
-    ) THEN
-        DELETE FROM Vote
-        WHERE user_id = NEW.user_id AND content_id = NEW.content_id;
-    END IF;
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER enforce_vote_trigger
-BEFORE INSERT ON Vote
-FOR EACH ROW
-EXECUTE PROCEDURE enforce_vote();                                   
-```
----
-
-*Table 35: Enforce vote Trigger* 
-
-| **Trigger**      | TRIGGER02                              |
-| ---              | ---                                    |
-| **Description**  |  A content is automatically removed after getting more that 5+votes/4. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION delete_content() RETURNS TRIGGER AS 
-$BODY$
-BEGIN
-    DECLARE
-        report_count INTEGER;
-        vote_count INTEGER;
-    BEGIN
-        SELECT COUNT(*)
-        INTO report_count
-        FROM Report
-        WHERE content_id = NEW.content_id;
-
-        SELECT COUNT(*) 
-        INTO vote_count
-        FROM Vote
-        WHERE content_id = NEW.content_id AND vote = TRUE;
-
-        IF report_count >= 5 + vote_count/4 THEN
-            UPDATE Content
-            SET banned = TRUE
-            WHERE content_id = NEW.content_id;
-        END IF;
-    END;
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER delete_content_trigger
-AFTER INSERT ON Report
-FOR EACH ROW
-EXECUTE PROCEDURE delete_content();
-
-```
-
-*Table 36: Delete content Trigger*
-
----
-| **Trigger**      | TRIGGER03                              |
-| ---              | ---                                    |
-| **Description**  |  A question can only have one and only one correct answer, that is select by the creater of the question. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION select_correct_answer() RETURNS TRIGGER AS 
-$BODY$
-BEGIN
-    IF NEW.user_id <> OLD.user_id THEN
-        RAISE EXCEPTION 'Only the creator of the question can select the correct answer.';
-    END IF;
-
-    IF NEW.correct_answer_id IS NOT NULL THEN
-        RAISE EXCEPTION 'The question already has a correct answer.';
-    END IF;
-
-    IF NOT EXISTS (
-        SELECT 1
-        FROM Answer
-        WHERE question_id = NEW.question_id
-        AND answer_id = NEW.correct_answer_id
-    ) THEN
-        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the question.';
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER select_correct_answer_trigger
-BEFORE UPDATE ON Question
-FOR EACH ROW
-EXECUTE PROCEDURE select_correct_answer();
-
-```
-*Table 37: Select correct answer Trigger*
-
----
-
-| **Trigger**      | TRIGGER04                              |
-| ---              | ---                                    |
-| **Description**  |  A question has to have at least one Tag. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION question_minimum_tags() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    -- Checks if the question has one tag at minimum
-    IF NOT EXISTS (
-        SELECT 1
-        FROM QuestionTags
-        WHERE question_id = NEW.commentable_id
-    ) THEN
-        RAISE EXCEPTION 'A question must have at least one tag.';
-    END IF;
-    
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER question_minimum_tags_trigger
-BEFORE INSERT OR UPDATE ON Question
-FOR EACH ROW
-EXECUTE PROCEDURE question_minimum_tags();
-
-```
-
-*Table 38: Minimum question tags Trigger*
-
----
-
-| **Trigger**      | TRIGGER05                              |
-| ---              | ---                                    |
-| **Description**  |  Update the votes of a content when a vote modified or inserted. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION update_content_votes() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    -- Calculate the total votes for the content and update the votes column
-    UPDATE Content
-    SET votes = (
-        SELECT COUNT(*)
-        FROM Vote
-        WHERE content_id = NEW.content_id AND vote = TRUE
-    ) - (
-        SELECT COUNT(*)
-        FROM Vote
-        WHERE content_id = NEW.content_id AND vote = FALSE
-    )
-    WHERE id = NEW.content_id;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_content_votes_trigger
-AFTER INSERT OR UPDATE ON Vote
-FOR EACH ROW
-EXECUTE PROCEDURE update_content_votes();
-
-```
-*Table 39: Update content votes Trigger*
-
----
-
-| **Trigger**      | TRIGGER06                              |
-| ---              | ---                                    |
-| **Description**  |  Update the votes of a content when a vote is removed. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION delete_content_votes() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE Content
-    SET votes = (
-        SELECT COUNT(*)
-        FROM Vote
-        WHERE content_id = OLD.content_id AND vote = TRUE
-    ) - (
-        SELECT COUNT(*)
-        FROM Vote
-        WHERE content_id = OLD.content_id AND vote = FALSE
-    )
-    WHERE id = OLD.content_id;
-
-    RETURN OLD;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER delete_content_votes_trigger
-AFTER DELETE ON Vote
-FOR EACH ROW
-EXECUTE PROCEDURE delete_content_votes();
-```
-
-*Table 40: Delete Content Votes Trigger*
-
----
-
-| **Trigger**      | TRIGGER07                              |
-| ---              | ---                                    |
-| **Description**  |  Update the points of a user when one of it's content votes is modified. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION update_points() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE AppUser
-    SET points = (
-        SELECT SUM(votes)
-        FROM Content
-        WHERE user_id = NEW.user_id
-    )
-    WHERE id = NEW.user_id;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_points_trigger
-AFTER INSERT OR UPDATE ON Content
-FOR EACH ROW
-EXECUTE PROCEDURE update_points();
-
-```
-
-*Table 41: Update points Index*
-
----
-
-
-| **Trigger**      | TRIGGER08                             |
-| ---              | ---                                    |
-| **Description**  |  Update the nquestion attribute when the user modifies a question (create or delete) |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION update_nquestion() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE AppUser
-    SET nquestion = (
-        SELECT COUNT(*)
-        FROM Question
-        WHERE user_id = NEW.user_id
-    )
-    WHERE id = NEW.user_id;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_nquestion_trigger
-AFTER INSERT OR UPDATE ON Question
-FOR EACH ROW
-EXECUTE PROCEDURE update_nquestion();
-
-```
-
-*Table 42: Update nquestion Trigger*
-
----
-
-| **Trigger**      | TRIGGER09                             |
-| ---              | ---                                    |
-| **Description**  |  Update the nanswer attribute when the user modifies a answer (create or delete) |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION update_nanswer() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE AppUser
-    SET nanswer = (
-        SELECT COUNT(*)
-        FROM Answer
-        WHERE user_id = NEW.user_id
-    )
-    WHERE id = NEW.user_id;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_nanswer_trigger
-AFTER INSERT OR UPDATE ON Answer
-FOR EACH ROW
-EXECUTE PROCEDURE update_nanswer();
-
-```
-
-*Table 43: Update nanswer Trigger*
-
----
-
-| **Trigger**      | TRIGGER10                             |
-| ---              | ---                                    |
-| **Description**  |  A user earns the novice badge when they reach points >=5. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION add_novice_badge() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    IF NEW.points >= 5 AND NOT EXISTS (
-        SELECT 1
-        FROM BadgeAttainment
-        WHERE user_id = NEW.id AND badge_id = 1
-    ) THEN
-        INSERT INTO BadgeAttainment (user_id, badge_id, date)
-        VALUES (NEW.id, 1, CURRENT_DATE);
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER add_novice_badge_trigger
-AFTER UPDATE ON AppUser
-FOR EACH ROW
-EXECUTE PROCEDURE add_novice_badge();
-
-
-```
-
-*Table 44: Add Novice Badge Trigger*
-
----
-
-| **Trigger**      | TRIGGER11                             |
-| ---              | ---                                    |
-| **Description**  |  A user earns the expert badge when they reach points >=200. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION add_expert_badge() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    IF NEW.points >= 200 AND NOT EXISTS (
-        SELECT 1
-        FROM BadgeAttainment
-        WHERE user_id = NEW.id AND badge_id = 2
-    ) THEN
-        INSERT INTO BadgeAttainment (user_id, badge_id, date)
-        VALUES (NEW.id, 2, CURRENT_DATE);
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER add_expert_badge_trigger
-AFTER UPDATE ON AppUser
-FOR EACH ROW
-EXECUTE PROCEDURE add_expert_badge();
-
-
-```
-
-*Table 45: Add Expert Badge Trigger*
-
----
-
-| **Trigger**      | TRIGGER12                             |
-| ---              | ---                                    |
-| **Description**  |  Generate a notification towards the creater of the question when a new answer is added to it. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION generate_answer_notification() RETURNS TRIGGER AS
-$BODY$
-DECLARE
-    question_author_id INTEGER;
-BEGIN
-    -- Get the author of the question
-    SELECT user_id INTO question_author_id
-    FROM Content
-    WHERE id = (
-        SELECT commentable_id
-        FROM Answer
-        WHERE commentable_id = NEW.commentable_id
-    );
-
-    -- Insert a new notification for the question author
-    INSERT INTO Notification (user_id, date)
-    VALUES (question_author_id, CURRENT_DATE);
-
-    -- Insert a new answer notification for the notification
-    INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
-    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.commentable_id);
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER generate_answer_notification_trigger
-AFTER INSERT ON Answer
-FOR EACH ROW
-EXECUTE PROCEDURE generate_answer_notification();
-
-
-```
-
-*Table 46: Generate Answer Notification Trigger*
-
----
-
-| **Trigger**      | TRIGGER13                             |
-| ---              | ---                                    |
-| **Description**  |  Generate a notification towards the creater of the answer when a new comment is added to it. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION generate_comment_notification() RETURNS TRIGGER AS
-$BODY$
-DECLARE
-    answer_author_id INTEGER;
-BEGIN
-    -- Check if the commentable_id is for an answer
-    IF NEW.commentable_id IN (SELECT commentable_id FROM Answer) THEN
-        -- Get the author of the answer
-        SELECT user_id INTO answer_author_id
-        FROM Content
-        JOIN Answer ON Answer.commentable_id = Content.id
-        WHERE Answer.commentable_id = NEW.commentable_id;
-
-        -- Insert a new notification for the answer author
-        INSERT INTO Notification (user_id, date)
-        VALUES (answer_author_id, CURRENT_DATE);
-
-        -- Insert a new comment notification for the notification
-        INSERT INTO CommentNotification (notification_id, comment_id)
-        VALUES (currval('notification_id_seq'), NEW.content_id);
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER generate_comment_notification_trigger
-AFTER INSERT ON Comment
-FOR EACH ROW
-EXECUTE PROCEDURE generate_comment_notification();
-
-
-```
-*Table 47: Generate Comment Notification Trigger*
-
----
-
-| **Trigger**      | TRIGGER14                             |
-| ---              | ---                                    |
-| **Description**  |  A user cannot vote it's own content. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION prevent_self_vote() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    IF NEW.user_id = (
-        SELECT user_id
-        FROM Content
-        WHERE id = NEW.commentable_id
-    ) THEN
-        RAISE EXCEPTION 'A user cannot vote their own content';
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER prevent_self_vote_trigger
-BEFORE INSERT ON Vote
-FOR EACH ROW
-EXECUTE PROCEDURE prevent_self_vote();
-
-
-```
-*Table 48: Prevent Self vote  Trigger*
-
----
-
-| **Trigger**      | TRIGGER15                             |
-| ---              | ---                                    |
-| **Description**  |  A user cannot report more than once the same content. |
-
-SQL Code: 
-```sql         
-
-CREATE FUNCTION prevent_duplicate_reports() RETURNS TRIGGER AS $$
-BEGIN
-
-    IF NEW.user_id = (
-        SELECT user_id FROM Content WHERE content_id = NEW.content_id
-    ) THEN
-        RAISE EXCEPTION 'A user cannot report their own content';
-    END IF;
-
-    IF EXISTS (
-        SELECT 1 FROM Report
-        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
-    ) THEN
-        RAISE EXCEPTION 'This user has already reported this content';
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER prevent_duplicate_reports_trigger
-BEFORE INSERT ON Report
-FOR EACH ROW
-EXECUTE PROCEDURE prevent_duplicate_reports();
-
-
-```
-*Table 49: Prevent Duplicate Reports Trigger*
-
-
----
+| **Description**  | Trigger description, including reference to the business rules involved |
+| `SQL code`                                             ||
 
 ### 4. Transactions
  
@@ -959,5 +387,6 @@ GROUP2357, 24/10/2023
 * Group member 1 Diogo Sarmento, up202109663@fe.up.pt
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
 * Group member 3 Rodrigo Povoa , up202108890@fe.up.pt
+
 
 
