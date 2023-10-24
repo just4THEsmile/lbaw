@@ -19,6 +19,10 @@ DROP TABLE IF EXISTS AnswerNotification CASCADE;
 DROP TABLE IF EXISTS CommentNotification CASCADE;
 DROP TABLE IF EXISTS Report CASCADE;
 DROP TABLE IF EXISTS Vote CASCADE;
+DROP TABLE IF EXISTS VoteNotification CASCADE;
+DROP TABLE IF EXISTS BadgeAttainmentNotification CASCADE;
+DROP TABLE IF EXISTS FollowTag CASCADE;
+DROP TABLE IF EXISTS FollowQuestion CASCADE;
 
 
 
@@ -50,7 +54,8 @@ CREATE TABLE AppUser (
     nquestion INTEGER CHECK (nquestion >= 0) DEFAULT 0,
     nanswer INTEGER CHECK (nanswer >= 0) DEFAULT 0,
     profilepicture VARCHAR,
-    paylink VARCHAR UNIQUE
+    paylink VARCHAR UNIQUE,
+    usertype VARCHAR NOT NULL CHECK (usertype IN ('user', 'moderator', 'admin'))
 );
 
 CREATE TABLE Faq (
@@ -69,11 +74,10 @@ CREATE TABLE Badge (
 CREATE TABLE BadgeAttainment (
     user_id INTEGER,
     badge_id INTEGER,
-    date DATE NOT NULL,
+    date TIMESTAMP NOT NULL CHECK (date <= now()),
     PRIMARY KEY (user_id, badge_id),
     FOREIGN KEY (user_id) REFERENCES AppUser(id),
-    FOREIGN KEY (badge_id) REFERENCES Badge(id),
-    CHECK (date <= CURRENT_DATE)
+    FOREIGN KEY (badge_id) REFERENCES Badge(id)
 );
 
 CREATE TABLE UnblockRequest (
@@ -90,7 +94,7 @@ CREATE TABLE Content (
     content TEXT NOT NULL,
     votes INTEGER DEFAULT 0,
     reports INTEGER CHECK (reports >= 0) DEFAULT 0,
-    date DATE NOT NULL CHECK (date <= CURRENT_DATE),
+    date TIMESTAMP NOT NULL CHECK (date <= now()),
     edited BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES AppUser(id)
 );
@@ -139,7 +143,7 @@ CREATE TABLE QuestionTags (
 CREATE TABLE Notification (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    date DATE NOT NULL CHECK (date <= CURRENT_DATE),
+    date TIMESTAMP NOT NULL CHECK (date <= now()),
     viewed BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES AppUser(id)
 );
@@ -175,6 +179,42 @@ CREATE TABLE Vote (
     PRIMARY KEY (user_id, content_id),
     FOREIGN KEY (user_id) REFERENCES AppUser(id),
     FOREIGN KEY (content_id) REFERENCES Content(id)
+);
+
+CREATE TABLE VoteNotification (
+    notification_id INTEGER,
+    appuser_id INTEGER,
+    content_id INTEGER,
+    vote BOOLEAN NOT NULL,
+    PRIMARY KEY (notification_id, appuser_id, content_id),
+    FOREIGN KEY (notification_id) REFERENCES Notification(id),
+    FOREIGN KEY (appuser_id) REFERENCES AppUser(id),
+    FOREIGN KEY (content_id) REFERENCES Content(id)
+);
+
+CREATE TABLE BadgeAttainmentNotification (
+    notification_id INTEGER,
+    appuser_id INTEGER,
+    badge_id INTEGER,
+    PRIMARY KEY (notification_id, appuser_id, badge_id),
+    FOREIGN KEY (notification_id) REFERENCES Notification(id),
+    FOREIGN KEY (appuser_id, badge_id) REFERENCES BadgeAttainment(user_id, badge_id)
+);
+
+CREATE TABLE FollowTag (
+    appuser_id INTEGER,
+    tag_id INTEGER,
+    PRIMARY KEY (appuser_id, tag_id),
+    FOREIGN KEY (appuser_id) REFERENCES AppUser(id),
+    FOREIGN KEY (tag_id) REFERENCES Content(id) -- or Tags(id) depending on your database structure
+);
+
+CREATE TABLE FollowQuestion (
+    appuser_id INTEGER,
+    question_id INTEGER,
+    PRIMARY KEY (appuser_id, question_id),
+    FOREIGN KEY (appuser_id) REFERENCES AppUser(id),
+    FOREIGN KEY (question_id) REFERENCES Question(commentable_id)
 );
 
 ALTER TABLE Question
@@ -577,4 +617,4 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER prevent_duplicate_reports_trigger
 BEFORE INSERT ON Report
 FOR EACH ROW
-EXECUTE FUNCTION prevent_duplicate_reports();
+EXECUTE PROCEDURE prevent_duplicate_reports();
