@@ -35,10 +35,10 @@
 | R03 | Badge(<ins>id</ins> **PK**, name **UK NN**, description **NN**) |
 | R04 | BadgeAttainment((<ins>appuser_id</ins>→ AppUser, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
 | R05 | UnblockRequest(<ins>id1</ins> **PK**, appuser_id→ AppUser **NN**, title **NN**, description **NN**) |
-| R06 | Content(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, content **NN**, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false) |
+| R06 | Content(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, content **NN**, votes **NN** **DF** votes = 0, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false) |
 | R07 | Commentable(<ins>content_id</ins>→ Content **PK**) |
-| R08 | Question(<ins>commentable_id</ins>→ Commentable **PK**, title **NN**, votes **NN** **DF** votes = 0,correct_anwser_id→Anwser) |
-| R09 | Answer(<ins>commentable_id</ins>→ Commentable **PK**, question_id→ Question **NN**,title **NN**, votes **NN** **DF** votes = 0) |
+| R08 | Question(<ins>commentable_id</ins>→ Commentable **PK**, title **NN**,correct_anwser_id→Anwser) |
+| R09 | Answer(<ins>commentable_id</ins>→ Commentable **PK**, question_id→ Question **NN**) |
 | R10 | Comment(<ins>content_id</ins>→ Content **PK**,  commentable_id→ Commentable **NN**)|
 | R11 | Tags(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
 | R12 | QuestionTags((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tags) **PK**)
@@ -121,7 +121,7 @@ Definition of additional Domains.
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
-| FD0601         | id → {appuser_id, content, reports, date, edited} |
+| FD0601         | id → {appuser_id, content, reports, date, edited, votes} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 17:  Content Schema Validation*
@@ -138,7 +138,7 @@ Definition of additional Domains.
 | --------------  | ---                |
 | **Keys**        | { commentable_id }             |
 | **Functional Dependencies:** |       |
-| FD0801         | commentable_id → {title, votes} |
+| FD0801         | commentable_id → {title} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 21:  Question Schema Validation*
@@ -147,7 +147,7 @@ Definition of additional Domains.
 | --------------  | ---                |
 | **Keys**        | { commentable_id }             |
 | **Functional Dependencies:** |       |
-| FD0901         | commentable_id → {question_id,title, votes} |
+| FD0901         | commentable_id → {question_id,title} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 21:  Answer Schema Validation*
