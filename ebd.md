@@ -249,34 +249,74 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 
 ### 2. Proposed Indices
 
-#### 2.1. Performance Indices
+ #### 2.1. Performance Indices
  
-> Indices proposed to improve performance of the identified queries.
+> Indices proposed to improve performance of the identified queries at the expense of operations like delete,insert or update but they can greatly increase search time.
+
+
 
 | **Index**           | IDX01                                  |
 | ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
-| **Cardinality**     | Attribute cardinality: low/medium/high |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
-| `SQL code`                                                  ||
+| **Relation**        | Notification |
+| **Attribute**       | appuser_id |
+| **Type**            | B-tree             |
+| **Cardinality**     | medium
+| **Clustering**      | Yes                |
+| **Justification**   | The Table is very large, and the queries associated with this index relation are recurrent. It doesn't need range query support so is a very good candidate for clustering as its cardinality is medium.|
+|
+```sql
+    CREATE INDEX notification_user ON Notification USING btree(appuser_id);
+    CLUSTER Notification USING notification_user;
 
+```   
+| **Index**           | IDX02                                  |
+| ---                 | ---                                    |
+| **Relation**        | Comment|
+| **Attribute**       | commentable_id |
+| **Type**            | B-tree             |
+| **Cardinality**     | medium
+| **Clustering**      | Yes                |
+| **Justification**   | The Table is very large,there is a query that searches the comments of a commentable and this query will be repeated a lot so we will make it This is done by exact match, thus an hash type index would be best suited but we need clustering as clustering is not avaiable in hash we choose b-tree.|
+|
+```sql
+    CREATE INDEX comment_commentable ON Comment USING btree(commentable_id);
+        CLUSTER Comment USING comment_commentable;
+
+```                
+                               
+ 
+| **Index**           | IDX03                               |
+| ---                 | ---                                    |
+| **Relation**        | Content |
+| **Attribute**       | appuser_id |
+| **Type**            | B-tree             |
+| **Cardinality**     | medium
+| **Clustering**      | Yes                |
+| **Justification**   | The Table is very large,there are queries that searches for all the commentables (Questions and Awnsers) and this query will be repeated a lot. 
+A hash type index would be best suited need clustering as clustering is not avaiable in hash we choose b-tree.|
+|
+```sql
+    CREATE INDEX appuser_content ON Content USING btree(appuser_id);
+    CLUSTER Content USING appuser_content;
+
+```   
 
 #### 2.2. Full-text Search Indices 
 
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
 
-| **Index**           | IDX01                                  |
+| **Index**           | IDX04                                  |
 | ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
-| `SQL code`                                                  ||
+| **Relation**        | Tag    |
+| **Attribute**       | title ,description   |
+| **Type**            | GIN              |
+| **Clustering**      | No                |
+| **Justification**   | To provide full-text search features for the search of the tag or the description helping to find the tag the user is looking for and minimissing its time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times|
+| 
+```sql
+    
 
+```
 
 ### 3. Triggers
  
@@ -331,3 +371,186 @@ GROUPYYgg, DD/MM/20YY
 * Group member 1 name, email (Editor)
 * Group member 2 name, email
 * ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
