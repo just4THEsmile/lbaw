@@ -235,7 +235,8 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 
 ## A6: Indexes, triggers, transactions and database population
 
-> Brief presentation of the artifact goals.
+> The A6 artifact contains the postgres sql code. It contains the physical schema of the database, the database triggers, its population, the identification and characterisation of the indexes.
+> It also contains transactions needed to make our features work without problem.
 
 ### 1. Database Workload
  
