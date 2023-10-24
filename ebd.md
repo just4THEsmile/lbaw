@@ -30,23 +30,23 @@
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01 | User(<ins>id</ins> **PK**, name **NN**, username **UK NN**, email **UK NN**, password **NN**, bio, points **NN CK** points >= 0 **DF** points = 0, nquestion **NN** **CK** nquestion >=0 **DF** nquestion = 0, nanswer **NN** **CK** nanswer >=0 **DF** nanswer = 0, profilepicture **NN**, paylink **UK**) |
+| R01 | AppUser(<ins>id</ins> **PK**, name **NN**, username **UK NN**, email **UK NN**, password **NN**, bio, points **NN CK** points >= 0 **DF** points = 0, nquestion **NN** **CK** nquestion >=0 **DF** nquestion = 0, nanswer **NN** **CK** nanswer >=0 **DF** nanswer = 0, profilepicture **NN**, paylink **UK**) |
 | R02 | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**) |
 | R03 | Badge(<ins>id</ins> **PK**, name **UK NN**, description **NN**) |
-| R04 | BadgeAttainment((<ins>user_id</ins>→ User, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
-| R05 | UnblockRequest(<ins>id1</ins> **PK**, user_id→ User **NN**, title **NN**, description **NN**) |
-| R06 | Content(<ins>id</ins> **PK**, user_id→ User **NN**, content **NN**, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false) |
+| R04 | BadgeAttainment((<ins>appuser_id</ins>→ AppUser, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
+| R05 | UnblockRequest(<ins>id1</ins> **PK**, appuser_id→ AppUser **NN**, title **NN**, description **NN**) |
+| R06 | Content(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, content **NN**, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false) |
 | R07 | Commentable(<ins>content_id</ins>→ Content **PK**) |
 | R08 | Question(<ins>commentable_id</ins>→ Commentable **PK**, title **NN**, votes **NN** **DF** votes = 0,correct_anwser_id→Anwser) |
-| R09 | Answer(<ins>commentable_id</ins>→ Commentable **PK**, question_id→ Question **NN**, votes **NN** **DF** votes = 0) |
+| R09 | Answer(<ins>commentable_id</ins>→ Commentable **PK**, question_id→ Question **NN**,title **NN**, votes **NN** **DF** votes = 0) |
 | R10 | Comment(<ins>content_id</ins>→ Content **PK**,  commentable_id→ Commentable **NN**)|
 | R11 | Tags(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
 | R12 | QuestionTags((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tags) **PK**)
-| R13 | Notification(<ins>id</ins> **PK**, user_id→ User **NN**, date **NN CK** date <= today, viewed **NN** **DF** false)|
+| R13 | Notification(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, date **NN CK** date <= today, viewed **NN** **DF** false)|
 | R14 | AnswerNotification(<ins>notification_id</ins>→ Notification **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**)|
 | R15 | CommentNotification(<ins>notification_id</ins>→ Notification **PK**, comment_id→ Comment **NN**)|
-| R16 | Report((<ins>user_id</ins>→ User, <ins>comment_id</ins>→ Comment) **PK**)|
-| R17 | Like((<ins>user_id</ins>→ User, <ins>comment_id</ins>→ Comment) **PK**, Like **NN**)|
+| R16 | Report((<ins>appuser_id</ins>→ AppUser, <ins>comment_id</ins>→ Comment) **PK**)|
+| R17 | Like((<ins>appuser_id</ins>→ appUser, <ins>content_id</ins>→ Content) **PK**, Like **NN**)|
 
 *Table 11:  QthenA Relational Schema*
 
@@ -72,14 +72,14 @@ Definition of additional Domains.
 
 >All functional dependencies are identified and the normalization of all relation schemas is accomplished.
 
-| **TABLE R01**   | User               |
+| **TABLE R01**   | AppUser               |
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
 | FD0101          | id → {name, username, email, password, bio, points, nquestion, nanswer, profilepicture, paylink} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 13:  User Schema Validation*
+*Table 13:  App AppUser Schema Validation*
 
 | **TABLE R02**   | FAQ                |
 | --------------  | ---                |
@@ -101,9 +101,9 @@ Definition of additional Domains.
 
 | **TABLE R04**   | BadgeAttainment         |
 | --------------  | ---                |
-| **Keys**        | { user_id, badge_id }|
+| **Keys**        | { appuser_id, badge_id }|
 | **Functional Dependencies:** |   |
-| FD0401         | { user_id, badge_id } → {date} |
+| FD0401         | { appuser_id, badge_id } → {date} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 15:  BadgeAttainment Schema Validation*
@@ -112,7 +112,7 @@ Definition of additional Domains.
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
-| FD0501         | id → {user_id, title, description} |
+| FD0501         | id → {appuser_id, title, description} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 16:  UnblockRequest Schema Validation*
@@ -121,7 +121,7 @@ Definition of additional Domains.
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
-| FD0601         | id → {user_id, content, reports, date, edited} |
+| FD0601         | id → {appuser_id, content, reports, date, edited} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 17:  Content Schema Validation*
@@ -147,7 +147,7 @@ Definition of additional Domains.
 | --------------  | ---                |
 | **Keys**        | { commentable_id }             |
 | **Functional Dependencies:** |       |
-| FD0901         | commentable_id → {question_id, votes} |
+| FD0901         | commentable_id → {question_id,title, votes} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 21:  Answer Schema Validation*
@@ -184,7 +184,7 @@ Definition of additional Domains.
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
-| FD1301         | id → {user_id, date, viewed} |
+| FD1301         | id → {appuser_id, date, viewed} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 25:  Notification Schema Validation*
@@ -209,7 +209,7 @@ Definition of additional Domains.
 
 | **TABLE R16**   | Report             |
 | --------------  | ---                |
-| **Keys**        | { user_id , comment_id } |
+| **Keys**        | { appuser_id , comment_id } |
 | **Functional Dependencies:** |    None   |
 | **NORMAL FORM** | BCNF               |
 
@@ -217,9 +217,9 @@ Definition of additional Domains.
 
 | **TABLE R17**   | Like             |
 | --------------  | ---                |
-| **Keys**        | { user_id , comment_id } |
+| **Keys**        | { appuser_id , content_id } |
 | **Functional Dependencies:** |       |
-| FD1701         | { user_id , comment_id } → {like} |
+| FD1701         | { appuser_id , content_id } → {like} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 29:  Like Schema Validation*
