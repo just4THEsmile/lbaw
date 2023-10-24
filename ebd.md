@@ -227,6 +227,41 @@ Definition of additional Domains.
 
 *Table 29:  Vote Schema Validation*
 
+| **TABLE R18**   | VoteNotification  |
+| --------------  | ---               |
+| **Keys**        | {notification_id} |
+| **Functional Dependencies:** |      |
+| FD1801         | { notification_id } → { {appuser_id , content_id}→Vote } |
+| **NORMAL FORM** | BCNF               |
+
+*Table 30:  VoteNotification Schema Validation*
+
+| **TABLE R19**   |  BadgeAtainmentNotification |
+| --------------  | ---               |
+| **Keys**        | {notification_id} |
+| **Functional Dependencies:** |      |
+| FD1901         | { notification_id } → { {appuser_id , BadgeAtainmen_id }→Vote } |
+| **NORMAL FORM** | BCNF               |
+
+*Table 31:  BadgeAtainmentNotification Schema Validation*
+
+| **TABLE R20**   | FollowTag             |
+| --------------  | ---                |
+| **Keys**        | { appuser_id , tag_id } |
+| **Functional Dependencies:** |   None    |
+
+| **NORMAL FORM** | BCNF               |
+
+*Table 32:  FollowTag Schema Validation*
+
+| **TABLE R21**   | FollowQuestion             |
+| --------------  | ---                |
+| **Keys**        | { appuser_id , question_id } |
+| **Functional Dependencies:** |   None    |
+
+| **NORMAL FORM** | BCNF               |
+
+*Table 33:  FollowQuestion Schema Validation*
 
 
 Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relational schema is inherently in BCNF. Hence, there is no need for further normalization of the schema.
