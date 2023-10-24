@@ -1,5 +1,7 @@
 create schema if not exists lbaw2357;
 
+SET DateStyle TO European;
+
 DROP TABLE IF EXISTS AppUser CASCADE;
 DROP TABLE IF EXISTS Faq CASCADE;
 DROP TABLE IF EXISTS Badge CASCADE;
@@ -17,6 +19,23 @@ DROP TABLE IF EXISTS AnswerNotification CASCADE;
 DROP TABLE IF EXISTS CommentNotification CASCADE;
 DROP TABLE IF EXISTS Report CASCADE;
 DROP TABLE IF EXISTS Vote CASCADE;
+
+
+
+DROP FUNCTION IF EXISTS enforce_vote() CASCADE;
+DROP FUNCTION IF EXISTS delete_content() CASCADE;
+DROP FUNCTION IF EXISTS select_correct_answer() CASCADE;
+DROP FUNCTION IF EXISTS question_minimum_tags() CASCADE;
+DROP FUNCTION IF EXISTS update_content_votes() CASCADE;
+DROP FUNCTION IF EXISTS delete_content_votes() CASCADE;
+DROP FUNCTION IF EXISTS update_points() CASCADE;
+DROP FUNCTION IF EXISTS update_nquestion() CASCADE;
+DROP FUNCTION IF EXISTS update_nanswer() CASCADE;
+DROP FUNCTION IF EXISTS add_novice_badge() CASCADE;
+DROP FUNCTION IF EXISTS add_expert_badge() CASCADE;
+DROP FUNCTION IF EXISTS generate_answer_notification() CASCADE;
+DROP FUNCTION IF EXISTS generate_comment_notification() CASCADE;
+DROP FUNCTION IF EXISTS prevent_self_vote() CASCADE;
 
 
 CREATE TABLE AppUser (
@@ -68,6 +87,7 @@ CREATE TABLE Content (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
     content TEXT NOT NULL,
+    votes INTEGER DEFAULT 0,
     reports INTEGER CHECK (reports >= 0) DEFAULT 0,
     date DATE NOT NULL CHECK (date <= CURRENT_DATE),
     edited BOOLEAN DEFAULT false,
@@ -82,7 +102,6 @@ CREATE TABLE Commentable (
 CREATE TABLE Question (
     commentable_id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
-    votes INTEGER DEFAULT 0,
     correct_answer_id INTEGER,
     FOREIGN KEY (commentable_id) REFERENCES Content(id)
 );
@@ -90,7 +109,6 @@ CREATE TABLE Question (
 CREATE TABLE Answer (
     commentable_id INTEGER PRIMARY KEY,
     question_id INTEGER NOT NULL,
-    votes INTEGER DEFAULT 0,
     FOREIGN KEY (commentable_id) REFERENCES Content(id),
     FOREIGN KEY (question_id) REFERENCES Question(commentable_id)
 );
@@ -160,4 +178,377 @@ CREATE TABLE Vote (
 
 ALTER TABLE Question
   ADD FOREIGN KEY (correct_answer_id) REFERENCES answer(commentable_id) ON UPDATE CASCADE;
-  
+
+
+
+CREATE FUNCTION enforce_vote() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM Vote
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
+    ) THEN
+        DELETE FROM Vote
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id;
+    END IF;
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_vote_trigger
+BEFORE INSERT ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE enforce_vote();
+
+
+
+CREATE FUNCTION delete_content() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+    DECLARE
+        report_count INTEGER;
+        vote_count INTEGER;
+    BEGIN
+        SELECT COUNT(*)
+        INTO report_count
+        FROM Report
+        WHERE content_id = NEW.content_id;
+
+        SELECT COUNT(*) 
+        INTO vote_count
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = TRUE;
+
+        IF report_count >= 5 + vote_count/4 THEN
+            UPDATE Content
+            SET banned = TRUE
+            WHERE content_id = NEW.content_id;
+        END IF;
+    END;
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_content_trigger
+AFTER INSERT ON Report
+FOR EACH ROW
+EXECUTE PROCEDURE delete_content();
+
+
+
+CREATE FUNCTION select_correct_answer() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+    IF NEW.user_id <> OLD.user_id THEN
+        RAISE EXCEPTION 'Only the creator of the question can select the correct answer.';
+    END IF;
+
+    IF NEW.correct_answer_id IS NOT NULL THEN
+        RAISE EXCEPTION 'The question already has a correct answer.';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM Answer
+        WHERE question_id = NEW.question_id
+        AND answer_id = NEW.correct_answer_id
+    ) THEN
+        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the question.';
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER select_correct_answer_trigger
+BEFORE UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE select_correct_answer();
+
+
+
+CREATE FUNCTION question_minimum_tags() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    -- Checks if the question has one tag at minimum
+    IF NOT EXISTS (
+        SELECT 1
+        FROM QuestionTags
+        WHERE question_id = NEW.commentable_id
+    ) THEN
+        RAISE EXCEPTION 'A question must have at least one tag.';
+    END IF;
+    
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER question_minimum_tags_trigger
+BEFORE INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE question_minimum_tags();
+
+
+CREATE FUNCTION update_content_votes() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    -- Calculate the total votes for the content and update the votes column
+    UPDATE Content
+    SET votes = (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = TRUE
+    ) - (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = FALSE
+    )
+    WHERE id = NEW.content_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_content_votes_trigger
+AFTER INSERT OR UPDATE ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE update_content_votes();
+
+
+
+CREATE FUNCTION delete_content_votes() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE Content
+    SET votes = (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = OLD.content_id AND vote = TRUE
+    ) - (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = OLD.content_id AND vote = FALSE
+    )
+    WHERE id = OLD.content_id;
+
+    RETURN OLD;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_content_votes_trigger
+AFTER DELETE ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE delete_content_votes();
+
+
+
+CREATE FUNCTION update_points() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+    SET points = (
+        SELECT SUM(votes)
+        FROM Content
+        WHERE user_id = NEW.user_id
+    )
+    WHERE id = NEW.user_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_points_trigger
+AFTER INSERT OR UPDATE ON Content
+FOR EACH ROW
+EXECUTE PROCEDURE update_points();
+
+
+
+CREATE FUNCTION update_nquestion() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+    SET nquestion = (
+        SELECT COUNT(*)
+        FROM Question
+        WHERE user_id = NEW.user_id
+    )
+    WHERE id = NEW.user_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nquestion_trigger
+AFTER INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE update_nquestion();
+
+
+
+CREATE FUNCTION update_nanswer() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+    SET nanswer = (
+        SELECT COUNT(*)
+        FROM Answer
+        WHERE user_id = NEW.user_id
+    )
+    WHERE id = NEW.user_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nanswer_trigger
+AFTER INSERT OR UPDATE ON Answer
+FOR EACH ROW
+EXECUTE PROCEDURE update_nanswer();
+
+
+
+CREATE FUNCTION add_novice_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.points >= 5 AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 1
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 1, CURRENT_DATE);
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_novice_badge_trigger
+AFTER UPDATE ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_novice_badge();
+
+
+
+CREATE FUNCTION add_expert_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.points >= 200 AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 2
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 2, CURRENT_DATE);
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_expert_badge_trigger
+AFTER UPDATE ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_expert_badge();
+
+
+
+CREATE FUNCTION generate_answer_notification() RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    question_author_id INTEGER;
+BEGIN
+    -- Get the author of the question
+    SELECT user_id INTO question_author_id
+    FROM Content
+    WHERE id = (
+        SELECT commentable_id
+        FROM Answer
+        WHERE commentable_id = NEW.commentable_id
+    );
+
+    -- Insert a new notification for the question author
+    INSERT INTO Notification (user_id, date)
+    VALUES (question_author_id, CURRENT_DATE);
+
+    -- Insert a new answer notification for the notification
+    INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
+    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.commentable_id);
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_answer_notification_trigger
+AFTER INSERT ON Answer
+FOR EACH ROW
+EXECUTE PROCEDURE generate_answer_notification();
+
+
+CREATE FUNCTION generate_comment_notification() RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    answer_author_id INTEGER;
+BEGIN
+    -- Check if the commentable_id is for an answer
+    IF NEW.commentable_id IN (SELECT commentable_id FROM Answer) THEN
+        -- Get the author of the answer
+        SELECT user_id INTO answer_author_id
+        FROM Content
+        JOIN Answer ON Answer.commentable_id = Content.id
+        WHERE Answer.commentable_id = NEW.commentable_id;
+
+        -- Insert a new notification for the answer author
+        INSERT INTO Notification (user_id, date)
+        VALUES (answer_author_id, CURRENT_DATE);
+
+        -- Insert a new comment notification for the notification
+        INSERT INTO CommentNotification (notification_id, comment_id)
+        VALUES (currval('notification_id_seq'), NEW.content_id);
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_comment_notification_trigger
+AFTER INSERT ON Comment
+FOR EACH ROW
+EXECUTE PROCEDURE generate_comment_notification();
+
+
+CREATE FUNCTION prevent_self_vote() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.user_id = (
+        SELECT user_id
+        FROM Content
+        WHERE id = NEW.commentable_id
+    ) THEN
+        RAISE EXCEPTION 'A user cannot vote their own content';
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_self_vote_trigger
+BEFORE INSERT ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE prevent_self_vote();
