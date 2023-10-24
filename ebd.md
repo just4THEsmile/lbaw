@@ -906,7 +906,7 @@ EXECUTE PROCEDURE prevent_duplicate_reports();
 
 
 ---
-```
+
 
 ### 4. Transactions
  
