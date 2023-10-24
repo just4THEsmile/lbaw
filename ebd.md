@@ -342,8 +342,571 @@ A hash type index would be best suited need clustering as clustering is not avai
 
 | **Trigger**      | TRIGGER01                              |
 | ---              | ---                                    |
-| **Description**  | Trigger description, including reference to the business rules involved |
-| `SQL code`                                             ||
+```markdown
+| **Description**  | A user can only like a content once. If they vote again, the vote is removed. |
+
+SQL Code: 
+```sql         
+CREATE FUNCTION enforce_vote() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM Vote
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
+    ) THEN
+        DELETE FROM Vote
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id;
+    END IF;
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_vote_trigger
+BEFORE INSERT ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE enforce_vote();                                   
+```
+---
+
+*Table 35: Enforce vote Trigger* 
+
+| **Trigger**      | TRIGGER02                              |
+| ---              | ---                                    |
+| **Description**  |  A content is automatically removed after getting more that 5+votes/4. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION delete_content() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+    DECLARE
+        report_count INTEGER;
+        vote_count INTEGER;
+    BEGIN
+        SELECT COUNT(*)
+        INTO report_count
+        FROM Report
+        WHERE content_id = NEW.content_id;
+
+        SELECT COUNT(*) 
+        INTO vote_count
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = TRUE;
+
+        IF report_count >= 5 + vote_count/4 THEN
+            UPDATE Content
+            SET banned = TRUE
+            WHERE content_id = NEW.content_id;
+        END IF;
+    END;
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_content_trigger
+AFTER INSERT ON Report
+FOR EACH ROW
+EXECUTE PROCEDURE delete_content();
+
+```
+
+*Table 36: Delete content Trigger*
+
+---
+| **Trigger**      | TRIGGER03                              |
+| ---              | ---                                    |
+| **Description**  |  A question can only have one and only one correct answer, that is select by the creater of the question. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION select_correct_answer() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+    IF NEW.user_id <> OLD.user_id THEN
+        RAISE EXCEPTION 'Only the creator of the question can select the correct answer.';
+    END IF;
+
+    IF NEW.correct_answer_id IS NOT NULL THEN
+        RAISE EXCEPTION 'The question already has a correct answer.';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM Answer
+        WHERE question_id = NEW.question_id
+        AND answer_id = NEW.correct_answer_id
+    ) THEN
+        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the question.';
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER select_correct_answer_trigger
+BEFORE UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE select_correct_answer();
+
+```
+*Table 37: Select correct answer Trigger*
+
+---
+
+| **Trigger**      | TRIGGER04                              |
+| ---              | ---                                    |
+| **Description**  |  A question has to have at least one Tag. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION question_minimum_tags() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    -- Checks if the question has one tag at minimum
+    IF NOT EXISTS (
+        SELECT 1
+        FROM QuestionTags
+        WHERE question_id = NEW.commentable_id
+    ) THEN
+        RAISE EXCEPTION 'A question must have at least one tag.';
+    END IF;
+    
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER question_minimum_tags_trigger
+BEFORE INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE question_minimum_tags();
+
+```
+
+*Table 38: Minimum question tags Trigger*
+
+---
+
+| **Trigger**      | TRIGGER05                              |
+| ---              | ---                                    |
+| **Description**  |  Update the votes of a content when a vote modified or inserted. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION update_content_votes() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    -- Calculate the total votes for the content and update the votes column
+    UPDATE Content
+    SET votes = (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = TRUE
+    ) - (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = FALSE
+    )
+    WHERE id = NEW.content_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_content_votes_trigger
+AFTER INSERT OR UPDATE ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE update_content_votes();
+
+```
+*Table 39: Update content votes Trigger*
+
+---
+
+| **Trigger**      | TRIGGER06                              |
+| ---              | ---                                    |
+| **Description**  |  Update the votes of a content when a vote is removed. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION delete_content_votes() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE Content
+    SET votes = (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = OLD.content_id AND vote = TRUE
+    ) - (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = OLD.content_id AND vote = FALSE
+    )
+    WHERE id = OLD.content_id;
+
+    RETURN OLD;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_content_votes_trigger
+AFTER DELETE ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE delete_content_votes();
+```
+
+*Table 40: Delete Content Votes Trigger*
+
+---
+
+| **Trigger**      | TRIGGER07                              |
+| ---              | ---                                    |
+| **Description**  |  Update the points of a user when one of it's content votes is modified. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION update_points() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+    SET points = (
+        SELECT SUM(votes)
+        FROM Content
+        WHERE user_id = NEW.user_id
+    )
+    WHERE id = NEW.user_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_points_trigger
+AFTER INSERT OR UPDATE ON Content
+FOR EACH ROW
+EXECUTE PROCEDURE update_points();
+
+```
+
+*Table 41: Update points Index*
+
+---
+
+
+| **Trigger**      | TRIGGER08                             |
+| ---              | ---                                    |
+| **Description**  |  Update the nquestion attribute when the user modifies a question (create or delete) |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION update_nquestion() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+    SET nquestion = (
+        SELECT COUNT(*)
+        FROM Question
+        WHERE user_id = NEW.user_id
+    )
+    WHERE id = NEW.user_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nquestion_trigger
+AFTER INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE update_nquestion();
+
+```
+
+*Table 42: Update nquestion Trigger*
+
+---
+
+| **Trigger**      | TRIGGER09                             |
+| ---              | ---                                    |
+| **Description**  |  Update the nanswer attribute when the user modifies a answer (create or delete) |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION update_nanswer() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+    SET nanswer = (
+        SELECT COUNT(*)
+        FROM Answer
+        WHERE user_id = NEW.user_id
+    )
+    WHERE id = NEW.user_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nanswer_trigger
+AFTER INSERT OR UPDATE ON Answer
+FOR EACH ROW
+EXECUTE PROCEDURE update_nanswer();
+
+```
+
+*Table 43: Update nanswer Trigger*
+
+---
+
+| **Trigger**      | TRIGGER10                             |
+| ---              | ---                                    |
+| **Description**  |  A user earns the novice badge when they reach points >=5. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION add_novice_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.points >= 5 AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 1
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 1, CURRENT_DATE);
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_novice_badge_trigger
+AFTER UPDATE ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_novice_badge();
+
+
+```
+
+*Table 44: Add Novice Badge Trigger*
+
+---
+
+| **Trigger**      | TRIGGER11                             |
+| ---              | ---                                    |
+| **Description**  |  A user earns the expert badge when they reach points >=200. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION add_expert_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.points >= 200 AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 2
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 2, CURRENT_DATE);
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_expert_badge_trigger
+AFTER UPDATE ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_expert_badge();
+
+
+```
+
+*Table 45: Add Expert Badge Trigger*
+
+---
+
+| **Trigger**      | TRIGGER12                             |
+| ---              | ---                                    |
+| **Description**  |  Generate a notification towards the creater of the question when a new answer is added to it. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION generate_answer_notification() RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    question_author_id INTEGER;
+BEGIN
+    -- Get the author of the question
+    SELECT user_id INTO question_author_id
+    FROM Content
+    WHERE id = (
+        SELECT commentable_id
+        FROM Answer
+        WHERE commentable_id = NEW.commentable_id
+    );
+
+    -- Insert a new notification for the question author
+    INSERT INTO Notification (user_id, date)
+    VALUES (question_author_id, CURRENT_DATE);
+
+    -- Insert a new answer notification for the notification
+    INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
+    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.commentable_id);
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_answer_notification_trigger
+AFTER INSERT ON Answer
+FOR EACH ROW
+EXECUTE PROCEDURE generate_answer_notification();
+
+
+```
+
+*Table 46: Generate Answer Notification Trigger*
+
+---
+
+| **Trigger**      | TRIGGER13                             |
+| ---              | ---                                    |
+| **Description**  |  Generate a notification towards the creater of the answer when a new comment is added to it. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION generate_comment_notification() RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    answer_author_id INTEGER;
+BEGIN
+    -- Check if the commentable_id is for an answer
+    IF NEW.commentable_id IN (SELECT commentable_id FROM Answer) THEN
+        -- Get the author of the answer
+        SELECT user_id INTO answer_author_id
+        FROM Content
+        JOIN Answer ON Answer.commentable_id = Content.id
+        WHERE Answer.commentable_id = NEW.commentable_id;
+
+        -- Insert a new notification for the answer author
+        INSERT INTO Notification (user_id, date)
+        VALUES (answer_author_id, CURRENT_DATE);
+
+        -- Insert a new comment notification for the notification
+        INSERT INTO CommentNotification (notification_id, comment_id)
+        VALUES (currval('notification_id_seq'), NEW.content_id);
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_comment_notification_trigger
+AFTER INSERT ON Comment
+FOR EACH ROW
+EXECUTE PROCEDURE generate_comment_notification();
+
+
+```
+*Table 47: Generate Comment Notification Trigger*
+
+---
+
+| **Trigger**      | TRIGGER14                             |
+| ---              | ---                                    |
+| **Description**  |  A user cannot vote it's own content. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION prevent_self_vote() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.user_id = (
+        SELECT user_id
+        FROM Content
+        WHERE id = NEW.commentable_id
+    ) THEN
+        RAISE EXCEPTION 'A user cannot vote their own content';
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_self_vote_trigger
+BEFORE INSERT ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE prevent_self_vote();
+
+
+```
+*Table 48: Prevent Self vote  Trigger*
+
+---
+
+| **Trigger**      | TRIGGER15                             |
+| ---              | ---                                    |
+| **Description**  |  A user cannot report more than once the same content. |
+
+SQL Code: 
+```sql         
+
+CREATE FUNCTION prevent_duplicate_reports() RETURNS TRIGGER AS $$
+BEGIN
+
+    IF NEW.user_id = (
+        SELECT user_id FROM Content WHERE content_id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'A user cannot report their own content';
+    END IF;
+
+    IF EXISTS (
+        SELECT 1 FROM Report
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'This user has already reported this content';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_duplicate_reports_trigger
+BEFORE INSERT ON Report
+FOR EACH ROW
+EXECUTE PROCEDURE prevent_duplicate_reports();
+
+
+```
+*Table 49: Prevent Duplicate Reports Trigger*
+
+
+---
+```
 
 ### 4. Transactions
  
