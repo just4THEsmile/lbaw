@@ -36,6 +36,7 @@ DROP FUNCTION IF EXISTS add_expert_badge() CASCADE;
 DROP FUNCTION IF EXISTS generate_answer_notification() CASCADE;
 DROP FUNCTION IF EXISTS generate_comment_notification() CASCADE;
 DROP FUNCTION IF EXISTS prevent_self_vote() CASCADE;
+DROP FUNCTION IF EXISTS prevent_duplicate_reports() CASCADE;
 
 
 CREATE TABLE AppUser (
@@ -161,10 +162,10 @@ CREATE TABLE CommentNotification (
 
 CREATE TABLE Report (
     user_id INTEGER NOT NULL,
-    comment_id INTEGER NOT NULL,
-    PRIMARY KEY (user_id, comment_id),
+    content_id INTEGER NOT NULL,
+    PRIMARY KEY (user_id, content_id),
     FOREIGN KEY (user_id) REFERENCES AppUser(id),
-    FOREIGN KEY (comment_id) REFERENCES Comment(content_id)
+    FOREIGN KEY (content_id) REFERENCES Content(id)
 );
 
 CREATE TABLE Vote (
@@ -552,3 +553,28 @@ CREATE TRIGGER prevent_self_vote_trigger
 BEFORE INSERT ON Vote
 FOR EACH ROW
 EXECUTE PROCEDURE prevent_self_vote();
+
+
+CREATE FUNCTION prevent_duplicate_reports() RETURNS TRIGGER AS $$
+BEGIN
+
+    IF NEW.user_id = (
+        SELECT user_id FROM Content WHERE content_id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'A user cannot report their own content';
+    END IF;
+
+    IF EXISTS (
+        SELECT 1 FROM Report
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'This user has already reported this content';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_duplicate_reports_trigger
+BEFORE INSERT ON Report
+FOR EACH ROW
+EXECUTE FUNCTION prevent_duplicate_reports();
