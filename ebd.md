@@ -774,10 +774,23 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 
 | **Relation reference** | **Relation Name** | **Order of magnitude**        | **Estimated growth** |
 | ------------------ | ------------- | ------------------------- | -------- |
-| R01                | Table1        | units|dozens|hundreds|etc | order per time |
-| R02                | Table2        | units|dozens|hundreds|etc | dozens per month |
-| R03                | Table3        | units|dozens|hundreds|etc | hundreds per day |
-| R04                | Table4        | units|dozens|hundreds|etc | no growth |
+|**RS1**       | AppUser             | 10k            |10    |
+|**RS2**       | FAQ                 | 10             |1     |
+|**RS3**       | Badge               | 1k             |100   |
+|**RS4**       | BadgeAttainment     | 1k             |100   |
+|**RS5**       | UnblockRequest      | 10             |1     |
+|**RS6**       | Content             | 10k            |1k    |
+|**RS7**       | Commentable         | 10k            | 1k   |
+|**RS8**       | Question            | 1k             |100   |
+|**RS9**       | Answer              | 1k             |100   |
+| **RS10**     | Comment             | 1k             |100   |
+| **RS11**     | Tags                | 10             |1     |
+| **RS12**     | QuestionTags        | 10             |1     |
+| **RS13**     | Notification        | 10k            |1k    |
+| **RS14**     | AnswerNotification  | 10k            |1k    |
+| **RS15**     | CommentNotification | 1k             |1k    |
+| **RS16**     | Report              | 100            |10    |
+|**RS17**      | Vote                | 100k           |10k   |
 
 
 ### 2. Proposed Indices
