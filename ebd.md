@@ -17,7 +17,12 @@
 ### 2. Additional Business Rules
  
 > Business rules can be included in the UML diagram as UML notes or in a table in this section.
-
+|BR.011|Upon account deletion, shared user data is kept but is made anonymous|Medium|After account deletion we will only keep shared user data but will be made anonymous.|
+|BR.101|Administrators are participating members of the community, I.e. can post or vote on questions or answers.|Medium|The administrators can interact with the community just like a regular Authenticated User.|
+|BR.102|Questions and answers edited after being posted should have a clear indication of the editions.|Medium|Edited questions or answers should have time of edit.|
+|BR.103|User badges are dependent on the likes and dislikes received on his questions and answers, and also on actions made by the user (first question, first answer, etc).|Medium|The user should be rewarded by the amount of interactions with the comunity.|
+|BR.104|User can vote/comment/review it's own content.|Medium|The user will be able to interact with it's own content, whether it's voting/commenting/reviewing. However, it won't be tracked towards badges and achievements.|
+|BR.105|Any content on the webapp will have a date associated with it.|Medium|Any content on the page will have a date associated, making it easier for the users to understand when the content was released.|
 
 ---
 ## A5: Relational Schema, validation and schema refinement
