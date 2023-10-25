@@ -12,8 +12,8 @@ DROP TABLE IF EXISTS Commentable CASCADE;
 DROP TABLE IF EXISTS Question CASCADE;
 DROP TABLE IF EXISTS Answer CASCADE;
 DROP TABLE IF EXISTS Comment CASCADE;
-DROP TABLE IF EXISTS Tags CASCADE;
-DROP TABLE IF EXISTS QuestionTags CASCADE;
+DROP TABLE IF EXISTS Tag CASCADE;
+DROP TABLE IF EXISTS QuestionTag CASCADE;
 DROP TABLE IF EXISTS Notification CASCADE;
 DROP TABLE IF EXISTS AnswerNotification CASCADE;
 DROP TABLE IF EXISTS CommentNotification CASCADE;
@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS FollowQuestion CASCADE;
 DROP FUNCTION IF EXISTS enforce_vote() CASCADE;
 DROP FUNCTION IF EXISTS delete_content() CASCADE;
 DROP FUNCTION IF EXISTS select_correct_answer() CASCADE;
-DROP FUNCTION IF EXISTS question_minimum_tags() CASCADE;
+DROP FUNCTION IF EXISTS question_minimum_tag() CASCADE;
 DROP FUNCTION IF EXISTS update_content_votes() CASCADE;
 DROP FUNCTION IF EXISTS delete_content_votes() CASCADE;
 DROP FUNCTION IF EXISTS update_points() CASCADE;
@@ -126,18 +126,18 @@ CREATE TABLE Comment (
     FOREIGN KEY (commentable_id) REFERENCES Commentable(content_id)
 );
 
-CREATE TABLE Tags (
+CREATE TABLE Tag (
     id SERIAL PRIMARY KEY,
     title VARCHAR UNIQUE NOT NULL,
     description TEXT NOT NULL
 );
 
-CREATE TABLE QuestionTags (
+CREATE TABLE QuestionTag (
     question_id INTEGER,
     tag_id INTEGER,
     PRIMARY KEY (question_id, tag_id),
     FOREIGN KEY (question_id) REFERENCES Question(commentable_id),
-    FOREIGN KEY (tag_id) REFERENCES Tags(id)
+    FOREIGN KEY (tag_id) REFERENCES Tag(id)
 );
 
 CREATE TABLE Notification (
@@ -206,7 +206,7 @@ CREATE TABLE FollowTag (
     tag_id INTEGER,
     PRIMARY KEY (appuser_id, tag_id),
     FOREIGN KEY (appuser_id) REFERENCES AppUser(id),
-    FOREIGN KEY (tag_id) REFERENCES Content(id) -- or Tags(id) depending on your database structure
+    FOREIGN KEY (tag_id) REFERENCES Content(id) -- or Tag(id) depending on your database structure
 );
 
 CREATE TABLE FollowQuestion (
@@ -312,13 +312,13 @@ EXECUTE PROCEDURE select_correct_answer();
 
 
 
-CREATE FUNCTION question_minimum_tags() RETURNS TRIGGER AS
+CREATE FUNCTION question_minimum_tag() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     -- Checks if the question has one tag at minimum
     IF NOT EXISTS (
         SELECT 1
-        FROM QuestionTags
+        FROM QuestionTag
         WHERE question_id = NEW.commentable_id
     ) THEN
         RAISE EXCEPTION 'A question must have at least one tag.';
@@ -329,10 +329,10 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER question_minimum_tags_trigger
+CREATE TRIGGER question_minimum_tag_trigger
 BEFORE INSERT OR UPDATE ON Question
 FOR EACH ROW
-EXECUTE PROCEDURE question_minimum_tags();
+EXECUTE PROCEDURE question_minimum_tag();
 
 
 CREATE FUNCTION update_content_votes() RETURNS TRIGGER AS
