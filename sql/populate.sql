@@ -1,4 +1,3 @@
-
 INSERT INTO AppUser (name, username, email, password, bio, points, nquestion, nanswer, profilepicture, usertype)
 VALUES
     ('Linda Johnson', 'lindaj', 'linda@example.com', 'linda456', 'Art lover', 60, 2, 8, 'linda_profile.jpg', 'user'),
@@ -417,7 +416,7 @@ VALUES
     (9, 19, true),
     (10, 20, false);      
 
-INSERT INTO VoteNotification (notification_id, appuser_id, content_id, vote)
+INSERT INTO VoteNotification (notification_id, user_id, content_id, vote)
 VALUES
     (21, 1, 11, true),
     (22, 2, 12, false),
@@ -430,7 +429,7 @@ VALUES
     (29, 9, 19, true),
     (30, 10, 20, false);    
 
-INSERT INTO BadgeAttainmentNotification (notification_id, appuser_id, badge_id)
+INSERT INTO BadgeAttainmentNotification (notification_id, user_id, badge_id)
 VALUES
     (31, 1, 1),
     (32, 2, 2),
@@ -443,7 +442,7 @@ VALUES
     (39, 9, 9),
     (40, 10, 10);
 
-INSERT INTO FollowTag (appuser_id, tag_id)
+INSERT INTO FollowTag (user_id, tag_id)
 VALUES
     (1, 11),
     (2, 12),
@@ -456,7 +455,7 @@ VALUES
     (9, 19),
     (10, 20);
 
-INSERT INTO FollowQuestion (appuser_id, question_id)
+INSERT INTO FollowQuestion (user_id, question_id)
 VALUES
     (1, 11),
     (2, 12),
