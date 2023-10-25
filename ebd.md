@@ -400,7 +400,7 @@ ADD COLUMN tsvectors TSVECTOR;
 
 
     -- Finally, create a GIN index for ts_vectors.
-    CREATE INDEX search_idx ON Tag USING GIN (tsvectors);
+    CREATE INDEX Tag_search_idx ON Tag USING GIN (tsvectors);
 
 
 
@@ -443,7 +443,7 @@ CREATE TRIGGER question_search_update
 
 
 -- Finally, create a GIN index for ts_vectors.
-CREATE INDEX search_idx ON Question USING GIN (tsvectors);
+CREATE INDEX Question_search_idx ON Question USING GIN (tsvectors);
 ```
 
 | **Index**           | IDX06                                  |
@@ -488,7 +488,7 @@ CREATE TRIGGER user_search_update
 
 
 -- Finally, create a GIN index for ts_vectors.
-CREATE INDEX search_idx ON AppUser USING GIN (tsvectors);
+CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);
 ```
 
 ### 3. Triggers
