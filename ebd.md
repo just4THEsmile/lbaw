@@ -15,7 +15,18 @@
 *Image 7:  QthenA Class Diagram*
 
 ### 2. Additional Business Rules
- 
+> Business rules that cannot.be conveyed in the UML class diagram
+|**identifier**| **Description** |
+|---|---|
+|**BR12** |A user cannot report another user more than once.|
+|**BR13** |A user cannot like their own post.  
+|**BR14** |A user can only have either one vote up or vote down in one post   |   
+|**BR15**| A question must have at least one Tag |
+|**BR16** |If a content gets many reports, will be removed|
+|**BR17** |Only the creator of the answer can select the correct answer|
+|**BR18** |A user will get badges based on their interactions with community|
+
+
 > Business rules can be included in the UML diagram as UML notes or in a table in this section.
 
 ---
