@@ -2,6 +2,10 @@ create schema if not exists lbaw2357;
 
 SET DateStyle TO European;
 
+-----------------------------
+-- Drop old schema
+-----------------------------
+
 DROP TABLE IF EXISTS AppUser CASCADE;
 DROP TABLE IF EXISTS Faq CASCADE;
 DROP TABLE IF EXISTS Badge CASCADE;
@@ -24,8 +28,6 @@ DROP TABLE IF EXISTS BadgeAttainmentNotification CASCADE;
 DROP TABLE IF EXISTS FollowTag CASCADE;
 DROP TABLE IF EXISTS FollowQuestion CASCADE;
 
-
-
 DROP FUNCTION IF EXISTS enforce_vote() CASCADE;
 DROP FUNCTION IF EXISTS delete_content() CASCADE;
 DROP FUNCTION IF EXISTS select_correct_answer() CASCADE;
@@ -41,6 +43,21 @@ DROP FUNCTION IF EXISTS generate_comment_notification() CASCADE;
 DROP FUNCTION IF EXISTS prevent_self_vote() CASCADE;
 DROP FUNCTION IF EXISTS prevent_duplicate_reports() CASCADE;
 
+DROP FUNCTION IF EXISTS tag_search_update() CASCADE;
+DROP FUNCTION IF EXISTS question_search_update() CASCADE;
+DROP FUNCTION IF EXISTS user_search_update() CASCADE;
+
+DROP DOMAIN Today;
+
+-----------------------------
+-- Domains
+-----------------------------
+
+CREATE DOMAIN Today AS TIMESTAMP DEFAULT now();
+
+-----------------------------
+-- Tables
+-----------------------------
 
 CREATE TABLE AppUser (
     id SERIAL PRIMARY KEY,
@@ -220,6 +237,133 @@ ALTER TABLE Question
   ADD FOREIGN KEY (correct_answer_id) REFERENCES answer(commentable_id) ON UPDATE CASCADE;
 
 
+-----------------------------
+-- Indexes
+-----------------------------
+
+CREATE INDEX notification_user ON Notification USING btree(id);
+CLUSTER Notification USING notification_user;
+
+CREATE INDEX comment_commentable ON Comment USING btree(commentable_id);
+CLUSTER Comment USING comment_commentable;
+
+CREATE INDEX appuser_content ON Content USING btree(id);
+CLUSTER Content USING appuser_content;
+
+
+-----------------------------
+-- Full Text Search Indexes
+-----------------------------
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Tag
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION tag_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.title), 'A') ||
+            setweight(to_tsvector('english', NEW.description), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.title <> OLD.title OR NEW.description <> OLD.description) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.title), 'A') ||
+                setweight(to_tsvector('english', NEW.description), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+    -- Create a trigger before insert or update on work.
+    CREATE TRIGGER tag_search_update
+    BEFORE INSERT OR UPDATE ON Tag
+    FOR EACH ROW
+    EXECUTE PROCEDURE tag_search_update();
+
+
+    -- Finally, create a GIN index for ts_vectors.
+    CREATE INDEX Tag_search_idx ON Tag USING GIN (tsvectors);
+
+
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Question
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors =to_tsvector('english', NEW.title);
+
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.title <> OLD.title OR NEW.obs <> OLD.obs) THEN
+           NEW.tsvectors =to_tsvector('english', NEW.title);
+
+         END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER question_search_update
+ BEFORE INSERT OR UPDATE ON Question
+ FOR EACH ROW
+ EXECUTE PROCEDURE question_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX Question_search_idx ON Question USING GIN (tsvectors);
+
+
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE AppUser
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION user_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.name), 'A') ||
+            setweight(to_tsvector('english', NEW.username), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.name <> OLD.name OR NEW.username <> OLD.username) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.name), 'A') ||
+                setweight(to_tsvector('english', NEW.username), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER user_search_update
+ BEFORE INSERT OR UPDATE ON AppUser
+ FOR EACH ROW
+ EXECUTE PROCEDURE user_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);
+
+
+-----------------------------
+-- TRIGGERS
+-----------------------------
 
 CREATE FUNCTION enforce_vote() RETURNS TRIGGER AS
 $BODY$
@@ -343,7 +487,7 @@ BEGIN
         WHERE question_id = NEW.question_id
         AND answer_id = NEW.correct_answer_id
     ) THEN
-        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the questionquestion must.';
+        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the question must.';
     END IF;
 
     RETURN NEW;
@@ -441,17 +585,6 @@ FOR EACH ROW
 EXECUTE PROCEDURE update_points();
 
 
-
-
-
-
-
-
-
-
-
-
-
 CREATE FUNCTION add_novice_badge() RETURNS TRIGGER AS
 $BODY$
 BEGIN
@@ -461,7 +594,7 @@ BEGIN
         WHERE user_id = NEW.id AND badge_id = 1
     ) THEN
         INSERT INTO BadgeAttainment (user_id, badge_id, date)
-        VALUES (NEW.id, 1, CURRENT_DATE);
+        VALUES (NEW.id, 1, now());
     END IF;
 
     RETURN NEW;
@@ -485,7 +618,7 @@ BEGIN
         WHERE user_id = NEW.id AND badge_id = 2
     ) THEN
         INSERT INTO BadgeAttainment (user_id, badge_id, date)
-        VALUES (NEW.id, 2, CURRENT_DATE);
+        VALUES (NEW.id, 2, now());
     END IF;
 
     RETURN NEW;
@@ -516,7 +649,7 @@ BEGIN
 
     -- Insert a new notification for the question author
     INSERT INTO Notification (user_id, date)
-    VALUES (question_author_id, CURRENT_DATE);
+    VALUES (question_author_id, now());
 
     -- Insert a new answer notification for the notification
     INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
@@ -612,3 +745,26 @@ BEFORE INSERT ON Report
 FOR EACH ROW
 EXECUTE PROCEDURE prevent_duplicate_reports();
 
+/*
+CREATE FUNCTION question_minimum_tag() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    -- Checks if the question has one tag at minimum
+    IF NOT EXISTS (
+        SELECT 1
+        FROM QuestionTag
+        WHERE question_id = NEW.commentable_id
+    ) THEN
+        RAISE EXCEPTION 'A question must have at least one tag.';
+    END IF;
+    
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER question_minimum_tag_trigger
+BEFORE INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE question_minimum_tag();
+*/

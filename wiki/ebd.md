@@ -1,29 +1,38 @@
 # EBD: Database Specification Component
 
-> Project vision.
+> This page will contain the description of the entities and relations that exist in our QthenA webapp and it's database specification.
 
 ## A4: Conceptual Data Model
 
 > This section will explain better the relations between entities that are present in our QthenA project and some database specification.
 
-### 1. Class diagram
+### 4.1. Class diagram
 
 > The image below represents a class diagram where it shows the principal entities and their attributes, the relations between them, the domains and rule
-![lbawclass](uploads/d368046ec27e60b7597722f8d20fe3a5/lbawclass2.png)
+![lbawclassfinal](uploads/134f0c6f3a3aafeed6a2d920c942566f/lbawclassfinal.png)
 
 
 *Image 7:  QthenA Class Diagram*
 
-### 2. Additional Business Rules
- 
-> Business rules can be included in the UML diagram as UML notes or in a table in this section.
+### 4.2. Additional Business Rules
+> Additional business rules that weren't able to be represented in the UML class diagram.
+
+|**identifier**| **Description** |
+|---|---|
+|**BR12** |A user cannot report another user more than once.|
+|**BR13** |A user cannot like their own post.  
+|**BR14** |A user can only have either one vote up or vote down in one post   |   
+|**BR15**| A question must have at least one Tag |
+|**BR16** |If a content gets many reports, will be removed|
+|**BR17** |Only the creator of the answer can select the correct answer|
+|**BR18** |A user will get badges based on their interactions with community|
+
+*Table 54: Additional Business Rules*
 
 ---
 ## A5: Relational Schema, validation and schema refinement
 
-> This portion displays the relational schema derived from the conceptual data model through analysis. It presents each relational schema, along with attributes, domains, primary keys, foreign keys, and essential integrity rules like unique, default, not null, and check constraints.
-
-### 1. Relational Schema
+### 5.1. Relational Schema
 
 > The Relational Schema includes the relation schemas, attributes, domains, primary keys, foreign keys and other integrity rules: PRIMARY KEY, UNIQUE, DEFAULT, NOT NULL, CHECK.   
 
@@ -39,8 +48,8 @@
 | R08 | Question(<ins>commentable_id</ins>→ Commentable **PK**, title **NN**,correct_anwser_id→Anwser) |
 | R09 | Answer(<ins>commentable_id</ins>→ Commentable **PK**, question_id→ Question **NN**) |
 | R10 | Comment(<ins>content_id</ins>→ Content **PK**,  commentable_id→ Commentable **NN**)|
-| R11 | Tags(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
-| R12 | QuestionTags((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tags) **PK**)
+| R11 | Tag(<ins>id</ins> **PK**, title **UK NN**, description **NN**)|
+| R12 | QuestionTag((<ins>question_id</ins>→ Question, <ins>tag_id</ins>→ Tag) **PK**)
 | R13 | Notification(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, date **NN CK** date <= today, viewed **NN** **DF** false)|
 | R14 | AnswerNotification(<ins>notification_id</ins>→ Notification **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**)|
 | R15 | CommentNotification(<ins>notification_id</ins>→ Notification **PK**, comment_id→ Comment **NN**)|
@@ -60,18 +69,18 @@ Legend:
 - CK : Check
 - DF : Default
 
-### 2. Domains 
+### 5.2. Domains 
 
 Definition of additional Domains.
 
 | Domain Name | Domain Specification           |
 | ----------- | ------------------------------ |
-| Today	      | DATE DEFAULT CURRENT_DATE      |
+| Today	      | TIMESTAMP DEFAULT now()      |
 
 *Table 12:  QthenA Domains*
 
 
-### 3. Schema validation
+### 5.3. Schema validation
 
 >All functional dependencies are identified and the normalization of all relation schemas is accomplished.
 
@@ -164,23 +173,23 @@ Definition of additional Domains.
 
 *Table 22:  Comment Schema Validation*
 
-| **TABLE R11**   | Tags           |
+| **TABLE R11**   | Tag           |
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
 | FD1101         | id → {title, description} |
 | **NORMAL FORM** | BCNF               |
 
-*Table 23:  Tags Schema Validation*
+*Table 23:  Tag Schema Validation*
 
 
-| **TABLE R12**   | QuestionTags           |
+| **TABLE R12**   | QuestionTag           |
 | --------------  | ---                |
 | **Keys**        | { question_id, tag_id }             |
 | **Functional Dependencies:** |None       |
 | **NORMAL FORM** | BCNF               |
 
-*Table 24:  QuestionTags Schema Validation*
+*Table 24:  QuestionTag Schema Validation*
 
 
 | **TABLE R13**   | Notification       |
@@ -274,10 +283,9 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 > The A6 artifact contains the postgres sql code. It contains the physical schema of the database, the database triggers, its population, the identification and characterisation of the indexes.
 > It also contains transactions needed to make our features work without problem.
 
-### 1. Database Workload
+### 6.1. Database Workload
  
-> A study of the predicted system load (database load).
-> Estimate of tuples at each relation.
+> In order to develop a database with good design and efficiency, it's essencial to understand the growth of the tables and how many times it will be accessed or modified. The table below shows us the data:
 
 | **Relation reference** | **Relation Name** | **Order of magnitude**        | **Estimated growth** |
 | ------------------ | ------------- | ------------------------- | -------- |
@@ -291,20 +299,25 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 |**RS8**       | Question            | 1k             |100   |
 |**RS9**       | Answer              | 1k             |100   |
 | **RS10**     | Comment             | 1k             |100   |
-| **RS11**     | Tags                | 10             |1     |
-| **RS12**     | QuestionTags        | 10             |1     |
+| **RS11**     | Tag                | 10             |1     |
+| **RS12**     | QuestionTag        | 10             |1     |
 | **RS13**     | Notification        | 10k            |1k    |
 | **RS14**     | AnswerNotification  | 10k            |1k    |
 | **RS15**     | CommentNotification | 1k             |1k    |
 | **RS16**     | Report              | 100            |10    |
 |**RS17**      | Vote                | 100k           |10k   |
 
+*Table 55: Database Workload Table*
 
-### 2. Proposed Indices
+### 6.2. Proposed Indices
 
- #### 2.1. Performance Indices
+>We employed indexes to enhance database performance, enabling fast retrieval of specific rows. Indexing columns involved in join conditions can accelerate queries involving joins. Additionally, indexes can expedite UPDATE and DELETE commands when coupled with search conditions.
+
+#### 6.2.1. Performance Indices
  
-> Indices proposed to improve performance of the identified queries at the expense of operations like delete,insert or update but they can greatly increase search time.
+> Certain queries would typically have a prolonged execution duration. By utilizing performance indexes, we can enhance the speed of SELECT queries, albeit with a trade-off of extended execution time for INSERT, UPDATE, and DELETE operations. Despite this trade-off, specific tables can experience accelerated search speeds. The subsequent tables illustrate the performance indexes employed:
+
+>It's worth noting that the first and second indexes pertain to identical queries, differing only in the columns they are associated with in the "notification" table. Consequently, they can be regarded as equivalent.
 
 
 
@@ -317,11 +330,15 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 | **Clustering**      | Yes                |
 | **Justification**   | The Table is very large, and the queries associated with this index relation are recurrent. It doesn't need range query support so is a very good candidate for clustering as its cardinality is medium.|
 
+SQL Code:
+
 ```sql
     CREATE INDEX notification_user ON Notification USING btree(appuser_id);
     CLUSTER Notification USING notification_user;
 
-```   
+```
+*Table 56: appuser_id Index*
+
 | **Index**           | IDX02                                  |
 | ---                 | ---                                    |
 | **Relation**        | Comment|
@@ -331,12 +348,14 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 | **Clustering**      | Yes                |
 | **Justification**   | The Table is very large,there is a query that searches the comments of a commentable and this query will be repeated a lot so we will make it This is done by exact match, thus an hash type index would be best suited but we need clustering as clustering is not avaiable in hash we choose b-tree.|
 
+SQL Code:
+
 ```sql
     CREATE INDEX comment_commentable ON Comment USING btree(commentable_id);
         CLUSTER Comment USING comment_commentable;
 
 ```                
-                               
+*Table 57 : commentable_id Index*                              
  
 | **Index**           | IDX03                               |
 | ---                 | ---                                    |
@@ -345,14 +364,16 @@ Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relat
 | **Type**            | B-tree             |
 | **Cardinality**     | medium
 | **Clustering**      | Yes                |
-| **Justification**   | The Table is very large,there are queries that searches for all the commentables (Questions and Awnsers) and this query will be repeated a lot. 
-A hash type index would be best suited need clustering as clustering is not avaiable in hash we choose b-tree.|
+| **Justification**   | The Table is very large,there are queries that searches for all the commentables (Questions and Awnsers) and this query will be repeated a lot.  A hash type index would be best suited need clustering as clustering is not avaiable in hash we choose b-tree.|
+
+SQL Code:
 
 ```sql
     CREATE INDEX appuser_content ON Content USING btree(appuser_id);
     CLUSTER Content USING appuser_content;
 
 ```   
+*Table 58: appuser_id Content Index*
 
 #### 2.2. Full-text Search Indices 
 
@@ -364,16 +385,147 @@ A hash type index would be best suited need clustering as clustering is not avai
 | **Attribute**       | title ,description   |
 | **Type**            | GIN              |
 | **Clustering**      | No                |
-| **Justification**   | To provide full-text search features for the search of the tag or the description helping to find the tag the user is looking for and minimissing its time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times|
+| **Justification**   | To provide full-text search features for the search of the tag or the description helping to find the tag the user is looking for and minimising it's time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times.|
+
+
+SQL Code:
 
 ```sql
-    
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Tag
+ADD COLUMN tsvectors TSVECTOR;
 
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION tag_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.title), 'A') ||
+            setweight(to_tsvector('english', NEW.description), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.title <> OLD.title OR NEW.description <> OLD.description) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.title), 'A') ||
+                setweight(to_tsvector('english', NEW.description), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+    -- Create a trigger before insert or update on work.
+    CREATE TRIGGER tag_search_update
+    BEFORE INSERT OR UPDATE ON Tag
+    FOR EACH ROW
+    EXECUTE PROCEDURE tag_search_update();
+
+
+    -- Finally, create a GIN index for ts_vectors.
+    CREATE INDEX Tag_search_idx ON Tag USING GIN (tsvectors);
 ```
+*Table 59: Tag FTS Index*
+
+| **Index**           | IDX05                                  |
+| ---                 | ---                                    |
+| **Relation**        | Question    |
+| **Attribute**       | title    |
+| **Type**            | GIN              |
+| **Clustering**      | No                |
+| **Justification**   | To provide full-text search features for the search of the question helping to find the question the user is looking for and minimising it's time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times.|
+
+
+SQL Code:
+
+```sql
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Question
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors =to_tsvector('english', NEW.title);
+
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.title <> OLD.title OR NEW.obs <> OLD.obs) THEN
+           NEW.tsvectors =to_tsvector('english', NEW.title);
+
+         END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER question_search_update
+ BEFORE INSERT OR UPDATE ON Question
+ FOR EACH ROW
+ EXECUTE PROCEDURE question_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX Question_search_idx ON Question USING GIN (tsvectors);
+```
+
+*Table 60: Question Title FTS Index*
+
+| **Index**           | IDX06                                  |
+| ---                 | ---                                    |
+| **Relation**        | AppUser    |
+| **Attribute**       | name username    |
+| **Type**            | GIN              |
+| **Clustering**      | No                |
+| **Justification**   | To provide full-text search features for the search of the AppUser or the description helping to find the user the user is looking for and minimissing its time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times.|
+
+SQL Code:
+
+```sql
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE AppUser
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION user_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.name), 'A') ||
+            setweight(to_tsvector('english', NEW.username), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.name <> OLD.name OR NEW.username <> OLD.username) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.name), 'A') ||
+                setweight(to_tsvector('english', NEW.username), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER user_search_update
+ BEFORE INSERT OR UPDATE ON AppUser
+ FOR EACH ROW
+ EXECUTE PROCEDURE user_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);
+```
+
+*Table 61: AppUser name and username FTS Index*
 
 ### 3. Triggers
  
-> User-defined functions and trigger procedures that add control structures to the SQL language or perform complex computations, are identified and described to be trusted by the database server. Every kind of function (SQL functions, Stored procedures, Trigger procedures) can take base types, composite types, or combinations of these as arguments (parameters). In addition, every kind of function can return a base type or a composite type. Functions can also be defined to return sets of base or composite values.  
+> Triggers are identified and described to enforce integrity rules that cannot be achieved through simpler methods. These triggers are defined by specifying the event, condition, and activation code. Additionally, triggers are employed to ensure the continuous updating of full-text indexes. 
 
 | **Trigger**      | TRIGGER01                              |
 | ---              | ---                                    |
@@ -400,7 +552,7 @@ LANGUAGE plpgsql;
 CREATE TRIGGER enforce_vote_trigger
 BEFORE INSERT ON Vote
 FOR EACH ROW
-EXECUTE PROCEDURE enforce_vote();                                   
+EXECUTE PROCEDURE enforce_vote();                                  
 ```
 ---
 
@@ -500,13 +652,13 @@ EXECUTE PROCEDURE select_correct_answer();
 SQL Code: 
 ```sql         
 
-CREATE FUNCTION question_minimum_tags() RETURNS TRIGGER AS
+CREATE FUNCTION question_minimum_tag() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     -- Checks if the question has one tag at minimum
     IF NOT EXISTS (
         SELECT 1
-        FROM QuestionTags
+        FROM QuestionTag
         WHERE question_id = NEW.commentable_id
     ) THEN
         RAISE EXCEPTION 'A question must have at least one tag.';
@@ -517,14 +669,14 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER question_minimum_tags_trigger
+CREATE TRIGGER question_minimum_tag_trigger
 BEFORE INSERT OR UPDATE ON Question
 FOR EACH ROW
-EXECUTE PROCEDURE question_minimum_tags();
+EXECUTE PROCEDURE question_minimum_tag();
 
 ```
 
-*Table 38: Minimum question tags Trigger*
+*Table 38: Minimum question tag Trigger*
 
 ---
 
@@ -615,9 +767,12 @@ $BODY$
 BEGIN
     UPDATE AppUser
     SET points = (
-        SELECT SUM(votes)
+        SELECT CASE
+            WHEN SUM(votes) < 0 THEN 0
+            ELSE SUM(votes)
+        END
         FROM Content
-        WHERE user_id = NEW.user_id
+        WHERE id = NEW.id
     )
     WHERE id = NEW.user_id;
 
@@ -649,13 +804,14 @@ CREATE FUNCTION update_nquestion() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     UPDATE AppUser
-    SET nquestion = (
-        SELECT COUNT(*)
-        FROM Question
-        WHERE user_id = NEW.user_id
-    )
-    WHERE id = NEW.user_id;
-
+		SET nquestion = nquestion + 1
+		WHERE id = (
+			SELECT Content.user_id
+			FROM Question
+			JOIN Commentable ON Question.commentable_id = Commentable.content_id
+			JOIN Content ON Commentable.content_id = Content.id
+			WHERE Question.commentable_id = new.commentable_id
+		);
     RETURN NEW;
 END;
 $BODY$
@@ -683,13 +839,14 @@ CREATE FUNCTION update_nanswer() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     UPDATE AppUser
-    SET nanswer = (
-        SELECT COUNT(*)
-        FROM Answer
-        WHERE user_id = NEW.user_id
-    )
-    WHERE id = NEW.user_id;
-
+	SET nanswer = nanswer + 1
+		WHERE id = (
+			SELECT Content.user_id
+			FROM Answer
+			JOIN Commentable ON Answer.commentable_id = Commentable.content_id
+			JOIN Content ON Commentable.content_id = Content.id
+			WHERE Answer.commentable_id = new.commentable_id
+		);
     RETURN NEW;
 END;
 $BODY$
@@ -722,7 +879,7 @@ BEGIN
         WHERE user_id = NEW.id AND badge_id = 1
     ) THEN
         INSERT INTO BadgeAttainment (user_id, badge_id, date)
-        VALUES (NEW.id, 1, CURRENT_DATE);
+        VALUES (NEW.id, 1, now());
     END IF;
 
     RETURN NEW;
@@ -758,7 +915,7 @@ BEGIN
         WHERE user_id = NEW.id AND badge_id = 2
     ) THEN
         INSERT INTO BadgeAttainment (user_id, badge_id, date)
-        VALUES (NEW.id, 2, CURRENT_DATE);
+        VALUES (NEW.id, 2, now());
     END IF;
 
     RETURN NEW;
@@ -801,7 +958,7 @@ BEGIN
 
     -- Insert a new notification for the question author
     INSERT INTO Notification (user_id, date)
-    VALUES (question_author_id, CURRENT_DATE);
+    VALUES (question_author_id, now());
 
     -- Insert a new answer notification for the notification
     INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
@@ -846,7 +1003,7 @@ BEGIN
 
         -- Insert a new notification for the answer author
         INSERT INTO Notification (user_id, date)
-        VALUES (answer_author_id, CURRENT_DATE);
+        VALUES (answer_author_id, now());
 
         -- Insert a new comment notification for the notification
         INSERT INTO CommentNotification (notification_id, comment_id)
@@ -944,14 +1101,122 @@ EXECUTE PROCEDURE prevent_duplicate_reports();
 
 ### 4. Transactions
  
-> Transactions needed to assure the integrity of the data.  
+> The transactions below are used to guarantee the integrity of data when more than one operation is performed and necessary. All transactions below are written in SQL language: 
 
-| SQL Reference   | Transaction Name                    |
+| SQL Reference   | TRAN01                    |
+| --------------- | ----------------------------------- |
+| Description | insert a Question |
+| Justification   | In order to maintain consistency, it's necessary to use a transaction to ensure that all the code executes without errors.If one of the inserts fails, a ROLLBACK is will occur.The isolation that we are using is Repeatable Read because otherwise, and update of content_id_seq could happend, due to an insert in the table Content if that happened the result would be incossinstent data in the database   |
+| Isolation level | REPEATABLE READ. |
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+--Insert Content
+INSERT INTO Content (user_id, content, date)
+ VALUES ($user_id, $content ,  now());
+
+
+-- Insert commentable
+INSERT INTO Commentable (content_id)
+ VALUES (currval('content_id_seq'));
+
+-- Insert question
+INSERT INTO Question (commentable_id, title,correct_answer_id)
+ VALUES (currval('content_id_seq'), $title,NULL);
+
+END TRANSACTION;
+```
+*Table 50: Insert a Question Transaction*
+
+---
+
+| SQL Reference   | TRAN02                    |
+| --------------- | ----------------------------------- |
+| Description | insert a Answer |
+| Justification   | In order to maintain consistency, it's necessary to use a transaction to ensure that all the code executes without errors.If one of the inserts fails, a ROLLBACK is will occur.The isolation that we are using is Repeatable Read because otherwise, and update of content_id_seq could happend, due to an insert in the table Content if that happened the result would be incossinstent data in the database   |
+| Isolation level | REPEATABLE READ. |
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+--Insert Content
+INSERT INTO Content (user_id, content, date)
+ VALUES ($user_id, $content ,  now());
+
+
+-- Insert commentable
+INSERT INTO Commentable (content_id)
+ VALUES (currval('insert_answer_seq'));
+
+-- Insert Answer
+INSERT INTO Answer (id_commentable)
+ VALUES (currval('insert_answer_seq'));
+
+END TRANSACTION;
+```
+*Table 51: Insert a Answer Transaction*
+
+---
+
+| SQL Reference   | TRAN03                    |
+| --------------- | ----------------------------------- |
+| Description | insert a BadgeAttainmentNotification |
+| Justification   | In order to maintain consistency, it's necessary to use a transaction to ensure that all the code executes without errors.If one of the inserts fails, a ROLLBACK is will occur.The isolation that we are using is Repeatable Read because otherwise, and update of content_id_seq could happend, due to an insert in the table Content if that happened the result would be incossinstent data in the database   |
+| Isolation level | REPEATABLE READ. |
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+--Insert Content
+INSERT INTO Notification (user_id,  date)
+ VALUES ($user_id ,  now());
+
+
+-- Insert commentable
+INSERT INTO BageAttainementNotification (content_id)
+ VALUES (currval('insert_question_seq'));
+
+-- Insert question
+INSERT INTO Question (notification_id, title)
+ VALUES (currval('insert_question_seq'));
+
+END TRANSACTION;
+```
+*Table 52: Insert a BadgeAttainmentNotification Transaction*
+
+---
+
+| SQL Reference   | TRAN04                    |
 | --------------- | ----------------------------------- |
 | Justification   | Justification for the transaction.  |
-| Isolation level | Isolation level of the transaction. |
-| `Complete SQL Code`                                   ||
+| Isolation level | REPEATABLE READ |
+```sql
+BEGIN TRANSACTION;
 
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+--Insert Content
+INSERT INTO Content (user_id, content, date)
+ VALUES ($user_id, $content ,  now());
+
+
+-- Insert commentable
+INSERT INTO Commentable (content_id)
+ VALUES (currval('insert_question_seq'));
+
+-- Insert question
+INSERT INTO Question (id_commentable, title)
+ VALUES (currval('insert_question_seq'));
+
+END TRANSACTION;
+```
+*Table 53: Insert a xxxxxxx Transaction*
+
+---
 
 ## Annex A. SQL Code
 
@@ -965,11 +1230,835 @@ EXECUTE PROCEDURE prevent_duplicate_reports();
 
 ### A.1. Database schema
 
-> The complete database creation must be included here and also as a script in the repository.
+> The complete database creation is included here and also as a script in the repository.
 
+```sql
+create schema if not exists lbaw2357;
+
+SET DateStyle TO European;
+
+-----------------------------
+-- Drop old schema
+-----------------------------
+
+DROP TABLE IF EXISTS AppUser CASCADE;
+DROP TABLE IF EXISTS Faq CASCADE;
+DROP TABLE IF EXISTS Badge CASCADE;
+DROP TABLE IF EXISTS BadgeAttainment CASCADE;
+DROP TABLE IF EXISTS UnblockRequest CASCADE;
+DROP TABLE IF EXISTS Content CASCADE;
+DROP TABLE IF EXISTS Commentable CASCADE;
+DROP TABLE IF EXISTS Question CASCADE;
+DROP TABLE IF EXISTS Answer CASCADE;
+DROP TABLE IF EXISTS Comment CASCADE;
+DROP TABLE IF EXISTS Tag CASCADE;
+DROP TABLE IF EXISTS QuestionTag CASCADE;
+DROP TABLE IF EXISTS Notification CASCADE;
+DROP TABLE IF EXISTS AnswerNotification CASCADE;
+DROP TABLE IF EXISTS CommentNotification CASCADE;
+DROP TABLE IF EXISTS Report CASCADE;
+DROP TABLE IF EXISTS Vote CASCADE;
+DROP TABLE IF EXISTS VoteNotification CASCADE;
+DROP TABLE IF EXISTS BadgeAttainmentNotification CASCADE;
+DROP TABLE IF EXISTS FollowTag CASCADE;
+DROP TABLE IF EXISTS FollowQuestion CASCADE;
+
+DROP FUNCTION IF EXISTS enforce_vote() CASCADE;
+DROP FUNCTION IF EXISTS delete_content() CASCADE;
+DROP FUNCTION IF EXISTS select_correct_answer() CASCADE;
+DROP FUNCTION IF EXISTS update_nquestion() CASCADE;
+DROP FUNCTION IF EXISTS update_nanswer() CASCADE;
+DROP FUNCTION IF EXISTS update_content_votes() CASCADE;
+DROP FUNCTION IF EXISTS delete_content_votes() CASCADE;
+DROP FUNCTION IF EXISTS update_points() CASCADE;
+DROP FUNCTION IF EXISTS add_novice_badge() CASCADE;
+DROP FUNCTION IF EXISTS add_expert_badge() CASCADE;
+DROP FUNCTION IF EXISTS generate_answer_notification() CASCADE;
+DROP FUNCTION IF EXISTS generate_comment_notification() CASCADE;
+DROP FUNCTION IF EXISTS prevent_self_vote() CASCADE;
+DROP FUNCTION IF EXISTS prevent_duplicate_reports() CASCADE;
+
+DROP FUNCTION IF EXISTS tag_search_update() CASCADE;
+DROP FUNCTION IF EXISTS question_search_update() CASCADE;
+DROP FUNCTION IF EXISTS user_search_update() CASCADE;
+
+DROP DOMAIN Today;
+
+-----------------------------
+-- Domains
+-----------------------------
+
+CREATE DOMAIN Today AS TIMESTAMP DEFAULT now();
+
+-----------------------------
+-- Tables
+-----------------------------
+
+CREATE TABLE AppUser (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    username VARCHAR UNIQUE NOT NULL,
+    email VARCHAR UNIQUE NOT NULL,
+    password VARCHAR NOT NULL,
+    bio TEXT,
+    points INTEGER CHECK (points >= 0) DEFAULT 0,
+    nquestion INTEGER CHECK (nquestion >= 0) DEFAULT 0,
+    nanswer INTEGER CHECK (nanswer >= 0) DEFAULT 0,
+    profilepicture VARCHAR,
+    paylink VARCHAR UNIQUE,
+    usertype VARCHAR NOT NULL CHECK (usertype IN ('user', 'moderator', 'admin'))
+);
+
+CREATE TABLE Faq (
+    id SERIAL PRIMARY KEY,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL
+);
+
+
+CREATE TABLE Badge (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR UNIQUE NOT NULL,
+    description TEXT NOT NULL
+);
+
+CREATE TABLE BadgeAttainment (
+    user_id INTEGER,
+    badge_id INTEGER,
+    date TIMESTAMP NOT NULL CHECK (date <= now()),
+    PRIMARY KEY (user_id, badge_id),
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
+    FOREIGN KEY (badge_id) REFERENCES Badge(id)
+);
+
+CREATE TABLE UnblockRequest (
+    id1 SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    title VARCHAR NOT NULL,
+    description TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES AppUser(id)
+);
+
+CREATE TABLE Content (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    content TEXT NOT NULL,
+    votes INTEGER DEFAULT 0,
+    reports INTEGER CHECK (reports >= 0) DEFAULT 0,
+    date TIMESTAMP NOT NULL CHECK (date <= now()),
+    edited BOOLEAN DEFAULT false,
+    FOREIGN KEY (user_id) REFERENCES AppUser(id)
+);
+
+CREATE TABLE Commentable (
+    content_id INTEGER PRIMARY KEY,
+    FOREIGN KEY (content_id) REFERENCES Content(id)
+);
+
+CREATE TABLE Question (
+    commentable_id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    correct_answer_id INTEGER,
+    FOREIGN KEY (commentable_id) REFERENCES Content(id)
+);
+
+CREATE TABLE Answer (
+    commentable_id INTEGER PRIMARY KEY,
+    question_id INTEGER NOT NULL,
+    FOREIGN KEY (commentable_id) REFERENCES Content(id),
+    FOREIGN KEY (question_id) REFERENCES Question(commentable_id)
+);
+
+CREATE TABLE Comment (
+    content_id INTEGER,
+    commentable_id INTEGER NOT NULL,
+    PRIMARY KEY (content_id),
+    FOREIGN KEY (content_id) REFERENCES Content(id),
+    FOREIGN KEY (commentable_id) REFERENCES Commentable(content_id)
+);
+
+CREATE TABLE Tag (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR UNIQUE NOT NULL,
+    description TEXT NOT NULL
+);
+
+CREATE TABLE QuestionTag (
+    question_id INTEGER,
+    tag_id INTEGER,
+    PRIMARY KEY (question_id, tag_id),
+    FOREIGN KEY (question_id) REFERENCES Question(commentable_id),
+    FOREIGN KEY (tag_id) REFERENCES Tag(id)
+);
+
+CREATE TABLE Notification (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    date TIMESTAMP NOT NULL CHECK (date <= now()),
+    viewed BOOLEAN DEFAULT false,
+    FOREIGN KEY (user_id) REFERENCES AppUser(id)
+);
+
+CREATE TABLE AnswerNotification (
+    notification_id INTEGER PRIMARY KEY,
+    question_id INTEGER NOT NULL,
+    answer_id INTEGER NOT NULL,
+    FOREIGN KEY (notification_id) REFERENCES Notification(id),
+    FOREIGN KEY (question_id) REFERENCES Question(commentable_id),
+    FOREIGN KEY (answer_id) REFERENCES Answer(commentable_id)
+);
+
+CREATE TABLE CommentNotification (
+    notification_id INTEGER PRIMARY KEY,
+    comment_id INTEGER NOT NULL,
+    FOREIGN KEY (notification_id) REFERENCES Notification(id),
+    FOREIGN KEY (comment_id) REFERENCES Comment(content_id)
+);
+
+CREATE TABLE Report (
+    user_id INTEGER NOT NULL,
+    content_id INTEGER NOT NULL,
+    PRIMARY KEY (user_id, content_id),
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
+    FOREIGN KEY (content_id) REFERENCES Content(id)
+);
+
+CREATE TABLE Vote (
+    user_id INTEGER NOT NULL,
+    content_id INTEGER NOT NULL,
+    vote BOOLEAN NOT NULL,
+    PRIMARY KEY (user_id, content_id),
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
+    FOREIGN KEY (content_id) REFERENCES Content(id)
+);
+
+CREATE TABLE VoteNotification (
+    notification_id INTEGER,
+    user_id INTEGER,
+    content_id INTEGER,
+    vote BOOLEAN NOT NULL,
+    PRIMARY KEY (notification_id, user_id, content_id),
+    FOREIGN KEY (notification_id) REFERENCES Notification(id),
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
+    FOREIGN KEY (content_id) REFERENCES Content(id)
+);
+
+CREATE TABLE BadgeAttainmentNotification (
+    notification_id INTEGER,
+    user_id INTEGER,
+    badge_id INTEGER,
+    PRIMARY KEY (notification_id, user_id, badge_id),
+    FOREIGN KEY (notification_id) REFERENCES Notification(id),
+    FOREIGN KEY (user_id, badge_id) REFERENCES BadgeAttainment(user_id, badge_id)
+);
+
+CREATE TABLE FollowTag (
+    user_id INTEGER,
+    tag_id INTEGER,
+    PRIMARY KEY (user_id, tag_id),
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
+    FOREIGN KEY (tag_id) REFERENCES Content(id) -- or Tag(id) depending on your database structure
+);
+
+CREATE TABLE FollowQuestion (
+    user_id INTEGER,
+    question_id INTEGER,
+    PRIMARY KEY (user_id, question_id),
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
+    FOREIGN KEY (question_id) REFERENCES Question(commentable_id)
+);
+
+ALTER TABLE Question
+  ADD FOREIGN KEY (correct_answer_id) REFERENCES answer(commentable_id) ON UPDATE CASCADE;
+
+
+-----------------------------
+-- Indexes
+-----------------------------
+
+CREATE INDEX notification_user ON Notification USING btree(id);
+CLUSTER Notification USING notification_user;
+
+CREATE INDEX comment_commentable ON Comment USING btree(commentable_id);
+CLUSTER Comment USING comment_commentable;
+
+CREATE INDEX appuser_content ON Content USING btree(id);
+CLUSTER Content USING appuser_content;
+
+
+-----------------------------
+-- Full Text Search Indexes
+-----------------------------
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Tag
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION tag_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.title), 'A') ||
+            setweight(to_tsvector('english', NEW.description), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.title <> OLD.title OR NEW.description <> OLD.description) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.title), 'A') ||
+                setweight(to_tsvector('english', NEW.description), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+    -- Create a trigger before insert or update on work.
+    CREATE TRIGGER tag_search_update
+    BEFORE INSERT OR UPDATE ON Tag
+    FOR EACH ROW
+    EXECUTE PROCEDURE tag_search_update();
+
+
+    -- Finally, create a GIN index for ts_vectors.
+    CREATE INDEX Tag_search_idx ON Tag USING GIN (tsvectors);
+
+
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Question
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors =to_tsvector('english', NEW.title);
+
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.title <> OLD.title OR NEW.obs <> OLD.obs) THEN
+           NEW.tsvectors =to_tsvector('english', NEW.title);
+
+         END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER question_search_update
+ BEFORE INSERT OR UPDATE ON Question
+ FOR EACH ROW
+ EXECUTE PROCEDURE question_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX Question_search_idx ON Question USING GIN (tsvectors);
+
+
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE AppUser
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION user_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.name), 'A') ||
+            setweight(to_tsvector('english', NEW.username), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.name <> OLD.name OR NEW.username <> OLD.username) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.name), 'A') ||
+                setweight(to_tsvector('english', NEW.username), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER user_search_update
+ BEFORE INSERT OR UPDATE ON AppUser
+ FOR EACH ROW
+ EXECUTE PROCEDURE user_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);
+
+
+-----------------------------
+-- TRIGGERS
+-----------------------------
+
+CREATE FUNCTION enforce_vote() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM Vote
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
+    ) THEN
+        DELETE FROM Vote
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id;
+    END IF;
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_vote_trigger
+BEFORE INSERT ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE enforce_vote();
+
+
+CREATE FUNCTION update_nanswer() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+	SET nanswer = nanswer + 1
+		WHERE id = (
+			SELECT Content.user_id
+			FROM Answer
+			JOIN Commentable ON Answer.commentable_id = Commentable.content_id
+			JOIN Content ON Commentable.content_id = Content.id
+			WHERE Answer.commentable_id = new.commentable_id
+		);
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nanswer_trigger
+AFTER INSERT OR UPDATE ON Answer
+FOR EACH ROW
+EXECUTE PROCEDURE update_nanswer();
+
+
+
+CREATE FUNCTION update_nquestion() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+		SET nquestion = nquestion + 1
+		WHERE id = (
+			SELECT Content.user_id
+			FROM Question
+			JOIN Commentable ON Question.commentable_id = Commentable.content_id
+			JOIN Content ON Commentable.content_id = Content.id
+			WHERE Question.commentable_id = new.commentable_id
+		);
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nquestion_trigger
+AFTER INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE update_nquestion();
+
+
+
+CREATE FUNCTION delete_content() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+    DECLARE
+        report_count INTEGER;
+        vote_count INTEGER;
+    BEGIN
+        SELECT COUNT(*)
+        INTO report_count
+        FROM Report
+        WHERE content_id = NEW.content_id;
+
+        SELECT COUNT(*) 
+        INTO vote_count
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = TRUE;
+
+        IF report_count >= 5 + vote_count/4 THEN
+            UPDATE Content
+            SET banned = TRUE
+            WHERE content_id = NEW.content_id;
+        END IF;
+    END;
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_content_trigger
+AFTER INSERT ON Report
+FOR EACH ROW
+EXECUTE PROCEDURE delete_content();
+
+
+
+CREATE FUNCTION select_correct_answer() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+    IF NEW.user_id <> OLD.user_id THEN
+        RAISE EXCEPTION 'Only the creator of the question can select the correct answer.';
+    END IF;
+
+    IF NEW.correct_answer_id IS NOT NULL THEN
+        RAISE EXCEPTION 'The question already has a correct answer.';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM Answer
+        WHERE question_id = NEW.question_id
+        AND answer_id = NEW.correct_answer_id
+    ) THEN
+        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the question must.';
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER select_correct_answer_trigger
+BEFORE UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE select_correct_answer();
+
+
+
+
+
+
+CREATE FUNCTION update_content_votes() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    -- Calculate the total votes for the content and update the votes column
+    UPDATE Content
+    SET votes = (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = TRUE
+    ) - (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = FALSE
+    )
+    WHERE id = NEW.content_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_content_votes_trigger
+AFTER INSERT OR UPDATE ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE update_content_votes();
+
+
+
+CREATE FUNCTION delete_content_votes() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE Content
+    SET votes = (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = OLD.content_id AND vote = TRUE
+    ) - (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = OLD.content_id AND vote = FALSE
+    )
+    WHERE id = OLD.content_id;
+
+    RETURN OLD;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_content_votes_trigger
+AFTER DELETE ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE delete_content_votes();
+
+
+
+CREATE FUNCTION update_points() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+    SET points = (
+        SELECT CASE
+            WHEN SUM(votes) < 0 THEN 0
+            ELSE SUM(votes)
+        END
+        FROM Content
+        WHERE id = NEW.id
+    )
+    WHERE id = NEW.user_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_points_trigger
+AFTER INSERT OR UPDATE ON Content
+FOR EACH ROW
+EXECUTE PROCEDURE update_points();
+
+
+CREATE FUNCTION add_novice_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.points >= 5 AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 1
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 1, now());
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_novice_badge_trigger
+AFTER UPDATE ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_novice_badge();
+
+
+
+CREATE FUNCTION add_expert_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.points >= 200 AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 2
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 2, now());
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_expert_badge_trigger
+AFTER UPDATE ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_expert_badge();
+
+
+
+CREATE FUNCTION generate_answer_notification() RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    question_author_id INTEGER;
+BEGIN
+    -- Get the author of the question
+    SELECT user_id INTO question_author_id
+    FROM Content
+    WHERE id = (
+        SELECT commentable_id
+        FROM Answer
+        WHERE commentable_id = NEW.commentable_id
+    );
+
+    -- Insert a new notification for the question author
+    INSERT INTO Notification (user_id, date)
+    VALUES (question_author_id, now());
+
+    -- Insert a new answer notification for the notification
+    INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
+    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.commentable_id);
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_answer_notification_trigger
+AFTER INSERT ON Answer
+FOR EACH ROW
+EXECUTE PROCEDURE generate_answer_notification();
+
+
+CREATE FUNCTION generate_comment_notification() RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    answer_author_id INTEGER;
+BEGIN
+    -- Check if the commentable_id is for an answer
+    IF NEW.commentable_id IN (SELECT commentable_id FROM Answer) THEN
+        -- Get the author of the answer
+        SELECT user_id INTO answer_author_id
+        FROM Content
+        JOIN Answer ON Answer.commentable_id = Content.id
+        WHERE Answer.commentable_id = NEW.commentable_id;
+
+        -- Insert a new notification for the answer author
+        INSERT INTO Notification (user_id, date)
+        VALUES (answer_author_id, CURRENT_DATE);
+
+        -- Insert a new comment notification for the notification
+        INSERT INTO CommentNotification (notification_id, comment_id)
+        VALUES (currval('notification_id_seq'), NEW.content_id);
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_comment_notification_trigger
+AFTER INSERT ON Comment
+FOR EACH ROW
+EXECUTE PROCEDURE generate_comment_notification();
+
+
+CREATE FUNCTION prevent_self_vote() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.user_id = (
+        SELECT user_id
+        FROM Content
+        WHERE id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'A user cannot vote their own content';
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_self_vote_trigger
+BEFORE INSERT ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE prevent_self_vote();
+
+
+CREATE FUNCTION prevent_duplicate_reports() RETURNS TRIGGER AS $$
+BEGIN
+
+    IF NEW.user_id = (
+        SELECT user_id FROM Content WHERE id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'A user cannot report their own content';
+    END IF;
+
+    IF EXISTS (
+        SELECT 1 FROM Report
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'This user has already reported this content';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_duplicate_reports_trigger
+BEFORE INSERT ON Report
+FOR EACH ROW
+EXECUTE PROCEDURE prevent_duplicate_reports();
+
+/*
+CREATE FUNCTION question_minimum_tag() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    -- Checks if the question has one tag at minimum
+    IF NOT EXISTS (
+        SELECT 1
+        FROM QuestionTag
+        WHERE question_id = NEW.commentable_id
+    ) THEN
+        RAISE EXCEPTION 'A question must have at least one tag.';
+    END IF;
+    
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER question_minimum_tag_trigger
+BEFORE INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE question_minimum_tag();
+*/
+```
 ### A.2. Database population
 
-> Only a sample of the database population script may be included here, e.g. the first 10 lines. The full script must be available in the repository.
+> Only a sample of the database population script is included here. The full script is available in the repository.
+
+```sql
+
+INSERT INTO AppUser (name, username, email, password, bio, profilepicture, usertype)
+VALUES
+    ('Linda Johnson', 'lindaj', 'linda@example.com', 'linda456', 'Art lover', 'linda_profile.jpg', 'user'),
+    ('Michael Wilson', 'michaelw', 'michael@example.com', 'mike123', 'Gamer and programmer', 'michael_profile.jpg', 'user'),
+    ('Sarah Brown', 'sarahb', 'sarah@example.com', 'sarah789', 'Graphic designer', 'sarah_profile.jpg', 'user'),
+    ('Tom Adams', 'toma', 'tom@example.com', 'tompass', 'Musician and songwriter', 'tom_profile.jpg', 'user'),
+    ('Olivia Smith', 'olivias', 'olivia@example.com', 'olivia22', 'Nature enthusiast', 'olivia_profile.jpg', 'user'),
+    ('David White', 'davidw', 'david@example.com', 'david55', 'Science lover', 'david_profile.jpg', 'user'),
+    ('Emily Clark', 'emilyc', 'emily@example.com', 'emily99', 'Traveler and photographer', 'emily_profile.jpg', 'user'),
+    ('William Harris', 'williamh', 'william@example.com', 'william33', 'Bookworm', 'william_profile.jpg', 'user'),
+    ('Mia Turner', 'miat', 'mia@example.com', 'miapass', 'Foodie and chef', 'mia_profile.jpg', 'user'),
+    ('Daniel Martin', 'danm', 'dan@example.com', 'dan678', 'Fitness enthusiast', 'dan_profile.jpg', 'user'),
+    ('John Doe', 'johndoe', 'john@example.com', 'password123', 'I love coding!', 'john_profile.jpg', 'user'),
+    ('Jane Smith', 'janesmith', 'jane@example.com', 'p@ssw0rd', 'Tech enthusiast', 'jane_profile.jpg', 'user'),
+    ('Admin User', 'admin', 'admin@example.com', 'secure_password', 'Administrator', 'admin_profile.jpg', 'admin'),
+    ('Moderator User', 'moderator', 'moderator@example.com', 'strong_password', 'Moderator', 'moderator_profile.jpg', 'moderator'),
+    ('Alice Johnson', 'alicej', 'alice@example.com', '12345', 'Curious learner', 'alice_profile.jpg', 'user'),
+    ('Bob Smith', 'bobsmith', 'bob@example.com', 'bob123', 'Coding enthusiast', 'bob_profile.jpg', 'user'),
+    ('Eve Davis', 'evedavis', 'eve@example.com', 'password456', 'Loves technology', 'eve_profile.jpg', 'user'),
+    ('Charlie Brown', 'charlieb', 'charlie@example.com', 'charlie789', 'Web developer', 'charlie_profile.jpg', 'user'),
+    ('Grace Adams', 'gracea', 'grace@example.com', 'securepass', 'AI enthusiast', 'grace_profile.jpg', 'user'),
+    ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 'sam_profile.jpg', 'user');
+
+
+INSERT INTO Faq (question, answer)
+VALUES
+    ('What is the purpose of this application?', 'The application helps users find answers to their questions.'),
+    ('How do I reset my password?', 'You can reset your password by clicking the "Forgot Password" link on the login page.'),
+    ('Is there a mobile app available?', 'Yes, we have a mobile app for both iOS and Android.'),
+    ('How can I contact customer support?', 'You can reach our customer support team by emailing support@example.com.'),
+    ('What are the system requirements for this application?', 'The system requirements may vary depending on the platform. Please check our website for details.'),
+    ('Can I change my username?', 'No, usernames are not changeable after registration.'),
+    ('Is there a free trial available?', 'Yes, we offer a 7-day free trial for new users.'),
+    ('How can I delete my account?', 'To delete your account, please contact customer support.'),
+    ('What payment methods are accepted?', 'We accept Visa, MasterCard, and PayPal for payments.'),
+    ('Are there any discounts for students?', 'Yes, we offer a 20% discount for students with a valid ID.'),
+    ('How do I change my email address?', 'You can update your email address in the account settings section.'),
+    ('What should I do if I forget my username?', 'If you forget your username, please contact our support team for assistance.'),
+    ('Is there a referral program?', 'Yes, we have a referral program that offers rewards for referring new users.'),
+    ('How do I report a bug or issue?', 'To report a bug or issue, use the "Report a Problem" feature within the application.'),
+    ('Can I use the application offline?', 'Some features are available offline, but many require an internet connection.'),
+    ('What is the privacy policy?', 'You can find our privacy policy on our website under the "Privacy" section.'),
+    ('Are there in-app purchases?', 'Yes, the application offers in-app purchases for premium features and content.'),
+    ('Do you have a community forum?', 'Yes, we have an online community forum where users can discuss various topics.'),
+    ('How often are updates released?', 'We aim to release regular updates with new features and improvements.'),
+    ('Is my data secure?', 'We take data security seriously and use encryption to protect user data.');
+
+-- etc...
+```
 
 ---
 
@@ -977,11 +2066,10 @@ EXECUTE PROCEDURE prevent_duplicate_reports();
 ## Revision history
 
 Changes made to the first submission:
-1. Item 1
-1. ..
+None
 
 ***
-GROUP2357, 24/10/2023
+GROUP2357, 25/10/2023
  
 * Group member 1 Diogo Sarmento, up202109663@fe.up.pt
 * Group member 2 Tomás Sarmento, up202108778@fe.up.pt
