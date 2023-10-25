@@ -1187,46 +1187,9 @@ INSERT INTO Question (notification_id, title)
 END TRANSACTION;
 ```
 *Table 52: Insert a BadgeAttainmentNotification Transaction*
-
----
-
-| SQL Reference   | TRAN04                    |
-| --------------- | ----------------------------------- |
-| Justification   | Justification for the transaction.  |
-| Isolation level | REPEATABLE READ |
-```sql
-BEGIN TRANSACTION;
-
-SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
-
---Insert Content
-INSERT INTO Content (user_id, content, date)
- VALUES ($user_id, $content ,  now());
-
-
--- Insert commentable
-INSERT INTO Commentable (content_id)
- VALUES (currval('insert_question_seq'));
-
--- Insert question
-INSERT INTO Question (id_commentable, title)
- VALUES (currval('insert_question_seq'));
-
-END TRANSACTION;
-```
-*Table 53: Insert a xxxxxxx Transaction*
-
 ---
 
 ## Annex A. SQL Code
-
-> The database scripts are included in this annex to the EBD component.
-> 
-> The database creation script and the population script should be presented as separate elements.
-> The creation script includes the code necessary to build (and rebuild) the database.
-> The population script includes an amount of tuples suitable for testing and with plausible values for the fields of the database.
->
-> The complete code of each script must be included in the group's git repository and links added here.
 
 ### A.1. Database schema
 
@@ -2071,6 +2034,6 @@ None
 ***
 GROUP2357, 25/10/2023
  
-* Group member 1 Diogo Sarmento, up202109663@fe.up.pt
-* Group member 2 Tomás Sarmento, up202108778@fe.up.pt
-* Group member 3 Rodrigo Povoa , up202108890@fe.up.pt
+* Group member 1 Diogo Sarmento, up202109663@fe.up.pt (editor of A4/A5/A6)
+* Group member 2 Rodrigo Povoa , up202108890@fe.up.pt (editor of A4/A5/A6)
+* Group member 3 Tomás Sarmento, up202108778@fe.up.pt (editor of A4/A5/A6)

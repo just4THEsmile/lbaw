@@ -59,24 +59,3 @@ INSERT INTO Question (notification_id, title)
  VALUES (currval('insert_question_seq'));
 
 END TRANSACTION;
-
---Transaction TRAN04
-
-BEGIN TRANSACTION;
-
-SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
-
---Insert Content
-INSERT INTO Content (user_id, content, date)
- VALUES ($user_id, $content ,  now());
-
-
--- Insert commentable
-INSERT INTO Commentable (content_id)
- VALUES (currval('insert_question_seq'));
-
--- Insert question
-INSERT INTO Question (id_commentable, title)
- VALUES (currval('insert_question_seq'));
-
-END TRANSACTION;
