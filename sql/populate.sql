@@ -1,25 +1,25 @@
-INSERT INTO AppUser (name, username, email, password, bio, points, nquestion, nanswer, profilepicture, usertype)
+INSERT INTO AppUser (name, username, email, password, bio, profilepicture, usertype)
 VALUES
-    ('Linda Johnson', 'lindaj', 'linda@example.com', 'linda456', 'Art lover', 60, 2, 8, 'linda_profile.jpg', 'user'),
-    ('Michael Wilson', 'michaelw', 'michael@example.com', 'mike123', 'Gamer and programmer', 90, 6, 15, 'michael_profile.jpg', 'user'),
-    ('Sarah Brown', 'sarahb', 'sarah@example.com', 'sarah789', 'Graphic designer', 80, 4, 12, 'sarah_profile.jpg', 'user'),
-    ('Tom Adams', 'toma', 'tom@example.com', 'tompass', 'Musician and songwriter', 70, 3, 10, 'tom_profile.jpg', 'user'),
-    ('Olivia Smith', 'olivias', 'olivia@example.com', 'olivia22', 'Nature enthusiast', 110, 8, 20, 'olivia_profile.jpg', 'user'),
-    ('David White', 'davidw', 'david@example.com', 'david55', 'Science lover', 95, 5, 14, 'david_profile.jpg', 'user'),
-    ('Emily Clark', 'emilyc', 'emily@example.com', 'emily99', 'Traveler and photographer', 75, 4, 16, 'emily_profile.jpg', 'user'),
-    ('William Harris', 'williamh', 'william@example.com', 'william33', 'Bookworm', 85, 6, 18, 'william_profile.jpg', 'user'),
-    ('Mia Turner', 'miat', 'mia@example.com', 'miapass', 'Foodie and chef', 70, 3, 11, 'mia_profile.jpg', 'user'),
-    ('Daniel Martin', 'danm', 'dan@example.com', 'dan678', 'Fitness enthusiast', 100, 7, 22, 'dan_profile.jpg', 'user'),
-    ('John Doe', 'johndoe', 'john@example.com', 'password123', 'I love coding!', 100, 5, 20, 'john_profile.jpg', 'user'),
-    ('Jane Smith', 'janesmith', 'jane@example.com', 'p@ssw0rd', 'Tech enthusiast', 50, 2, 15, 'jane_profile.jpg', 'user'),
-    ('Admin User', 'admin', 'admin@example.com', 'secure_password', 'Administrator', 200, 10, 50, 'admin_profile.jpg', 'admin'),
-    ('Moderator User', 'moderator', 'moderator@example.com', 'strong_password', 'Moderator', 150, 7, 30, 'moderator_profile.jpg', 'moderator'),
-    ('Alice Johnson', 'alicej', 'alice@example.com', '12345', 'Curious learner', 80, 4, 10, 'alice_profile.jpg', 'user'),
-    ('Bob Smith', 'bobsmith', 'bob@example.com', 'bob123', 'Coding enthusiast', 70, 3, 12, 'bob_profile.jpg', 'user'),
-    ('Eve Davis', 'evedavis', 'eve@example.com', 'password456', 'Loves technology', 90, 6, 18, 'eve_profile.jpg', 'user'),
-    ('Charlie Brown', 'charlieb', 'charlie@example.com', 'charlie789', 'Web developer', 120, 8, 25, 'charlie_profile.jpg', 'user'),
-    ('Grace Adams', 'gracea', 'grace@example.com', 'securepass', 'AI enthusiast', 110, 7, 22, 'grace_profile.jpg', 'user'),
-    ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 130, 9, 28, 'sam_profile.jpg', 'user');
+    ('Linda Johnson', 'lindaj', 'linda@example.com', 'linda456', 'Art lover', 'linda_profile.jpg', 'user'),
+    ('Michael Wilson', 'michaelw', 'michael@example.com', 'mike123', 'Gamer and programmer', 'michael_profile.jpg', 'user'),
+    ('Sarah Brown', 'sarahb', 'sarah@example.com', 'sarah789', 'Graphic designer', 'sarah_profile.jpg', 'user'),
+    ('Tom Adams', 'toma', 'tom@example.com', 'tompass', 'Musician and songwriter', 'tom_profile.jpg', 'user'),
+    ('Olivia Smith', 'olivias', 'olivia@example.com', 'olivia22', 'Nature enthusiast', 'olivia_profile.jpg', 'user'),
+    ('David White', 'davidw', 'david@example.com', 'david55', 'Science lover', 'david_profile.jpg', 'user'),
+    ('Emily Clark', 'emilyc', 'emily@example.com', 'emily99', 'Traveler and photographer', 'emily_profile.jpg', 'user'),
+    ('William Harris', 'williamh', 'william@example.com', 'william33', 'Bookworm', 'william_profile.jpg', 'user'),
+    ('Mia Turner', 'miat', 'mia@example.com', 'miapass', 'Foodie and chef', 'mia_profile.jpg', 'user'),
+    ('Daniel Martin', 'danm', 'dan@example.com', 'dan678', 'Fitness enthusiast', 'dan_profile.jpg', 'user'),
+    ('John Doe', 'johndoe', 'john@example.com', 'password123', 'I love coding!', 'john_profile.jpg', 'user'),
+    ('Jane Smith', 'janesmith', 'jane@example.com', 'p@ssw0rd', 'Tech enthusiast', 'jane_profile.jpg', 'user'),
+    ('Admin User', 'admin', 'admin@example.com', 'secure_password', 'Administrator', 'admin_profile.jpg', 'admin'),
+    ('Moderator User', 'moderator', 'moderator@example.com', 'strong_password', 'Moderator', 'moderator_profile.jpg', 'moderator'),
+    ('Alice Johnson', 'alicej', 'alice@example.com', '12345', 'Curious learner', 'alice_profile.jpg', 'user'),
+    ('Bob Smith', 'bobsmith', 'bob@example.com', 'bob123', 'Coding enthusiast', 'bob_profile.jpg', 'user'),
+    ('Eve Davis', 'evedavis', 'eve@example.com', 'password456', 'Loves technology', 'eve_profile.jpg', 'user'),
+    ('Charlie Brown', 'charlieb', 'charlie@example.com', 'charlie789', 'Web developer', 'charlie_profile.jpg', 'user'),
+    ('Grace Adams', 'gracea', 'grace@example.com', 'securepass', 'AI enthusiast', 'grace_profile.jpg', 'user'),
+    ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 'sam_profile.jpg', 'user');
 
 
 INSERT INTO Faq (question, answer)
@@ -115,7 +115,6 @@ VALUES
     (19, 'Access Problem', 'Please unblock my account as I can\t sign in.'),
     (20, 'Account Unlock', 'I need my account unlocked to regain access.');
 
-
 INSERT INTO Content (user_id, content, votes, reports, date, edited)
 VALUES
     (1, 'This is the first post.', 10, 2, NOW() - INTERVAL '2 days', false),
@@ -205,9 +204,7 @@ VALUES
     ('Environment', 'Tags related to environmental conservation and sustainability.'),
     ('DIY', 'Tags for do-it-yourself projects and creative crafts.');
 
- 
-
--- might work ALTER TABLE Question DISABLE TRIGGER question_minimum_tag_trigger; broken from here down
+ -- might work ALTER TABLE Question DISABLE TRIGGER question_minimum_tag_trigger; broken from here down
 
 INSERT INTO Question (commentable_id, title, correct_answer_id)
 VALUES
@@ -268,17 +265,8 @@ VALUES
     (27, 7),
     (28, 8),
     (29, 9),
-    (30, 10),
-    (31, 11),
-    (32, 12),
-    (33, 13),
-    (34, 14),
-    (35, 15),
-    (36, 16),
-    (37, 17),
-    (38, 18),
-    (39, 19),
-    (40, 20);       
+    (30, 10);
+      
 
 
 
@@ -306,10 +294,6 @@ VALUES
     (18, 28),
     (19, 29),
     (20, 30);
-
-
-
-
 
 INSERT INTO Notification (user_id, date, viewed)
 VALUES
@@ -356,17 +340,17 @@ VALUES
 
 INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
 VALUES
-    (10, 10, 10),
-    (11, 11, 11),
-    (12, 12, 12),
-    (13, 13, 13),
-    (14, 14, 14),
-    (15, 15, 15),
-    (16, 16, 16),
-    (17, 17, 17),
-    (18, 18, 18),
-    (19, 19, 19),
-    (20, 20, 20);    
+
+    (11, 11, 21),
+    (12, 12, 22),
+    (13, 13, 23),
+    (14, 14, 24),
+    (15, 15, 25),
+    (16, 16, 26),
+    (17, 17, 27),
+    (18, 18, 28),
+    (19, 19, 29),
+    (20, 20, 30);    
 
 INSERT INTO CommentNotification (notification_id, comment_id)
 VALUES
@@ -382,39 +366,39 @@ VALUES
 
 INSERT INTO Report (user_id, content_id)
 VALUES
-    (1, 11),
-    (2, 12),
-    (3, 13),
-    (4, 14),
-    (5, 15),
-    (6, 16),
-    (7, 17),
-    (8, 18),
-    (9, 19),
-    (10, 10),
-    (11, 1),
-    (12, 2),
-    (13, 3),
-    (14, 4),
-    (15, 5),
-    (16, 6),
-    (17, 7),
-    (18, 8),
-    (19, 9),
-    (20, 20);
+    (1, 2),
+    (2, 3),
+    (3, 4),
+    (4, 5),
+    (5, 6),
+    (6, 7),
+    (7, 8),
+    (8, 9),
+    (9, 10),
+    (10, 11),
+    (11, 12),
+    (12, 13),
+    (13, 14),
+    (14, 15),
+    (15, 16),
+    (16, 17),
+    (17, 18),
+    (18, 19),
+    (19, 20),
+    (20, 1);
 
 INSERT INTO Vote (user_id, content_id, vote)
 VALUES
-    (1, 11, true),
-    (2, 12, false),
-    (3, 13, true),
-    (4, 14, true),
-    (5, 15, false),
-    (6, 16, true),
-    (7, 17, false),
-    (8, 18, true),
-    (9, 19, true),
-    (10, 20, false);      
+    (1, 10, true),
+    (2, 11, false),
+    (3, 12, true),
+    (4, 13, true),
+    (5, 14, false),
+    (6, 15, true),
+    (7, 16, false),
+    (8, 17, true),
+    (9, 18, true),
+    (10, 19, false);      
 
 INSERT INTO VoteNotification (notification_id, user_id, content_id, vote)
 VALUES
@@ -432,15 +416,15 @@ VALUES
 INSERT INTO BadgeAttainmentNotification (notification_id, user_id, badge_id)
 VALUES
     (31, 1, 1),
-    (32, 2, 2),
-    (33, 3, 3),
-    (34, 4, 4),
-    (35, 5, 5),
-    (36, 6, 6),
-    (37, 7, 7),
-    (38, 8, 8),
-    (39, 9, 9),
-    (40, 10, 10);
+    (32, 2, 1),
+    (33, 3, 2),
+    (34, 4, 3),
+    (35, 5, 2),
+    (36, 6, 4),
+    (37, 7, 5),
+    (38, 8, 10),
+    (39, 9, 4),
+    (40, 10, 3);
 
 INSERT INTO FollowTag (user_id, tag_id)
 VALUES
@@ -467,3 +451,4 @@ VALUES
     (8, 18),
     (9, 19),
     (10, 20);    
+
