@@ -2032,6 +2032,11 @@ Changes made to the first submission:
 None
 
 ***
+
+## Checklist
+
+Here's the link to the checklist : https://docs.google.com/spreadsheets/d/1vSBmSlKg5PRKLTYRqQey_n-NZASlNTnItmUiX50-mJU/edit#gid=438540848
+
 GROUP2357, 25/10/2023
  
 * Group member 1 Diogo Sarmento, up202109663@fe.up.pt (editor of A4/A5/A6)
