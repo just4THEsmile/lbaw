@@ -183,37 +183,37 @@ CREATE TABLE Vote (
 
 CREATE TABLE VoteNotification (
     notification_id INTEGER,
-    appuser_id INTEGER,
+    user_id INTEGER,
     content_id INTEGER,
     vote BOOLEAN NOT NULL,
-    PRIMARY KEY (notification_id, appuser_id, content_id),
+    PRIMARY KEY (notification_id, user_id, content_id),
     FOREIGN KEY (notification_id) REFERENCES Notification(id),
-    FOREIGN KEY (appuser_id) REFERENCES AppUser(id),
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
     FOREIGN KEY (content_id) REFERENCES Content(id)
 );
 
 CREATE TABLE BadgeAttainmentNotification (
     notification_id INTEGER,
-    appuser_id INTEGER,
+    user_id INTEGER,
     badge_id INTEGER,
-    PRIMARY KEY (notification_id, appuser_id, badge_id),
+    PRIMARY KEY (notification_id, user_id, badge_id),
     FOREIGN KEY (notification_id) REFERENCES Notification(id),
-    FOREIGN KEY (appuser_id, badge_id) REFERENCES BadgeAttainment(user_id, badge_id)
+    FOREIGN KEY (user_id, badge_id) REFERENCES BadgeAttainment(user_id, badge_id)
 );
 
 CREATE TABLE FollowTag (
-    appuser_id INTEGER,
+    user_id INTEGER,
     tag_id INTEGER,
-    PRIMARY KEY (appuser_id, tag_id),
-    FOREIGN KEY (appuser_id) REFERENCES AppUser(id),
+    PRIMARY KEY (user_id, tag_id),
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
     FOREIGN KEY (tag_id) REFERENCES Content(id) -- or Tag(id) depending on your database structure
 );
 
 CREATE TABLE FollowQuestion (
-    appuser_id INTEGER,
+    user_id INTEGER,
     question_id INTEGER,
-    PRIMARY KEY (appuser_id, question_id),
-    FOREIGN KEY (appuser_id) REFERENCES AppUser(id),
+    PRIMARY KEY (user_id, question_id),
+    FOREIGN KEY (user_id) REFERENCES User(id),
     FOREIGN KEY (question_id) REFERENCES Question(commentable_id)
 );
 
