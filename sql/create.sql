@@ -29,12 +29,11 @@ DROP TABLE IF EXISTS FollowQuestion CASCADE;
 DROP FUNCTION IF EXISTS enforce_vote() CASCADE;
 DROP FUNCTION IF EXISTS delete_content() CASCADE;
 DROP FUNCTION IF EXISTS select_correct_answer() CASCADE;
-DROP FUNCTION IF EXISTS question_minimum_tag() CASCADE;
+DROP FUNCTION IF EXISTS update_nquestion() CASCADE;
+DROP FUNCTION IF EXISTS update_nanswer() CASCADE;
 DROP FUNCTION IF EXISTS update_content_votes() CASCADE;
 DROP FUNCTION IF EXISTS delete_content_votes() CASCADE;
 DROP FUNCTION IF EXISTS update_points() CASCADE;
-DROP FUNCTION IF EXISTS update_nquestion() CASCADE;
-DROP FUNCTION IF EXISTS update_nanswer() CASCADE;
 DROP FUNCTION IF EXISTS add_novice_badge() CASCADE;
 DROP FUNCTION IF EXISTS add_expert_badge() CASCADE;
 DROP FUNCTION IF EXISTS generate_answer_notification() CASCADE;
@@ -244,6 +243,53 @@ FOR EACH ROW
 EXECUTE PROCEDURE enforce_vote();
 
 
+CREATE FUNCTION update_nanswer() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+	SET nanswer = nanswer + 1
+		WHERE id = (
+			SELECT Content.user_id
+			FROM Answer
+			JOIN Commentable ON Answer.commentable_id = Commentable.content_id
+			JOIN Content ON Commentable.content_id = Content.id
+			WHERE Answer.commentable_id = new.commentable_id
+		);
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nanswer_trigger
+AFTER INSERT OR UPDATE ON Answer
+FOR EACH ROW
+EXECUTE PROCEDURE update_nanswer();
+
+
+
+CREATE FUNCTION update_nquestion() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+		SET nquestion = nquestion + 1
+		WHERE id = (
+			SELECT Content.user_id
+			FROM Question
+			JOIN Commentable ON Question.commentable_id = Commentable.content_id
+			JOIN Content ON Commentable.content_id = Content.id
+			WHERE Question.commentable_id = new.commentable_id
+		);
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nquestion_trigger
+AFTER INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE update_nquestion();
+
+
 
 CREATE FUNCTION delete_content() RETURNS TRIGGER AS 
 $BODY$
@@ -297,7 +343,7 @@ BEGIN
         WHERE question_id = NEW.question_id
         AND answer_id = NEW.correct_answer_id
     ) THEN
-        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the question.';
+        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the questionquestion must.';
     END IF;
 
     RETURN NEW;
@@ -312,27 +358,7 @@ EXECUTE PROCEDURE select_correct_answer();
 
 
 
-CREATE FUNCTION question_minimum_tag() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    -- Checks if the question has one tag at minimum
-    IF NOT EXISTS (
-        SELECT 1
-        FROM QuestionTag
-        WHERE question_id = NEW.commentable_id
-    ) THEN
-        RAISE EXCEPTION 'A question must have at least one tag.';
-    END IF;
-    
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
 
-CREATE TRIGGER question_minimum_tag_trigger
-BEFORE INSERT OR UPDATE ON Question
-FOR EACH ROW
-EXECUTE PROCEDURE question_minimum_tag();
 
 
 CREATE FUNCTION update_content_votes() RETURNS TRIGGER AS
@@ -395,9 +421,12 @@ $BODY$
 BEGIN
     UPDATE AppUser
     SET points = (
-        SELECT SUM(votes)
+        SELECT CASE
+            WHEN SUM(votes) < 0 THEN 0
+            ELSE SUM(votes)
+        END
         FROM Content
-        WHERE user_id = NEW.user_id
+        WHERE id = NEW.id
     )
     WHERE id = NEW.user_id;
 
@@ -413,49 +442,13 @@ EXECUTE PROCEDURE update_points();
 
 
 
-CREATE FUNCTION update_nquestion() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE AppUser
-    SET nquestion = (
-        SELECT COUNT(*)
-        FROM Question
-        WHERE user_id = NEW.user_id
-    )
-    WHERE id = NEW.user_id;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_nquestion_trigger
-AFTER INSERT OR UPDATE ON Question
-FOR EACH ROW
-EXECUTE PROCEDURE update_nquestion();
 
 
 
-CREATE FUNCTION update_nanswer() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE AppUser
-    SET nanswer = (
-        SELECT COUNT(*)
-        FROM Answer
-        WHERE user_id = NEW.user_id
-    )
-    WHERE id = NEW.user_id;
 
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
 
-CREATE TRIGGER update_nanswer_trigger
-AFTER INSERT OR UPDATE ON Answer
-FOR EACH ROW
-EXECUTE PROCEDURE update_nanswer();
+
+
 
 
 
@@ -579,7 +572,7 @@ BEGIN
     IF NEW.user_id = (
         SELECT user_id
         FROM Content
-        WHERE id = NEW.commentable_id
+        WHERE id = NEW.content_id
     ) THEN
         RAISE EXCEPTION 'A user cannot vote their own content';
     END IF;
@@ -599,7 +592,7 @@ CREATE FUNCTION prevent_duplicate_reports() RETURNS TRIGGER AS $$
 BEGIN
 
     IF NEW.user_id = (
-        SELECT user_id FROM Content WHERE content_id = NEW.content_id
+        SELECT user_id FROM Content WHERE id = NEW.content_id
     ) THEN
         RAISE EXCEPTION 'A user cannot report their own content';
     END IF;
@@ -618,3 +611,4 @@ CREATE TRIGGER prevent_duplicate_reports_trigger
 BEFORE INSERT ON Report
 FOR EACH ROW
 EXECUTE PROCEDURE prevent_duplicate_reports();
+
