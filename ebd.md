@@ -16,6 +16,7 @@
 
 ### 2. Additional Business Rules
 > Business rules that cannot.be conveyed in the UML class diagram
+
 |**identifier**| **Description** |
 |---|---|
 |**BR12** |A user cannot report another user more than once.|
