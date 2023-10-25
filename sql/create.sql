@@ -213,7 +213,7 @@ CREATE TABLE FollowQuestion (
     user_id INTEGER,
     question_id INTEGER,
     PRIMARY KEY (user_id, question_id),
-    FOREIGN KEY (user_id) REFERENCES User(id),
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
     FOREIGN KEY (question_id) REFERENCES Question(commentable_id)
 );
 
