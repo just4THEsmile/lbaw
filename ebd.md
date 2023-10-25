@@ -1078,11 +1078,108 @@ EXECUTE PROCEDURE prevent_duplicate_reports();
  
 > Transactions needed to assure the integrity of the data.  
 
-| SQL Reference   | Transaction Name                    |
+| SQL Reference   | TRAN01                    |
+| --------------- | ----------------------------------- |
+| Description | insert a Question |
+| Justification   | In order to maintain consistency, it's necessary to use a transaction to ensure that all the code executes without errors.If one of the inserts fails, a ROLLBACK is will occur.The isolation that we are using is Repeatable Read because otherwise, and update of content_id_seq could happend, due to an insert in the table Content if that happened the result would be incossinstent data in the database   |
+| Isolation level | REPEATABLE READ. |
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+--Insert Content
+INSERT INTO Content (user_id, content, date)
+ VALUES ($user_id, $content ,  now());
+
+
+-- Insert commentable
+INSERT INTO Commentable (content_id)
+ VALUES (currval('content_id_seq'));
+
+-- Insert question
+INSERT INTO Question (commentable_id, title,correct_answer_id)
+ VALUES (currval('content_id_seq'), $title,NULL);
+
+END TRANSACTION;
+```
+
+| SQL Reference   | TRAN02                    |
+| --------------- | ----------------------------------- |
+| Description | insert a Answer |
+| Justification   | In order to maintain consistency, it's necessary to use a transaction to ensure that all the code executes without errors.If one of the inserts fails, a ROLLBACK is will occur.The isolation that we are using is Repeatable Read because otherwise, and update of content_id_seq could happend, due to an insert in the table Content if that happened the result would be incossinstent data in the database   |
+| Isolation level | REPEATABLE READ. |
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+--Insert Content
+INSERT INTO Content (user_id, content, date)
+ VALUES ($user_id, $content ,  now());
+
+
+-- Insert commentable
+INSERT INTO Commentable (content_id)
+ VALUES (currval('insert_answer_seq'));
+
+-- Insert Answer
+INSERT INTO Answer (id_commentable)
+ VALUES (currval('insert_answer_seq'));
+
+END TRANSACTION;
+```
+
+| SQL Reference   | TRAN03                    |
+| --------------- | ----------------------------------- |
+| Description | insert a BadgeAttainmentNotification |
+| Justification   | In order to maintain consistency, it's necessary to use a transaction to ensure that all the code executes without errors.If one of the inserts fails, a ROLLBACK is will occur.The isolation that we are using is Repeatable Read because otherwise, and update of content_id_seq could happend, due to an insert in the table Content if that happened the result would be incossinstent data in the database   |
+| Isolation level | REPEATABLE READ. |
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+--Insert Content
+INSERT INTO Notification (user_id,  date)
+ VALUES ($user_id ,  now());
+
+
+-- Insert commentable
+INSERT INTO BageAttainementNotification (content_id)
+ VALUES (currval('insert_question_seq'));
+
+-- Insert question
+INSERT INTO Question (notification_id, title)
+ VALUES (currval('insert_question_seq'));
+
+END TRANSACTION;
+```
+
+| SQL Reference   | TRAN04                    |
 | --------------- | ----------------------------------- |
 | Justification   | Justification for the transaction.  |
 | Isolation level | Isolation level of the transaction. |
-| `Complete SQL Code`                                   ||
+```sql
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+--Insert Content
+INSERT INTO Content (user_id, content, date)
+ VALUES ($user_id, $content ,  now());
+
+
+-- Insert commentable
+INSERT INTO Commentable (content_id)
+ VALUES (currval('insert_question_seq'));
+
+-- Insert question
+INSERT INTO Question (id_commentable, title)
+ VALUES (currval('insert_question_seq'));
+
+END TRANSACTION;
+```
 
 
 ## Annex A. SQL Code
