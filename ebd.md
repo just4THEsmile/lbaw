@@ -364,11 +364,131 @@ A hash type index would be best suited need clustering as clustering is not avai
 | **Attribute**       | title ,description   |
 | **Type**            | GIN              |
 | **Clustering**      | No                |
-| **Justification**   | To provide full-text search features for the search of the tag or the description helping to find the tag the user is looking for and minimissing its time, the drawback is that it will take longer to and new tag,delete or update but the tag will be for the most part stable and will only be changed very few times|
+| **Justification**   | To provide full-text search features for the search of the tag or the description helping to find the tag the user is looking for and minimising its time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times|
 
 ```sql
-    
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Tag
+ADD COLUMN tsvectors TSVECTOR;
 
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION tag_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.title), 'A') ||
+            setweight(to_tsvector('english', NEW.description), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.title <> OLD.title OR NEW.description <> OLD.description) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.title), 'A') ||
+                setweight(to_tsvector('english', NEW.description), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+    -- Create a trigger before insert or update on work.
+    CREATE TRIGGER tag_search_update
+    BEFORE INSERT OR UPDATE ON Tag
+    FOR EACH ROW
+    EXECUTE PROCEDURE tag_search_update();
+
+
+    -- Finally, create a GIN index for ts_vectors.
+    CREATE INDEX search_idx ON Tag USING GIN (tsvectors);
+
+
+
+```
+| **Index**           | IDX05                                  |
+| ---                 | ---                                    |
+| **Relation**        | Question    |
+| **Attribute**       | title    |
+| **Type**            | GIN              |
+| **Clustering**      | No                |
+| **Justification**   | To provide full-text search features for the search of the question helping to find the question the user is looking for and minimising its time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times|
+
+```sql
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Question
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors =to_tsvector('english', NEW.title);
+
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.title <> OLD.title OR NEW.obs <> OLD.obs) THEN
+           NEW.tsvectors =to_tsvector('english', NEW.title);
+
+         END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER question_search_update
+ BEFORE INSERT OR UPDATE ON Question
+ FOR EACH ROW
+ EXECUTE PROCEDURE question_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX search_idx ON Question USING GIN (tsvectors);
+```
+
+| **Index**           | IDX06                                  |
+| ---                 | ---                                    |
+| **Relation**        | AppUser    |
+| **Attribute**       | name username    |
+| **Type**            | GIN              |
+| **Clustering**      | No                |
+| **Justification**   | To provide full-text search features for the search of the AppUser or the description helping to find the user the user is looking for and minimissing its time, the drawback is that it will take longer to and new tags,delete or update but the tags will be for the most part stable and will only be changed very few times|
+
+```sql
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE AppUser
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION user_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.name), 'A') ||
+            setweight(to_tsvector('english', NEW.username), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.name <> OLD.name OR NEW.username <> OLD.username) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.name), 'A') ||
+                setweight(to_tsvector('english', NEW.username), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER user_search_update
+ BEFORE INSERT OR UPDATE ON AppUser
+ FOR EACH ROW
+ EXECUTE PROCEDURE user_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX search_idx ON AppUser USING GIN (tsvectors);
 ```
 
 ### 3. Triggers
