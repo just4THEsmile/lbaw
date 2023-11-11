@@ -240,7 +240,7 @@ paths:
                   description: 'Failed edition. Redirect to login form.'
                   value: '/user/edit'```
 
----
+```
 
 
 ## A8: Vertical prototype
