@@ -26,6 +26,7 @@
 |------------|------|-------------|
 | PUB | Public | An unauthenticated user. |
 | USR | User | An authenticated user. |
+| OWN | Own | User that are owners of the information (e.g. own profile, own comments, own anwsers, own questions) |
 | MOD | Moderator | An moderator. |
 | ADM | Administrator | Platform administrator. |
 
