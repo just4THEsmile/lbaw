@@ -41,6 +41,7 @@
 
 ```yaml
 
+
 openapi: 3.0.0
 info:
  version: '1.0'
@@ -166,6 +167,25 @@ paths:
                 302Error:
                   description: 'Failed resgister. Redirect to register form.'
                   value: '/register'
+/logout:
+
+  post:
+    operationId: R105
+    summary: 'R105: Logout Action'
+    description: 'Logout the current authenticated user. Access: USR, ADM'
+    tags:
+      - 'M01: Authentication and Individual Profile'
+    responses:
+      '302':
+        description: 'Redirect after processing logout.'
+        headers:
+          Location:
+            schema:
+              type: string
+            examples:
+              302Success:
+                description: 'Successful logout. Redirect to login form.'
+                value: '/login'
   /user/{id}:
     get:
       operationId: R201
@@ -173,19 +193,31 @@ paths:
       description: 'Provide User Profile. Access: USR'
       tags:
         - 'M02: User'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
       responses:
         '200':
           description: 'Ok. Show User Profile'  
         '302':
           description: 'Ok. Show Register UI' 
 
-  /user/edit:
+  /user/edit/{id}:
     get:
       operationId: R202
       summary: 'R202: Edit Profile Form'
-      description: 'Provide Edit Profile Form. Access: USR'
+      description: 'Provide Edit Profile Form. Access: OWN ADM'
       tags:
         - 'M02: User'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
       responses:
         '200':
           description: 'Ok. Show Edit Profile page UI'
@@ -194,7 +226,7 @@ paths:
     post:
       operationId: R203
       summary: 'R203: Edit Profile Action'
-      description: 'Edits the profile of the user. Access: USR'
+      description: 'Edits the profile of the user. Access: OWN ADM'
       tags:
         - 'M02: User'
 
@@ -205,6 +237,8 @@ paths:
             schema:
               type: object
               properties:
+                userId:          # <!--- form field name
+                  type: integer
                 name:          # <!--- form field name
                   type: string
                 username:    # <!--- form field name
@@ -221,6 +255,7 @@ paths:
                 bio:    # <!--- form field name
                   type: string
               required:
+                - userId
                 - name
                 - username
                 - email
@@ -240,6 +275,59 @@ paths:
                 302Error:
                   description: 'Failed edition. Redirect to login form.'
                   value: '/user/edit'
+############notifications##############
+  /home/notifications:
+    get:
+      operationId: R203
+      summary: 'R203: User notifications page.'
+      description: 'Show user notifications page. Access: USR, ADM'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: 'OK. Show the user notifications page.'
+        '302':
+          description: 'Redirect to login user is not loged in.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User is not logged in. Redirect to login form.'
+                  value: '/login'
+  /user/delete:
+    post:
+      operationId: R204
+      summary: 'R204: Delete User Action'
+      description: 'Delete an User from the database. Access: OWN, ADM'
+      tags:
+        - 'M02: User'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:          # <!--- form field name
+                  type: integer
+              required:
+                - id
+    responses:
+      '302':
+        description: 'Redirect after processing deletion of account.'
+        headers:
+          Location:
+            schema:
+              type: string
+            examples:
+              302Success:
+                description: 'Successful deletion. Redirect to login form.'
+                value: '/login'
+              302Failure:
+                description: 'Not Successful deletion. Redirect to User profile.'
+                value: '/user/{id}'
 
 ```
 
