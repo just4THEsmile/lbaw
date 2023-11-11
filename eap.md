@@ -39,10 +39,206 @@
 
 
 ```yaml
-openapi: 3.0.0
 
-...
-```
+openapi: 3.0.0
+info:
+ version: '1.0'
+ title: 'LBAW QthenA API'
+ description: 'Web Resources Specification (A7) for MediaLibrary'
+
+servers:
+- url: http://lbaw.fe.up.pt
+  description: Production server
+
+
+tags:
+ - name: 'M01: Authentication'
+ - name: 'M02: User'
+ - name: 'M03: Commentables & Comments'
+ - name: 'M04: Search'
+ - name: 'M05: Administration'
+ - name: 'M06: Static Pages'
+paths:
+
+  /login:
+    get:
+      operationId: R101
+      summary: 'R101: Login Form'
+      description: 'Provide login form. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '200':
+          description: 'Ok. Show Log-in UI'
+    post:
+      operationId: R102
+      summary: 'R102: Login Action'
+      description: 'Processes the login form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:          # <!--- form field name
+                  type: string
+                  format: email
+                password:    # <!--- form field name
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+
+      responses:
+        '302':
+          description: 'Redirect after processing the login credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+
+
+  /register:
+    get:
+      operationId: R103
+      summary: 'R103: Register Form'
+      description: 'Provide register form. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '200':
+          description: 'Ok. Show Register UI'
+    post:
+      operationId: R104
+      summary: 'R104: Register Action'
+      description: 'Processes the register form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:          # <!--- form field name
+                  type: string
+                email:          # <!--- form field name
+                  type: string
+                  format: email
+                password:    # <!--- form field name
+                  type: string
+                  format: password
+                confirm_password:    # <!--- form field name
+                  type: string
+                  format: password
+              required:
+                - username
+                - email
+                - password
+                - confirm_password
+
+      responses:
+        '302':
+          description: 'Redirect after processing the register credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed resgister. Redirect to register form.'
+                  value: '/register'
+  /user/{id}:
+    get:
+      operationId: R201
+      summary: 'R201: User'
+      description: 'Provide User Profile. Access: USR'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: 'Ok. Show User Profile'  
+        '302':
+          description: 'Ok. Show Register UI' 
+
+  /user/edit:
+    get:
+      operationId: R202
+      summary: 'R202: Edit Profile Form'
+      description: 'Provide Edit Profile Form. Access: USR'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: 'Ok. Show Edit Profile page UI'
+        '302':
+          description: 'Ok. Show Register UI' 
+    post:
+      operationId: R203
+      summary: 'R203: Edit Profile Action'
+      description: 'Edits the profile of the user. Access: USR'
+      tags:
+        - 'M02: User'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:          # <!--- form field name
+                  type: string
+                username:    # <!--- form field name
+                  type: string
+                email:    # <!--- form field name
+                  type: string
+                  format: email
+                password:    # <!--- form field name
+                  type: string
+                  format: password
+                confirm_password:    # <!--- form field name
+                  type: string
+                  format: password
+                bio:    # <!--- form field name
+                  type: string
+              required:
+                - name
+                - username
+                - email
+                - bio
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Edit profile.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edition. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed edition. Redirect to login form.'
+                  value: '/user/edit'```
 
 ---
 
