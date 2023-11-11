@@ -238,7 +238,7 @@ paths:
                   value: '/users/{id}'
                 302Error:
                   description: 'Failed edition. Redirect to login form.'
-                  value: '/user/edit'```
+                  value: '/user/edit'
 
 ```
 
