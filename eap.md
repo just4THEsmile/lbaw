@@ -11,7 +11,7 @@
 | Modules | Description |
 |---------|-------------|
 | M01: Authentication | Web resources associated with user authentication, including system features such as login/logout and registration.|
-| M02: Individual Profile | Web resources associated with individual profile management, including system features such as view and edit personal profile information, view personal notifications and followed questions.|
+| M02: User | Web resources associated with individual profile management, including system features such as view and edit personal profile information, view personal notifications and followed questions.|
 | M03: Commentables & Comments| Web resources associated with questions, answers and comments, including system features such as add, view, vote, report and delete questions,answers and comments.|
 | M04: Search | Web resources correspond to search features. Including searching users, questions with different types of filter and order. |
 | M05: Administration | Web resources related to implementing terms of service enforcement, user blocking, unblocking, and banning, as well as functionalities for deleting posts/comments and updating static pages.|
