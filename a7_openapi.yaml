@@ -235,7 +235,7 @@ paths:
   /home/notifications:
     get:
       operationId: R204
-      summary: 'R203: User notifications page.'
+      summary: 'R204: User notifications page.'
       description: 'Show user notifications page. Access: USR, ADM'
       tags:
         - 'M02: User'
@@ -255,7 +255,7 @@ paths:
   /user/delete:
     post:
       operationId: R205
-      summary: 'R204: Delete User Action'
+      summary: 'R205: Delete User Action'
       description: 'Delete an User from the database. Access: OWN, ADM'
       tags:
         - 'M02: User'
