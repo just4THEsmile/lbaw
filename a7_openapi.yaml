@@ -123,7 +123,7 @@ paths:
                 302Error:
                   description: 'Failed resgister. Redirect to register form.'
                   value: '/register'
-/logout:
+  /logout:
 
   post:
     operationId: R105
