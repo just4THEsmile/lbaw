@@ -233,7 +233,7 @@ paths:
 ############notifications##############
   /home/notifications:
     get:
-      operationId: R203
+      operationId: R204
       summary: 'R203: User notifications page.'
       description: 'Show user notifications page. Access: USR, ADM'
       tags:
@@ -253,7 +253,7 @@ paths:
                   value: '/login'
   /user/delete:
     post:
-      operationId: R204
+      operationId: R205
       summary: 'R204: Delete User Action'
       description: 'Delete an User from the database. Access: OWN, ADM'
       tags:
