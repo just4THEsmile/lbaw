@@ -123,25 +123,26 @@ paths:
                 302Error:
                   description: 'Failed resgister. Redirect to register form.'
                   value: '/register'
+
   /logout:
 
-  post:
-    operationId: R105
-    summary: 'R105: Logout Action'
-    description: 'Logout the current authenticated user. Access: USR, ADM'
-    tags:
-      - 'M01: Authentication'
-    responses:
-      '302':
-        description: 'Redirect after processing logout.'
-        headers:
-          Location:
-            schema:
-              type: string
-            examples:
-              302Success:
-                description: 'Successful logout. Redirect to login form.'
-                value: '/login'
+    post:
+        operationId: R105
+        summary: 'R105: Logout Action'
+        description: 'Logout the current authenticated user. Access: USR, ADM'
+        tags:
+        - 'M01: Authentication'
+        responses:
+        '302':
+            description: 'Redirect after processing logout.'
+            headers:
+            Location:
+                schema:
+                type: string
+                examples:
+                302Success:
+                    description: 'Successful logout. Redirect to login form.'
+                    value: '/login'
   /user/{id}:
     get:
       operationId: R201
