@@ -1,31 +1,637 @@
 openapi: 3.0.0
-
 info:
-  version: 2.0
-  title: 'QthenA Web API'
-  description: 'Web Resources Specification (A9) for QthenA'
+ version: '1.0'
+ title: 'LBAW QthenA API'
+ description: 'Web Resources Specification (A7) for MediaLibrary'
 
 servers:
-- url: https://lbaw2357.lbaw.fe.up.pt
+- url: http://lbaw.fe.up.pt
   description: Production server
 
-externalDocs:
- description: Find more info here.
- url: https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/wikis/eap
 
 tags:
-- name: 'M01: Authentication'
-- name: 'M02: Individual Profile'
-- name: 'M03: Commentables & Comments'
-- name: 'M04: Search'
-- name: 'M05: Administration'
-- name: 'M06: Static Pages'
-
+ - name: 'M01: Authentication'
+ - name: 'M02: User'
+ - name: 'M03: Commentables & Comments'
+ - name: 'M04: Search'
+ - name: 'M05: Administration'
+ - name: 'M06: Static Pages'
 paths:
-##############################Authentication##############################
+
   /login:
-
     get:
-      OperationId: ''
+      operationId: R101
+      summary: 'R101: Login Form'
+      description: 'Provide login form. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '200':
+          description: 'Ok. Show Log-in UI'
+    post:
+      operationId: R102
+      summary: 'R102: Login Action'
+      description: 'Processes the login form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication'
 
-  
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:          # <!--- form field name
+                  type: string
+                  format: email
+                password:    # <!--- form field name
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+
+      responses:
+        '302':
+          description: 'Redirect after processing the login credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+
+
+  /register:
+    get:
+      operationId: R103
+      summary: 'R103: Register Form'
+      description: 'Provide register form. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '200':
+          description: 'Ok. Show Register UI'
+    post:
+      operationId: R104
+      summary: 'R104: Register Action'
+      description: 'Processes the register form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:          # <!--- form field name
+                  type: string
+                email:          # <!--- form field name
+                  type: string
+                  format: email
+                password:    # <!--- form field name
+                  type: string
+                  format: password
+                confirm_password:    # <!--- form field name
+                  type: string
+                  format: password
+              required:
+                - username
+                - email
+                - password
+                - confirm_password
+
+      responses:
+        '302':
+          description: 'Redirect after processing the register credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed resgister. Redirect to register form.'
+                  value: '/register'
+/logout:
+
+  post:
+    operationId: R105
+    summary: 'R105: Logout Action'
+    description: 'Logout the current authenticated user. Access: USR, ADM'
+    tags:
+      - 'M01: Authentication and Individual Profile'
+    responses:
+      '302':
+        description: 'Redirect after processing logout.'
+        headers:
+          Location:
+            schema:
+              type: string
+            examples:
+              302Success:
+                description: 'Successful logout. Redirect to login form.'
+                value: '/login'
+  /user/{id}:
+    get:
+      operationId: R201
+      summary: 'R201: User'
+      description: 'Provide User Profile. Access: USR'
+      tags:
+        - 'M02: User'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show User Profile'  
+        '302':
+          description: 'Ok. Show Register UI' 
+
+  /user/edit:
+    get:
+      operationId: R202
+      summary: 'R202: Edit Profile Form'
+      description: 'Provide Edit Profile Form. Access: OWN'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: 'Ok. Show Edit Profile page UI'
+        '302':
+          description: 'Redirect to login user is not loged in.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User is not logged in. Redirect to login form.'
+                  value: '/login'
+    post:
+      operationId: R203
+      summary: 'R203: Edit Profile Action'
+      description: 'Edits the profile of the user. Access: OWN ADM'
+      tags:
+        - 'M02: User'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:          # <!--- form field name
+                  type: string
+                username:    # <!--- form field name
+                  type: string
+                email:    # <!--- form field name
+                  type: string
+                  format: email
+                password:    # <!--- form field name
+                  type: string
+                  format: password
+                confirm_password:    # <!--- form field name
+                  type: string
+                  format: password
+                bio:    # <!--- form field name
+                  type: string
+              required:
+                - name
+                - username
+                - email
+                - bio
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Edit profile.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edition. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed edition. Redirect to login form.'
+                  value: '/user/edit'
+############notifications##############
+  /home/notifications:
+    get:
+      operationId: R203
+      summary: 'R203: User notifications page.'
+      description: 'Show user notifications page. Access: USR, ADM'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: 'OK. Show the user notifications page.'
+        '302':
+          description: 'Redirect to login user is not loged in.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User is not logged in. Redirect to login form.'
+                  value: '/login'
+  /user/delete:
+    post:
+      operationId: R204
+      summary: 'R204: Delete User Action'
+      description: 'Delete an User from the database. Access: OWN, ADM'
+      tags:
+        - 'M02: User'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:          # <!--- form field name
+                  type: integer
+              required:
+                - id
+    responses:
+      '302':
+        description: 'Redirect after processing deletion of account.'
+        headers:
+          Location:
+            schema:
+              type: string
+            examples:
+              302Success:
+                description: 'Successful deletion. Redirect to login form.'
+                value: '/login'
+              302Error:
+                description: 'Not Successful deletion. Redirect to User profile.'
+                value: '/user/{id}'
+###############commentables##############
+  /question/{id}:
+    get:
+      operationId: R301
+      summary: 'R301: User'
+      description: 'Provide the question page. Access: USR'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show Question Page'  
+        '302':
+          description: 'Redirect to login user is not loged in.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User is not logged in. Redirect to login form.'
+                  value: '/login'
+  /question/{id}/edit:
+    get:
+      operationId: R302
+      summary: 'R302: Edit Question Form'
+      description: 'Provide Edit Question Form. Access: OWN ADM'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show Edit Question page UI'
+        '302':
+          description: 'The user doesnt have permission.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User doesn t have permission to change this.'
+                  value: '/question/{id}'
+    post:
+      operationId: R303
+      summary: 'R303: Edit Question Action'
+      description: 'Edits the question. Access: OWN ADM'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:          # <!--- form field name
+                  type: string
+                content:    # <!--- form field name
+                  type: string
+            required:
+              - title
+              - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Edit question.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edition. Redirect to question page.'
+                  value: '/question/{id}'
+                302Error:
+                  description: 'Failed edition. Redirect to question page form.'
+                  value: '/question/{id}'
+  /question/{id}/delete:
+    post:
+      operationId: R304
+      summary: 'R304: Delete Question Action'
+      description: 'Delete a Question from the database. Access: OWN, ADM'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '302':
+          description: 'Redirect after processing deletion of question.'
+          headers:
+          Location:
+            schema:
+              type: string
+            examples:
+              302Success:
+                description: 'Successful edition. Redirect to question page.'
+                value: '/question/{id}'
+              302Error:
+                description: 'Failed edition. Redirect to question page form.'
+                value: '/question/{id}'
+  /question/{id}/comment:
+    post:
+      operationId: R305
+      summary: 'R305: Comment Question Action'
+      description: 'Comment a Question. Access: USR'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:          # <!--- form field name
+                  type: string
+            required:
+              - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Comment.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful comment. Redirect to question page.'
+                  value: '/question/{id}'
+                302Error:
+                  description: 'Failed comment. Redirect to question page form.'
+                  value: '/question/{id}'
+  /question/{id}/comment/{id_comment}/edit:
+    post:
+      operationId: R306
+      summary: 'R306: Edit Comment Action'
+      description: 'Edit a Comment. Access: OWN ADM'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: id_comment
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:          # <!--- form field name
+                  type: string
+            required:
+              - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Edit.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edition. Redirect to question page.'
+                  value: '/question/{id}'
+                302Error:
+                  description: 'Failed edition. Redirect to question page form.'
+                  value: '/question/{id}'
+
+  /question/{id}/comment/{id_comment}/delete:
+    post:
+      operationId: R307
+      summary: 'R307: Delete Comment Action'
+      description: 'Delete a Comment from the database. Access: OWN, ADM'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: id_comment
+          schema:
+            type: integer
+          required: true
+      responses:
+        '302':
+          description: 'Redirect after processing deletion of comment.'
+          headers:
+          Location:
+            schema:
+              type: string
+            examples:
+              302Success:
+                description: 'Successful edition. Redirect to question page.'
+                value: '/question/{id}'
+              302Error:
+                description: 'Failed edition. Redirect to question page form.'
+                value: '/question/{id}'
+  /question/{id}/answer:
+    post:
+      operationId: R308
+      summary: 'R308: Answer Question Action'
+      description: 'Answer a Question. Access: USR'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:          # <!--- form field name
+                  type: string
+            required:
+              - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Answer.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful answer. Redirect to question page.'
+                  value: '/question/{id}'
+                302Error:
+                  description: 'Failed answer user is not logged in. Redirect to login page form.'
+                  value: '/login'
+  /question/{id}/answer/{id_answer}/edit:
+    post:
+      operationId: R309
+      summary: 'R309: Edit Answer Action'
+      description: 'Edit an Answer. Access: OWN ADM'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: id_answer
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:          # <!--- form field name
+                  type: string
+            required:
+              - content
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Edit.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edition. Redirect to question page.'
+                  value: '/question/{id}'
+                302Error:
+                  description: 'Failed edition. Redirect to question page form.'
+                  value: '/question/{id}'
+  /question/{id}/answer/{id_answer}/delete:
+    post:
+      operationId: R310
+      summary: 'R310: Delete Answer Action'
+      description: 'Delete an Answer from the database. Access: OWN, ADM'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: id_answer
+          schema:
+            type: integer
+          required: true
+      responses:
+        '302':
+          description: 'Redirect after processing deletion of answer.'
+          headers:
+          Location:
+            schema:
+              type: string
+            examples:
+              302Success:
+                description: 'Successful edition. Redirect to question page.'
+                value: '/question/{id}'
+              302Error:
+                description: 'Failed edition. Redirect to question page form.'
+                value: '/question/{id}'
