@@ -130,7 +130,7 @@ paths:
     summary: 'R105: Logout Action'
     description: 'Logout the current authenticated user. Access: USR, ADM'
     tags:
-      - 'M01: Authentication and Individual Profile'
+      - 'M01: Authentication'
     responses:
       '302':
         description: 'Redirect after processing logout.'
