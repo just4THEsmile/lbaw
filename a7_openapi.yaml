@@ -284,11 +284,160 @@ paths:
               302Error:
                 description: 'Not Successful deletion. Redirect to User profile.'
                 value: '/user/{id}'
+  /user/questions:
+    get:
+      operationId: R206
+      summary: 'R206: Questions of the user'
+      description: 'Returns the questions of the user. Access: USR'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    date:
+                      type: string
+                    edited:
+                      type: bool
+                    votes:
+                      type: int
+                    author:
+                      type: array
+                    tags:
+                      type: array
+                example:
+                  - id: 1
+                    title: Rihanna - Unapologetic
+                    content: Why is this music so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 15
+                    author: ["Manuel Teixeira", "https//image.com/userid=2"]
+                    tags: ["music", "pop"]
+                  - id: 15
+                    title: Ellon Musk - Tesla
+                    content: Why is this car so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 19
+                    author: ["Donald Trump", "https//image.com/userid=4"]
+                    tags: ["cars", "tesla"]
+  /user/answers:
+    get:
+      operationId: R207
+      summary: 'R207: Answers of the user'
+      description: 'Returns the Answer of the user. Access: USR'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    content:
+                      type: string
+                    date:
+                      type: string
+                    edited:
+                      type: bool
+                    votes:
+                      type: int
+                example:
+                  - id: 1
+                    title: Rihanna - Unapologetic
+                    content: Why is this music so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 15
+                    author: ["Manuel Teixeira", "https//image.com/userid=2"]
+                    tags: ["music", "pop"]
+                  - id: 15
+                    content: Why is this car so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 19
 ###############commentables##############
-  /question/{id}:
+  /createquestion:
     get:
       operationId: R301
-      summary: 'R301: User'
+      summary: 'R301: Question Form'
+      description: 'Provide Question Form. Access: USR'
+      tags:
+        - 'M03: Commentables & Comments'
+      responses:
+        '200':
+          description: 'Ok. Show Edit Question page UI'
+        '302':
+          description: 'The user doesnt have permission.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User doesn t have permission to change this.'
+                  value: '/question/{id}'
+    post:
+      operationId: R302
+      summary: 'R302: Create Question Action'
+      description: 'Create question. Access: USR'
+      tags:
+        - 'M03: Commentables & Comments'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:          # <!--- form field name
+                  type: string
+                content:    # <!--- form field name
+                  type: string
+                tags:
+                  type: array
+            required:
+              - title
+              - content
+              - tags
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Edit question.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful. Redirect to question page.'
+                  value: '/question/{id}'
+                302Error:
+                  description: 'Failed . User is not logged in.'
+                  value: '/createquestion'
+  /question/{id}:
+    get:
+      operationId: R303
+      summary: 'R303: User'
       description: 'Provide the question page. Access: USR'
       tags:
         - 'M03: Commentables & Comments'
@@ -313,8 +462,8 @@ paths:
                   value: '/login'
   /question/{id}/edit:
     get:
-      operationId: R302
-      summary: 'R302: Edit Question Form'
+      operationId: R304
+      summary: 'R304: Edit Question Form'
       description: 'Provide Edit Question Form. Access: OWN ADM'
       tags:
         - 'M03: Commentables & Comments'
@@ -338,8 +487,8 @@ paths:
                   description: 'User doesn t have permission to change this.'
                   value: '/question/{id}'
     post:
-      operationId: R303
-      summary: 'R303: Edit Question Action'
+      operationId: R305
+      summary: 'R305: Edit Question Action'
       description: 'Edits the question. Access: OWN ADM'
       tags:
         - 'M03: Commentables & Comments'
@@ -360,9 +509,12 @@ paths:
                   type: string
                 content:    # <!--- form field name
                   type: string
+                tags:
+                  type: array
             required:
               - title
               - content
+              - tags
 
       responses:
         '302':
@@ -380,8 +532,8 @@ paths:
                   value: '/question/{id}'
   /question/{id}/delete:
     post:
-      operationId: R304
-      summary: 'R304: Delete Question Action'
+      operationId: R306
+      summary: 'R306: Delete Question Action'
       description: 'Delete a Question from the database. Access: OWN, ADM'
       tags:
         - 'M03: Commentables & Comments'
@@ -405,10 +557,27 @@ paths:
               302Error:
                 description: 'Failed edition. Redirect to question page form.'
                 value: '/question/{id}'
-  /question/{id}/comment:
+  /commentable/{id}/comment:
+    get:
+      operationId: R307
+      summary: 'R307: comment form'
+      description: 'Provide comment form. Access: USR'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show User Comment form'  
+        '302':
+          description: 'Ok. Show Register UI' 
     post:
-      operationId: R305
-      summary: 'R305: Comment Question Action'
+      operationId: R308
+      summary: 'R308: Comment Question Action'
       description: 'Comment a Question. Access: USR'
       tags:
         - 'M03: Commentables & Comments'
@@ -444,10 +613,40 @@ paths:
                 302Error:
                   description: 'Failed comment. Redirect to question page form.'
                   value: '/question/{id}'
-  /question/{id}/comment/{id_comment}/edit:
+  /commentable/{id}/comment/{id_comment}/edit:
+    get:
+      operationId: R309
+      summary: 'R309: Edit Comment Form'
+      description: 'Provide Edit Comment Form. Access: OWN ADM'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: id_comment
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show Edit Comment page UI'
+        '302':
+          description: 'The user doesnt have permission.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User doesn t have permission to change this.'
+                  value: '/question/{id}'
     post:
-      operationId: R306
-      summary: 'R306: Edit Comment Action'
+      operationId: R310
+      summary: 'R310: Edit Comment Action'
       description: 'Edit a Comment. Access: OWN ADM'
       tags:
         - 'M03: Commentables & Comments'
@@ -489,10 +688,10 @@ paths:
                   description: 'Failed edition. Redirect to question page form.'
                   value: '/question/{id}'
 
-  /question/{id}/comment/{id_comment}/delete:
+  /commentable/{id}/comment/{id_comment}/delete:
     post:
-      operationId: R307
-      summary: 'R307: Delete Comment Action'
+      operationId: R311
+      summary: 'R311: Delete Comment Action'
       description: 'Delete a Comment from the database. Access: OWN, ADM'
       tags:
         - 'M03: Commentables & Comments'
@@ -522,9 +721,26 @@ paths:
                 description: 'Failed edition. Redirect to question page form.'
                 value: '/question/{id}'
   /question/{id}/answer:
+    get:
+      operationId: R312
+      summary: 'R312: Answer form'
+      description: 'Provide User Answer form. Access: USR'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show User Answer form'  
+        '302':
+          description: 'Ok. Show Register UI' 
     post:
-      operationId: R308
-      summary: 'R308: Answer Question Action'
+      operationId: R313
+      summary: 'R313: Answer Question Action'
       description: 'Answer a Question. Access: USR'
       tags:
         - 'M03: Commentables & Comments'
@@ -561,9 +777,39 @@ paths:
                   description: 'Failed answer user is not logged in. Redirect to login page form.'
                   value: '/login'
   /question/{id}/answer/{id_answer}/edit:
+    get:
+      operationId: R314
+      summary: 'R314: Edit Answer Form'
+      description: 'Provide Edit Answer Form. Access: OWN ADM'
+      tags:
+        - 'M03: Commentables & Comments'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: id_comment
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show Edit Comment page UI'
+        '302':
+          description: 'The user doesnt have permission.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User doesn t have permission to change this.'
+                  value: '/question/{id}'
     post:
-      operationId: R309
-      summary: 'R309: Edit Answer Action'
+      operationId: R315
+      summary: 'R315: Edit Answer Action'
       description: 'Edit an Answer. Access: OWN ADM'
       tags:
         - 'M03: Commentables & Comments'
@@ -606,8 +852,8 @@ paths:
                   value: '/question/{id}'
   /question/{id}/answer/{id_answer}/delete:
     post:
-      operationId: R310
-      summary: 'R310: Delete Answer Action'
+      operationId: R316
+      summary: 'R316: Delete Answer Action'
       description: 'Delete an Answer from the database. Access: OWN, ADM'
       tags:
         - 'M03: Commentables & Comments'
@@ -636,3 +882,284 @@ paths:
               302Error:
                 description: 'Failed edition. Redirect to question page form.'
                 value: '/question/{id}'
+ 
+
+  /search/question/byQuestion:
+    get:
+      operationId: R401
+      summary: 'R401: Search for the questions'
+      description: 'Searches for questions. Access: USR ADM.'
+
+      tags: 
+        - 'M04: Search'
+
+      parameters:
+        - in: query
+          name: query
+          description: String to use for exact-match
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: tag
+          description: A tag that must be present in the questions shown
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: Answered
+          description: Boolean with the Answered flag value if true the answer was already reasolved
+          schema:
+            type: boolean
+          required: false
+        - in: query
+          name: OrderedBy
+          description: Correspond to one of the order selected by the user
+          schema:
+            type: string
+          required: false
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    date:
+                      type: string
+                    edited:
+                      type: bool
+                    votes:
+                      type: int
+                    author:
+                      type: array
+                    tags:
+                      type: array
+                example:
+                  - id: 1
+                    title: Rihanna - Unapologetic
+                    content: Why is this music so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 15
+                    author: ["Manuel Teixeira", "https//image.com/userid=2"]
+                    tags: ["music", "pop"]
+                  - id: 15
+                    title: Ellon Musk - Tesla
+                    content: Why is this car so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 19
+                    author: ["Donald Trump", "https//image.com/userid=4"]
+                    tags: ["cars", "tesla"]
+
+  /search/question/byAuthor:
+    get:
+      operationId: R402
+      summary: 'R402: Search for the questions by the author'
+      description: 'Searches for questions. Access: USR ADM.'
+
+      tags: 
+        - 'M04: Search'
+
+      parameters:
+        - in: query
+          name: query
+          description: String to use for exact-match
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: tag
+          description: A tag that must be present in the questions shown
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: Answered
+          description: Boolean with the Answered flag value if true the answer was already reasolved
+          schema:
+            type: boolean
+          required: false
+        - in: query
+          name: OrderedBy
+          description: Correspond to one of the order selected by the user
+          schema:
+            type: string
+          required: false
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    date:
+                      type: string
+                    edited:
+                      type: bool
+                    votes:
+                      type: int
+                    author:
+                      type: array
+                    tags:
+                      type: array
+                example:
+                  - id: 1
+                    title: Rihanna - Unapologetic
+                    content: Why is this music so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 15
+                    author: ["Manuel Teixeira", "https//image.com/userid=2"]
+                    tags: ["music", "pop"]
+                  - id: 15
+                    title: Ellon Musk - Tesla
+                    content: Why is this car so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 19
+                    author: ["Donald Trump", "https//image.com/userid=4"]
+                    tags: ["cars", "tesla"]
+
+  /search/user:
+    get:
+      operationId: R403
+      summary: 'R403: Search for the users'
+      description: 'Searches for users. Access: USR ADM.'
+
+      tags: 
+        - 'M04: Search'
+
+      parameters:
+        - in: query
+          name: query
+          description: String to use for exact-match
+          schema:
+            type: string
+          required: false
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    username:
+                      type: string
+                    picture:
+                      type: string
+                    badges:
+                      type: array
+                example:
+                  - id: 1
+                    name: Manuel Teixeira
+                    username: manuelteixeira
+                    picture: https//image.com/userid=2
+                    badges: ["gold", "silver"]
+                  - id: 15
+                    name: Donald Trump
+                    username: donaldtrump
+                    picture: https//image.com/userid=4
+                    badges: ["gold", "silver","platinum"]
+
+  /user/{id}/editadmin:
+    get:
+      operationId: R501
+      summary: 'R501: Edit Profile Admin Form'
+      description: 'Provide Edit Profile Admin Form. Access: ADM'
+      tags:
+        - 'M05: Administration'
+      responses:
+        '200':
+          description: 'Ok. Show Edit Profile Admin page UI'
+        '302':
+          description: 'Redirect to homepage user does not have permissions.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User is not logged in or doesnt have permissions.'
+                  value: '/home'
+    post:
+      operationId: R203
+      summary: 'R203: Edit Profile Action'
+      description: 'Edits the profile of the user. Access: ADM'
+      tags:
+        - 'M05: Administration'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                usertype:
+                  type: string
+                name:          # <!--- form field name
+                  type: string
+                username:    # <!--- form field name
+                  type: string
+                email:    # <!--- form field name
+                  type: string
+                  format: email
+                password:    # <!--- form field name
+                  type: string
+                  format: password
+                confirm_password:    # <!--- form field name
+                  type: string
+                  format: password
+                bio:    # <!--- form field name
+                  type: string
+              required:
+                - usertype
+                - name
+                - username
+                - email
+                - bio
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Edit profile.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edition. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed edition. Redirect to login form.'
+                  value: '/user/{id}/editadmin'
