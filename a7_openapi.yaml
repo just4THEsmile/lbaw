@@ -636,3 +636,283 @@ paths:
               302Error:
                 description: 'Failed edition. Redirect to question page form.'
                 value: '/question/{id}'
+ 
+
+  /search/question/byQuestion:
+    get:
+      operationId: R401
+      summary: 'R401: Search for the questions'
+      description: 'Searches for questions. Access: USR ADM.'
+
+      tags: 
+        - 'M04: Search'
+
+      parameters:
+        - in: query
+          name: query
+          description: String to use for exact-match
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: tag
+          description: A tag that must be present in the questions shown
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: Answered
+          description: Boolean with the Answered flag value if true the answer was already reasolved
+          schema:
+            type: boolean
+          required: false
+        - in: query
+          name: OrderedBy
+          description: Correspond to one of the order selected by the user
+          schema:
+            type: string
+          required: false
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    date:
+                      type: string
+                    edited:
+                      type: bool
+                    votes:
+                      type: int
+                    author:
+                      type: array
+                    tags:
+                      type: array
+                example:
+                  - id: 1
+                    title: Rihanna - Unapologetic
+                    content: Why is this music so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 15
+                    author: ["Manuel Teixeira", "https//image.com/userid=2"]
+                    tags: ["music", "pop"]
+                  - id: 15
+                    title: Ellon Musk - Tesla
+                    content: Why is this car so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 19
+                    author: ["Donald Trump", "https//image.com/userid=4"]
+                    tags: ["cars", "tesla"]
+
+  /search/question/byAuthor:
+    get:
+      operationId: R402
+      summary: 'R402: Search for the questions by the author'
+      description: 'Searches for questions. Access: USR ADM.'
+
+      tags: 
+        - 'M04: Search'
+
+      parameters:
+        - in: query
+          name: query
+          description: String to use for exact-match
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: tag
+          description: A tag that must be present in the questions shown
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: Answered
+          description: Boolean with the Answered flag value if true the answer was already reasolved
+          schema:
+            type: boolean
+          required: false
+        - in: query
+          name: OrderedBy
+          description: Correspond to one of the order selected by the user
+          schema:
+            type: string
+          required: false
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    date:
+                      type: string
+                    edited:
+                      type: bool
+                    votes:
+                      type: int
+                    author:
+                      type: array
+                    tags:
+                      type: array
+                example:
+                  - id: 1
+                    title: Rihanna - Unapologetic
+                    content: Why is this music so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 15
+                    author: ["Manuel Teixeira", "https//image.com/userid=2"]
+                    tags: ["music", "pop"]
+                  - id: 15
+                    title: Ellon Musk - Tesla
+                    content: Why is this car so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 19
+                    author: ["Donald Trump", "https//image.com/userid=4"]
+                    tags: ["cars", "tesla"]
+
+  /search/user:
+    get:
+      operationId: R403
+      summary: 'R403: Search for the users'
+      description: 'Searches for users. Access: USR ADM.'
+
+      tags: 
+        - 'M04: Search'
+
+      parameters:
+        - in: query
+          name: query
+          description: String to use for exact-match
+          schema:
+            type: string
+          required: false
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    username:
+                      type: string
+                    picture:
+                      type: string
+                    badges:
+                      type: array
+                example:
+                  - id: 1
+                    name: Manuel Teixeira
+                    username: manuelteixeira
+                    picture: https//image.com/userid=2
+                    badges: ["gold", "silver"]
+                  - id: 15
+                    name: Donald Trump
+                    username: donaldtrump
+                    picture: https//image.com/userid=4
+                    badges: ["gold", "silver","platinum"]
+  /user/{id}/editadmin:
+    get:
+      operationId: R501
+      summary: 'R501: Edit Profile Admin Form'
+      description: 'Provide Edit Profile Admin Form. Access: ADM'
+      tags:
+        - 'M05: Administration'
+      responses:
+        '200':
+          description: 'Ok. Show Edit Profile Admin page UI'
+        '302':
+          description: 'Redirect to homepage user does not have permissions.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User is not logged in or doesnt have permissions.'
+                  value: '/home'
+    post:
+      operationId: R203
+      summary: 'R203: Edit Profile Action'
+      description: 'Edits the profile of the user. Access: ADM'
+      tags:
+        - 'M02: User'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                usertype:
+                  type: string
+                name:          # <!--- form field name
+                  type: string
+                username:    # <!--- form field name
+                  type: string
+                email:    # <!--- form field name
+                  type: string
+                  format: email
+                password:    # <!--- form field name
+                  type: string
+                  format: password
+                confirm_password:    # <!--- form field name
+                  type: string
+                  format: password
+                bio:    # <!--- form field name
+                  type: string
+              required:
+                - usertype
+                - name
+                - username
+                - email
+                - bio
+
+      responses:
+        '302':
+          description: 'Redirect after processing the Edit profile.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edition. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed edition. Redirect to login form.'
+                  value: '/user/{id}/editadmin'
