@@ -284,6 +284,97 @@ paths:
               302Error:
                 description: 'Not Successful deletion. Redirect to User profile.'
                 value: '/user/{id}'
+  /user/questions:
+    get:
+      operationId: R206
+      summary: 'R206: Questions of the user'
+      description: 'Returns the questions of the user. Access: USR'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    date:
+                      type: string
+                    edited:
+                      type: bool
+                    votes:
+                      type: int
+                    author:
+                      type: array
+                    tags:
+                      type: array
+                example:
+                  - id: 1
+                    title: Rihanna - Unapologetic
+                    content: Why is this music so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 15
+                    author: ["Manuel Teixeira", "https//image.com/userid=2"]
+                    tags: ["music", "pop"]
+                  - id: 15
+                    title: Ellon Musk - Tesla
+                    content: Why is this car so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 19
+                    author: ["Donald Trump", "https//image.com/userid=4"]
+                    tags: ["cars", "tesla"]
+  /user/answers:
+    get:
+      operationId: R207
+      summary: 'R207: Answers of the user'
+      description: 'Returns the Answer of the user. Access: USR'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    content:
+                      type: string
+                    date:
+                      type: string
+                    edited:
+                      type: bool
+                    votes:
+                      type: int
+                example:
+                  - id: 1
+                    title: Rihanna - Unapologetic
+                    content: Why is this music so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 15
+                    author: ["Manuel Teixeira", "https//image.com/userid=2"]
+                    tags: ["music", "pop"]
+                  - id: 15
+                    content: Why is this car so bad i dont know how to deal with it.
+                    date: "16/11/2022 22:13:3"
+                    edited: true
+                    votes: 19
 ###############commentables##############
   /createquestion:
     get:
@@ -999,6 +1090,7 @@ paths:
                     username: donaldtrump
                     picture: https//image.com/userid=4
                     badges: ["gold", "silver","platinum"]
+
   /user/{id}/editadmin:
     get:
       operationId: R501
@@ -1024,7 +1116,7 @@ paths:
       summary: 'R203: Edit Profile Action'
       description: 'Edits the profile of the user. Access: ADM'
       tags:
-        - 'M02: User'
+        - 'M05: Administration'
 
       requestBody:
         required: true
@@ -1071,4 +1163,3 @@ paths:
                 302Error:
                   description: 'Failed edition. Redirect to login form.'
                   value: '/user/{id}/editadmin'
-
