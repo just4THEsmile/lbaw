@@ -8,6 +8,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,10 @@ use App\Http\Controllers\HomeController;
 |
 */
 
+//User
+Route::post('/update-name', 'UserController@updateName')->name('updateName');
+
+
 // Home
 Route::redirect('/', '/login');
 
@@ -28,6 +33,15 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 
+// Profile
+Route::controller(ProfileController::class)->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+});
+
+//Edit Profile
+Route::controller(ProfileController::class)->group(function () {
+    Route::get('/editprofile', [ProfileController::class, 'edit'])->name('editprofile');
+});
 
 // API
 Route::controller(CardController::class)->group(function () {
