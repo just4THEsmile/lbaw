@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,9 @@ use App\Http\Controllers\ProfileController;
 */
 
 //User
-Route::post('/update-name', 'UserController@updateName')->name('updateName');
+Route::controller(ItemController::class)->group(function () {
+    Route::post('/updatename', [UserController::class, 'updateName'])->name('updatename');    
+});
 
 
 // Home

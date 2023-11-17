@@ -35,8 +35,8 @@
                         <p>Here you can change your name, which is used to identify you within the system. Your name may be displayed on your profile, on messages you send, and in other areas where your identity is relevant. Updating your name can help ensure that you are recognized accurately and consistently by other users or participants in the system.</p>
                     </div>
                     <div class='right-card'>                   
-                        <form id='nameform' action="{{route('updateName')}}" method='post'>
-                            <input type="text" id="name" name="name" value="">
+                        <form id='nameform' action="{{route('updatename')}}" method='post'>
+                            <input type="text" id="name" name="name" value="{{Auth::user()->name}}">
                             <button type="submit" class='submitbuttons' name="name-form">Save Changes</button>
                         </form>
                     </div>   
@@ -48,7 +48,7 @@
                     </div>
                     <div class='right-card'>
                         <form id='usernameform' action="settings.php" method='post'>
-                            <input type="text" id="username" name='username' value="">
+                            <input type="text" id="username" name='username' value="{{Auth::user()->username}}">
                             <button type='submit' class='submitbuttons' name="username-form">Save Changes</button>
                         </form>
                     </div>   
@@ -60,7 +60,7 @@
                     </div>
                     <div class='right-card'>
                         <form id='emailform' action="settings.php" method='post'>
-                            <input type="text" id="email"  name='email' value="">
+                            <input type="text" id="email"  name='email' value="{{Auth::user()->email}}">
                             <button type='submit' class='submitbuttons' name="email-form">Save Changes</button>
                         </form>
                     </div>    
@@ -84,7 +84,7 @@
                     </div>
                     <div class='right-card'>
                         <form id='bioform' action="settings.php" method='post'>
-                            <textarea id="bio" name='bio'></textarea>
+                            <textarea id="bio" name='bio'>{{Auth::user()->bio}}</textarea>
                             <button type='submit' class='submitbuttons' name="bio-form">Save Changes</button>
                         </form>
                     </div>  

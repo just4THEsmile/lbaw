@@ -3,21 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
+
+use App\Models\User;
 
 class UserController extends Controller
 {
-    public function updateName(Request $request) {
-        // Retrieve the new name from the form input
-        $newName = $request->input('name');
-
-        // Update the user's name
+    public function updateName(Request $request)
+    {
+        $this->authorize('edit', User::class);
+        // Get the authenticated user
         $user = Auth::user();
-        $user->name = $newName;
-        $user->save();
 
-        // Redirect back or to a specific route after updating
-        return redirect()->back()->with('success', 'Name updated successfully');
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255|unique:appuser', 
+        ]);
+
+        $user->name = $request->input('name');
+        
+        return redirect()->route('profile');
     }
 }
