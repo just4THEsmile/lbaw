@@ -20,18 +20,16 @@ class Comment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
-        'correct_answer_id'
+        'content_id',
+        'commentable_id'
     ];
 
     protected $table = 'comment';
     protected $primaryKey = 'content_id';
 
 
-    /*
-    public function commentable()
+    public function commentable() : BelongsTo
     {
-        return $this->belongsTo(Commentable::class, 'content_id');
+        return $this->belongsTo(Commentable::class,'commentable_id','content_id');
     }
-    */
 }

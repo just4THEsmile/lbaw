@@ -26,10 +26,14 @@ class Question extends Model
 
     protected $table = 'question';
     protected $primaryKey = 'commentable_id';
-    /*
-    public function commentable()
+    
+    public function commentable(): BelongsTo
     {
-        return $this->belongsTo(Commentable::class, 'content_id');
+        return $this->belongsTo(Commentable::class,'commentable_id');
     }
-    */
+    public function Awnsers(): HasMany
+    {
+        return $this->hasMany(Awnser::class,'question_id','commentable_id');
+    }
+    
 }
