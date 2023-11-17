@@ -29,10 +29,9 @@ class Content extends Model
     ];
 
     protected $table = 'content';
-    /*
-    public function user()
+    
+    public function user() : BelongsTo
     {
-        return $this->belongsTo(AppUser::class, 'user_id');
+        return $this->belongsTo(AppUser::class);
     }
-    */
 }

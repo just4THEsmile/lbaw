@@ -23,5 +23,13 @@ class Commentable extends Model
 
     protected $table = 'commentable';
     protected $primaryKey = 'content_id';
+    public function content() : BelongsTo
+    {
+        return $this->belongsTo(Content::class,'content_if');
+    }
 
+    public function Comments(): HasMany
+    {
+        return $this->hasMany(Comment::class,'commentable_id','content_id');
+    }
 }
