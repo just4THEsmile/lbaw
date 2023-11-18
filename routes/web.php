@@ -47,6 +47,7 @@ Route::controller(HomeController::class)->group(function () {
 Route::controller(ProfileController::class)->group(function () {
     Route::get('/editprofile', [ProfileController::class, 'edit'])->name('editprofile');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+});
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/question/{id}', 'show');
 });
