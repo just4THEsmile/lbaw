@@ -117,14 +117,14 @@ CREATE TABLE Content (
 
 CREATE TABLE Commentable (
     content_id INTEGER PRIMARY KEY,
-    FOREIGN KEY (content_id) REFERENCES Content(id)
+    FOREIGN KEY (content_id) REFERENCES Commentable(id)
 );
 
 CREATE TABLE Question (
     commentable_id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
     correct_answer_id INTEGER,
-    FOREIGN KEY (commentable_id) REFERENCES Content(id)
+    FOREIGN KEY (commentable_id) REFERENCES Commentable(id)
 );
 
 CREATE TABLE Answer (

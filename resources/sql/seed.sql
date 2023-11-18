@@ -97,7 +97,7 @@ CREATE TABLE BadgeAttainment (
 );
 
 CREATE TABLE UnblockRequest (
-    id1 SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
     title VARCHAR NOT NULL,
     description TEXT NOT NULL,
@@ -116,30 +116,30 @@ CREATE TABLE Content (
 );
 
 CREATE TABLE Commentable (
-    content_id INTEGER PRIMARY KEY,
-    FOREIGN KEY (content_id) REFERENCES Content(id)
+    id INTEGER PRIMARY KEY,
+    FOREIGN KEY (id) REFERENCES Content(id)
 );
 
 CREATE TABLE Question (
-    commentable_id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
     correct_answer_id INTEGER,
-    FOREIGN KEY (commentable_id) REFERENCES Content(id)
+    FOREIGN KEY (id) REFERENCES Commentable(id)
 );
 
 CREATE TABLE Answer (
-    commentable_id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     question_id INTEGER NOT NULL,
-    FOREIGN KEY (commentable_id) REFERENCES Content(id),
-    FOREIGN KEY (question_id) REFERENCES Question(commentable_id)
+    FOREIGN KEY (id) REFERENCES Commentable(id),
+    FOREIGN KEY (question_id) REFERENCES Question(id)
 );
 
 CREATE TABLE Comment (
-    content_id INTEGER,
+    id INTEGER,
     commentable_id INTEGER NOT NULL,
-    PRIMARY KEY (content_id),
-    FOREIGN KEY (content_id) REFERENCES Content(id),
-    FOREIGN KEY (commentable_id) REFERENCES Commentable(content_id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Content(id),
+    FOREIGN KEY (commentable_id) REFERENCES Commentable(id)
 );
 
 CREATE TABLE Tag (
@@ -152,7 +152,7 @@ CREATE TABLE QuestionTag (
     question_id INTEGER,
     tag_id INTEGER,
     PRIMARY KEY (question_id, tag_id),
-    FOREIGN KEY (question_id) REFERENCES Question(commentable_id),
+    FOREIGN KEY (question_id) REFERENCES Question(id),
     FOREIGN KEY (tag_id) REFERENCES Tag(id)
 );
 
@@ -169,15 +169,15 @@ CREATE TABLE AnswerNotification (
     question_id INTEGER NOT NULL,
     answer_id INTEGER NOT NULL,
     FOREIGN KEY (notification_id) REFERENCES Notification(id),
-    FOREIGN KEY (question_id) REFERENCES Question(commentable_id),
-    FOREIGN KEY (answer_id) REFERENCES Answer(commentable_id)
+    FOREIGN KEY (question_id) REFERENCES Question(id),
+    FOREIGN KEY (answer_id) REFERENCES Answer(id)
 );
 
 CREATE TABLE CommentNotification (
     notification_id INTEGER PRIMARY KEY,
     comment_id INTEGER NOT NULL,
     FOREIGN KEY (notification_id) REFERENCES Notification(id),
-    FOREIGN KEY (comment_id) REFERENCES Comment(content_id)
+    FOREIGN KEY (comment_id) REFERENCES Comment(id)
 );
 
 CREATE TABLE Report (
@@ -230,11 +230,11 @@ CREATE TABLE FollowQuestion (
     question_id INTEGER,
     PRIMARY KEY (user_id, question_id),
     FOREIGN KEY (user_id) REFERENCES AppUser(id),
-    FOREIGN KEY (question_id) REFERENCES Question(commentable_id)
+    FOREIGN KEY (question_id) REFERENCES Question(id)
 );
 
 ALTER TABLE Question
-  ADD FOREIGN KEY (correct_answer_id) REFERENCES answer(commentable_id) ON UPDATE CASCADE;
+  ADD FOREIGN KEY (correct_answer_id) REFERENCES answer(id) ON UPDATE CASCADE;
 
 
 --Populate
@@ -389,7 +389,7 @@ VALUES
     (19, 'Sample content 9', 10, 0, NOW(), false),
     (20, 'Sample content 10', 6, 2, NOW(), false);
 
-INSERT INTO Commentable (content_id)
+INSERT INTO Commentable (id)
 VALUES
     (1),
     (2),
@@ -447,7 +447,7 @@ VALUES
 
  -- might work ALTER TABLE Question DISABLE TRIGGER question_minimum_tag_trigger; broken from here down
 
-INSERT INTO Question (commentable_id, title, correct_answer_id)
+INSERT INTO Question (id, title, correct_answer_id)
 VALUES
     (1, 'What is the capital of France?', NULL),
     (2, 'Who wrote "Romeo and Juliet?"', NULL),
@@ -495,13 +495,13 @@ VALUES
     (19, 19),
     (20, 20);
 
-INSERT INTO Answer (commentable_id, question_id)
+INSERT INTO Answer (id, question_id)
 VALUES
     (21, 1),
-    (22, 2),
-    (23, 3),
-    (24, 4),
-    (25, 5),
+    (22, 1),
+    (23, 1),
+    (24, 2),
+    (25, 2),
     (26, 6),
     (27, 7),
     (28, 8),
@@ -513,7 +513,7 @@ VALUES
 
 
 
-INSERT INTO Comment (content_id, commentable_id)
+INSERT INTO Comment (id, commentable_id)
 VALUES
     (1, 21),
     (2, 22),
@@ -852,9 +852,9 @@ BEGIN
 		WHERE id = (
 			SELECT Content.user_id
 			FROM Answer
-			JOIN Commentable ON Answer.commentable_id = Commentable.content_id
-			JOIN Content ON Commentable.content_id = Content.id
-			WHERE Answer.commentable_id = new.commentable_id
+			JOIN Commentable ON Answer.id = Commentable.id
+			JOIN Content ON Commentable.id = Content.id
+			WHERE Answer.id = new.id
 		);
     RETURN NEW;
 END;
@@ -876,9 +876,9 @@ BEGIN
 		WHERE id = (
 			SELECT Content.user_id
 			FROM Question
-			JOIN Commentable ON Question.commentable_id = Commentable.content_id
-			JOIN Content ON Commentable.content_id = Content.id
-			WHERE Question.commentable_id = new.commentable_id
+			JOIN Commentable ON Question.id = Commentable.id
+			JOIN Content ON Commentable.id = Content.id
+			WHERE Question.id = new.id
 		);
     RETURN NEW;
 END;
@@ -1099,9 +1099,9 @@ BEGIN
     SELECT user_id INTO question_author_id
     FROM Content
     WHERE id = (
-        SELECT commentable_id
+        SELECT id
         FROM Answer
-        WHERE commentable_id = NEW.commentable_id
+        WHERE id = NEW.id
     );
 
     -- Insert a new notification for the question author
@@ -1110,7 +1110,7 @@ BEGIN
 
     -- Insert a new answer notification for the notification
     INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
-    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.commentable_id);
+    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.id);
 
     RETURN NEW;
 END;
@@ -1129,12 +1129,12 @@ DECLARE
     answer_author_id INTEGER;
 BEGIN
     -- Check if the commentable_id is for an answer
-    IF NEW.commentable_id IN (SELECT commentable_id FROM Answer) THEN
+    IF NEW.commentable_id IN (SELECT id FROM Answer) THEN
         -- Get the author of the answer
         SELECT user_id INTO answer_author_id
         FROM Content
-        JOIN Answer ON Answer.commentable_id = Content.id
-        WHERE Answer.commentable_id = NEW.commentable_id;
+        JOIN Answer ON Answer.id = Content.id
+        WHERE Answer.id = NEW.commentable_id;
 
         -- Insert a new notification for the answer author
         INSERT INTO Notification (user_id, date)

@@ -6,8 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-// Added to define Eloquent relationships.
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Answer extends Model
 {
@@ -19,23 +18,19 @@ class Answer extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'commentable_id',
-        'question_id'
-    ];
 
     protected $table = 'answer';
-    protected $primaryKey = ['commentable_id', 'question_id'];
+    protected $primaryKey = 'id';
 
     
-    public function commentable() : BelongsTo
+    public function commentable(): BelongsTo
     {
-        return $this->belongsTo(Commentable::class,'commentable_id','content_id');
+        return $this->belongsTo(Commentable::class,'id');
     }
 
     public function question() : BelongsTo
     {
-        return $this->belongsTo(Commentable::class, 'question_id','commentable_id');
+        return $this->belongsTo(Commentable::class);
     }
     
     

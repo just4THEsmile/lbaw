@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\ItemController;
-
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
@@ -37,18 +37,18 @@ Route::controller(UserController::class)->group(function () {
 Route::redirect('/', '/login');
 
 // Main
+
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 
-// Profile
-Route::controller(ProfileController::class)->group(function () {
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-});
 
 //Edit Profile
 Route::controller(ProfileController::class)->group(function () {
     Route::get('/editprofile', [ProfileController::class, 'edit'])->name('editprofile');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::controller(QuestionController::class)->group(function () {
+    Route::get('/question/{id}', 'show');
 });
 
 // API
