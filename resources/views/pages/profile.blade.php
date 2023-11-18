@@ -25,14 +25,9 @@
             <header>
                 <h1><a href="{{ url('/home') }}">QthenA</a></h1>
                 @if (Auth::check())
-                    <a id="profile" class="button" href="{{ url('/profile') }}">
-                        <img src="{{ asset('images/space.png') }}" alt="User Profile Image">
-                    </a> 
+                    <a class="button" href="{{ url('/logout') }}"> Logout </a> <a id="profile" class="button" href="{{ url('/home') }}">Go back</a> <a id="profile" class="button" href="{{ url('/editprofile') }}">Edit Profile</a> 
                 @endif
             </header>
-            <section id="content">
-                @yield('content')
-            </section>
         </main>
     </body>
 </html>

@@ -13,7 +13,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Add your logic here to render the home page
-        return view('pages/home'); // Assuming 'home' is your home page view name
+        return view('pages/home');
     }
 }
