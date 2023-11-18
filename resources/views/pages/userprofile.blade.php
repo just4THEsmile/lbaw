@@ -36,6 +36,7 @@
                     </div>
                     <div class='right-card'>                   
                         <form id='nameform' action="{{route('updatename')}}" method='post'>
+                            @csrf
                             <input type="text" id="name" name="name" value="{{Auth::user()->name}}">
                             <button type="submit" class='submitbuttons' name="name-form">Save Changes</button>
                         </form>
