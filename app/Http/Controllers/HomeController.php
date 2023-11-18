@@ -1,19 +1,25 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
-{
     /**
      * Display the home page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    use App\Models\Question;
+
+    class HomeController extends Controller
     {
-        // Add your logic here to render the home page
-        return view('pages/home'); // Assuming 'home' is your home page view name
+        public function index()
+        {
+            $questions = DB::select('
+            SELECT Question.title, Content.content,AppUser.username,Content.date,Content.id, AppUser.id as userid
+            FROM Question,Content,AppUser
+            WHERE Question.commentable_id = Content.id AND Content.user_id = AppUser.id
+        ');
+            return view('pages.homequestions', ['questions' => $questions]);
+        }
     }
-}
