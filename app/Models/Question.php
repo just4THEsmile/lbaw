@@ -18,15 +18,15 @@ class Question extends Model
      */
 
     protected $table = 'question';
-    protected $primaryKey = 'commentable_id';
+    protected $primaryKey = 'id';
     
     public function commentable(): BelongsTo
     {
-        return $this->belongsTo(Commentable::class,'commentable_id');
+        return $this->belongsTo(Commentable::class,'id','id');
     }
     public function answers(): HasMany
     {
-        return $this->hasMany(Answer::class,'question_id','commentable_id');
+        return $this->hasMany(Answer::class);
     }
     
 }

@@ -22,14 +22,14 @@ class Commentable extends Model
     
 
     protected $table = 'commentable';
-    protected $primaryKey = 'content_id';
+    protected $primaryKey = 'id';
     public function content() : BelongsTo
     {
-        return $this->belongsTo(Content::class,'content_id');
+        return $this->belongsTo(Content::class,'id');
     }
 
     public function Comments(): HasMany
     {
-        return $this->hasMany(Comment::class,'commentable_id','content_id');
+        return $this->hasMany(Comment::class);
     }
 }

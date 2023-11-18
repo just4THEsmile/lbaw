@@ -20,17 +20,17 @@ class Answer extends Model
      */
 
     protected $table = 'answer';
-    protected $primaryKey = 'commentable_id';
+    protected $primaryKey = 'id';
 
     
     public function commentable(): BelongsTo
     {
-        return $this->belongsTo(Commentable::class,'commentable_id');
+        return $this->belongsTo(Commentable::class,'id');
     }
 
     public function question() : BelongsTo
     {
-        return $this->belongsTo(Commentable::class, 'question_id','commentable_id');
+        return $this->belongsTo(Commentable::class);
     }
     
     
