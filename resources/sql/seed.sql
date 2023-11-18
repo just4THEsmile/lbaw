@@ -124,13 +124,13 @@ CREATE TABLE Question (
     commentable_id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
     correct_answer_id INTEGER,
-    FOREIGN KEY (commentable_id) REFERENCES Content(id)
+    FOREIGN KEY (commentable_id) REFERENCES Commentable(content_id)
 );
 
 CREATE TABLE Answer (
     commentable_id INTEGER PRIMARY KEY,
     question_id INTEGER NOT NULL,
-    FOREIGN KEY (commentable_id) REFERENCES Content(id),
+    FOREIGN KEY (commentable_id) REFERENCES Commentable(content_id),
     FOREIGN KEY (question_id) REFERENCES Question(commentable_id)
 );
 
@@ -498,10 +498,10 @@ VALUES
 INSERT INTO Answer (commentable_id, question_id)
 VALUES
     (21, 1),
-    (22, 2),
-    (23, 3),
-    (24, 4),
-    (25, 5),
+    (22, 1),
+    (23, 1),
+    (24, 2),
+    (25, 2),
     (26, 6),
     (27, 7),
     (28, 8),

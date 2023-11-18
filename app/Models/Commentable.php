@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 // Added to define Eloquent relationships.
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Commentable extends Model
 {
     // Don't add create and update timestamps in database.
@@ -25,7 +25,7 @@ class Commentable extends Model
     protected $primaryKey = 'content_id';
     public function content() : BelongsTo
     {
-        return $this->belongsTo(Content::class,'content_if');
+        return $this->belongsTo(Content::class,'content_id');
     }
 
     public function Comments(): HasMany
