@@ -1,14 +1,13 @@
 body {
     background-color: #ffffff;
-    color: #9b4dca;
+    color: #0e0e0e;
   }
   main > header {
     display: grid;
     grid-template-columns: 1fr auto auto;
     align-items: center;
-    background-color: #d2afe7;
+    background-color: gray;
     padding: 1em;
-    margin: 1em;
   }
   main > header h1 {
     margin: 0;
@@ -161,11 +160,12 @@ body {
   }
   
   .answercard {
-    margin-bottom: 20px;
-    border: 1px solid rgb(253, 55, 210);
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #ecceff;
+    margin-top: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
+    border-top: 1px solid black;
+    padding: 2em;
+    background-color: #FFFF;
 }  
 
 /* The side navigation menu */
