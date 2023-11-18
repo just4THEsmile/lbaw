@@ -25,9 +25,17 @@
             <header>
                 <h1><a href="{{ url('/home') }}">QthenA</a></h1>
                 @if (Auth::check())
+                    @php
+                        $user = Auth::user();
+                        $profilePicturePath = $user->profilepicture;
+                    @endphp
                     <a id="profile" class="button" href="{{ url('/profile') }}">
-                        <img src="{{ asset('images/space.png') }}" alt="User Profile Image">
-                    </a> 
+                    @if ($profilePicturePath)
+                        <img src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                    @else
+                        <img src="{{ asset('images/space.png') }}" alt="Default Profile Image">
+                    @endif
+                    </a>
                 @endif
             </header>
             <section id="content">

@@ -25,7 +25,7 @@
             <header>
                 <h1><a href="{{ url('/home') }}">QthenA</a></h1>
                 @if (Auth::check())
-                    <a class="button" href="{{ url('/logout') }}"> Logout </a> <a id="profile" class="button" href="{{ url('/home') }}">Go back</a> <a id="profile" class="button" href="{{ url('/editprofile') }}">Edit Profile</a> 
+                    <a class="button" href="{{ url('/logout') }}"> Logout </a> <a class="button" href="{{ url('/home') }}">Go back</a> <a  class="button" href="{{ url('/editprofile') }}">Edit Profile</a> 
                 @endif
             </header>
         </main>
