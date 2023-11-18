@@ -25,7 +25,9 @@
             <header>
                 <h1><a href="{{ url('/home') }}">QthenA</a></h1>
                 @if (Auth::check())
-                    <a id="profile" class="button" href="{{ url('/profile') }}">{{ Auth::user()->name }}</a> 
+                    <a id="profile" class="button" href="{{ url('/profile') }}">
+                        <img src="{{ asset('images/space.png') }}" alt="User Profile Image">
+                    </a> 
                 @endif
             </header>
             <section id="content">

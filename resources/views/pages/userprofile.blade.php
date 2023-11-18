@@ -48,7 +48,8 @@
                         <p>Here you can change your username, which is a unique identifier used to distinguish you from other users within the system. Your username may be displayed on your profile, in messages you send, and in other areas where your identity is relevant. Updating your username can help ensure that you are recognized accurately and consistently by other users or participants in the system.</p>
                     </div>
                     <div class='right-card'>
-                        <form id='usernameform' action="settings.php" method='post'>
+                        <form id='usernameform' action="{{route('updateusername')}}" method='post'>
+                            @csrf
                             <input type="text" id="username" name='username' value="{{Auth::user()->username}}">
                             <button type='submit' class='submitbuttons' name="username-form">Save Changes</button>
                         </form>
@@ -60,7 +61,8 @@
                         <p>Here you can update the email address associated with your account. This email address is used to communicate with you regarding your account, such as password resets or notifications. Please ensure that the email address you provide is accurate and up-to-date to avoid missing important messages.</p>
                     </div>
                     <div class='right-card'>
-                        <form id='emailform' action="settings.php" method='post'>
+                        <form id='emailform' action="{{route('updatemail')}}" method='post'>
+                            @csrf
                             <input type="text" id="email"  name='email' value="{{Auth::user()->email}}">
                             <button type='submit' class='submitbuttons' name="email-form">Save Changes</button>
                         </form>
@@ -72,7 +74,8 @@
                         <p>Here you can update your password, which is used to secure your account and protect your data within the system. Keeping a strong and unique password can help prevent unauthorized access to your account, so we recommend using a combination of letters, numbers, and symbols. It's also a good practice to change your password regularly to keep your account safe.</p>
                     </div>
                     <div class='right-card'>
-                        <form id='passwordform' action="settings.php" method='post'>
+                        <form id='passwordform' action="{{route('updatepassword')}}" method='post'>
+                            @csrf
                             <input type="text" id="password" name='password' value="">
                             <button type='submit' class='submitbuttons' name="password-form">Save Changes</button>
                         </form>
@@ -84,7 +87,8 @@
                         <p>Here you can enter a short biography, which will be displayed on your profile page. You may wish to include information about your background, interests, or current activities. Keep in mind that this information will be visible to other users or participants in the system.</p>
                     </div>
                     <div class='right-card'>
-                        <form id='bioform' action="settings.php" method='post'>
+                        <form id='bioform' action="{{route('updatebio')}}" method='post'>
+                            @csrf
                             <textarea id="bio" name='bio'>{{Auth::user()->bio}}</textarea>
                             <button type='submit' class='submitbuttons' name="bio-form">Save Changes</button>
                         </form>
@@ -96,8 +100,9 @@
                         <p>Here you can change your profile picture, which is used to represent you within the system. Your profile picture may be displayed on your profile, on messages you send, and in other areas where your identity is relevant. Updating your profile picture can help ensure that you are recognized accurately and consistently by other users or participants in the system.</p>
                     </div>
                     <div class='right-card'>
-                    <form id='profileform' action="settings.php" method='post' enctype="multipart/form-data">
-                        <input type="file" name="file" accept="image/png,image/jpeg" multiple>
+                    <form id='profileform' action="{{route('updateprofilepicture')}}" method='post' enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="profilepicture" accept="image/png,image/jpeg" multiple>
                         <button type='submit' class='submitbuttons' name='profile-form'>Save Changes</button>
                     </form>
                     </div>   
