@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\TransactionsController;
 
 use Illuminate\Http\Request;
 
@@ -8,6 +9,8 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Question;
+use App\Models\Content;
+use App\Models\Commentable;
 
 class QuestionController extends Controller
 {
@@ -15,13 +18,85 @@ class QuestionController extends Controller
     {
         // Get the question.
         $question = Question::findOrFail($id);
-        // Check if the current user can see (show) the card.
+        // Check if the current user can see (show) the question.
         $this->authorize('show', $question);  
 
-        // Use the pages.card template to display the card.
+        // Use the pages.question template to display the question.
         return view('pages.question', [
             'question' => $question
         ]);
+    }
+    /**
+     * Creates a new question.
+     */
+    public function createform(){
+        if (Auth::check()) {
+            return view('pages.questioncreate');
+        } else {
+            return redirect('/login');
+        }
+        
+    }
+    public function create(Request $request)
+    {
+        // Create a blank new question.
+        $question = new Question();
+
+        // Check if the current user is authorized to create this question.
+        $this->authorize('create', $question);
+
+        // Save the question and return it as JSON.
+        $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'));
+        if($question->id === null){
+            return redirect('/home');
+        }
+        return redirect("/question/". $question->id);
+    }
+
+    /**
+     * Delete a question.
+     */
+    public function delete(Request $request, $id)
+    {
+        // Find the question.
+        $question = Question::find($id);
+
+        // Check if the current user is authorized to delete this question.
+        $this->authorize('delete', $question);
+        $content = Content::find($id);
+        $commentable = Commentable::find($id);
+        // Delete the question and return it as JSON.
+        $question->title = "Deleted Post";
+        $content->content = " ";
+        $question->save();
+        $content->save();
+        return redirect('/home');
+    }
+    public function editform(){
+        if (Auth::check()) {
+            return view('pages.editform', [
+                'question' => $question
+            ]);
+        } else {
+            return redirect('/login');
+        }
+    }
+    public function edit(Request $request, $id)
+    {
+        // Find the question.
+        $question = Question::find($id);
+
+        // Check if the current user is authorized to delete this question.
+        $this->authorize('delete', $question);
+        $content = Content::find($id);
+        // Delete the question and return it as JSON.
+        //probably transaction
+        $content->content = $request->input('content');
+        $question->title = $request->input('title');
+        $question->save();
+        $content->save();
+        $commentable->save();
+        return redirect('/question/{{$question->id}}');
     }
     //isto vai dar trabalho
     //isto vai dar trabalho
@@ -39,15 +114,15 @@ class QuestionController extends Controller
         } else {
             // The user is logged in.
 
-            // Get cards for user ordered by id.
+            // Get questions for user ordered by id.
             $questions = Question::orderBy('id')->get();
-            // Check if the current user can list the cards.
+            // Check if the current user can list the questions.
             $this->authorize('list', Question::class);
 
-            // The current user is authorized to list cards.
+            // The current user is authorized to list questions.
 
-            // Use the pages.cards template to display all cards.
-            return view('pages.cards', [
+            // Use the pages.questions template to display all questions.
+            return view('pages.questions', [
                 'question' => $question,
                 'answers' => $answers
             ]);

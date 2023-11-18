@@ -49,7 +49,17 @@ Route::controller(ProfileController::class)->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 });
 Route::controller(QuestionController::class)->group(function () {
+    Route::get('/createquestion', 'createform');
+    Route::post('/createquestion', 'create');
     Route::get('/question/{id}', 'show');
+    Route::post('/question/{id}/delete', 'delete');
+    Route::get('/question/{id}/edit', 'editform');
+    Route::post('/question/{id}/edit', 'edit');
+});
+Route::controller(AnswerController::class)->group(function () {
+    Route::get('/answer/{id}', 'show');
+    Route::get('/question/{id}/delete', 'delete');
+    Route::get('/question/{id}/edit', 'edit');
 });
 
 // API
