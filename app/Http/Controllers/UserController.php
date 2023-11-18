@@ -102,19 +102,14 @@ class UserController extends Controller
 
     public function updateProfilePicture(Request $request)
     {
-
         $user = Auth::user();
-
+    
         if ($request->hasFile('profilepicture')) {
 
             $profilePicture = $request->file('profilepicture');
+            $path = $profilePicture->store('images', 'public');
 
-            $imageData = file_get_contents($profilePicture);
-
-            $encodedImageData = base64_encode($imageData);
-
-            $user->profilepicture = $encodedImageData;
-
+            $user->profilepicture = $path;
             $user->save();
 
             return redirect()->route('profile');
