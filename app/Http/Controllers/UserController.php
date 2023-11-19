@@ -13,9 +13,10 @@ class UserController extends Controller
     public function updateName(Request $request)
     {
         
-        // Get the authenticated user
         $user = Auth::user();
+        $this->authorize('edit', $user);  
 
+        
         // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255', 
@@ -25,14 +26,16 @@ class UserController extends Controller
         
         $user->save();
 
-        return redirect()->route('profile');
+        return view('pages.userprofile', [
+            'user' => $user
+        ]);
     }
 
     public function updateUsername(Request $request)
     {
             
-        // Get the authenticated user
         $user = Auth::user();
+        $this->authorize('edit', $user);  
     
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -43,15 +46,17 @@ class UserController extends Controller
             
         $user->save();
     
-        return redirect()->route('profile');
+        return view('pages.userprofile', [
+            'user' => $user
+        ]);
     }
 
     public function updateEmail(Request $request)
     {
                 
-        // Get the authenticated user
         $user = Auth::user();
-        
+        $this->authorize('edit', $user);  
+
         // Validate the incoming request data
         $validatedData = $request->validate([
             'email' => 'required|email|max:255|unique:appuser', 
@@ -61,14 +66,16 @@ class UserController extends Controller
                 
         $user->save();
         
-        return redirect()->route('profile');
+        return view('pages.userprofile', [
+            'user' => $user
+        ]);
     }
 
     public function updatePassword(Request $request)
     {
                         
-        // Get the authenticated user
         $user = Auth::user();
+        $this->authorize('edit', $user);  
                 
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -79,14 +86,16 @@ class UserController extends Controller
            
         $user->save();
                 
-        return redirect()->route('profile');
+        return view('pages.userprofile', [
+            'user' => $user
+        ]);
     }
 
     public function updateBio(Request $request)
     {
                                 
-        // Get the authenticated user
         $user = Auth::user();
+        $this->authorize('edit', $user);  
                         
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -97,12 +106,15 @@ class UserController extends Controller
                    
         $user->save();
                         
-        return redirect()->route('profile');
+        return view('pages.userprofile', [
+            'user' => $user
+        ]);
     }
 
     public function updateProfilePicture(Request $request)
     {
         $user = Auth::user();
+        $this->authorize('edit', $user);  
     
         if ($request->hasFile('profilepicture')) {
 
@@ -112,7 +124,9 @@ class UserController extends Controller
             $user->profilepicture = $path;
             $user->save();
 
-            return redirect()->route('profile');
+            return view('pages.userprofile', [
+                'user' => $user
+            ]);
         }
     }
 
