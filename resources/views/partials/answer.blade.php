@@ -3,7 +3,7 @@
     <label>
         <span>{{ $answer->commentable->content->content }}</span>
         <?php if($answer->commentable->content->user->id === auth()->user()->id) {?>
-            <a href="#" class="delete">&#10761;</a>
+            @include('partials.editanswer', ['answer' => $answer,'answer' => $answer])
         <?php } ?>
     </label>
 </span>
