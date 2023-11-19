@@ -58,7 +58,7 @@ class TransactionsController extends Controller
             //probably transaction
             $content1->content = $content;
             $question->title = $title;
-
+            $content1->edited = true;
             $question->save();
             $content1->save();
             // Commit the transaction
