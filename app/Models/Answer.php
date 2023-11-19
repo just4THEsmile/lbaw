@@ -20,7 +20,7 @@ class Answer extends Model
      */
     protected $fillable = [
         'id',
-        'commentable_id'
+        'question_id'
     ];
     protected $table = 'answer';
     protected $primaryKey = 'id';
