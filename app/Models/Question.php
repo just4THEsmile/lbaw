@@ -16,7 +16,9 @@ class Question extends Model
      *
      * @var array<int, string>
      */
-
+    protected $fillable = [
+        'id',
+        'title'];
     protected $table = 'question';
     protected $primaryKey = 'id';
     

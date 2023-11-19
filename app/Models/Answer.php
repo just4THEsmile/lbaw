@@ -18,7 +18,10 @@ class Answer extends Model
      *
      * @var array<int, string>
      */
-
+    protected $fillable = [
+        'id',
+        'commentable_id'
+    ];
     protected $table = 'answer';
     protected $primaryKey = 'id';
 

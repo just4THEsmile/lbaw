@@ -19,7 +19,8 @@ class Commentable extends Model
      *
      * @var array<int, string>
      */
-    
+    protected $fillable = [
+        'id'];
 
     protected $table = 'commentable';
     protected $primaryKey = 'id';
