@@ -39,7 +39,7 @@
                     <div id='Profile'><a class='aside' href="{{ url('/profile') }}" >Profile</a></div>
                     <div id='Follow'><a class='aside' href="{{ url('/followquestion') }}">Followed Questions</a></div>
                     <div id='MyQuestions'><a class='aside' href="{{ url('/myquestions') }}" >My questions</a></div>
-                    <div id= 'MyAnswers'><a class='aside'>My answers</a></div>
+                    <div id= 'MyAnswers'><a class='aside' href="{{ url('/myanswers') }}">My answers</a></div>
                     <div id='additional'>
                         <div>FAQ</div>
                         <div>About us</div>
