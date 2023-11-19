@@ -1,7 +1,6 @@
 <span class="comment" data-id="{{$comment->id}}">
     <label>
         <span class="commentText">{{ $comment->content->content }}</span>
-        <span class="commentText">{{ $comment->commentable_id }}</span>
         <?php if($comment->content->user->id === auth()->user()->id) {?>
             <a href="#" class="delete">&#10761;</a>
         <?php } ?>

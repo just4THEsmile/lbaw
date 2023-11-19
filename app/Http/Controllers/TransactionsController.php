@@ -4,6 +4,7 @@ use App\Models\Question;
 use Illuminate\Support\Facades\DB;
 use App\Models\Content;
 use App\Models\Commentable;
+use App\Models\Comment;
 use App\Models\Answer;
 class TransactionsController extends Controller
 {
@@ -103,6 +104,38 @@ class TransactionsController extends Controller
             // Commit the transaction
             DB::commit();
             return $answer;
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+        
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+        }
+    }
+    public static function createComment($user_id,$commentable_id,$content)
+    {
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+        
+            // Insert Content
+            $content1 = new Content([
+                'user_id' => $user_id,
+                'content' => $content,
+            ]);
+            $content1->save();
+            // Insert Answer
+            $comment = new Comment([
+                'id' => $content1->id,
+                'commentable_id' => $commentable_id,
+            ]);
+            echo $comment;
+            $comment->save();
+            // Commit the transaction
+            DB::commit();
+            return $comment;
         
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
