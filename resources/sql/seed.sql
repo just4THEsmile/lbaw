@@ -110,7 +110,7 @@ CREATE TABLE Content (
     content TEXT NOT NULL,
     votes INTEGER DEFAULT 0,
     reports INTEGER CHECK (reports >= 0) DEFAULT 0,
-    date TIMESTAMP NOT NULL CHECK (date <= now()),
+    date TIMESTAMP NOT NULL CHECK (date <= now()) DEFAULT now(),
     edited BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES AppUser(id)
 );
@@ -761,7 +761,7 @@ BEGIN
 
  END IF;
  IF TG_OP = 'UPDATE' THEN
-         IF (NEW.title <> OLD.title OR NEW.obs <> OLD.obs) THEN
+         IF (NEW.title <> OLD.title) THEN
            NEW.tsvectors =to_tsvector('english', NEW.title);
 
          END IF;
@@ -926,7 +926,7 @@ FOR EACH ROW
 EXECUTE PROCEDURE delete_content();
 
 
-
+/*
 CREATE FUNCTION select_correct_answer() RETURNS TRIGGER AS 
 $BODY$
 BEGIN
@@ -953,10 +953,10 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER select_correct_answer_trigger
-BEFORE UPDATE ON Question
+BEFORE UPDATE ON Commentable
 FOR EACH ROW
 EXECUTE PROCEDURE select_correct_answer();
-
+*/
 
 
 

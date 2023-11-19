@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 // Added to define Eloquent relationships.
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
@@ -28,8 +28,8 @@ class Comment extends Model
     protected $primaryKey = 'id';
 
 
-    public function commentable() : BelongsTo
+    public function content() : BelongsTo
     {
-        return $this->belongsTo(Commentable::class);
+        return $this->belongsTo(Content::class,'id');
     }
 }
