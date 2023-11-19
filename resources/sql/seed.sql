@@ -260,8 +260,8 @@ VALUES
     ('Eve Davis', 'evedavis', 'eve@example.com', 'password456', 'Loves technology', 'eve_profile.jpg', 'user'),
     ('Charlie Brown', 'charlieb', 'charlie@example.com', 'charlie789', 'Web developer', 'charlie_profile.jpg', 'user'),
     ('Grace Adams', 'gracea', 'grace@example.com', 'securepass', 'AI enthusiast', 'grace_profile.jpg', 'user'),
-    ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 'sam_profile.jpg', 'user');
-
+    ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 'sam_profile.jpg', 'user'),
+    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','images/ydHrxlKKAxdKSJkz7Xcb4YwGF5AO4RdwELlt4ayM.png','user');
 
 INSERT INTO Faq (question, answer)
 VALUES
@@ -330,7 +330,8 @@ VALUES
     (7, 9, NOW() - INTERVAL '9 days'),
     (8, 10, NOW() - INTERVAL '11 days'),
     (9, 4, NOW() - INTERVAL '4 days'),
-    (10, 3, NOW() - INTERVAL '7 days');    
+    (10, 3, NOW() - INTERVAL '7 days'),
+    (21, 7, NOW());    
 
 
 INSERT INTO UnblockRequest (user_id, title, description)
@@ -387,7 +388,8 @@ VALUES
     (17, 'Sample content 7', 25, 0, NOW(), false),
     (18, 'Sample content 8', 7, 1, NOW(), true),
     (19, 'Sample content 9', 10, 0, NOW(), false),
-    (20, 'Sample content 10', 6, 2, NOW(), false);
+    (20, 'Sample content 10', 6, 2, NOW(), false),
+    (21, 'Resposta para uma questão', 15, 1, NOW(), false);
 
 INSERT INTO Commentable (id)
 VALUES
@@ -420,7 +422,8 @@ VALUES
     (27),
     (28),
     (29),
-    (30);   
+    (30),
+    (31);   
 
 INSERT INTO Tag (title, description)
 VALUES
@@ -506,7 +509,8 @@ VALUES
     (27, 7),
     (28, 8),
     (29, 9),
-    (30, 10);
+    (30, 10),
+    (31,10);
       
 
 

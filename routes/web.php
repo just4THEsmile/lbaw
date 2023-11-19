@@ -32,6 +32,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/updatepassword', [UserController::class, 'updatePassword'])->name('updatepassword');  
     Route::post('/updatebio', [UserController::class, 'updateBio'])->name('updatebio');
     Route::post('/updateprofilepicture', [UserController::class, 'updateProfilePicture'])->name('updateprofilepicture');
+    Route::post('/updatepaylink', [UserController::class, 'updatePayLink'])->name('updatepaylink');
 });
 
 
@@ -49,6 +50,9 @@ Route::controller(HomeController::class)->group(function () {
 Route::controller(ProfileController::class)->group(function () {
     Route::get('/editprofile', [ProfileController::class, 'edit'])->name('editprofile');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/myquestions', [ProfileController::class, 'myquestions'])->name('myquestions');
+    Route::get('/myanswers', [ProfileController::class, 'myanswers'])->name('myanswers');
+    Route::get('/followquestion', [ProfileController::class, 'followquestion'])->name('followquestion');
 });
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');

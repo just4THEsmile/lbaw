@@ -18,7 +18,8 @@ class Question extends Model
      */
     protected $fillable = [
         'id',
-        'title'];
+        'title'
+    ];
     protected $table = 'question';
     protected $primaryKey = 'id';
     

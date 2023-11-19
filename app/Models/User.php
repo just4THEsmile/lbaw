@@ -11,6 +11,10 @@ use Laravel\Sanctum\HasApiTokens;
 
 // Added to define Eloquent relationships.
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\DB;
+
+
 
 class User extends Authenticatable
 {
@@ -49,5 +53,30 @@ class User extends Authenticatable
         'password'
     ];
     
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class, 'badgeattainment', 'user_id', 'badge_id');
+    }
+
+    public function questions()
+    {
+        return DB::table('content')
+            ->select('content.content as content', 'question.title as title')
+            ->join('commentable', 'commentable.id', '=', 'content.id')
+            ->join('question', 'question.id', '=', 'commentable.id')
+            ->where('content.user_id', $this->id)
+            ->get();
+    }
+
+    public function answers()
+    {
+        return DB::table('content')
+            ->select('content.content as content', 'question.title as title')
+            ->join('commentable', 'commentable.id', '=', 'content.id')
+            ->join('answer', 'answer.id', '=', 'commentable.id')
+            ->join('question', 'question.id', '=', 'answer.question_id')
+            ->where('content.user_id', $this->id)
+            ->get();
+    }
 }
 
