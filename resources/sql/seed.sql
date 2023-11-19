@@ -69,7 +69,7 @@ CREATE TABLE AppUser (
     points INTEGER CHECK (points >= 0) DEFAULT 0,
     nquestion INTEGER CHECK (nquestion >= 0) DEFAULT 0,
     nanswer INTEGER CHECK (nanswer >= 0) DEFAULT 0,
-    profilepicture BYTEA,
+    profilepicture VARCHAR,
     paylink VARCHAR UNIQUE,
     usertype VARCHAR NOT NULL CHECK (usertype IN ('user', 'moderator', 'admin'))
 );

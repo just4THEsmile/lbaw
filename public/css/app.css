@@ -160,3 +160,15 @@ body {
     border-color: #9b4dca;
   }
   
+  #profile {
+    display: inline-block;
+    width: 16em; 
+    height: 10em; 
+    background: none;
+    border: none;
+  }
+  
+  #profile img {
+    width: 100%;
+    height: auto;
+  }
