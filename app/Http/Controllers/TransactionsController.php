@@ -6,7 +6,7 @@ use App\Models\Content;
 use App\Models\Commentable;
 class TransactionsController extends Controller
 {
-    public static function createQuestion($user_id,$title,$content):Question
+    public static function createQuestion($user_id,$title,$content)
     {
         try {
             // Start the transaction
@@ -46,6 +46,34 @@ class TransactionsController extends Controller
             \Log::error('Transaction failed: ' . $e->getMessage());
         }
     }
+        
+    public static function editQuestion($question_id,$title,$content)
+    {
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+            $question = Question::find($question_id);
+            $content1 = Content::find($question_id);
+            // Delete the question and return it as JSON.
+            //probably transaction
+            $content1->content = $content;
+            $question->title = $title;
+
+            $question->save();
+            $content1->save();
+            // Commit the transaction
+            DB::commit();
+            return $question;
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+        }
+    }// Find the question.
+
     public static function createAnswer($user_id,$question_id,$content)
     {
         try {

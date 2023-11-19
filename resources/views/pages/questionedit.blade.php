@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="/question/edit">
+    <form method="post" action="/question/{{ $question->id }}/edit">
         @csrf
 
         <div class="form-group">
@@ -11,7 +11,7 @@
 
         <div class="form-group">
             <label for="content">Content:</label>
-            <textarea class="form-control" id="content" name="content" rows="4" required>"{{ $question->commentable->content->content}}"</textarea>
+            <textarea class="form-control" id="content" name="content" rows="4" required>{{ $question->commentable->content->content}}</textarea>
         </div>
 
 

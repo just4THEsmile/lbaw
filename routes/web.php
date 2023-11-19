@@ -56,12 +56,13 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/question/{id}/edit', 'editform');
     Route::post('/question/{id}/edit', 'edit');
 });
+/*
 Route::controller(AnswerController::class)->group(function () {
     Route::get('/answer/{id}', 'show');
     Route::get('/question/{id}/delete', 'delete');
     Route::get('/question/{id}/edit', 'edit');
 });
-
+*/
 // API
 Route::controller(CardController::class)->group(function () {
     Route::put('/api/cards', 'create');

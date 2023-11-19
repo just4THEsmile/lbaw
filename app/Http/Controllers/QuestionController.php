@@ -47,7 +47,7 @@ class QuestionController extends Controller
 
         // Save the question and return it as JSON.
         $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'));
-        if($question->id === null){
+        if($question === null){
             return redirect('/home');
         }
         return redirect("/question/". $question->id);
@@ -63,18 +63,17 @@ class QuestionController extends Controller
 
         // Check if the current user is authorized to delete this question.
         $this->authorize('delete', $question);
-        $content = Content::find($id);
-        $commentable = Commentable::find($id);
         // Delete the question and return it as JSON.
-        $question->title = "Deleted Post";
-        $content->content = " ";
-        $question->save();
-        $content->save();
+        $result = TransactionsController::editQuestion($question->id,"Deleted Post"," ");
+        if($result === null){
+            return redirect('/home');
+        }
         return redirect('/home');
     }
-    public function editform(){
+    public function editform(string $id){
+        $question = Question::findOrFail($id);
         if (Auth::check()) {
-            return view('pages.editform', [
+            return view('pages.questionedit', [
                 'question' => $question
             ]);
         } else {
@@ -87,16 +86,12 @@ class QuestionController extends Controller
         $question = Question::find($id);
 
         // Check if the current user is authorized to delete this question.
-        $this->authorize('delete', $question);
-        $content = Content::find($id);
-        // Delete the question and return it as JSON.
-        //probably transaction
-        $content->content = $request->input('content');
-        $question->title = $request->input('title');
-        $question->save();
-        $content->save();
-        $commentable->save();
-        return redirect('/question/{{$question->id}}');
+        $this->authorize('edit', $question);
+        $result = TransactionsController::editQuestion($question->id,$request->input('title'),$request->input('content'));
+        if($result === null){
+            return redirect('/question/'. $question->id);
+        }
+        return redirect('/question/' . $question->id);
     }
     //isto vai dar trabalho
     //isto vai dar trabalho
