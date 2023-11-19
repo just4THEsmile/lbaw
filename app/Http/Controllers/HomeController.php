@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
             $questions = DB::select('
             SELECT Question.title, Content.content,AppUser.username,Content.date,Content.id, AppUser.id as userid
             FROM Question,Content,AppUser
-            WHERE Question.commentable_id = Content.id AND Content.user_id = AppUser.id
+            WHERE Question.id = Content.id AND Content.id = AppUser.id
         ');
             return view('pages.homequestions', ['questions' => $questions]);
         }

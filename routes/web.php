@@ -8,6 +8,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchQuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,9 @@ Route::redirect('/', '/login');
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
+Route::get('/questions', [SearchQuestionController::class, 'show'])->name('questions');
+Route::get('/search/questions', [SearchQuestionController::class, 'search']);
+
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/question/{id}', 'show');
 });
