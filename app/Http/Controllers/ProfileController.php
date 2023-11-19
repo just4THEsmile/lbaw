@@ -18,4 +18,13 @@ class ProfileController extends Controller
     public function edit(){
         return view('pages/userprofile');
     }
+    public function myquestions(){
+        return view('pages/myquestions');
+    }
+    public function myanswers(){
+        return view('pages/myanswers');
+    }
+    public function followquestion(){
+        return view('pages/followquestion');
+    }
 }

@@ -107,6 +107,19 @@
                     </form>
                     </div>   
                 </div>
+                <div id='paylinkcard' class='card'>
+                    <div class='left-card'>
+                        <h1>PayLink</h1>
+                        <p>Here you can change your paypal link, which is used to receive donations from other users.</p>
+                    </div>
+                    <div class='right-card'>
+                        <form id='paylinkform' action="{{route('updatepaylink')}}" method='post'>
+                            @csrf
+                            <input type="url" id="paylink" name='paylink' value="{{ Auth::user()->paylink }}" placeholder="Enter your PayPal link" required>
+                            <button type='submit' class='submitbuttons' name="bio-paylink">Save Changes</button>
+                        </form>
+                    </div>  
+                </div>
             </section>
         </main>
     </body>

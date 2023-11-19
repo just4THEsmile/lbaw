@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\CardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
@@ -31,6 +33,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/updatepassword', [UserController::class, 'updatePassword'])->name('updatepassword');  
     Route::post('/updatebio', [UserController::class, 'updateBio'])->name('updatebio');
     Route::post('/updateprofilepicture', [UserController::class, 'updateProfilePicture'])->name('updateprofilepicture');
+    Route::post('/updatepaylink', [UserController::class, 'updatePayLink'])->name('updatepaylink');
 });
 
 
@@ -51,6 +54,9 @@ Route::get('/users', [UsersController::class, 'index'])->name('users');
 Route::controller(ProfileController::class)->group(function () {
     Route::get('/editprofile', [ProfileController::class, 'edit'])->name('editprofile');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/myquestions', [ProfileController::class, 'myquestions'])->name('myquestions');
+    Route::get('/myanswers', [ProfileController::class, 'myanswers'])->name('myanswers');
+    Route::get('/followquestion', [ProfileController::class, 'followquestion'])->name('followquestion');
 });
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');
@@ -60,13 +66,24 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/question/{id}/edit', 'editform');
     Route::post('/question/{id}/edit', 'edit');
 });
-/*
+
 Route::controller(AnswerController::class)->group(function () {
-    Route::get('/answer/{id}', 'show');
-    Route::get('/question/{id}/delete', 'delete');
-    Route::get('/question/{id}/edit', 'edit');
+    Route::get('/question/{id}/answer', 'createform');
+    Route::post('/question/{id}/answer', 'create');
+    Route::post('/question/{id}/answer/{id_answer}/delete', 'delete');
+    Route::get('/question/{id}/answer/{id_answer}/edit', 'editform');
+    Route::post('/question/{id}/answer/{id_answer}/edit', 'edit');
 });
-*/
+/*
+Route::controller(CommentController::class)->group(function () {
+    Route::get('/commentable/{id}/comment', 'createform')->route('create_comment_form');
+    Route::post('/commentable/{id}/comment', 'create')->route('create_comment');
+    Route::post('/commentable/{id}/comment/{id_comment}/delete', 'delete')->route('delete_comment');
+    Route::get('/commentable/{id}/answer/{id_comment}/edit', 'editform')->route('edit_comment_form');
+    Route::post('/commentable/{id}/answer/{id_comment}/edit', 'edit')->route('edit_comment_form');
+});*/
+
+
 // API
 /*
 Route::controller(CardController::class)->group(function () {

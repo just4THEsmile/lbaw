@@ -24,7 +24,22 @@ class QuestionPolicy
     {
         return Auth::check();
     }
-
+    /**
+     * Determine if a given Question can be shown to a user.
+     */
+    public function createform(User $user): bool
+    {
+        return Auth::check();
+    }
+    /**
+     * Determine if a given Question can be shown to a user.
+     */
+    public function editform(User $user,Question $question): bool
+    {
+        $content= Content::find($question->id);
+      // Only a Question owner can delete it.
+      return $user->id === $content->user_id || $user->usertype === "admin" || $user->usertype === "moderator";
+    }
     /**
      * Determine if all Questions can be listed by a user.
      */

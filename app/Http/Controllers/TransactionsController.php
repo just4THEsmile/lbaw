@@ -4,9 +4,10 @@ use App\Models\Question;
 use Illuminate\Support\Facades\DB;
 use App\Models\Content;
 use App\Models\Commentable;
+use App\Models\Answer;
 class TransactionsController extends Controller
 {
-    public static function createQuestion($user_id,$title,$content)
+    public static function createQuestion($user_id,$title,$content1)
     {
         try {
             // Start the transaction
@@ -15,7 +16,7 @@ class TransactionsController extends Controller
             // Insert Content
             $content = new Content([
                 'user_id' => $user_id,
-                'content' => $content,
+                'content' => $content1,
             ]);
             $content->save();
 
@@ -81,30 +82,27 @@ class TransactionsController extends Controller
             DB::beginTransaction();
         
             // Insert Content
-            $content = new Content([
+            $content1 = new Content([
                 'user_id' => $user_id,
                 'content' => $content,
-                'date' => now(),
-                'report' => 0,
-                'edited' => false,
-                'votes' => 0,   
             ]);
-            $content->save();
+            $content1->save();
 
             // Insert Commentable
-            $commentable = new Commentable(['content_id' => $content->id]);
+            $commentable = new Commentable(['id' => $content1->id]);
             $commentable->save();
-        
+
             // Insert Answer
             $answer = new Answer([
-                'commentable_id' => $content->id,
+                'id' => $content1->id,
                 'question_id' => $question_id,
             ]);
+
             $answer->save();
-        
+
             // Commit the transaction
             DB::commit();
-            
+            return $answer;
         
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
@@ -115,6 +113,5 @@ class TransactionsController extends Controller
             \Log::error('Transaction failed: ' . $e->getMessage());
         }
     }
-
 
 }
