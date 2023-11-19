@@ -1,31 +1,40 @@
-<!-- resources/views/layouts/app.blade.php -->
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- CSRF Token -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.app')
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+@section('title', 'content')
 
-        <!-- Styles -->
-        <link href="{{ url('css/milligram.min.css') }}" rel="stylesheet">
-        <link href="{{ url('css/app.css') }}" rel="stylesheet">
-        <script type="text/javascript">
-            // Fix for Firefox autofocus CSS bug
-            // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
-        </script>
-         <script src="{{ asset('js/questionsearch.js') }}" defer></script>
-    </head>
+@section('content')
+<div class="sidebar">
+  <a href="/home">Home Page</a>
+  <a href="{{'/tags'}}">Tags</a>
+  <a class="active" href="{{'/questions'}}">Questions</a>
+  <a href="{{'/users'}}">Users</a>
+</div>
 
+<div>
 <body>
 
-    <div>
-        <input type="text" id="searchInput" placeholder="Search..." >
-        <ul id="searchResults"></ul>
+    <div class="realcontent">
+        <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
+        <ul id="searchResults">
+        @foreach ($questions as $question)
+
+
+        <div class= "answercard">
+            <a class="title" href="{{ url('/question/'.$question->id) }}">{{ $question->title }}</a>
+            <div class ="content">
+                <p class="votes">{{ $question->votes }}</p>
+                <p >{{ $question->content }}</p>
+                <a class= "username" href="{{ url('/user/'.$question->userid) }}">{{ $question->username }}</a>
+                <p class="date">{{ $question->date }}</p>
+            </div>
+        </div>
+@endforeach
+        </ul>
+    <div class="pagination">
+    </div>
     </div>
 </body>
 </html>
+
+@endsection

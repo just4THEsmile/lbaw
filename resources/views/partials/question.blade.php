@@ -2,7 +2,12 @@
     <header>
     <h2><a href="/questions/{{ $question->id }}">{{ $question->title }}</a></h2>
         <h3><a href="/questions/{{ $question->id }}">{{ $question->commentable->content->content}}</a></h3>
-        <a href="#" class="delete">&#10761;</a>
+        <?php if($question->commentable->content->user->id === auth()->user()->id) {?>
+            @include('partials.editquestion', ['question' => $question])
+        <?php } ?>
+        <form class="new_item">
+            <input type="text" name="description" placeholder="new item">
+        </form>
     </header>
     <ul>
     @each('partials.answer', $question->answers()->orderBy('id')->get(), 'answer')

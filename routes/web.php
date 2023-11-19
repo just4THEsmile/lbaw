@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchQuestionController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,17 @@ use App\Http\Controllers\SearchQuestionController;
 |
 */
 
+//User
+Route::controller(UserController::class)->group(function () {
+    Route::post('/updatename', [UserController::class, 'updateName'])->name('updatename'); 
+    Route::post('/updateusername', [UserController::class, 'updateUsername'])->name('updateusername');
+    Route::post('/updatemail', [UserController::class, 'updateEmail'])->name('updatemail');
+    Route::post('/updatepassword', [UserController::class, 'updatePassword'])->name('updatepassword');  
+    Route::post('/updatebio', [UserController::class, 'updateBio'])->name('updatebio');
+    Route::post('/updateprofilepicture', [UserController::class, 'updateProfilePicture'])->name('updateprofilepicture');
+});
+
+
 // Home
 Route::redirect('/', '/login');
 
@@ -32,10 +45,28 @@ Route::controller(HomeController::class)->group(function () {
 Route::get('/questions', [SearchQuestionController::class, 'show'])->name('questions');
 Route::get('/search/questions', [SearchQuestionController::class, 'search']);
 
-Route::controller(QuestionController::class)->group(function () {
-    Route::get('/question/{id}', 'show');
-});
+Route::get('/users', [UsersController::class, 'index'])->name('users');
 
+//Edit Profile
+Route::controller(ProfileController::class)->group(function () {
+    Route::get('/editprofile', [ProfileController::class, 'edit'])->name('editprofile');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+});
+Route::controller(QuestionController::class)->group(function () {
+    Route::get('/createquestion', 'createform');
+    Route::post('/createquestion', 'create');
+    Route::get('/question/{id}', 'show');
+    Route::post('/question/{id}/delete', 'delete');
+    Route::get('/question/{id}/edit', 'editform');
+    Route::post('/question/{id}/edit', 'edit');
+});
+/*
+Route::controller(AnswerController::class)->group(function () {
+    Route::get('/answer/{id}', 'show');
+    Route::get('/question/{id}/delete', 'delete');
+    Route::get('/question/{id}/edit', 'edit');
+});
+*/
 // API
 /*
 Route::controller(CardController::class)->group(function () {

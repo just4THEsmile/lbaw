@@ -16,9 +16,9 @@ use Illuminate\Http\Request;
         public function index()
         {
             $questions = DB::select('
-            SELECT Question.title, Content.content,AppUser.username,Content.date,Content.id, AppUser.id as userid
-            FROM Question,Content,AppUser
-            WHERE Question.id = Content.id AND Content.id = AppUser.id
+            SELECT Question.title, Content.content, AppUser.username, Content.date, Content.id as id, AppUser.id as userid, Content.votes
+            FROM Question, Content, AppUser
+            WHERE Question.id = Content.id AND Content.user_id = AppUser.id
         ');
             return view('pages.homequestions', ['questions' => $questions]);
         }

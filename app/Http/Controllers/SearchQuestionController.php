@@ -1,21 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Pagination\Paginator;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 class SearchQuestionController extends Controller
 {   
 
     public function show()
     {
-        $questions = DB::select('
-        SELECT Question.title, Content.content,AppUser.username,Content.date,Content.id, AppUser.id as userid
-        FROM Question,Content,AppUser
-        WHERE Question.id = Content.id AND Content.id = AppUser.id
-    ');
+        $questions = Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
+        ->join('content', 'question.id', '=', 'content.id')
+        ->join('appuser', 'content.user_id', '=', 'appuser.id')
+        ->get();
+
         return view('pages.questions', ['questions' => $questions]);
     }
     public function search(Request $request)
@@ -23,13 +24,21 @@ class SearchQuestionController extends Controller
         // Implement your search logic here
         
         $query = $request->input('q');
-        if(strlen($query) == 0)
-            return response()->json([]);
-        $results = Question::where('title', 'ilike', "%$query%")->get();
-
+        if(strlen($query) == 0){
+            $results= Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
+            ->join('content', 'question.id', '=', 'content.id')
+            ->join('appuser', 'content.user_id', '=', 'appuser.id')
+            ->get();
+            return response()->json($results);
+        }
+            $results = Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
+            ->join('content', 'question.id', '=', 'content.id')
+            ->join('appuser', 'content.user_id', '=', 'appuser.id')
+            ->where('question.title', 'ILIKE', "%$query%")
+            ->get();
         return response()->json($results);
     }
-    
+}
     /* works but not with ajax
     $query = $request->get('query');
     if ($request->ajax()) {
@@ -51,4 +60,4 @@ class SearchQuestionController extends Controller
     $questions = User::where('title', 'LIKE', '%' . $query . '%')
     ->simplePaginate(10);
     return view('welcome', compact('questions'));*/
-}
+

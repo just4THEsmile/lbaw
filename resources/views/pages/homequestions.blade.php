@@ -10,13 +10,14 @@
   <a href="{{'/users'}}">Users</a>
 </div>
 
-<div>
+<div class="realcontent">
 @foreach ($questions as $question)
 
 
 <div class= "answercard">
     <a href="{{ url('/question/'.$question->id) }}">{{ $question->title }}</a>
     <div class ="content">
+    <p class="votes">{{ $question->votes }}</p>
     <p>{{ $question->content }}</p>
     <a href="{{ url('/user/'.$question->userid) }}">{{ $question->username }}</a>
     <p>{{ $question->date }}</p>

@@ -6,7 +6,7 @@ body {
     display: grid;
     grid-template-columns: 1fr auto auto;
     align-items: center;
-    background-color: gray;
+    background-color: #7CB9E8;
     padding: 1em;
   }
   main > header h1 {
@@ -139,26 +139,25 @@ body {
    * Override milligram colors
    * Some styles might be missing
    **/
-  button {
-    background-color: #9b4dca;
-    border-color: #9b4dca;
+   button {
+    background-color: #0000FF;
+    border-color: #0000FF;
   }
   a.button {
-    background-color: #9b4dca;
-    border-color: #9b4dca;
+    background-color: #0000FF;
+    border-color: #0000FF;
   }
   a.button.button-outline {
-    color: #9b4dca;
+    color: #0000FF;
   }
   a {
-    color: #9b4dca;
+    color: #0000FF;
   }
   input[type=text]:focus,
   input[type=email]:focus,
   input[type=password]:focus {
-    border-color: #9b4dca;
-  }
-  
+border-color: #0000FF;
+}
   .answercard {
     margin-top: 2em;
     margin-left: 1em;
@@ -189,7 +188,7 @@ body {
 
 /* Active/current link */
 .sidebar a.active {
-  background-color: #a504aa;
+  background-color: #0000FF;
   color: white;
 }
 
@@ -200,7 +199,7 @@ body {
 }
 
 /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
-div.answercard {
+div.realcontent {
   margin-left: 10em;
 
 }
@@ -213,7 +212,7 @@ div.answercard {
     position: relative;
   }
   .sidebar a {float: left;}
-  div.content {margin-left: 0;}
+  div.realcontent {margin-left: 0;}
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
@@ -225,4 +224,63 @@ div.answercard {
 }
 body {
   margin: 0;
+}
+
+  
+  #profile {
+    display: inline-block;
+    width: 16em; 
+    height: 10em; 
+    background: none;
+    border: none;
+  }
+  
+  #profile img {
+    width: 100%;
+    height: auto;
+  }
+
+  .searchbar {
+    margin-top: 2em;
+    margin-left: 20em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    border-top: 1px solid black;
+    padding: 2em;
+    background-color: #FFFF;}
+
+
+.paginationbutons{
+  margin-left: 50%;
+  width: 10%;
+}    
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination li {
+  list-style-type: none;
+  margin: 0 5px; /* Adjust the spacing between buttons */
+}
+
+.pagination li span,
+.pagination li a {
+  display: inline-block;
+  padding: 8px 12px; /* Adjust the padding to change button size */
+  border: 1px solid #ddd; /* Border color */
+  text-decoration: none;
+  color: #333; /* Text color */
+}
+
+.pagination li.active span,
+.pagination li.active a {
+  background-color: #4CAF50; /* Background color for the active page */
+  color: white; /* Text color for the active page */
+}
+.pagination >nav>div>div>span{
+  display: none;
+
 }

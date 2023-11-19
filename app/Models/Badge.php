@@ -26,5 +26,9 @@ class Badge extends Model
 
     protected $table = 'badge';
 
+    public function users()
+    {
+        return $this->belongsToMany(AppUser::class, 'badgeattainment', 'badge_id', 'user_id');
+    }
 
 }

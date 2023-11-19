@@ -18,14 +18,26 @@
             // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
         </script>
         <script type="text/javascript" src={{ url('js/app.js') }} defer>
+            
         </script>
+        <script src="{{ asset('js/questionsearch.js') }}" defer></script>
     </head>
     <body>
         <main>
             <header>
                 <h1><a href="{{ url('/home') }}">QthenA</a></h1>
                 @if (Auth::check())
-                    <a class="button" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
+                    @php
+                        $user = Auth::user();
+                        $profilePicturePath = $user->profilepicture;
+                    @endphp
+                    <a id="profile" class="button" href="{{ url('/profile') }}">
+                    @if ($profilePicturePath)
+                        <img src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                    @else
+                        <img src="{{ asset('images/space.png') }}" alt="Default Profile Image">
+                    @endif
+                    </a>
                 @endif
             </header>
             <section id="content">

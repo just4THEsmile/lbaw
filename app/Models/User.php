@@ -48,5 +48,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password'
     ];
+    
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class, 'badgeattainment', 'user_id', 'badge_id');
+    }
+
 }
 
