@@ -130,5 +130,22 @@ class UserController extends Controller
         }
     }
 
-
+    public function updatePayLink(Request $request)
+    {
+        $user = Auth::user();
+        $this->authorize('edit', $user);  
+    
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'paylink' => 'required|url', 
+        ]);
+    
+        $user->paylink = $request->input('paylink');
+            
+        $user->save();
+    
+        return view('pages.userprofile', [
+            'user' => $user
+        ]);
+    }
 }
