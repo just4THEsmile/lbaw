@@ -160,12 +160,11 @@ body {
   }
 
   #username{
-    margin-top: 2.3em;
-    margin-left: 1em;
+    margin-top: 3em;
   }
 
   #paylink{
-    margin-top: 2.7em;
+    margin-top: 3.4em;
     margin-left: 4em;
     padding: 2em;
     background-color: #0000FF;
@@ -180,7 +179,7 @@ body {
   }
 
   #stats{
-    margin-top: 2em;
+    margin-top: 3em;
     margin-left: 10em;
     display:flex;
     border: 0.2em solid black;
@@ -220,4 +219,14 @@ body {
 
   .sidebar{
     position: relative;
+  }
+
+  #arrow{
+    font-size: 2em;
+    margin-left: 0.5em;
+  }
+
+  #edit{
+    margin-top: 3.5em;
+    margin-left: 1em;
   }

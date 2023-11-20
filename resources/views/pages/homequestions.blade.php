@@ -19,7 +19,7 @@
     <div class ="content">
     <p class="votes">{{ $question->votes }}</p>
     <p>{{ $question->content }}</p>
-    <a href="{{ url('/user/'.$question->userid) }}">{{ $question->username }}</a>
+    <a href="{{ url('/profile/'.$question->userid) }}">{{ $question->username }}</a>
     <p>{{ $question->date }}</p>
     </div>
 </div>

@@ -243,3 +243,45 @@ body {
     margin-left: 1em;
     margin-bottom: 1.1em;
   }
+
+  .realcontent > :first-child{
+    margin-top: 0;
+  }
+
+  .userpage {
+    width: 80%; /* Set the width of the container */
+    margin: 0 auto; /* Center the container horizontally */
+}
+
+.users {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+}
+
+.user {
+    flex: 0 0 calc(33.33% - 20px); 
+    margin-bottom: 20px; 
+}
+
+.user > a {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center; 
+    text-decoration: none;
+    color: black;
+}
+
+.user > a > img {
+    width: 5em;
+    height: 5em;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 0.5em;
+}
+
+.user > a > h2 {
+    margin: 0;
+    font-size: 1.2em;
+}

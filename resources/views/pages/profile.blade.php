@@ -3,7 +3,6 @@
 @section('content2')
 
     @php
-        $user = Auth::user();
         $profilePicturePath = $user->profilepicture;
     @endphp
     <style>
@@ -15,6 +14,9 @@
             color:white;
         } 
     </style>
+    <nav>
+        <a id='arrow' href="{{'/users'}}" >&larr;</a>
+    </nav>
     <section id='info'>
         <div id="profile">
             @if ($profilePicturePath)
@@ -25,6 +27,9 @@
         </div>
         <div id='username'>   
             <h1>{{ $user->username }}</h1>
+        </div>
+        <div id='edit'>
+            <a class="button" href="{{ '/editprofile/' . $user->id }}">Edit Profile</a>  
         </div>
         <div id='paylink'>
             <a href="{{$user->paylink}}">Donate</a>

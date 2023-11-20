@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -11,12 +12,14 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        return view('pages/profile');
+    public function index($id)
+    {    
+        $user = User::find($id);
+        return view('pages/profile', ['user' => $user]);
     }
-    public function edit(){
-        return view('pages/userprofile');
+    public function edit($id){
+        $user = User::find($id);
+        return view('pages/userprofile', ['user' => $user]);
     }
     public function myquestions(){
         return view('pages/myquestions');
