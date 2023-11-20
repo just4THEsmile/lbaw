@@ -74,7 +74,7 @@ Route::controller(AnswerController::class)->group(function () {
     Route::get('/question/{id}/answer/{id_answer}/edit', 'editform');
     Route::post('/question/{id}/answer/{id_answer}/edit', 'edit');
 });
-/*
+
 Route::controller(CommentController::class)->group(function () {
     Route::get('/commentable/{id}/comment', 'createform')->name('create_comment_form');
     Route::post('/commentable/{id}/comment', 'create')->name('create_comment');
@@ -82,7 +82,7 @@ Route::controller(CommentController::class)->group(function () {
     Route::get('/commentable/{id}/answer/{comment_id}/edit', 'editform')->name('edit_comment_form');
     Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment');
 });
-*/
+
 
 
 // API
