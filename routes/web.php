@@ -75,7 +75,7 @@ Route::controller(CommentController::class)->group(function () {
     Route::post('/commentable/{id}/comment', 'create')->name('create_comment');
     Route::post('/commentable/{id}/comment/{comment_id}/delete', 'delete')->name('delete_comment');
     Route::get('/commentable/{id}/answer/{comment_id}/edit', 'editform')->name('edit_comment_form');
-    Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment_form');
+    Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment');
 });
 
 

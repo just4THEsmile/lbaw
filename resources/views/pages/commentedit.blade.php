@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="{{ route('commentedit',['id' => $id , 'comment_id' => $comment_id]) }}">
+    <form method="post" action="{{ route('edit_comment',['id' => $comment->commentable_id , 'comment_id' => $comment->id]) }}">
         @csrf
         <div class="form-group">
             <label for="content">Content:</label>

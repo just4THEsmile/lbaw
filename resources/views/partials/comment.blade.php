@@ -2,7 +2,7 @@
     <label>
         <span class="commentText">{{ $comment->content->content }}</span>
         <?php if($comment->content->user->id === auth()->user()->id) {?>
-            <a href="#" class="delete">&#10761;</a>
+            @include('partials.editcomment', ['comment' => $comment])
         <?php } ?>
     </label>
 </span>

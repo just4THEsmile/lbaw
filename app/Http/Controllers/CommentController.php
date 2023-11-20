@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Comment;
 use App\Models\Content;
+use App\Models\Answer;
+use App\Models\Question;
 use App\Models\Commentable;
 
 class CommentController extends Controller
@@ -71,7 +73,7 @@ class CommentController extends Controller
         $comment = Comment::find($comment_id);
         if (Auth::check()) {
             return view('pages.commentedit', [
-                'Comment' => $comment
+                'comment' => $comment
             ]);
         } else {
             return redirect('/login');
