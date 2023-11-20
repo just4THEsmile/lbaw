@@ -1,13 +1,16 @@
 body {
     background-color: #ffffff;
   }
+
+  main{
+    margin: 0;
+    padding: 0;
+  }
   main > header {
     display: grid;
     grid-template-columns: 1fr auto auto;
     align-items: center;
     background-color: #7CB9E8;
-    padding: 1em;
-    margin: 1em;
     margin-bottom: 0;
   }
   main > header h1 {
@@ -121,17 +124,25 @@ body {
   }
 
   aside{
-    background-color: #7CB9E8;
-    padding: 0.9em;
-    padding-left: 0em;
-    margin-left: 1em;
+    background-color: #f1f1f1;
+    padding: 0;
+    margin: 0;
     width: 12em;
+  }
+
+  aside > div{
+    padding-left: 1em;
+    padding-top:0.5em;
+    padding-bottom: 0.5em;
   }
 
   .aside{
     background: none;
     border: none;
+    color:black;
+    text-decoration: none;
   }
+
 
   #additional{
     margin-top: 34em;
@@ -140,6 +151,7 @@ body {
 
   #gridable{
     display: block;
+    width: 100%;
   }
 
   section#info{

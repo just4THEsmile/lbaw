@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
                     // Create the link for the question title
                     const titleLink = document.createElement("a");
-                    titleLink.href = `/question/${result.questionid}`;
+                    titleLink.href = `/question/${result.id}`;
                     titleLink.textContent = result.title;
                     titleLink.classList.add("title");
                     // Create the content div

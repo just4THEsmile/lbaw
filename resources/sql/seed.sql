@@ -261,7 +261,7 @@ VALUES
     ('Charlie Brown', 'charlieb', 'charlie@example.com', 'charlie789', 'Web developer', 'charlie_profile.jpg', 'user'),
     ('Grace Adams', 'gracea', 'grace@example.com', 'securepass', 'AI enthusiast', 'grace_profile.jpg', 'user'),
     ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 'sam_profile.jpg', 'user'),
-    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','images/ydHrxlKKAxdKSJkz7Xcb4YwGF5AO4RdwELlt4ayM.png','user');
+    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','images/nc4pjI7Aa5ednT5Psz8NdRVsaksmmD6cXk70Zbdj.jpg','admin');
 
 INSERT INTO Faq (question, answer)
 VALUES

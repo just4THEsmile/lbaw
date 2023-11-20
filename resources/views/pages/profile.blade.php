@@ -1,11 +1,20 @@
 @extends('layouts.barebone')
 
-@section('content')
+@section('content2')
 
     @php
         $user = Auth::user();
         $profilePicturePath = $user->profilepicture;
     @endphp
+    <style>
+        #Profile{
+            background-color: #0000FF;
+            
+        }
+        #Profile > a{
+            color:white;
+        } 
+    </style>
     <section id='info'>
         <div id="profile">
             @if ($profilePicturePath)
@@ -18,7 +27,7 @@
             <h1>{{ $user->username }}</h1>
         </div>
         <div id='paylink'>
-            <a href="https://www.paypal.com/pt/home">Donate</a>
+            <a href="{{$user->paylink}}">Donate</a>
         </div>
         <div id='stats'>
             <div id='points'>
