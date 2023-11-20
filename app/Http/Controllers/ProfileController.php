@@ -11,9 +11,9 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        return view('pages/profile');
+    public function index($id)
+    {    
+        return view('pages.profile', ['userId' => $id]);
     }
     public function edit(){
         return view('pages/userprofile');
@@ -26,5 +26,8 @@ class ProfileController extends Controller
     }
     public function followquestion(){
         return view('pages/followquestion');
+    }
+    public function users(){
+        return view('pages/users');
     }
 }

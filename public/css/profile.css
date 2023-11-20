@@ -221,3 +221,9 @@ body {
   .sidebar{
     position: relative;
   }
+
+  #arrow{
+    font-size: 2em;
+    margin-left: 0.5em;
+  }
+

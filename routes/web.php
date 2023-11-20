@@ -13,6 +13,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchQuestionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,19 +45,21 @@ Route::redirect('/', '/login');
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/users', [HomeController::class, 'users'])->name('users');
 });
 Route::get('/questions', [SearchQuestionController::class, 'show'])->name('questions');
 Route::get('/search/questions', [SearchQuestionController::class, 'search']);
 
-Route::get('/users', [UsersController::class, 'index'])->name('users');
+
 
 //Edit Profile
 Route::controller(ProfileController::class)->group(function () {
     Route::get('/editprofile', [ProfileController::class, 'edit'])->name('editprofile');
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/{id}', [ProfileController::class, 'index'])->name('profile');
     Route::get('/myquestions', [ProfileController::class, 'myquestions'])->name('myquestions');
     Route::get('/myanswers', [ProfileController::class, 'myanswers'])->name('myanswers');
     Route::get('/followquestion', [ProfileController::class, 'followquestion'])->name('followquestion');
+    Route::get('/users', [ProfileController::class, 'users'])->name('users');
 });
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');

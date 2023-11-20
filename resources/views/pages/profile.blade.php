@@ -15,6 +15,9 @@
             color:white;
         } 
     </style>
+    <nav>
+        <a id='arrow' href="{{'/users'}}" >&larr;</a>
+    </nav>
     <section id='info'>
         <div id="profile">
             @if ($profilePicturePath)

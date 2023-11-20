@@ -31,7 +31,7 @@
                         $user = Auth::user();
                         $profilePicturePath = $user->profilepicture;
                     @endphp
-                    <a id="profile" class="button" href="{{ url('/profile') }}">
+                    <a id="profile" class="button" href="{{ route('profile', ['id' => $user->id]) }}">
                     @if ($profilePicturePath)
                         <img src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
                     @else
