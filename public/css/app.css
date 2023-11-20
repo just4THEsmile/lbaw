@@ -3,6 +3,11 @@ body {
     color: #0e0e0e;
   }
   main > header {
+    position: absolute;
+    top: 0em;
+    width: 100%;
+    
+
     display: grid;
     grid-template-columns: 1fr auto auto;
     align-items: center;
@@ -20,88 +25,18 @@ body {
     margin: 1em;
     justify-self: center;
   }
-  #cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  #cards article.card {
-    display: flex;
-    flex-direction: column;
-    background-color: #d3edc3;
-    padding: 1em;
-    margin: 1em;
-  }
-  #cards article.card header {
-    display: flex;
-    align-items: center;
-  }
-  #cards article.card header h2 {
-    flex-grow: 1;
-  }
-  #cards article.card header a.delete {
-    display: none;
-    font-size: 2.6rem;
-    margin-top: .5rem;
-    margin-bottom: 2.5rem;
-    line-height: 1.25;
-  }
-  #cards article.card header:hover a.delete {
-    display: inline;
-  }
-  #cards article.card li {
-    list-style-type: none;
-  }
-  #cards article.card li label {
-    display: flex;
-    align-items: baseline;
-  }
-  #cards article.card li label span {
-    margin-left: .5em;
-    flex-grow: 1;
-  }
-  #cards article.card li label a {
-    display: none;
-  }
-  #cards article.card li label:hover a {
-    display: inline;
-  }
-  #cards article.card input:checked + span {
-    text-decoration: var(--primary-color) solid line-through;
-  }
-  #cards article.card ul {
-    margin: 0;
-  }
-  #cards article.card form {
-    margin: 0;
-  }
-  #cards article.card input[type=text] {
-    background-color: white;
-    margin: 0;
-  }
-  #content label {
-    font-weight: normal;
-  }
-  #content > form {
-    margin: 0 auto;
-    padding: 1em;
-    max-width: 20em;
-    border: 1px solid #d2afe7;
-  }
-  #content > form .error {
-    font-weight: bold;
-    color: #ff3333;
-  }
-  #content > form .success {
-    font-weight: bold;
-    color: #106af1;
-  }
-  #content > form input {
-    background-color: white;
-  }
+
+
+
+
+
+
+
+
+
+
   @media (max-width: 70em) {
-    #cards {
-      grid-template-columns: repeat(2, 1fr);
-    }
+
     main > header {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -110,11 +45,7 @@ body {
       grid-row-end: span 2;
     }
   }
-  @media (max-width: 40em) {
-    #cards {
-      grid-template-columns: 1fr;
-    }
-  }
+
   @media (max-width: 25em) {
     body {
       margin: 0;
@@ -126,14 +57,8 @@ body {
     main > header span {
       margin: 0;
     }
-    #content form {
-      margin: 0;
-      max-width: 25em;
-    }
-    article.card {
-      margin: 0;
-      border-bottom: 1px solid rgba(96, 108, 118, 0.4);
-    }
+
+
   }
   /**
    * Override milligram colors
@@ -159,7 +84,6 @@ body {
 border-color: #0000FF;
 }
   .answercard {
-    margin-top: 2em;
     margin-left: 1em;
     margin-right: 1em;
     border-top: 1px solid black;
@@ -211,8 +135,11 @@ div.realcontent {
     height: auto;
     position: relative;
   }
+  .content{
+    margin-left:0em ;
+  }
   .sidebar a {float: left;}
-  div.realcontent {margin-left: 0;}
+  div.questionslist {margin-left: 0; margin-top: auto;}
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
@@ -242,4 +169,21 @@ body {
     border-radius: 50%;
     margin-left: 1em;
     margin-bottom: 1.1em;
+  }
+
+  .sidebar{
+    margin-top: 12em;
+  }
+
+  .questionslist{
+    margin-top: 10.4em;
+    margin-left: 10em;
+  }
+  .searchbar{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+
+    width: 70% !important;
   }

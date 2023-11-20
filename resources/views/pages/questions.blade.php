@@ -12,14 +12,13 @@
 </div>
 
 <div>
-<body>
 
-    <div class="realcontent">
-        <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
+<div style="color:white;">Home</div>
+    <div class="questionslist">
+    <div style="color:white;">Home</div>
+        <input class="searchbar" type="text" id="searchInput" placeholder="Search A Question..." >
         <ul id="searchResults">
         @foreach ($questions as $question)
-
-
         <div class= "answercard">
             <a class="title" href="{{ url('/question/'.$question->id) }}">{{ $question->title }}</a>
             <div class ="content">
@@ -29,12 +28,12 @@
                 <p class="date">{{ $question->date }}</p>
             </div>
         </div>
-@endforeach
+        @endforeach
         </ul>
     <div class="pagination">
     </div>
     </div>
-</body>
+
 </html>
 
 @endsection
