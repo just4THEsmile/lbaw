@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\CardController;
+//use App\Http\Controllers\CardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
@@ -10,6 +10,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchQuestionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 
@@ -44,7 +45,10 @@ Route::redirect('/', '/login');
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
+Route::get('/questions', [SearchQuestionController::class, 'show'])->name('questions');
+Route::get('/search/questions', [SearchQuestionController::class, 'search']);
 
+Route::get('/users', [UsersController::class, 'index'])->name('users');
 
 //Edit Profile
 Route::controller(ProfileController::class)->group(function () {
@@ -82,6 +86,7 @@ Route::controller(CommentController::class)->group(function () {
 
 
 // API
+/*
 Route::controller(CardController::class)->group(function () {
     Route::put('/api/cards', 'create');
     Route::delete('/api/cards/{card_id}', 'delete');
@@ -91,7 +96,7 @@ Route::controller(ItemController::class)->group(function () {
     Route::put('/api/cards/{card_id}', 'create');
     Route::post('/api/item/{id}', 'update');
     Route::delete('/api/item/{id}', 'delete');
-});
+});*/
 
 
 // Authentication
