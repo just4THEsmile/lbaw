@@ -12,6 +12,7 @@
 
         <!-- Styles -->
         <link href="{{ url('css/milligram.min.css') }}" rel="stylesheet">
+        <link href="{{ url('css/app.css') }}" rel="stylesheet">
         <link href="{{ url('css/profile.css') }}" rel="stylesheet">
         <script type="text/javascript">
             // Fix for Firefox autofocus CSS bug
@@ -35,6 +36,17 @@
             </header>
         </main>
         <div id='flexthis'>
+            <div>
+                <div class="sidebar">
+                    <a href="/home">Home Page</a>
+                    <a href="{{'/tags'}}">Tags</a>
+                    <a href="{{'/questions'}}">Questions</a>
+                    <a class="active" href="{{'/users'}}" >Users</a>
+                </div>
+            </div>
+            <div id='gridable'>
+                @yield('content2')
+            </div>
             <aside>
                     <div id='Profile'><a class='aside' href="{{ url('/profile') }}" >Profile</a></div>
                     <div id='Follow'><a class='aside' href="{{ url('/followquestion') }}">Followed Questions</a></div>
@@ -47,9 +59,7 @@
                         <div>Terms of service</div>
                     </div>
             </aside>
-            <div id='gridable'>
-                @yield('content')
-            </div>
+            
         </div>
     </body>
 </html>

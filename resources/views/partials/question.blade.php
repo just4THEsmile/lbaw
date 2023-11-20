@@ -10,9 +10,9 @@
         @csrf
         <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
     </form>
-        <?php if($question->commentable->content->user->id === auth()->user()->id) {?>
-            @include('partials.editquestion', ['question' => $question])
-        <?php } ?>
+    @if ($question->commentable->content->user->id === auth()->user()->id)
+        @include('partials.editquestion', ['question' => $question])
+    @endif
     </header>
     <div class = "comments">
     @each('partials.comment', $question->commentable->comments()->orderBy('id')->get(), 'comment')
