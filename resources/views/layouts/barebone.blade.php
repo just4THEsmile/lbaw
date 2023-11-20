@@ -28,7 +28,6 @@
                 @if (Auth::check())
                     <div>
                         <a class="button" href="{{ url('/logout') }}"> Logout </a>  
-                        <a class="button" href="{{ url('/editprofile') }}">Edit Profile</a>  
                         <a class="button" href="{{ url('/home') }}">Go back</a>
                     </div>    
 
@@ -48,7 +47,7 @@
                 @yield('content2')
             </div>
             <aside>
-                    <div id='Profile'><a class='aside' href="{{ url('/profile') }}" >Profile</a></div>
+                    <div id='Profile'><a class='aside' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a></div>
                     <div id='Follow'><a class='aside' href="{{ url('/followquestion') }}">Followed Questions</a></div>
                     <div id='MyQuestions'><a class='aside' href="{{ url('/myquestions') }}" >My questions</a></div>
                     <div id= 'MyAnswers'><a class='aside' href="{{ url('/myanswers') }}">My answers</a></div>

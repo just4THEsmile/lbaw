@@ -24,8 +24,11 @@
         <main>
             <header>
                 <h1><a href="{{ url('/home') }}">QthenA</a></h1>
+                @php
+                    $user = Auth::user();
+                @endphp
                 @if (Auth::check())
-                    <a class="button" href="{{ url('/logout') }}"> Logout </a> <a class="button" href="{{ url('/profile') }}">Go back</a>
+                    <a class="button" href="{{ url('/logout') }}"> Logout </a> <a class="button" href="{{ route('profile', ['id' => $user->id]) }}">Go back</a>
                 @endif
             </header>
             <section id='edits'>

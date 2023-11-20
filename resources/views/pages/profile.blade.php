@@ -3,7 +3,6 @@
 @section('content2')
 
     @php
-        $user = Auth::user();
         $profilePicturePath = $user->profilepicture;
     @endphp
     <style>
@@ -28,6 +27,9 @@
         </div>
         <div id='username'>   
             <h1>{{ $user->username }}</h1>
+        </div>
+        <div id='edit'>
+            <a class="button" href="{{ '/editprofile/' . $user->id }}">Edit Profile</a>  
         </div>
         <div id='paylink'>
             <a href="{{$user->paylink}}">Donate</a>

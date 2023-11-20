@@ -10,16 +10,17 @@
   <a class="active" href="{{'/users'}}">Users</a>
 </div>
 <div class="userpage">
-    <h1>Users</h1>
+    <div id='search'>
+        <h1>Users</h1>
+        <input class="searchbar" type="text" id="searchUserInput" placeholder="Search...">
+    </div>
     <div class="users">
-        @php
-            $users = App\Models\User::all();
-        @endphp
         @foreach ($users as $user)
         <div class="user">
             <a href="{{ '/profile/' . $user->id }}">
             <img src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
-            <h2>{{ $user->name }}</h2>
+            <h2>Name: {{ $user->name }}</h2>
+            <h2>Username: {{ $user->username}}</h2>
             </a>
         </div>
         @endforeach
