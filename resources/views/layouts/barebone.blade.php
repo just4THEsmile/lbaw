@@ -47,16 +47,9 @@
                 @yield('content2')
             </div>
             <aside>
-                    <div id='Profile'><a class='aside' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a></div>
-                    <div id='Follow'><a class='aside' href="{{ url('/followquestion') }}">Followed Questions</a></div>
-                    <div id='MyQuestions'><a class='aside' href="{{ url('/myquestions') }}" >My questions</a></div>
-                    <div id= 'MyAnswers'><a class='aside' href="{{ url('/myanswers') }}">My answers</a></div>
-                    <div id='additional'>
-                        <div>FAQ</div>
-                        <div>About us</div>
-                        <div>Contact us</div>
-                        <div>Terms of service</div>
-                    </div>
+
+                @yield('content3')
+                    
             </aside>
             
         </div>

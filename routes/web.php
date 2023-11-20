@@ -28,7 +28,7 @@ use App\Http\Controllers\UsersController;
 
 //User
 Route::controller(UserController::class)->group(function () {
-    Route::post('/updatename', [UserController::class, 'updateName'])->name('updatename'); 
+    Route::post('/updatename', [UserController::class, 'updateName'])->name('updatename');
     Route::post('/updateusername', [UserController::class, 'updateUsername'])->name('updateusername');
     Route::post('/updatemail', [UserController::class, 'updateEmail'])->name('updatemail');
     Route::post('/updatepassword', [UserController::class, 'updatePassword'])->name('updatepassword');  
@@ -59,9 +59,9 @@ Route::get('/search/users', [UsersController::class, 'search']);
 Route::controller(ProfileController::class)->group(function () {
     Route::get('/editprofile/{id}', [ProfileController::class, 'edit'])->name('editprofile');
     Route::get('/profile/{id}', [ProfileController::class, 'index'])->name('profile');
-    Route::get('/myquestions', [ProfileController::class, 'myquestions'])->name('myquestions');
-    Route::get('/myanswers', [ProfileController::class, 'myanswers'])->name('myanswers');
-    Route::get('/followquestion', [ProfileController::class, 'followquestion'])->name('followquestion');
+    Route::get('/myquestions/{id}', [ProfileController::class, 'myquestions'])->name('myquestions');
+    Route::get('/myanswers/{id}', [ProfileController::class, 'myanswers'])->name('myanswers');
+    Route::get('/followquestion/{id}', [ProfileController::class, 'followquestion'])->name('followquestion');
 });
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');
