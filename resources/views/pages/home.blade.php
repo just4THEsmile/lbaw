@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section id="cards">
+<section id="content">
     {{-- @each('partials.card', $cards, 'card') --}}
     <article class="card">
         <form class="new_card">
@@ -10,5 +10,5 @@
         </form>
     </article>
 </section>
-
+echo "ola";
 @endsection

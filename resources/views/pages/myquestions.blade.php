@@ -1,8 +1,16 @@
 @extends('layouts.barebone')
 
-@section('content')
+@section('content2')
 
-
+    <style>
+        #MyQuestions{
+            background-color: #0000FF;
+            
+        }
+        #MyQuestions > a{
+            color:white;
+        } 
+    </style>
     @php
         $user = Auth::user();
         $questions = $user->questions();

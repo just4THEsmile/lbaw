@@ -1,6 +1,6 @@
 body {
     background-color: #ffffff;
-    color: #9b4dca;
+    color: #0e0e0e;
   }
   main > header {
     display: grid;
@@ -8,7 +8,6 @@ body {
     align-items: center;
     background-color: #7CB9E8;
     padding: 1em;
-    margin: 1em;
   }
   main > header h1 {
     margin: 0;
@@ -157,8 +156,76 @@ body {
   input[type=text]:focus,
   input[type=email]:focus,
   input[type=password]:focus {
-    border-color: #0000FF;
+border-color: #0000FF;
+}
+  .answercard {
+    margin-top: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
+    border-top: 1px solid black;
+    padding: 2em;
+    background-color: #FFFF;
+}  
+
+/* The side navigation menu */
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 10em;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+/* Sidebar links */
+.sidebar a {
+  display: block;
+  color: black;
+  padding: 0.5em;
+  text-decoration: none;
+}
+
+/* Active/current link */
+.sidebar a.active {
+  background-color: #0000FF;
+  color: white;
+}
+
+/* Links on mouse-over */
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+/* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+div.realcontent {
+  margin-left: 10em;
+
+}
+
+/* On screens that are less than 700px wide, make the sidebar into a topbar */
+@media screen and (max-width: 40em) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
   }
+  .sidebar a {float: left;}
+  div.realcontent {margin-left: 0;}
+}
+
+/* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+@media screen and (max-width: 20em) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
+body {
+  margin: 0;
+}
+
   
   #profile {
     display: inline-block;
@@ -169,6 +236,10 @@ body {
   }
   
   #profile img {
-    width: 100%;
-    height: auto;
+    width: 10em;
+    height: 10em;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-left: 1em;
+    margin-bottom: 1.1em;
   }
