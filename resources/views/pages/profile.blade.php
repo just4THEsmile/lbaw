@@ -18,36 +18,41 @@
         <a id='arrow' href="{{'/users'}}" >&larr;</a>
     </nav>
     <section id='info'>
-        <div id="profile">
-            @if ($profilePicturePath)
-                <img src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
-            @else
-                <img src="{{ asset('images/space.png') }}" alt="Default Profile Image">
-            @endif
+        <div id='container'>
+            <div id="profile">
+                @if ($profilePicturePath)
+                    <img src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+                @else
+                    <img src="{{ asset('images/space.png') }}" alt="Default Profile Image">
+                @endif
+            </div>
+            <div id='username'>   
+                <h1>{{ $user->username }}</h1>
+            </div>
+            
+            <div id='paylink'>
+                <a href="{{$user->paylink}}">Donate</a>
+            </div>
+            <div id='stats'>
+                <div id='points'>
+                    <div>Points</div>
+                    <p>{{ $user->points}}</p>
+                </div>
+                <div id='questions'>
+                    <div>Questions</div>
+                    <p>{{ $user->nquestion }}</p>
+                </div>
+                <div id='answers'>
+                    <div>Answers</div>
+                    <p>{{ $user->nanswer }}</p>
+                </div>	
+            </div>
         </div>
-        <div id='username'>   
-            <h1>{{ $user->username }}</h1>
-        </div>
+        @if(Auth::user()->id === $user->id || Auth::user()->usertype === 'admin')
         <div id='edit'>
-            <a class="button" href="{{ '/editprofile/' . $user->id }}">Edit Profile</a>  
+            <a class="button" href="{{ route('editprofile', ['id' => $user->id]) }}">Edit Profile</a>  
         </div>
-        <div id='paylink'>
-            <a href="{{$user->paylink}}">Donate</a>
-        </div>
-        <div id='stats'>
-            <div id='points'>
-                <div>Points</div>
-                <p>{{ $user->points}}</p>
-            </div>
-            <div id='questions'>
-                <div>Questions</div>
-                <p>{{ $user->nquestion }}</p>
-            </div>
-            <div id='answers'>
-                <div>Answers</div>
-                <p>{{ $user->nanswer }}</p>
-            </div>	
-        </div>
+        @endif
     </section>
         <section id='about'>
             <h3>About me</h3>
@@ -61,4 +66,19 @@
                 @endforeach
             </ul>
         </section>
+        
+@endsection
+
+
+@section('content3')
+<div id='Profile'><a class='aside' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a></div>
+<div id='Follow'><a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">Followed Questions</a></div>
+<div id='MyQuestions'><a class='aside' href="{{ route('myquestions', ['id' => $user->id]) }}" >My questions</a></div>
+<div id= 'MyAnswers'><a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">My answers</a></div>
+<div id='additional'>
+    <div>FAQ</div>
+    <div>About us</div>
+    <div>Contact us</div>
+    <div>Terms of service</div>
+</div>
 @endsection
