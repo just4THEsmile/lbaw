@@ -2,14 +2,21 @@
     <header>
     <h2><a href="/questions/{{ $question->id }}">{{ $question->title }}</a></h2>
     <h3><a href="/questions/{{ $question->id }}">{{ $question->commentable->content->content}}</a></h3>
-    <form id='createquestion' action="./{{ $question->id }}/answer" method='get'>
+    <form id='createanswer' action="./{{ $question->id }}/answer" method='get'>
         @csrf
         <button type='submit' class='createquestionButton' name="createquestion-button">New Answer</button>
     </form>
-        <?php if($question->commentable->content->user->id === auth()->user()->id ||auth()->user()->usertype === 'admin' ||auth()->user()->usertype === 'moderator' ) {?>
-            @include('partials.editquestion', ['question' => $question])
-        <?php } ?>
+    <form id='createcomment' action="{{ route('create_comment_form',['id' => $question->id]) }}" method='get'>
+        @csrf
+        <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
+    </form>
+    @if ($question->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'moderator')
+        @include('partials.editquestion', ['question' => $question])
+    @endif
     </header>
+    <div class = "comments">
+    @each('partials.comment', $question->commentable->comments()->orderBy('id')->get(), 'comment')
+    </div>
     <ul>
     @each('partials.answer', $question->answers()->orderBy('id')->get(), 'answer')
     <?php // 
@@ -18,7 +25,4 @@
     //
     ?>
     </ul>
-    <form class="new_item">
-        <input type="text" name="description" placeholder="new item">
-    </form>
 </article>

@@ -74,15 +74,15 @@ Route::controller(AnswerController::class)->group(function () {
     Route::get('/question/{id}/answer/{id_answer}/edit', 'editform');
     Route::post('/question/{id}/answer/{id_answer}/edit', 'edit');
 });
-/*
+
 Route::controller(CommentController::class)->group(function () {
-    Route::get('/commentable/{id}/comment', 'createform')->route('create_comment_form');
-    Route::post('/commentable/{id}/comment', 'create')->route('create_comment');
-    Route::post('/commentable/{id}/comment/{id_comment}/delete', 'delete')->route('delete_comment');
-    Route::get('/commentable/{id}/answer/{id_comment}/edit', 'editform')->route('edit_comment_form');
-    Route::post('/commentable/{id}/answer/{id_comment}/edit', 'edit')->route('edit_comment_form');
+    Route::get('/commentable/{id}/comment', 'createform')->name('create_comment_form');
+    Route::post('/commentable/{id}/comment', 'create')->name('create_comment');
+    Route::post('/commentable/{id}/comment/{comment_id}/delete', 'delete')->name('delete_comment');
+    Route::get('/commentable/{id}/answer/{comment_id}/edit', 'editform')->name('edit_comment_form');
+    Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment');
 });
-*/
+
 
 
 // API
