@@ -6,7 +6,7 @@
         @csrf
         <button type='submit' class='createquestionButton' name="createquestion-button">New Answer</button>
     </form>
-        <?php if($question->commentable->content->user->id === auth()->user()->id) {?>
+        <?php if($question->commentable->content->user->id === auth()->user()->id ||auth()->user()->usertype === 'admin' ||auth()->user()->usertype === 'moderator' ) {?>
             @include('partials.editquestion', ['question' => $question])
         <?php } ?>
     </header>

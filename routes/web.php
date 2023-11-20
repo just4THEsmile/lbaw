@@ -81,7 +81,8 @@ Route::controller(CommentController::class)->group(function () {
     Route::post('/commentable/{id}/comment/{id_comment}/delete', 'delete')->route('delete_comment');
     Route::get('/commentable/{id}/answer/{id_comment}/edit', 'editform')->route('edit_comment_form');
     Route::post('/commentable/{id}/answer/{id_comment}/edit', 'edit')->route('edit_comment_form');
-});*/
+});
+*/
 
 
 // API
