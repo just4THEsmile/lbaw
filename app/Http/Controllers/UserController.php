@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
 
 use App\Models\User;
 
@@ -128,6 +130,11 @@ class UserController extends Controller
         $user = User::find($userId); 
     
         if ($request->hasFile('profilepicture')) {
+
+            if ($user->profilepicture) {
+                if($user->profilepicture != 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png')
+                Storage::disk('public')->delete($user->profilepicture);
+            }
 
             $profilePicture = $request->file('profilepicture');
             $path = $profilePicture->store('images', 'public');
