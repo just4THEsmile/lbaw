@@ -7,35 +7,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class UserController extends Controller
+class UsersController extends Controller
 {   
-
-    public function show()
-    {
-        $questions = User::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
-        ->join('content', 'question.id', '=', 'content.id')
-        ->join('appuser', 'content.user_id', '=', 'appuser.id')
-        ->get();
-
-        return view('pages.questions', ['questions' => $questions]);
-    }
     public function search(Request $request)
     {
-        // Implement your search logic here
-        
-        $query = $request->input('q');
-        if(strlen($query) == 0){
-            $results= User::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
-            ->join('content', 'question.id', '=', 'content.id')
-            ->join('appuser', 'content.user_id', '=', 'appuser.id')
-            ->get();
-            return response()->json($results);
-        }
-            $results = User::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
-            ->join('content', 'question.id', '=', 'content.id')
-            ->join('appuser', 'content.user_id', '=', 'appuser.id')
-            ->where('question.title', 'ILIKE', "%$query%")
-            ->get();
-        return response()->json($results);
+    $query = $request->input('q');
+
+    // If the query is empty, return all users
+    if (strlen($query) == 0) {
+        $results = User::all();
+    } else {
+        // Use where() with the 'like' operator to search usernames containing the query string
+        $results = User::where('username', 'ilike', "%$query%")->get();
     }
+
+    return response()->json($results);
+    }
+
+    public function getUsers(){
+
+        $users = User::all();
+        return view('pages.users', ['users' => $users]);
+
+    }
+    
 }

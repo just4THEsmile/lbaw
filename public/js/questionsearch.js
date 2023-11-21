@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Create a link for the username
                     const usernameLink = document.createElement("a");
-                    usernameLink.href = `/user/${result.userid}`;
+                    usernameLink.href = `/profile/${result.userid}`;
                     usernameLink.textContent = result.username; // Adjust based on your actual result structure
                     usernameLink.classList.add("username");
 

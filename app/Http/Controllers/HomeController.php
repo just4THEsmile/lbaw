@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
      * @return \Illuminate\Contracts\Support\Renderable
      */
     use App\Models\Question;
+    use App\Models\User;
 
     class HomeController extends Controller
     {
@@ -22,4 +23,12 @@ use Illuminate\Http\Request;
         ');
             return view('pages.homequestions', ['questions' => $questions]);
         }
+
+        public function users()
+        {
+            $users = User::all(); 
+    
+            return view('users.index', compact('users')); 
+        }
+        
     }

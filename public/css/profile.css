@@ -157,15 +157,15 @@ body {
   section#info{
     margin-top: 1em;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   #username{
-    margin-top: 2.3em;
-    margin-left: 1em;
+    margin-top: 1em;
   }
 
   #paylink{
-    margin-top: 2.7em;
     margin-left: 4em;
     padding: 2em;
     background-color: #0000FF;
@@ -180,8 +180,7 @@ body {
   }
 
   #stats{
-    margin-top: 2em;
-    margin-left: 10em;
+    margin-left: 3em;
     display:flex;
     border: 0.2em solid black;
     height:4em;
@@ -220,4 +219,19 @@ body {
 
   .sidebar{
     position: relative;
+  }
+
+  #arrow{
+    font-size: 2em;
+    margin-left: 0.5em;
+  }
+
+  #edit{
+    margin-top:0.5em;
+    margin-right: 1em;
+  }
+
+  #container{
+    display: flex;
+    align-items: center;
   }
