@@ -33,25 +33,28 @@
 
                 @endif
             </header>
-        </main>
-        <div id='flexthis'>
-            <div>
-                <div class="sidebar">
+            <div class="sidebar">
                     <a href="/home">Home Page</a>
                     <a href="{{'/tags'}}">Tags</a>
                     <a href="{{'/questions'}}">Questions</a>
                     <a class="active" href="{{'/users'}}" >Users</a>
                 </div>
-            </div>
-            <div id='gridable'>
+        
+        <div id='flexthis'>
+
+            <div id='gridable' >
                 @yield('content2')
             </div>
-            <aside>
+
+
+            <aside style= "margin-top: 5.8em">
 
                 @yield('content3')
                     
+
             </aside>
             
         </div>
+        </main>
     </body>
 </html>

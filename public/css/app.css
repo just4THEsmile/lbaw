@@ -3,6 +3,11 @@ body {
     color: #0e0e0e;
   }
   main > header {
+  position: fixed;
+    top: 0em;
+    width: 100%;
+    
+
     display: grid;
     grid-template-columns: 1fr auto auto;
     align-items: center;
@@ -20,72 +25,17 @@ body {
     margin: 1em;
     justify-self: center;
   }
-  #cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  #cards article.card {
-    display: flex;
-    flex-direction: column;
-    background-color: #d3edc3;
-    padding: 1em;
-    margin: 1em;
-  }
-  #cards article.card header {
-    display: flex;
-    align-items: center;
-  }
-  #cards article.card header h2 {
-    flex-grow: 1;
-  }
-  #cards article.card header a.delete {
-    display: none;
-    font-size: 2.6rem;
-    margin-top: .5rem;
-    margin-bottom: 2.5rem;
-    line-height: 1.25;
-  }
-  #cards article.card header:hover a.delete {
-    display: inline;
-  }
-  #cards article.card li {
-    list-style-type: none;
-  }
-  #cards article.card li label {
-    display: flex;
-    align-items: baseline;
-  }
-  #cards article.card li label span {
-    margin-left: .5em;
-    flex-grow: 1;
-  }
-  #cards article.card li label a {
-    display: none;
-  }
-  #cards article.card li label:hover a {
-    display: inline;
-  }
-  #cards article.card input:checked + span {
-    text-decoration: var(--primary-color) solid line-through;
-  }
-  #cards article.card ul {
-    margin: 0;
-  }
-  #cards article.card form {
-    margin: 0;
-  }
-  #cards article.card input[type=text] {
-    background-color: white;
-    margin: 0;
-  }
+  
   #content label {
     font-weight: normal;
   }
   #content > form {
+
     margin: 0 auto;
+  margin-top: 10em;
     padding: 1em;
     max-width: 20em;
-    margin-top: 2em;
+    
     border: 1px solid #7CB9E8;
   }
   #content > form .error {
@@ -99,6 +49,7 @@ body {
   #content > form input {
     background-color: white;
   }
+
   @media (max-width: 70em) {
     #cards {
       grid-template-columns: repeat(2, 1fr);
@@ -129,6 +80,7 @@ body {
     }
     #content form {
       margin: 0;
+margin-top: 6em;
       max-width: 25em;
     }
     article.card {
@@ -136,6 +88,14 @@ body {
       border-bottom: 1px solid rgba(96, 108, 118, 0.4);
     }
   }
+
+
+
+
+
+
+
+
   /**
    * Override milligram colors
    * Some styles might be missing
@@ -160,8 +120,7 @@ body {
 border-color: #0000FF;
 }
   .answercard {
-    margin-top: 2em;
-    margin-left: 1em;
+        margin-left: 1em;
     margin-right: 1em;
     border-top: 1px solid black;
     padding: 2em;
@@ -201,19 +160,51 @@ border-color: #0000FF;
 
 /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
 div.realcontent {
-  margin-left: 10em;
+  margin-left: 11em;
 
 }
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
 @media screen and (max-width: 40em) {
-  .sidebar {
+  .userpage>#search > .searchbar {
+    margin-left: 0em;
+    margin-top: 0em;
+  }
+  div>.realcontent{
+    margin-top: 0em;
+    margin-left: 0em;
+  }
+  div.users{
+    margin-top: 0em;
+    margin-left: 20%;
+  }
+  #flexthis>#gridable{
+    margin-top: 0em;
+    margin-left: 0em;
+  }
+  section>.sidebar {
+margin-top: 0em;
     width: 100%;
     height: auto;
     position: relative;
   }
+body>main > .sidebar{
+    margin-top: 0em;
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  div > div > .sidebar{
+    margin-top: 0em;
+  }
+  body > main > header{
+      position: relative; 
+  }
+  #content{
+    margin-left:0em !important;
+  }
   .sidebar a {float: left;}
-  div.realcontent {margin-left: 0;}
+  div.questionslist {margin-left: 0; margin-top: auto;}
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
@@ -222,6 +213,7 @@ div.realcontent {
     text-align: center;
     float: none;
   }
+
 }
 body {
   margin: 0;
@@ -245,6 +237,22 @@ body {
     margin-bottom: 1.1em;
   }
 
+.sidebar{
+    margin-top: 10.26em;
+  }
+
+  .questionslist{
+    margin-top: 10.4em;
+    margin-left: 10em;
+  }
+  .searchbar{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+
+    width: 70% !important;
+  }
   .realcontent > :first-child{
     margin-top: 0;
   }
@@ -286,3 +294,32 @@ body {
     margin: 0;
     font-size: 1.2em;
 }
+
+
+#gridable{
+  margin-top: 5.9em;
+  margin-left: 10em;
+}
+
+.users{
+  margin-top: 10em;
+  margin-left: 20%;
+}
+
+div > .sidebar{
+  position: fixed;
+  margin-top: 5.9em;
+}
+main > .sidebar{
+  margin-top: 5.8em;
+}
+.realcontent{
+  margin-top: 10.7em;
+
+}
+
+#search > .searchbar {
+  margin-left: 10em;
+  margin-top: 13em;
+}
+

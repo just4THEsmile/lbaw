@@ -10,7 +10,9 @@
   <a href="{{'/users'}}">Users</a>
 </div>
 
-<div class="realcontent">
+<div style="color:white; font-size:0.0001em;">Home</div>
+<div class="questionslist"> 
+
 @foreach ($questions as $question)
 
 

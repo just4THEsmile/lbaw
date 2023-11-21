@@ -676,8 +676,8 @@ BEGIN
         -- Get the author of the answer
         SELECT user_id INTO answer_author_id
         FROM Content
-        JOIN Answer ON Answer.commentable_id = Content.id
-        WHERE Answer.commentable_id = NEW.commentable_id;
+        JOIN Answer ON Answer.id = Content.id
+        WHERE Answer.id = NEW.commentable_id;
 
         -- Insert a new notification for the answer author
         INSERT INTO Notification (user_id, date)
