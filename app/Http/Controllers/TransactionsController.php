@@ -174,5 +174,47 @@ class TransactionsController extends Controller
             \Log::error('Transaction failed: ' . $e->getMessage());
         }
     }
-
+    public static function deleteUser($user_id){
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+            $user = User::find($user_id);
+            $user->username = "Deleted";
+            $user->email = "Deleted";
+            $user->password = "Deleted";
+            $user->bio = "Deleted";
+            $user->points = 0;
+            $user->nquestion = 0;
+            $user->nanswer = 0;
+            $user->profilepicture = "Deleted";
+            $user->paylink = "Deleted";
+            $user->usertype = "Deleted";
+            $user->save();
+            DB::table('content')
+            ->join('commentable', 'commentable.id', '=', 'content.id')
+            ->join('question', 'question.id', '=', 'commentable.id')
+            ->where('content.user_id', $user_id)
+            ->update(['content.content' => 'Deleted', 'question.title' => 'Deleted' , 'content.deleted' => true]);
+            DB::table('content')
+            ->join('commentable', 'commentable.id', '=', 'content.id')
+            ->join('answer', 'answer.id', '=', 'commentable.id')
+            ->where('content.user_id', $user_id)
+            ->update(['content.content' => 'Deleted', 'content.deleted' => true]);
+            // Commit the transaction
+            DB::table('content')
+            ->join('comment', 'comment.id', '=', 'content.id')
+            ->where('content.user_id', $user_id)
+            ->update(['content.content' => 'Deleted', 'content.deleted' => true]);
+            DB::commit();
+            return $user;
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+        
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+        }
+    }
 }

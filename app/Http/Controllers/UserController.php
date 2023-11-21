@@ -16,7 +16,7 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
+        $this->authorize('edit', $userId);
 
         $user = User::find($userId);
 
@@ -37,7 +37,7 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
+        $this->authorize('edit', $userId);
 
         $user = User::find($userId); 
     
@@ -59,7 +59,7 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
+        $this->authorize('edit', $userId);
 
         $user = User::find($userId); 
         // Validate the incoming request data
@@ -80,7 +80,7 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
+        $this->authorize('edit', $userId);
 
         $user = User::find($userId); 
                 
@@ -102,7 +102,7 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
+        $this->authorize('edit', $userId);
 
         $user = User::find($userId); 
             
@@ -123,7 +123,7 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
+        $this->authorize('edit', $userId);
 
         $user = User::find($userId); 
     
@@ -144,7 +144,7 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
+        $this->authorize('edit', $userId);
 
         $user = User::find($userId); 
         // Validate the incoming request data
@@ -157,5 +157,14 @@ class UserController extends Controller
         $user->save();
     
         return redirect()->route('editprofile', ['id' => $user->id]);
+    }
+    public function deleteMyUser(Request $request)
+    {
+        $userId = $request->input('user_id');
+        $userAuth = Auth::user();
+
+        $this->authorize('delete', $userAuth);
+        TransactionsController::deleteUser($user_Id);
+        return redirect()->route('logout');
     }
 }
