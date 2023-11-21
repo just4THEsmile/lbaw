@@ -3,7 +3,7 @@ body {
     color: #0e0e0e;
   }
   main > header {
-    position: fixed;
+  position: fixed;
     top: 0em;
     width: 100%;
     
@@ -25,17 +25,17 @@ body {
     margin: 1em;
     justify-self: center;
   }
-
+  
   #content label {
     font-weight: normal;
   }
   #content > form {
 
     margin: 0 auto;
-    margin-top: 10em;
+  margin-top: 10em;
     padding: 1em;
     max-width: 20em;
-
+    
     border: 1px solid #7CB9E8;
   }
   #content > form .error {
@@ -80,7 +80,7 @@ body {
     }
     #content form {
       margin: 0;
-      margin-top: 6em;
+margin-top: 6em;
       max-width: 25em;
     }
     article.card {
@@ -120,7 +120,7 @@ body {
 border-color: #0000FF;
 }
   .answercard {
-    margin-left: 1em;
+        margin-left: 1em;
     margin-right: 1em;
     border-top: 1px solid black;
     padding: 2em;
@@ -183,12 +183,12 @@ div.realcontent {
     margin-left: 0em;
   }
   section>.sidebar {
-    margin-top: 0em;
+margin-top: 0em;
     width: 100%;
     height: auto;
     position: relative;
   }
-  body>main > .sidebar{
+body>main > .sidebar{
     margin-top: 0em;
     position: relative;
     width: 100%;
@@ -237,7 +237,7 @@ body {
     margin-bottom: 1.1em;
   }
 
-  .sidebar{
+.sidebar{
     margin-top: 10.26em;
   }
 
@@ -294,8 +294,7 @@ body {
     margin: 0;
     font-size: 1.2em;
 }
-<<<<<<< HEAD
-=======
+
 
 #gridable{
   margin-top: 5.9em;
@@ -323,4 +322,4 @@ main > .sidebar{
   margin-left: 10em;
   margin-top: 13em;
 }
->>>>>>> a605135affed79c7ccf2af225d2aa57f21ac5729
+
