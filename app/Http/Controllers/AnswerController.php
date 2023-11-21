@@ -57,7 +57,7 @@ class AnswerController extends Controller
         // Delete the question and return it as JSON.
         //probably transaction
         $content1->content ="Deleted";
-        $content1->edited = true;
+        $content1->deleted = true;
         $content1->save();
         return redirect("/question/". $id);
     }

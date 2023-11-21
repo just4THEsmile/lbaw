@@ -2,8 +2,15 @@
 <span class="answer" data-id="{{$answer->id}}">
     <label>
         <span>{{ $answer->commentable->content->content }}</span>
-        @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'moderator')
+        @if(!$answer->commentable->content->deleted)
+            <form id='createcomment' action="{{ route('create_comment_form',['id' => $answer->id]) }}" method='get'>
+                @csrf
+                <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
+            </form>
+            @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'moderator')
+    
             @include('partials.editanswer', ['answer' => $answer,'answer' => $answer])
+            @endif
         @endif
     </label>
 </span>

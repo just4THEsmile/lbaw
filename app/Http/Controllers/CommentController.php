@@ -35,14 +35,22 @@ class CommentController extends Controller
         $comment = new Comment();
 
         // Check if the current user is authorized to create this Comment.
-        $this->authorize('create', $comment);
 
         // Save the Comment and return it as JSON.
-        $comment = TransactionsController::createComment(Auth::user()->id,$id,$request->input('content'));
-        if($comment === null){
-            //handle something
+        $result = TransactionsController::createComment(Auth::user()->id,$id,$request->input('content'));
+        echo "ok";
+
+        if($result=== null){
+
         }
-        return redirect("/question/". $id);
+
+        $answer = Answer::find($result->commentable_id);
+        if($answer === null){
+            $question = Question::find($result->commentable_id);
+            return redirect("/question/". $question->id);
+        }else{
+            return redirect("/question/". $answer->question_id);
+        }  
     }
 
     /**
@@ -59,7 +67,7 @@ class CommentController extends Controller
         // Delete the question and return it as JSON.
         //probably transaction
         $content1->content ="Deleted";
-        $content1->edited = true;
+        $content1->deleted = true;
         $content1->save();
         $answer = Answer::find($comment->commentable_id);
         if($answer === null){
