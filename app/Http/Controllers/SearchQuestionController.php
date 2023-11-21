@@ -24,10 +24,12 @@ class SearchQuestionController extends Controller
         // Implement your search logic here
         
         $query = $request->input('q');
+        $sortby = $request->input('OrderBy');
         if(strlen($query) == 0){
             $results= Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
             ->join('content', 'question.id', '=', 'content.id')
             ->join('appuser', 'content.user_id', '=', 'appuser.id')
+            ->orderBy($sortby,'desc')
             ->get();
             return response()->json($results);
         }
@@ -35,6 +37,7 @@ class SearchQuestionController extends Controller
             ->join('content', 'question.id', '=', 'content.id')
             ->join('appuser', 'content.user_id', '=', 'appuser.id')
             ->where('question.title', 'ILIKE', "%$query%")
+            ->orderBy($sortby,'desc')
             ->get();
         return response()->json($results);
     }

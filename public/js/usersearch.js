@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });});
 
             function displayResults(results) {
-                console.log(results);
+                //console.log(results);
                 // Clear existing user entries
                 usersContainer.innerHTML = '';
         
