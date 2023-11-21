@@ -3,7 +3,7 @@ body {
     color: #0e0e0e;
   }
   main > header {
-    position: absolute;
+    position: fixed;
     top: 0em;
     width: 100%;
     
@@ -35,31 +35,6 @@ body {
 
 
 
-  @media (max-width: 70em) {
-
-    main > header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-    }
-    main > header h1 {
-      grid-row-end: span 2;
-    }
-  }
-
-  @media (max-width: 25em) {
-    body {
-      margin: 0;
-    }
-    main > header {
-      margin: 0;
-      padding: 0.5em;
-    }
-    main > header span {
-      margin: 0;
-    }
-
-
-  }
   /**
    * Override milligram colors
    * Some styles might be missing
@@ -172,7 +147,7 @@ body {
   }
 
   .sidebar{
-    margin-top: 12em;
+    margin-top: 10.26em;
   }
 
   .questionslist{

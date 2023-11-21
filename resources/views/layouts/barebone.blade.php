@@ -34,20 +34,26 @@
 
                 @endif
             </header>
-        </main>
+        
         <div id='flexthis'>
             <div>
-                <div class="sidebar">
+                    <div class="sidebar" style="position: fixed;
+                        margin-top: 5.9em;
+                    ">
                     <a href="/home">Home Page</a>
                     <a href="{{'/tags'}}">Tags</a>
                     <a href="{{'/questions'}}">Questions</a>
                     <a class="active" href="{{'/users'}}" >Users</a>
                 </div>
             </div>
-            <div id='gridable'>
+            <div id='gridable' style="
+                        margin-top: 5.9em;
+                    ">
                 @yield('content2')
             </div>
-            <aside>
+            <aside style="
+                        margin-top: 5.9em;
+                    ">
                     <div id='Profile'><a class='aside' href="{{ url('/profile') }}" >Profile</a></div>
                     <div id='Follow'><a class='aside' href="{{ url('/followquestion') }}">Followed Questions</a></div>
                     <div id='MyQuestions'><a class='aside' href="{{ url('/myquestions') }}" >My questions</a></div>
@@ -61,5 +67,6 @@
             </aside>
             
         </div>
+        </main>
     </body>
 </html>
