@@ -35,7 +35,7 @@ body {
     margin-top: 10em;
     padding: 1em;
     max-width: 20em;
-    margin-top: 2em;
+
     border: 1px solid #7CB9E8;
   }
   #content > form .error {
@@ -166,6 +166,10 @@ div.realcontent {
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
 @media screen and (max-width: 40em) {
+  .userpage>#search > .searchbar {
+    margin-left: 0em;
+    margin-top: 0em;
+  }
   div>.realcontent{
     margin-top: 0em;
     margin-left: 0em;
@@ -311,4 +315,9 @@ main > .sidebar{
 .realcontent{
   margin-top: 10.7em;
 
+}
+
+#search > .searchbar {
+  margin-left: 10em;
+  margin-top: 13em;
 }
