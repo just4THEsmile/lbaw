@@ -48,13 +48,14 @@ Route::controller(HomeController::class)->group(function () {
 });
 
 // Search
-Route::get('/questions', [SearchQuestionController::class, 'show'])->name('questions');
-Route::get('/search/questions', [SearchQuestionController::class, 'search']);
-
-
-Route::get('/users', [UsersController::class, 'getUsers'])->name('users');
-Route::get('/search/users', [UsersController::class, 'search']);
-
+Route::controller(SearchQuestionController::class)->group(function () {
+    Route::get('/questions',  'show')->name('questions');
+    Route::get('/search/questions',  'search');
+});
+Route::controller(UsersController::class)->group(function () {
+    Route::get('/users',  'getUsers')->name('users');
+    Route::get('/search/users','search');
+});
 //Edit Profile
 Route::controller(ProfileController::class)->group(function () {
     Route::get('/editprofile/{id}', [ProfileController::class, 'edit'])->name('editprofile');

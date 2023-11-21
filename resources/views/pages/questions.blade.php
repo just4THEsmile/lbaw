@@ -16,22 +16,15 @@
 
     <div class="realcontent">
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
+        <label for="sortSelect">Sort By:</label>
+        <select id="sortSelect">
+            <option value="date">Time</option>
+            <option value="votes">Votes</option>
+        </select>
         <ul id="searchResults">
-        @foreach ($questions as $question)
 
-
-        <div class= "answercard">
-            <a class="title" href="{{ url('/question/'.$question->id) }}">{{ $question->title }}</a>
-            <div class ="content">
-                <p class="votes">{{ $question->votes }}</p>
-                <p >{{ $question->content }}</p>
-                <a class= "username" href="{{ url('/profile/'.$question->userid) }}">{{ $question->username }}</a>
-                <p class="date">{{ $question->date }}</p>
-            </div>
-        </div>
-@endforeach
         </ul>
-    <div class="pagination">
+    <div id="QuestionPagination">
     </div>
     </div>
 </body>
