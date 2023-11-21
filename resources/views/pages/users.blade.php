@@ -11,7 +11,7 @@
 </div>
 <div class="userpage">
     <div id='search'>
-        <h1>Users</h1>
+        <div style="color:white; font-size:0.0001em;">Home</div>
         <input class="searchbar" type="text" id="searchUserInput" placeholder="Search...">
     </div>
     <div class="users">
