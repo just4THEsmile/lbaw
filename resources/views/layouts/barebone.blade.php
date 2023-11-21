@@ -28,42 +28,30 @@
                 @if (Auth::check())
                     <div>
                         <a class="button" href="{{ url('/logout') }}"> Logout </a>  
-                        <a class="button" href="{{ url('/editprofile') }}">Edit Profile</a>  
                         <a class="button" href="{{ url('/home') }}">Go back</a>
                     </div>    
 
                 @endif
             </header>
-        
-        <div id='flexthis'>
-            <div>
-                    <div class="sidebar" style="position: fixed;
-                        margin-top: 5.9em;
-                    ">
+            <div class="sidebar">
                     <a href="/home">Home Page</a>
                     <a href="{{'/tags'}}">Tags</a>
                     <a href="{{'/questions'}}">Questions</a>
                     <a class="active" href="{{'/users'}}" >Users</a>
                 </div>
-            </div>
-            <div id='gridable' style="
-                        margin-top: 5.9em;
-                    ">
+        
+        <div id='flexthis'>
+
+            <div id='gridable' >
                 @yield('content2')
             </div>
-            <aside style="
-                        margin-top: 5.9em;
-                    ">
-                    <div id='Profile'><a class='aside' href="{{ url('/profile') }}" >Profile</a></div>
-                    <div id='Follow'><a class='aside' href="{{ url('/followquestion') }}">Followed Questions</a></div>
-                    <div id='MyQuestions'><a class='aside' href="{{ url('/myquestions') }}" >My questions</a></div>
-                    <div id= 'MyAnswers'><a class='aside' href="{{ url('/myanswers') }}">My answers</a></div>
-                    <div id='additional'>
-                        <div>FAQ</div>
-                        <div>About us</div>
-                        <div>Contact us</div>
-                        <div>Terms of service</div>
-                    </div>
+
+
+            <aside style= "margin-top: 5.8em">
+
+                @yield('content3')
+                    
+
             </aside>
             
         </div>

@@ -13,6 +13,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchQuestionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,7 @@ use App\Http\Controllers\UserController;
 
 //User
 Route::controller(UserController::class)->group(function () {
-    Route::post('/updatename', [UserController::class, 'updateName'])->name('updatename'); 
+    Route::post('/updatename', [UserController::class, 'updateName'])->name('updatename');
     Route::post('/updateusername', [UserController::class, 'updateUsername'])->name('updateusername');
     Route::post('/updatemail', [UserController::class, 'updateEmail'])->name('updatemail');
     Route::post('/updatepassword', [UserController::class, 'updatePassword'])->name('updatepassword');  
@@ -45,18 +46,22 @@ Route::redirect('/', '/login');
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
+
+// Search
 Route::get('/questions', [SearchQuestionController::class, 'show'])->name('questions');
 Route::get('/search/questions', [SearchQuestionController::class, 'search']);
 
-Route::get('/users', [UsersController::class, 'index'])->name('users');
+
+Route::get('/users', [UsersController::class, 'getUsers'])->name('users');
+Route::get('/search/users', [UsersController::class, 'search']);
 
 //Edit Profile
 Route::controller(ProfileController::class)->group(function () {
-    Route::get('/editprofile', [ProfileController::class, 'edit'])->name('editprofile');
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::get('/myquestions', [ProfileController::class, 'myquestions'])->name('myquestions');
-    Route::get('/myanswers', [ProfileController::class, 'myanswers'])->name('myanswers');
-    Route::get('/followquestion', [ProfileController::class, 'followquestion'])->name('followquestion');
+    Route::get('/editprofile/{id}', [ProfileController::class, 'edit'])->name('editprofile');
+    Route::get('/profile/{id}', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/myquestions/{id}', [ProfileController::class, 'myquestions'])->name('myquestions');
+    Route::get('/myanswers/{id}', [ProfileController::class, 'myanswers'])->name('myanswers');
+    Route::get('/followquestion/{id}', [ProfileController::class, 'followquestion'])->name('followquestion');
 });
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');
@@ -74,15 +79,15 @@ Route::controller(AnswerController::class)->group(function () {
     Route::get('/question/{id}/answer/{id_answer}/edit', 'editform');
     Route::post('/question/{id}/answer/{id_answer}/edit', 'edit');
 });
-/*
+
 Route::controller(CommentController::class)->group(function () {
-    Route::get('/commentable/{id}/comment', 'createform')->route('create_comment_form');
-    Route::post('/commentable/{id}/comment', 'create')->route('create_comment');
-    Route::post('/commentable/{id}/comment/{id_comment}/delete', 'delete')->route('delete_comment');
-    Route::get('/commentable/{id}/answer/{id_comment}/edit', 'editform')->route('edit_comment_form');
-    Route::post('/commentable/{id}/answer/{id_comment}/edit', 'edit')->route('edit_comment_form');
+    Route::get('/commentable/{id}/comment', 'createform')->name('create_comment_form');
+    Route::post('/commentable/{id}/comment', 'create')->name('create_comment');
+    Route::post('/commentable/{id}/comment/{comment_id}/delete', 'delete')->name('delete_comment');
+    Route::get('/commentable/{id}/answer/{comment_id}/edit', 'editform')->name('edit_comment_form');
+    Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment');
 });
-*/
+
 
 
 // API

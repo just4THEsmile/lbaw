@@ -28,7 +28,7 @@ class Answer extends Model
     
     public function commentable(): BelongsTo
     {
-        return $this->belongsTo(Commentable::class,'id');
+        return $this->belongsTo(Commentable::class,'id','id');
     }
 
     public function question() : BelongsTo

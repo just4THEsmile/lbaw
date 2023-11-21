@@ -13,9 +13,9 @@
 
 <div>
 
-<div style="color:white;">Home</div>
+<div style="color:white; font-size:0.0001em;">Home</div>
     <div class="questionslist">
-    <div style="color:white;">Home</div>
+
         <input class="searchbar" type="text" id="searchInput" placeholder="Search A Question..." >
         <ul id="searchResults">
         @foreach ($questions as $question)
@@ -24,7 +24,7 @@
             <div class ="content">
                 <p class="votes">{{ $question->votes }}</p>
                 <p >{{ $question->content }}</p>
-                <a class= "username" href="{{ url('/user/'.$question->userid) }}">{{ $question->username }}</a>
+                <a class= "username" href="{{ url('/profile/'.$question->userid) }}">{{ $question->username }}</a>
                 <p class="date">{{ $question->date }}</p>
             </div>
         </div>

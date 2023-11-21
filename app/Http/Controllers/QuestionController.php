@@ -64,9 +64,9 @@ class QuestionController extends Controller
         // Check if the current user is authorized to delete this question.
         $this->authorize('delete', $question);
         // Delete the question and return it as JSON.
-        $result = TransactionsController::editQuestion($question->id,"Deleted Post"," ");
+        $result = TransactionsController::deleteQuestion($question->id);
         if($result === null){
-            return redirect('/home');
+            return redirect('/home/1');
         }
         return redirect('/home');
     }

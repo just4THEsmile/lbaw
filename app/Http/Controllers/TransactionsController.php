@@ -4,6 +4,7 @@ use App\Models\Question;
 use Illuminate\Support\Facades\DB;
 use App\Models\Content;
 use App\Models\Commentable;
+use App\Models\Comment;
 use App\Models\Answer;
 class TransactionsController extends Controller
 {
@@ -36,12 +37,6 @@ class TransactionsController extends Controller
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
             DB::rollback();
-            $question = new Question([
-                'id' => 1,
-                'title' => $title,
-                'correct_answer_id' => null,
-            ]);
-            return $question;
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
@@ -74,7 +69,36 @@ class TransactionsController extends Controller
             \Log::error('Transaction failed: ' . $e->getMessage());
         }
     }// Find the question.
+    public static function deleteQuestion($question_id)
+    {
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+            $question = Question::find($question_id);
 
+            $content1 = Content::find($question_id);
+            // Delete the question and return it as JSON.
+            //probably transaction
+
+            $content1->content = " ";
+            $question->title = "Deleted";
+            $content1->deleted = true;
+
+            $question->save();
+
+            $content1->save();
+            // Commit the transaction
+            DB::commit();
+            return $question;
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+        }
+    }// Find the question.
     public static function createAnswer($user_id,$question_id,$content)
     {
         try {
@@ -103,6 +127,43 @@ class TransactionsController extends Controller
             // Commit the transaction
             DB::commit();
             return $answer;
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+        
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+        }
+    }
+    public static function createComment($user_id,$commentable_id,$content)
+    {
+
+        try {
+
+            // Start the transaction
+            DB::beginTransaction();
+            // Insert Content
+            $content1 = new Content([
+                'user_id' => $user_id,
+                'content' => $content,
+            ]);
+            $commentable = commentable::find($commentable_id);
+
+            $content1->save();
+            // Insert Answer
+
+            $comment = new Comment([
+                'id' => $content1->id,
+                'commentable_id' => $commentable_id,
+            ]);
+
+
+            $comment->save();
+            // Commit the transaction
+            DB::commit();
+            return $comment;
         
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction

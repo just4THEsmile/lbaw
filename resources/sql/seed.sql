@@ -112,6 +112,7 @@ CREATE TABLE Content (
     reports INTEGER CHECK (reports >= 0) DEFAULT 0,
     date TIMESTAMP NOT NULL CHECK (date <= now()) DEFAULT now(),
     edited BOOLEAN DEFAULT false,
+    deleted BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES AppUser(id)
 );
 
@@ -236,31 +237,440 @@ CREATE TABLE FollowQuestion (
 ALTER TABLE Question
   ADD FOREIGN KEY (correct_answer_id) REFERENCES answer(id) ON UPDATE CASCADE;
 
+-----------------------------
+-- TRIGGERS
+-----------------------------
+
+CREATE FUNCTION enforce_vote() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM Vote
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
+    ) THEN
+        DELETE FROM Vote
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id;
+    END IF;
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_vote_trigger
+BEFORE INSERT ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE enforce_vote();
+
+
+CREATE FUNCTION update_nanswer() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+	SET nanswer = nanswer + 1
+		WHERE id = (
+			SELECT Content.user_id
+			FROM Answer
+			JOIN Commentable ON Answer.id = Commentable.id
+			JOIN Content ON Commentable.id = Content.id
+			WHERE Answer.id = new.id
+		);
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nanswer_trigger
+AFTER INSERT OR UPDATE ON Answer
+FOR EACH ROW
+EXECUTE PROCEDURE update_nanswer();
+
+
+
+CREATE FUNCTION update_nquestion() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+		SET nquestion = nquestion + 1
+		WHERE id = (
+			SELECT Content.user_id
+			FROM Question
+			JOIN Commentable ON Question.id = Commentable.id
+			JOIN Content ON Commentable.id = Content.id
+			WHERE Question.id = new.id
+		);
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_nquestion_trigger
+AFTER INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE update_nquestion();
+
+
+
+CREATE FUNCTION delete_content() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+    DECLARE
+        report_count INTEGER;
+        vote_count INTEGER;
+    BEGIN
+        SELECT COUNT(*)
+        INTO report_count
+        FROM Report
+        WHERE content_id = NEW.content_id;
+
+        SELECT COUNT(*) 
+        INTO vote_count
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = TRUE;
+
+        IF report_count >= 5 + vote_count/4 THEN
+            UPDATE Content
+            SET banned = TRUE
+            WHERE content_id = NEW.content_id;
+        END IF;
+    END;
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_content_trigger
+AFTER INSERT ON Report
+FOR EACH ROW
+EXECUTE PROCEDURE delete_content();
+
+
+/*
+CREATE FUNCTION select_correct_answer() RETURNS TRIGGER AS 
+$BODY$
+BEGIN
+    IF NEW.user_id <> OLD.user_id THEN
+        RAISE EXCEPTION 'Only the creator of the question can select the correct answer.';
+    END IF;
+
+    IF NEW.correct_answer_id IS NOT NULL THEN
+        RAISE EXCEPTION 'The question already has a correct answer.';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM Answer
+        WHERE question_id = NEW.question_id
+        AND answer_id = NEW.correct_answer_id
+    ) THEN
+        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the question must.';
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER select_correct_answer_trigger
+BEFORE UPDATE ON Commentable
+FOR EACH ROW
+EXECUTE PROCEDURE select_correct_answer();
+*/
+
+
+
+
+
+CREATE FUNCTION update_content_votes() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    -- Calculate the total votes for the content and update the votes column
+    UPDATE Content
+    SET votes = (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = TRUE
+    ) - (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = NEW.content_id AND vote = FALSE
+    )
+    WHERE id = NEW.content_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_content_votes_trigger
+AFTER INSERT OR UPDATE ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE update_content_votes();
+
+
+
+CREATE FUNCTION delete_content_votes() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE Content
+    SET votes = (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = OLD.content_id AND vote = TRUE
+    ) - (
+        SELECT COUNT(*)
+        FROM Vote
+        WHERE content_id = OLD.content_id AND vote = FALSE
+    )
+    WHERE id = OLD.content_id;
+
+    RETURN OLD;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_content_votes_trigger
+AFTER DELETE ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE delete_content_votes();
+
+
+
+CREATE FUNCTION update_points() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE AppUser
+    SET points = (
+        SELECT CASE
+            WHEN SUM(votes) < 0 THEN 0
+            ELSE SUM(votes)
+        END
+        FROM Content
+        WHERE id = NEW.id
+    )
+    WHERE id = NEW.user_id;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_points_trigger
+AFTER INSERT OR UPDATE ON Content
+FOR EACH ROW
+EXECUTE PROCEDURE update_points();
+
+
+CREATE FUNCTION add_novice_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.points >= 5 AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 1
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 1, now());
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_novice_badge_trigger
+AFTER UPDATE ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_novice_badge();
+
+
+
+CREATE FUNCTION add_expert_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.points >= 200 AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 2
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 2, now());
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_expert_badge_trigger
+AFTER UPDATE ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_expert_badge();
+
+
+
+CREATE FUNCTION generate_answer_notification() RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    question_author_id INTEGER;
+BEGIN
+    -- Get the author of the question
+    SELECT user_id INTO question_author_id
+    FROM Content
+    WHERE id = (
+        SELECT id
+        FROM Answer
+        WHERE id = NEW.id
+    );
+
+    -- Insert a new notification for the question author
+    INSERT INTO Notification (user_id, date)
+    VALUES (question_author_id, now());
+
+    -- Insert a new answer notification for the notification
+    INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
+    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.id);
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_answer_notification_trigger
+AFTER INSERT ON Answer
+FOR EACH ROW
+EXECUTE PROCEDURE generate_answer_notification();
+
+/*
+CREATE FUNCTION generate_comment_notification() RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    answer_author_id INTEGER;
+BEGIN
+    -- Check if the commentable_id is for an answer
+    IF NEW.commentable_id IN (SELECT id FROM Answer) THEN
+        -- Get the author of the answer
+        SELECT user_id
+        FROM Content
+        JOIN Answer ON Answer.id = Content.id
+        WHERE Answer.id = NEW.commentable_id;
+
+        -- Insert a new notification for the answer author
+        INSERT INTO Notification (user_id, date)
+        VALUES (answer_author_id, CURRENT_DATE);
+
+        -- Insert a new comment notification for the notification
+        INSERT INTO CommentNotification (notification_id, comment_id)
+        VALUES (currval('notification_id_seq'), NEW.content_id);
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_comment_notification_trigger
+AFTER INSERT ON Comment
+FOR EACH ROW
+EXECUTE PROCEDURE generate_comment_notification();
+*/
+
+CREATE FUNCTION prevent_self_vote() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.user_id = (
+        SELECT user_id
+        FROM Content
+        WHERE id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'A user cannot vote their own content';
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_self_vote_trigger
+BEFORE INSERT ON Vote
+FOR EACH ROW
+EXECUTE PROCEDURE prevent_self_vote();
+
+
+CREATE FUNCTION prevent_duplicate_reports() RETURNS TRIGGER AS $$
+BEGIN
+
+    IF NEW.user_id = (
+        SELECT user_id FROM Content WHERE id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'A user cannot report their own content';
+    END IF;
+
+    IF EXISTS (
+        SELECT 1 FROM Report
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
+    ) THEN
+        RAISE EXCEPTION 'This user has already reported this content';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_duplicate_reports_trigger
+BEFORE INSERT ON Report
+FOR EACH ROW
+EXECUTE PROCEDURE prevent_duplicate_reports();
+
+/*
+CREATE FUNCTION question_minimum_tag() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    -- Checks if the question has one tag at minimum
+    IF NOT EXISTS (
+        SELECT 1
+        FROM QuestionTag
+        WHERE question_id = NEW.commentable_id
+    ) THEN
+        RAISE EXCEPTION 'A question must have at least one tag.';
+    END IF;
+    
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER question_minimum_tag_trigger
+BEFORE INSERT OR UPDATE ON Question
+FOR EACH ROW
+EXECUTE PROCEDURE question_minimum_tag();
+*/
+
+
 
 --Populate
 
 INSERT INTO AppUser (name, username, email, password, bio, profilepicture, usertype)
 VALUES
-    ('Linda Johnson', 'lindaj', 'linda@example.com', 'linda456', 'Art lover', 'linda_profile.jpg', 'user'),
-    ('Michael Wilson', 'michaelw', 'michael@example.com', 'mike123', 'Gamer and programmer', 'michael_profile.jpg', 'user'),
-    ('Sarah Brown', 'sarahb', 'sarah@example.com', 'sarah789', 'Graphic designer', 'sarah_profile.jpg', 'user'),
-    ('Tom Adams', 'toma', 'tom@example.com', 'tompass', 'Musician and songwriter', 'tom_profile.jpg', 'user'),
-    ('Olivia Smith', 'olivias', 'olivia@example.com', 'olivia22', 'Nature enthusiast', 'olivia_profile.jpg', 'user'),
-    ('David White', 'davidw', 'david@example.com', 'david55', 'Science lover', 'david_prof ile.jpg', 'user'),
-    ('Emily Clark', 'emilyc', 'emily@example.com', 'emily99', 'Traveler and photographer', 'emily_profile.jpg', 'user'),
-    ('William Harris', 'williamh', 'william@example.com', 'william33', 'Bookworm', 'william_profile.jpg', 'user'),
-    ('Mia Turner', 'miat', 'mia@example.com', 'miapass', 'Foodie and chef', 'mia_profile.jpg', 'user'),
-    ('Daniel Martin', 'danm', 'dan@example.com', 'dan678', 'Fitness enthusiast', 'dan_profile.jpg', 'user'),
-    ('John Doe', 'johndoe', 'john@example.com', 'password123', 'I love coding!', 'john_profile.jpg', 'user'),
-    ('Jane Smith', 'janesmith', 'jane@example.com', 'p@ssw0rd', 'Tech enthusiast', 'jane_profile.jpg', 'user'),
-    ('Admin User', 'admin', 'admin@example.com', 'secure_password', 'Administrator', 'admin_profile.jpg', 'admin'),
-    ('Moderator User', 'moderator', 'moderator@example.com', 'strong_password', 'Moderator', 'moderator_profile.jpg', 'moderator'),
-    ('Alice Johnson', 'alicej', 'alice@example.com', '12345', 'Curious learner', 'alice_profile.jpg', 'user'),
-    ('Bob Smith', 'bobsmith', 'bob@example.com', 'bob123', 'Coding enthusiast', 'bob_profile.jpg', 'user'),
-    ('Eve Davis', 'evedavis', 'eve@example.com', 'password456', 'Loves technology', 'eve_profile.jpg', 'user'),
-    ('Charlie Brown', 'charlieb', 'charlie@example.com', 'charlie789', 'Web developer', 'charlie_profile.jpg', 'user'),
-    ('Grace Adams', 'gracea', 'grace@example.com', 'securepass', 'AI enthusiast', 'grace_profile.jpg', 'user'),
-    ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 'sam_profile.jpg', 'user'),
+    ('Linda Johnson', 'lindaj', 'linda@example.com', 'linda456', 'Art lover', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Michael Wilson', 'michaelw', 'michael@example.com', 'mike123', 'Gamer and programmer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Sarah Brown', 'sarahb', 'sarah@example.com', 'sarah789', 'Graphic designer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Tom Adams', 'toma', 'tom@example.com', 'tompass', 'Musician and songwriter', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Olivia Smith', 'olivias', 'olivia@example.com', 'olivia22', 'Nature enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('David White', 'davidw', 'david@example.com', 'david55', 'Science lover', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Emily Clark', 'emilyc', 'emily@example.com', 'emily99', 'Traveler and photographer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('William Harris', 'williamh', 'william@example.com', 'william33', 'Bookworm', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Mia Turner', 'miat', 'mia@example.com', 'miapass', 'Foodie and chef', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Daniel Martin', 'danm', 'dan@example.com', 'dan678', 'Fitness enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('John Doe', 'johndoe', 'john@example.com', 'password123', 'I love coding!', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Jane Smith', 'janesmith', 'jane@example.com', 'p@ssw0rd', 'Tech enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Admin User', 'admin', 'admin@example.com', 'secure_password', 'Administrator', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'admin'),
+    ('Moderator User', 'moderator', 'moderator@example.com', 'strong_password', 'Moderator', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'moderator'),
+    ('Alice Johnson', 'alicej', 'alice@example.com', '12345', 'Curious learner', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Bob Smith', 'bobsmith', 'bob@example.com', 'bob123', 'Coding enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Eve Davis', 'evedavis', 'eve@example.com', 'password456', 'Loves technology', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Charlie Brown', 'charlieb', 'charlie@example.com', 'charlie789', 'Web developer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Grace Adams', 'gracea', 'grace@example.com', 'securepass', 'AI enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
+    ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
     ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','images/nc4pjI7Aa5ednT5Psz8NdRVsaksmmD6cXk70Zbdj.jpg','admin');
 
 INSERT INTO Faq (question, answer)
@@ -586,7 +996,6 @@ VALUES
 INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
 VALUES
 
-    (11, 11, 21),
     (12, 12, 22),
     (13, 13, 23),
     (14, 14, 24),
@@ -822,410 +1231,3 @@ CREATE TRIGGER user_search_update
 CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);
 
 
------------------------------
--- TRIGGERS
------------------------------
-
-CREATE FUNCTION enforce_vote() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    IF EXISTS (
-        SELECT 1
-        FROM Vote
-        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
-    ) THEN
-        DELETE FROM Vote
-        WHERE user_id = NEW.user_id AND content_id = NEW.content_id;
-    END IF;
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER enforce_vote_trigger
-BEFORE INSERT ON Vote
-FOR EACH ROW
-EXECUTE PROCEDURE enforce_vote();
-
-
-CREATE FUNCTION update_nanswer() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE AppUser
-	SET nanswer = nanswer + 1
-		WHERE id = (
-			SELECT Content.user_id
-			FROM Answer
-			JOIN Commentable ON Answer.id = Commentable.id
-			JOIN Content ON Commentable.id = Content.id
-			WHERE Answer.id = new.id
-		);
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_nanswer_trigger
-AFTER INSERT OR UPDATE ON Answer
-FOR EACH ROW
-EXECUTE PROCEDURE update_nanswer();
-
-
-
-CREATE FUNCTION update_nquestion() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE AppUser
-		SET nquestion = nquestion + 1
-		WHERE id = (
-			SELECT Content.user_id
-			FROM Question
-			JOIN Commentable ON Question.id = Commentable.id
-			JOIN Content ON Commentable.id = Content.id
-			WHERE Question.id = new.id
-		);
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_nquestion_trigger
-AFTER INSERT OR UPDATE ON Question
-FOR EACH ROW
-EXECUTE PROCEDURE update_nquestion();
-
-
-
-CREATE FUNCTION delete_content() RETURNS TRIGGER AS 
-$BODY$
-BEGIN
-    DECLARE
-        report_count INTEGER;
-        vote_count INTEGER;
-    BEGIN
-        SELECT COUNT(*)
-        INTO report_count
-        FROM Report
-        WHERE content_id = NEW.content_id;
-
-        SELECT COUNT(*) 
-        INTO vote_count
-        FROM Vote
-        WHERE content_id = NEW.content_id AND vote = TRUE;
-
-        IF report_count >= 5 + vote_count/4 THEN
-            UPDATE Content
-            SET banned = TRUE
-            WHERE content_id = NEW.content_id;
-        END IF;
-    END;
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER delete_content_trigger
-AFTER INSERT ON Report
-FOR EACH ROW
-EXECUTE PROCEDURE delete_content();
-
-
-/*
-CREATE FUNCTION select_correct_answer() RETURNS TRIGGER AS 
-$BODY$
-BEGIN
-    IF NEW.user_id <> OLD.user_id THEN
-        RAISE EXCEPTION 'Only the creator of the question can select the correct answer.';
-    END IF;
-
-    IF NEW.correct_answer_id IS NOT NULL THEN
-        RAISE EXCEPTION 'The question already has a correct answer.';
-    END IF;
-
-    IF NOT EXISTS (
-        SELECT 1
-        FROM Answer
-        WHERE question_id = NEW.question_id
-        AND answer_id = NEW.correct_answer_id
-    ) THEN
-        RAISE EXCEPTION 'The selected correct answer is not part of the answers of the question must.';
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER select_correct_answer_trigger
-BEFORE UPDATE ON Commentable
-FOR EACH ROW
-EXECUTE PROCEDURE select_correct_answer();
-*/
-
-
-
-
-
-CREATE FUNCTION update_content_votes() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    -- Calculate the total votes for the content and update the votes column
-    UPDATE Content
-    SET votes = (
-        SELECT COUNT(*)
-        FROM Vote
-        WHERE content_id = NEW.content_id AND vote = TRUE
-    ) - (
-        SELECT COUNT(*)
-        FROM Vote
-        WHERE content_id = NEW.content_id AND vote = FALSE
-    )
-    WHERE id = NEW.content_id;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_content_votes_trigger
-AFTER INSERT OR UPDATE ON Vote
-FOR EACH ROW
-EXECUTE PROCEDURE update_content_votes();
-
-
-
-CREATE FUNCTION delete_content_votes() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE Content
-    SET votes = (
-        SELECT COUNT(*)
-        FROM Vote
-        WHERE content_id = OLD.content_id AND vote = TRUE
-    ) - (
-        SELECT COUNT(*)
-        FROM Vote
-        WHERE content_id = OLD.content_id AND vote = FALSE
-    )
-    WHERE id = OLD.content_id;
-
-    RETURN OLD;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER delete_content_votes_trigger
-AFTER DELETE ON Vote
-FOR EACH ROW
-EXECUTE PROCEDURE delete_content_votes();
-
-
-
-CREATE FUNCTION update_points() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    UPDATE AppUser
-    SET points = (
-        SELECT CASE
-            WHEN SUM(votes) < 0 THEN 0
-            ELSE SUM(votes)
-        END
-        FROM Content
-        WHERE id = NEW.id
-    )
-    WHERE id = NEW.user_id;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER update_points_trigger
-AFTER INSERT OR UPDATE ON Content
-FOR EACH ROW
-EXECUTE PROCEDURE update_points();
-
-
-CREATE FUNCTION add_novice_badge() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    IF NEW.points >= 5 AND NOT EXISTS (
-        SELECT 1
-        FROM BadgeAttainment
-        WHERE user_id = NEW.id AND badge_id = 1
-    ) THEN
-        INSERT INTO BadgeAttainment (user_id, badge_id, date)
-        VALUES (NEW.id, 1, now());
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER add_novice_badge_trigger
-AFTER UPDATE ON AppUser
-FOR EACH ROW
-EXECUTE PROCEDURE add_novice_badge();
-
-
-
-CREATE FUNCTION add_expert_badge() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    IF NEW.points >= 200 AND NOT EXISTS (
-        SELECT 1
-        FROM BadgeAttainment
-        WHERE user_id = NEW.id AND badge_id = 2
-    ) THEN
-        INSERT INTO BadgeAttainment (user_id, badge_id, date)
-        VALUES (NEW.id, 2, now());
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER add_expert_badge_trigger
-AFTER UPDATE ON AppUser
-FOR EACH ROW
-EXECUTE PROCEDURE add_expert_badge();
-
-
-
-CREATE FUNCTION generate_answer_notification() RETURNS TRIGGER AS
-$BODY$
-DECLARE
-    question_author_id INTEGER;
-BEGIN
-    -- Get the author of the question
-    SELECT user_id INTO question_author_id
-    FROM Content
-    WHERE id = (
-        SELECT id
-        FROM Answer
-        WHERE id = NEW.id
-    );
-
-    -- Insert a new notification for the question author
-    INSERT INTO Notification (user_id, date)
-    VALUES (question_author_id, now());
-
-    -- Insert a new answer notification for the notification
-    INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
-    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.id);
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER generate_answer_notification_trigger
-AFTER INSERT ON Answer
-FOR EACH ROW
-EXECUTE PROCEDURE generate_answer_notification();
-
-
-CREATE FUNCTION generate_comment_notification() RETURNS TRIGGER AS
-$BODY$
-DECLARE
-    answer_author_id INTEGER;
-BEGIN
-    -- Check if the commentable_id is for an answer
-    IF NEW.commentable_id IN (SELECT id FROM Answer) THEN
-        -- Get the author of the answer
-        SELECT user_id INTO answer_author_id
-        FROM Content
-        JOIN Answer ON Answer.id = Content.id
-        WHERE Answer.id = NEW.commentable_id;
-
-        -- Insert a new notification for the answer author
-        INSERT INTO Notification (user_id, date)
-        VALUES (answer_author_id, CURRENT_DATE);
-
-        -- Insert a new comment notification for the notification
-        INSERT INTO CommentNotification (notification_id, comment_id)
-        VALUES (currval('notification_id_seq'), NEW.content_id);
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER generate_comment_notification_trigger
-AFTER INSERT ON Comment
-FOR EACH ROW
-EXECUTE PROCEDURE generate_comment_notification();
-
-
-CREATE FUNCTION prevent_self_vote() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    IF NEW.user_id = (
-        SELECT user_id
-        FROM Content
-        WHERE id = NEW.content_id
-    ) THEN
-        RAISE EXCEPTION 'A user cannot vote their own content';
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER prevent_self_vote_trigger
-BEFORE INSERT ON Vote
-FOR EACH ROW
-EXECUTE PROCEDURE prevent_self_vote();
-
-
-CREATE FUNCTION prevent_duplicate_reports() RETURNS TRIGGER AS $$
-BEGIN
-
-    IF NEW.user_id = (
-        SELECT user_id FROM Content WHERE id = NEW.content_id
-    ) THEN
-        RAISE EXCEPTION 'A user cannot report their own content';
-    END IF;
-
-    IF EXISTS (
-        SELECT 1 FROM Report
-        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
-    ) THEN
-        RAISE EXCEPTION 'This user has already reported this content';
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER prevent_duplicate_reports_trigger
-BEFORE INSERT ON Report
-FOR EACH ROW
-EXECUTE PROCEDURE prevent_duplicate_reports();
-
-/*
-CREATE FUNCTION question_minimum_tag() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    -- Checks if the question has one tag at minimum
-    IF NOT EXISTS (
-        SELECT 1
-        FROM QuestionTag
-        WHERE question_id = NEW.commentable_id
-    ) THEN
-        RAISE EXCEPTION 'A question must have at least one tag.';
-    END IF;
-    
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER question_minimum_tag_trigger
-BEFORE INSERT OR UPDATE ON Question
-FOR EACH ROW
-EXECUTE PROCEDURE question_minimum_tag();
-*/
