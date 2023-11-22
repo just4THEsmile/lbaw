@@ -28,13 +28,8 @@ use App\Http\Controllers\UsersController;
 
 //User
 Route::controller(UserController::class)->group(function () {
-    Route::post('/updatename', [UserController::class, 'updateName'])->name('updatename');
-    Route::post('/updateusername', [UserController::class, 'updateUsername'])->name('updateusername');
-    Route::post('/updatemail', [UserController::class, 'updateEmail'])->name('updatemail');
-    Route::post('/updatepassword', [UserController::class, 'updatePassword'])->name('updatepassword');  
-    Route::post('/updatebio', [UserController::class, 'updateBio'])->name('updatebio');
+    Route::post('/updateuser', [UserController::class, 'updateUser'])->name('updateuser');
     Route::post('/updateprofilepicture', [UserController::class, 'updateProfilePicture'])->name('updateprofilepicture');
-    Route::post('/updatepaylink', [UserController::class, 'updatePayLink'])->name('updatepaylink');
     Route::post('/user/{id}/delete', 'deleteAccount')->name('deleteaccount');
 });
 

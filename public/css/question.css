@@ -1,0 +1,178 @@
+@media screen and (max-width: 40em) {
+    .userpage>#search > .searchbar {
+      margin-left: 0em;
+      margin-top: 0em;
+    }
+    div>.realcontent{
+      margin-top: 0em;
+      margin-left: 0em;
+    }
+    div.users{
+      margin-top: 0em;
+      margin-left: 20%;
+    }
+    #flexthis>#gridable{
+      margin-top: 0em;
+      margin-left: 0em;
+    }
+    section>.sidebar {
+  margin-top: 0em;
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    body > .sidebar{
+      margin-top: 0em;
+      position: relative;
+      width: 100%;
+      height: auto;
+    }
+    div > div > .sidebar{
+      margin-top: 0em;
+    }
+    body > main > header{
+        position: relative; 
+    }
+    #content{
+      margin-left:0em !important;
+    }
+    .sidebar a {float: left;}
+    div.questionslist {margin-left: 0; margin-top: auto;}
+
+    #content>#answers{
+        margin-top: 0em;
+        margin-left: 0em;
+    }
+  }
+
+#answers{
+    padding: 1em;
+    margin-top: 10em;
+    margin-left: 10em;
+}
+
+
+
+
+.questionbuttons {
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: row; /* This will arrange the buttons vertically */
+    align-items: flex-start; /* Adjust alignment as needed */
+}
+
+.createquestionButton,
+.createcommentButton {
+    /* Add any additional styling for your buttons here */
+    margin-bottom: 0; /* Adjust spacing between buttons as needed */
+}
+form#createanswer,
+form#createcomment{
+    margin-bottom: 0em;
+}
+
+header>h3{
+    padding: 0.5em;
+
+
+    font-size: 1em;
+    border-radius: 0.5em ;
+    margin-bottom: 0em;
+
+}
+button{
+    font-size: 3em !important;
+    border:0em solid black !important;
+    height: auto   !important;
+    line-height: 1.5em !important;
+    font-size: 0.8em !important;
+    color: black !important;
+    margin-right: 1em !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    padding: 0.2em !important;
+
+
+     text-transform: lowercase !important;
+     letter-spacing: 0em !important;
+     font-weight: 400 !important;
+     border-radius: 0.5em !important;
+}
+button:hover{
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+#content form {
+    margin: 0 !important;
+
+  }
+
+.edit-comment{
+    display: flex;
+    flex-direction: row; /* This will arrange the buttons vertically */
+    align-items: flex-start; /* Adjust alignment as needed */
+
+}
+.comment >label{
+    padding: 0.5em;
+    margin-top: 0.5em;
+    margin-left: 2em;
+    background-color: rgba(0, 0, 0, 0.06);
+    border-left:1px solid black;
+    border-right:1px solid black;
+    font-size: 1em;
+
+}
+.question>ul{
+    border-top: 1px solid black;
+
+    margin-top: 2em;
+}
+ul>.comments{
+
+
+    margin-top: 2em;
+}
+ul>.answer>label>span{
+    padding: 0.5em;
+    width: 80%;
+    font-size: 1em;
+    border-radius: 0.5em ;
+    margin-bottom: 1em;
+
+}
+ul span label {
+    margin-top: 1em;
+    padding: 0.5em;
+    background-color: rgba(0, 0, 0, 0.1);
+
+    font-size: 1em;
+
+    margin-bottom: 1em; /* Adjust as needed */
+}
+.commentbuttons{
+    display: flex;
+    flex-direction: row; /* This will arrange the buttons vertically */
+    align-items: flex-start; /* Adjust alignment as needed */
+}
+.edit-answer{
+
+    display: flex;
+    flex-direction: row; /* This will arrange the buttons vertically */
+    align-items: flex-start; /* Adjust alignment as needed */
+}
+.commentbuttons{
+    margin-top: 0.7em;
+    
+}
+.question>header{
+  padding: 0.5em;
+  border:1px black solid;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 1em;
+
+  margin-bottom: 0em;
+
+}
+span.commentText{
+  font-size: 0.8em;
+}
