@@ -20,37 +20,29 @@ class UserController extends Controller
         $user = User::find($userId);
         $this->authorize('edit', $user);
 
-        try {
-            $request->validate(['name' => 'required|string|max:255']);
-            $user->name = $request->input('name');
-        } catch (ValidationException $e) {
+            $request->validate(['name' => 'required|string|max:255',
+            'paylink' => 'url'
+        
+        
+        ]);
+        if($user->username !== $request->input('username')){
+            $request->validate(['username' => 'required|string|max:255|unique:appuser']);
             
         }
-    
-        try {
-            $request->validate(['username' => 'required|string|max:255|unique:appuser']);
-            $user->username = $request->input('username');
-        } catch (ValidationException $e) {}
-    
-        try {
+        $user->name = $request->input('name');
+        if($user->email !== $request->input('email') ){
             $request->validate(['email' => 'required|email|max:255|unique:appuser']);
             $user->email = $request->input('email');
-        } catch (ValidationException $e) {}
-    
-        try {
+        }
+
+        $new_password = $request->input('password');
+        if( strlen($new_password )!== 0){
             $request->validate(['password' => 'required|string|min:8']);
             $user->password = Hash::make($request->input('password'));
-        } catch (ValidationException $e) {}
-    
-        try {
-            $request->validate(['bio' => 'required|string']);
-            $user->bio = $request->input('bio');
-        } catch (ValidationException $e) {}
-    
-        try {
-            $request->validate(['paylink' => 'required|url']);
-            $user->paylink = $request->input('paylink');
-        } catch (ValidationException $e) {}
+        }
+        $user->bio = $request->input('bio');
+
+        $user->paylink = $request->input('paylink');
     
         $user->save();
 

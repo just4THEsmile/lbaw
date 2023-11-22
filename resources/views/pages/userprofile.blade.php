@@ -37,6 +37,11 @@
                         <div class='left-card'>
                             <h1>Name</h1>
                             <p>Here you can change your name, which is used to identify you within the system. Your name may be displayed on your profile, on messages you send, and in other areas where your identity is relevant. Updating your name can help ensure that you are recognized accurately and consistently by other users or participants in the system.</p>
+                            @if ($errors->has('name'))
+                            <span class="error">
+                                {{ $errors->first('name') }}
+                            </span>
+                            @endif
                         </div>
                         <div class='right-card'>                    
                                 <input type="text" id="name" name="name" value="{{$user->name}}">
@@ -46,6 +51,11 @@
                         <div class='left-card'>
                             <h1>Username</h1>
                             <p>Here you can change your username, which is a unique identifier used to distinguish you from other users within the system. Your username may be displayed on your profile, in messages you send, and in other areas where your identity is relevant. Updating your username can help ensure that you are recognized accurately and consistently by other users or participants in the system.</p>
+                            @if ($errors->has('username'))
+                            <span class="error">
+                                {{ $errors->first('username') }}
+                            </span>
+                            @endif
                         </div>
                         <div class='right-card'>
                                 <input type="text" id="username" name='username' value="{{$user->username}}">
@@ -55,16 +65,27 @@
                         <div class='left-card'>
                             <h1>Email</h1>
                             <p>Here you can update the email address associated with your account. This email address is used to communicate with you regarding your account, such as password resets or notifications. Please ensure that the email address you provide is accurate and up-to-date to avoid missing important messages.</p>
+                            @if ($errors->has('email'))
+                            <span class="error">
+                                {{ $errors->first('email') }}
+                            </span>
+                            @endif
                         </div>
                         <div class='right-card'>
                                 <input type="text" id="email"  name='email' value="{{$user->email}}">
-                        </div>    
+                        </div>
+                            
                     </div>
                     <div id='passwordcard' class='card'>
                         <div class='left-card'>
                             <h1>Password</h1>
                             <p>Here you can update your password, which is used to secure your account and protect your data within the system. Keeping a strong and unique password can help prevent unauthorized access to your account, so we recommend using a combination of letters, numbers, and symbols. It's also a good practice to change your password regularly to keep your account safe.</p>
                         </div>
+                        @if ($errors->has('password'))
+                            <span class="error">
+                                {{ $errors->first('password') }}
+                            </span>
+                        @endif
                         <div class='right-card'>
                                 <input type="text" id="password" name='password' value="">
                         </div>   
@@ -73,6 +94,11 @@
                         <div class='left-card'>
                             <h1>Bio</h1>
                             <p>Here you can enter a short biography, which will be displayed on your profile page. You may wish to include information about your background, interests, or current activities. Keep in mind that this information will be visible to other users or participants in the system.</p>
+                            @if ($errors->has('bio'))
+                            <span class="error">
+                                {{ $errors->first('bio') }}
+                            </span>
+                            @endif
                         </div>
                         <div class='right-card'>
                                 <textarea id="bio" name='bio'>{{$user->bio}}</textarea>
@@ -82,6 +108,11 @@
                         <div class='left-card'>
                             <h1>PayLink</h1>
                             <p>Here you can change your paypal link, which is used to receive donations from other users.</p>
+                            @if ($errors->has('paylink'))
+                            <span class="error">
+                                {{ $errors->first('paylink') }}
+                            </span>
+                            @endif
                         </div>
                         <div class='right-card'>
                                 <input type="url" id="paylink" name='paylink' value="{{ $user->paylink }}" placeholder="Enter your PayPal link" required>
