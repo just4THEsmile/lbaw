@@ -1214,12 +1214,12 @@ paths:
 
 | Web Resource Reference | URL                            |
 | ---------------------- | ------------------------------ |
-|R201: User| GET[/profile](https://lbaw2357.lbaw.fe.up.pt/profile/21) |
+|R201: User| GET[/profile/{id}](https://lbaw2357.lbaw.fe.up.pt/profile/21) |
 |R202: Edit Profile Form  | GET[/editprofile](https://lbaw2357.lbaw.fe.up.pt/editprofile/21) |
-|R203: Edit Profile Action| POST/edit |
-|R204: Delete User Action|  POST/delete|
-|R205: Questions of the user| GET[/user/questions](https://lbaw2357.lbaw.fe.up.pt/myquestions/21)|
-|R207: Answers of the user|GET[/user/answers](https://lbaw2357.lbaw.fe.up.pt/myanswers/21)|
+|R203: Edit Profile Action| POST/edituser/{id} |
+|R204: Delete User Action|  POST/user/{id}/delete|
+|R205: Questions of the user| GET[/myquestions/{id}](https://lbaw2357.lbaw.fe.up.pt/myquestions/21)|
+|R207: Answers of the user|GET[/myanswers/{id}](https://lbaw2357.lbaw.fe.up.pt/myanswers/21)|
 
 > Module M03: Commentables & Comments
 
@@ -1228,19 +1228,19 @@ paths:
 | R301: Question Form| GET[/createquestion](https://lbaw2357.lbaw.fe.up.pt/createquestion)|
 | R302: Create Question Action|POST/createquestion|
 | R303: User | GET[/question](https://lbaw2357.lbaw.fe.up.pt/question/1)|
-|R304: Edit Question Form| GET[/questionedit](https://lbaw2357.lbaw.fe.up.pt/question/1/edit)|
-|R305: Edit Question Action|POST/EditQuestionAction|
-|R306: Delete Question Action|POST/DeleteQuestionAction|
+|R304: Edit Question Form| GET[/question/{id}/edit](https://lbaw2357.lbaw.fe.up.pt/question/1/edit)|
+|R305: Edit Question Action|POST/question/{id}/edit|
+|R306: Delete Question Action|POST/question/{id}/delete|
 |R307: Comment Form|GET[/commentable/{id}/comment](https://lbaw2357.lbaw.fe.up.pt/commentable/21/comment)|
-|R308: Comment Question Action|POST/CommentQuestionAction|
+|R308: Comment Question Action|POST/commentable/{id}/comment|
 |R309: Edit Comment Form|GET[/commentable/{id}/comment/{id}/edit](https://lbaw2357.lbaw.fe.up.pt/commentable/21/comment/3/edit)| 
-|R310: Edit Comment Action|POST/EditCommentAction|
-|R311: Delete Comment Action|POST/DeleteCommentAction|
+|R310: Edit Comment Action|POST/commentable/21/comment/3/edit|
+|R311: Delete Comment Action|POST/commentable/{id}/comment/{id_comment}/delete|
 |R312: Answer Form|GET[/question/{id}/answer](https://lbaw2357.lbaw.fe.up.pt/question/2/answer)|
-|R313: Answer Question Action|POST/AnswerQuestionAction|
+|R313: Answer Question Action|POST/question/{id}/answer|
 |R314: Edit Answer Form|GET[/question/{id}/answer/{id}/edit](https://lbaw2357.lbaw.fe.up.pt/question/2/answer/24/edit)|
-|R315: Edit Answer Action|POST/EditAnswerAction|
-|R316: Delete Answer Action|POST/DeleteAnswerAction|
+|R315: Edit Answer Action|POST/question/2/answer/24/edit|
+|R316: Delete Answer Action|POST/question/{id}/answer/{id_answer}/delete|
 
 > Module M04: Search
 
