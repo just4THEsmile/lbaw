@@ -1,325 +1,328 @@
 body {
-    background-color: #ffffff;
-    color: #0e0e0e;
+  background-color: #ffffff;
+  color: #0e0e0e;
+}
+main > header {
+position: fixed;
+  top: 0em;
+  width: 100%;
+  
+
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  background-color: #7CB9E8;
+  padding: 1em;
+}
+main > header h1 {
+  margin: 0;
+}
+main > header a.button {
+  margin: 1em;
+  justify-self: center;
+}
+main > header span {
+  margin: 1em;
+  justify-self: center;
+}
+
+#content label {
+  font-weight: normal;
+}
+#content > form {
+
+  margin: 0 auto;
+margin-top: 10em;
+  padding: 1em;
+  max-width: 20em;
+  
+  border: 1px solid #7CB9E8;
+}
+#content > form .error {
+  font-weight: bold;
+  color: #ff3333;
+}
+#content > form .success {
+  font-weight: bold;
+  color: #106af1;
+}
+#content > form input {
+  background-color: white;
+}
+
+@media (max-width: 70em) {
+  #cards {
+    grid-template-columns: repeat(2, 1fr);
   }
   main > header {
-  position: fixed;
-    top: 0em;
-    width: 100%;
-    
-
     display: grid;
-    grid-template-columns: 1fr auto auto;
-    align-items: center;
-    background-color: #7CB9E8;
-    padding: 1em;
+    grid-template-columns: 1fr auto;
   }
   main > header h1 {
+    grid-row-end: span 2;
+  }
+}
+@media (max-width: 40em) {
+  #cards {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 25em) {
+  body {
     margin: 0;
   }
-  main > header a.button {
-    margin: 1em;
-    justify-self: center;
+  main > header {
+    margin: 0;
+    padding: 0.5em;
   }
   main > header span {
-    margin: 1em;
-    justify-self: center;
+    margin: 0;
   }
-  
-  #content label {
-    font-weight: normal;
-  }
-  #content > form {
-
-    margin: 0 auto;
-  margin-top: 10em;
-    padding: 1em;
-    max-width: 20em;
-    
-    border: 1px solid #7CB9E8;
-  }
-  #content > form .error {
-    font-weight: bold;
-    color: #ff3333;
-  }
-  #content > form .success {
-    font-weight: bold;
-    color: #106af1;
-  }
-  #content > form input {
-    background-color: white;
-  }
-
-  @media (max-width: 70em) {
-    #cards {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    main > header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-    }
-    main > header h1 {
-      grid-row-end: span 2;
-    }
-  }
-  @media (max-width: 40em) {
-    #cards {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 25em) {
-    body {
-      margin: 0;
-    }
-    main > header {
-      margin: 0;
-      padding: 0.5em;
-    }
-    main > header span {
-      margin: 0;
-    }
-    #content form {
-      margin: 0;
+  #content form {
+    margin: 0;
 margin-top: 6em;
-      max-width: 25em;
-    }
-    article.card {
-      margin: 0;
-      border-bottom: 1px solid rgba(96, 108, 118, 0.4);
-    }
+    max-width: 25em;
   }
-
-
-
-
-
-
-
-
-  /**
-   * Override milligram colors
-   * Some styles might be missing
-   **/
-   button {
-    background-color: #0000FF;
-    border-color: #0000FF;
+  article.card {
+    margin: 0;
+    border-bottom: 1px solid rgba(96, 108, 118, 0.4);
   }
-  a.button {
-    background-color: #0000FF;
-    border-color: #0000FF;
-  }
-  a.button.button-outline {
-    color: #0000FF;
-  }
-  a {
-    color: #0000FF;
-  }
-  input[type=text]:focus,
-  input[type=email]:focus,
-  input[type=password]:focus {
+}
+
+
+
+
+
+
+
+
+/**
+ * Override milligram colors
+ * Some styles might be missing
+ **/
+ button {
+  background-color: #0000FF;
+  border-color: #0000FF;
+}
+a.button {
+  background-color: #0000FF;
+  border-color: #0000FF;
+}
+a.button.button-outline {
+  color: #0000FF;
+}
+a {
+  color: #0000FF;
+}
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=password]:focus {
 border-color: #0000FF;
 }
-  .answercard {
-        margin-left: 1em;
-    margin-right: 1em;
-    border-top: 1px solid black;
-    padding: 2em;
-    background-color: #FFFF;
+.answercard {
+      margin-left: 1em;
+  margin-right: 1em;
+  border-top: 1px solid black;
+  padding: 2em;
+  background-color: #FFFF;
 }  
 
 /* The side navigation menu */
 .sidebar {
-  margin: 0;
-  padding: 0;
-  width: 10em;
-  background-color: #f1f1f1;
-  position: fixed;
-  height: 100%;
-  overflow: auto;
+margin: 0;
+padding: 0;
+width: 10em;
+background-color: #f1f1f1;
+position: fixed;
+height: 100%;
+overflow: auto;
 }
 
 /* Sidebar links */
 .sidebar a {
-  display: block;
-  color: black;
-  padding: 0.5em;
-  text-decoration: none;
+display: block;
+color: black;
+padding: 0.5em;
+text-decoration: none;
 }
 
 /* Active/current link */
 .sidebar a.active {
-  background-color: #0000FF;
-  color: white;
+background-color: #0000FF;
+color: white;
 }
 
 /* Links on mouse-over */
 .sidebar a:hover:not(.active) {
-  background-color: #555;
-  color: white;
+background-color: #555;
+color: white;
 }
 
 /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
 div.realcontent {
-  margin-left: 11em;
+margin-left: 11em;
 
 }
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
 @media screen and (max-width: 40em) {
-  .userpage>#search > .searchbar {
-    margin-left: 0em;
-    margin-top: 0em;
-  }
-  div>.realcontent{
-    margin-top: 0em;
-    margin-left: 0em;
-  }
-  div.users{
-    margin-top: 0em;
-    margin-left: 20%;
-  }
-  #flexthis>#gridable{
-    margin-top: 0em;
-    margin-left: 0em;
-  }
-  section>.sidebar {
+.userpage>#search > .searchbar {
+  margin-left: 0em;
+  margin-top: 0em;
+}
+div>.realcontent{
+  margin-top: 0em;
+  margin-left: 0em;
+}
+div.users{
+  margin-top: 0em;
+  margin-left: 20%;
+}
+#flexthis>#gridable{
+  margin-top: 0em;
+  margin-left: 0em;
+}
+section>.sidebar {
 margin-top: 0em;
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
+  width: 100%;
+  height: auto;
+  position: relative;
+}
 body>main > .sidebar{
-    margin-top: 0em;
-    position: relative;
-    width: 100%;
-    height: auto;
-  }
-  div > div > .sidebar{
-    margin-top: 0em;
-  }
-  body > main > header{
-      position: relative; 
-  }
-  #content{
-    margin-left:0em !important;
-  }
-  .sidebar a {float: left;}
-  div.questionslist {margin-left: 0; margin-top: auto;}
+  margin-top: 0em;
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+div > div > .sidebar{
+  margin-top: 0em;
+}
+body > main > header{
+    position: relative; 
+}
+#content{
+  margin-left:0em !important;
+}
+.sidebar a {float: left;}
+div.questionslist {margin-left: 0; margin-top: auto;}
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
 @media screen and (max-width: 20em) {
-  .sidebar a {
-    text-align: center;
-    float: none;
-  }
+.sidebar a {
+  text-align: center;
+  float: none;
+}
 
 }
 body {
-  margin: 0;
+margin: 0;
 }
 
-  
-  #profile {
-    display: inline-block;
-    width: 16em; 
-    height: 10em; 
-    background: none;
-    border: none;
-  }
-  
-  #profile img {
-    width: 10em;
-    height: 10em;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-left: 1em;
-    margin-bottom: 1.1em;
-  }
+
+#profile {
+  display: inline-block;
+  width: 16em; 
+  height: 10em; 
+  background: none;
+  border: none;
+}
+
+#profile img {
+  width: 10em;
+  height: 10em;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-left: 1em;
+  margin-bottom: 1.1em;
+}
 
 .sidebar{
-    margin-top: 10.26em;
-  }
+  margin-top: 10.26em;
+}
 
-  .questionslist{
-    margin-top: 10.4em;
-    margin-left: 10em;
-  }
-  .searchbar{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.questionslist{
+  margin-top: 10.4em;
+  margin-left: 10em;
+}
+.searchbar{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 
 
-    width: 70% !important;
-  }
-  .realcontent > :first-child{
-    margin-top: 0;
-  }
+  width: 70% !important;
+}
+.realcontent > :first-child{
+  margin-top: 0;
+}
 
-  .userpage {
-    width: 80%; /* Set the width of the container */
-    margin: 0 auto; /* Center the container horizontally */
+.userpage {
+  width: 80%; /* Set the width of the container */
+  margin: 0 auto; /* Center the container horizontally */
 }
 
 .users {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 20px; 
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 20px; 
 }
 
 .user {
-    flex: 0 0 calc(33.33% - 20px); 
-    margin-bottom: 20px; 
+  flex: 0 0 calc(33.33% - 20px); 
+  margin-bottom: 20px; 
 }
 
 .user > a {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    text-align: center; 
-    text-decoration: none;
-    color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center; 
+  text-decoration: none;
+  color: black;
 }
 
 .user > a > img {
-    width: 5em;
-    height: 5em;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 0.5em;
+  width: 5em;
+  height: 5em;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 0.5em;
 }
 
 .user > a > h2 {
-    margin: 0;
-    font-size: 1.2em;
+  margin: 0;
+  font-size: 1.2em;
 }
 
 
 #gridable{
-  margin-top: 5.9em;
-  margin-left: 10em;
+margin-top: 5.9em;
+margin-left: 10em;
 }
 
 .users{
-  margin-top: 10em;
-  margin-left: 20%;
+margin-top: 10em;
+margin-left: 20%;
 }
 
 div > .sidebar{
-  position: fixed;
-  margin-top: 5.9em;
+position: fixed;
+margin-top: 5.9em;
 }
 main > .sidebar{
-  margin-top: 5.8em;
+margin-top: 5.8em;
 }
 .realcontent{
-  margin-top: 10.7em;
+margin-top: 10.7em;
 
 }
 
 #search > .searchbar {
-  margin-left: 10em;
-  margin-top: 13em;
+margin-left: 10em;
+margin-top: 13em;
 }
 
+#edits{
+  margin-top:7em;
+}
