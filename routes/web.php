@@ -14,6 +14,7 @@ use App\Http\Controllers\SearchQuestionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,8 @@ Route::controller(CommentController::class)->group(function () {
     Route::get('/commentable/{id}/answer/{comment_id}/edit', 'editform')->name('edit_comment_form');
     Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment');
 });
+
+Route::post('/file/upload', [FileController::class, 'upload']);
 
 
 

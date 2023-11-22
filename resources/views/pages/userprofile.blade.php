@@ -127,10 +127,11 @@
                         <p>Here you can change your profile picture, which is used to represent you within the system. Your profile picture may be displayed on your profile, on messages you send, and in other areas where your identity is relevant. Updating your profile picture can help ensure that you are recognized accurately and consistently by other users or participants in the system.</p>
                     </div>
                     <div class='right-card'>
-                        <form id='profileform' action="{{route('updateprofilepicture', ['id' => $user->id])}}" method='post' enctype="multipart/form-data">
+                        <form id='profileform' action="/file/upload" method='post' enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            <input type="file" name="profilepicture" accept="image/png,image/jpeg" multiple>
+                            <input type="file" name="profilepicture" accept="image/png,image/jpeg,image/png" multiple>
+                            <input name="type" type="text" value="profile" hidden>
                             <button type='submit' class='submitbuttons' name='profile-form'>Save Changes</button>
                         </form>
                     </div>   
