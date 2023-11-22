@@ -164,6 +164,27 @@ paths:
           description: 'Ok. Show User Profile'  
         '302':
           description: 'Ok. Show Register UI' 
+
+  /edituser/{id}:
+    get:
+      operationId: R202
+      summary: 'R202: Edit Profile Form'
+      description: 'Provide Edit Profile Form. Access: OWN ADM'
+      tags:
+        - 'M02: User'
+      responses:
+        '200':
+          description: 'Ok. Show Edit Profile page UI'
+        '302':
+          description: 'Redirect to login user is not loged in.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Error:
+                  description: 'User is not logged in. Redirect to login form.'
+                  value: '/login'
   /updateuser/{id}/:
     post:
       operationId: R203
@@ -191,11 +212,6 @@ paths:
                   format: password
                 bio:    # <!--- form field name
                   type: string
-              required:
-                - name
-                - username
-                - email
-                - bio
 
       responses:
         '302':
@@ -211,75 +227,6 @@ paths:
                 302Error:
                   description: 'Failed edition. Redirect to login form.'
                   value: '/updateuser/{id}/'
-  /edituser/{id}:
-    get:
-      operationId: R202
-      summary: 'R202: Edit Profile Form'
-      description: 'Provide Edit Profile Form. Access: OWN ADM'
-      tags:
-        - 'M02: User'
-      responses:
-        '200':
-          description: 'Ok. Show Edit Profile page UI'
-        '302':
-          description: 'Redirect to login user is not loged in.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Error:
-                  description: 'User is not logged in. Redirect to login form.'
-                  value: '/login'
-    post:
-      operationId: R203
-      summary: 'R203: Edit Profile Action'
-      description: 'Edits the profile of the user. Access: OWN ADM'
-      tags:
-        - 'M02: User'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                name:          # <!--- form field name
-                  type: string
-                username:    # <!--- form field name
-                  type: string
-                email:    # <!--- form field name
-                  type: string
-                  format: email
-                password:    # <!--- form field name
-                  type: string
-                  format: password
-                confirm_password:    # <!--- form field name
-                  type: string
-                  format: password
-                bio:    # <!--- form field name
-                  type: string
-              required:
-                - name
-                - username
-                - email
-                - bio
-
-      responses:
-        '302':
-          description: 'Redirect after processing the Edit profile.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful edition. Redirect to user profile.'
-                  value: '/user/{id}'
-                302Error:
-                  description: 'Failed edition. Redirect to login form.'
-                  value: '/edituser/{id}'
 ############notifications##############
   /home/notifications:
     get:
