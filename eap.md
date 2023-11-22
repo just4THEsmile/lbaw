@@ -1269,6 +1269,7 @@ We directed our efforts towards developing the high prority features of the proj
 
 Access the prototype via http://lbaw2357.lbaw.fe.up.pt.
 
+Credentials : Email -> admin@example.com ; Password -> 1234
 ---
 
 
