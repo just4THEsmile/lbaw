@@ -20,7 +20,14 @@
         @else
         <ul>
         @foreach($answers as $answer)
-        <li>Content: {{ $answer->content }}</li>
+        <div class= "answercard">
+            <a class="title" href="{{ url('/question/'.$answer->id) }}">{{ $answer->title }}</a>
+            <div class ="content">
+                <p class="votes">{{ $answer->votes }}</p>
+                <p >{{ $answer->content }}</p>
+                <p class="date">{{ $answer->date }}</p>
+            </div>
+        </div>
         @endforeach
         </ul>
     @endif

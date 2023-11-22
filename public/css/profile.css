@@ -104,7 +104,6 @@ body {
   
   #profile {
     display: inline-block;
- 
     height: 10em; 
     background: none;
     border: none;
@@ -217,9 +216,6 @@ body {
     color:white;
   }
 
-  .sidebar{
-    position: relative;
-  }
 
   #arrow{
     font-size: 2em;

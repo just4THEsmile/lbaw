@@ -61,7 +61,7 @@ class User extends Authenticatable
     public function questions()
     {
         return DB::table('content')
-            ->select('content.content as content', 'question.title as title')
+            ->select('content.content as content', 'question.title as title', 'content.votes as votes', 'content.id as id', 'content.date as date')
             ->join('commentable', 'commentable.id', '=', 'content.id')
             ->join('question', 'question.id', '=', 'commentable.id')
             ->where('content.user_id', $this->id)
@@ -71,7 +71,7 @@ class User extends Authenticatable
     public function answers()
     {
         return DB::table('content')
-            ->select('content.content as content', 'question.title as title')
+            ->select('content.content as content', 'question.title as title', 'content.votes as votes', 'question.id as id', 'content.date as date')
             ->join('commentable', 'commentable.id', '=', 'content.id')
             ->join('answer', 'answer.id', '=', 'commentable.id')
             ->join('question', 'question.id', '=', 'answer.question_id')

@@ -12,8 +12,7 @@
 </div>
 
 <div>
-<body>
-
+    <div style="color:white; font-size:0.0001em;">Home</div>
     <div class="realcontent">
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
         <label for="sortSelect">Sort By:</label>
@@ -27,7 +26,7 @@
     <div id="QuestionPagination">
     </div>
     </div>
-</body>
+
 </html>
 
 @endsection
