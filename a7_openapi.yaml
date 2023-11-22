@@ -248,7 +248,7 @@ paths:
                 302Error:
                   description: 'User is not logged in. Redirect to login form.'
                   value: '/login'
-  /user/delete:
+  /user/{id}/delete:
     post:
       operationId: R205
       summary: 'R205: Delete User Action'
