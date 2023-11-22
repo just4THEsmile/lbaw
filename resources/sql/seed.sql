@@ -1228,5 +1228,3 @@ CREATE TRIGGER user_search_update
 
 -- Finally, create a GIN index for ts_vectors.
 CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);
-
-
