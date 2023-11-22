@@ -2,9 +2,6 @@
 
 @section('content2')
 
-    @php
-        $profilePicturePath = $user->profilepicture;
-    @endphp
     <style>
         #Profile{
             background-color: #0000FF;
@@ -20,11 +17,7 @@
     <section id='info'>
         <div id='container'>
             <div id="profile">
-                @if ($profilePicturePath)
-                    <img src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
-                @else
-                    <img src="{{ asset('images/space.png') }}" alt="Default Profile Image">
-                @endif
+                    <img src="{{ $user->getProfileImage() }}" alt="Profile Picture">
             </div>
             <div id='username'>   
                 <h1>{{ $user->username }}</h1>
