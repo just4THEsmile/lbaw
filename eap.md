@@ -137,6 +137,8 @@ paths:
             schema:
               type: object
               properties:
+                name:          # <!--- form field name
+                  type: string
                 username:          # <!--- form field name
                   type: string
                 email:          # <!--- form field name
@@ -149,6 +151,7 @@ paths:
                   type: string
                   format: password
               required:
+                - name
                 - username
                 - email
                 - password
