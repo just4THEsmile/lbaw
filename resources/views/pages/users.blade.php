@@ -23,7 +23,7 @@
         @foreach ($users as $user)
         <div class="user">
             <a href="{{ '/profile/' . $user->id }}">
-            <img src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
+            <img src="{{ $user->getProfileImage() }}" alt="Profile Picture">
             <h2>Name: {{ $user->name }}</h2>
             <h2>Username: {{ $user->username}}</h2>
             </a>

@@ -651,27 +651,27 @@ EXECUTE PROCEDURE question_minimum_tag();
 
 INSERT INTO AppUser (name, username, email, password, bio, profilepicture, usertype)
 VALUES
-    ('Linda Johnson', 'lindaj', 'linda@example.com', 'linda456', 'Art lover', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Michael Wilson', 'michaelw', 'michael@example.com', 'mike123', 'Gamer and programmer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Sarah Brown', 'sarahb', 'sarah@example.com', 'sarah789', 'Graphic designer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Tom Adams', 'toma', 'tom@example.com', 'tompass', 'Musician and songwriter', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Olivia Smith', 'olivias', 'olivia@example.com', 'olivia22', 'Nature enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('David White', 'davidw', 'david@example.com', 'david55', 'Science lover', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Emily Clark', 'emilyc', 'emily@example.com', 'emily99', 'Traveler and photographer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('William Harris', 'williamh', 'william@example.com', 'william33', 'Bookworm', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Mia Turner', 'miat', 'mia@example.com', 'miapass', 'Foodie and chef', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Daniel Martin', 'danm', 'dan@example.com', 'dan678', 'Fitness enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('John Doe', 'johndoe', 'john@example.com', 'password123', 'I love coding!', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Jane Smith', 'janesmith', 'jane@example.com', 'p@ssw0rd', 'Tech enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Admin User', 'admin', 'admin@example.com', 'secure_password', 'Administrator', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'admin'),
-    ('Moderator User', 'moderator', 'moderator@example.com', 'strong_password', 'Moderator', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'moderator'),
-    ('Alice Johnson', 'alicej', 'alice@example.com', '12345', 'Curious learner', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Bob Smith', 'bobsmith', 'bob@example.com', 'bob123', 'Coding enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Eve Davis', 'evedavis', 'eve@example.com', 'password456', 'Loves technology', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Charlie Brown', 'charlieb', 'charlie@example.com', 'charlie789', 'Web developer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Grace Adams', 'gracea', 'grace@example.com', 'securepass', 'AI enthusiast', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png', 'user'),
-    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','images/nc4pjI7Aa5ednT5Psz8NdRVsaksmmD6cXk70Zbdj.jpg','admin');
+    ('Linda Johnson', 'lindaj', 'linda@example.com', 'linda456', 'Art lover', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Michael Wilson', 'michaelw', 'michael@example.com', 'mike123', 'Gamer and programmer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Sarah Brown', 'sarahb', 'sarah@example.com', 'sarah789', 'Graphic designer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Tom Adams', 'toma', 'tom@example.com', 'tompass', 'Musician and songwriter', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Olivia Smith', 'olivias', 'olivia@example.com', 'olivia22', 'Nature enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('David White', 'davidw', 'david@example.com', 'david55', 'Science lover', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Emily Clark', 'emilyc', 'emily@example.com', 'emily99', 'Traveler and photographer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('William Harris', 'williamh', 'william@example.com', 'william33', 'Bookworm', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Mia Turner', 'miat', 'mia@example.com', 'miapass', 'Foodie and chef', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Daniel Martin', 'danm', 'dan@example.com', 'dan678', 'Fitness enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('John Doe', 'johndoe', 'john@example.com', 'password123', 'I love coding!', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Jane Smith', 'janesmith', 'jane@example.com', 'p@ssw0rd', 'Tech enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Admin User', 'admin', 'admin@example.com', 'secure_password', 'Administrator', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'admin'),
+    ('Moderator User', 'moderator', 'moderator@example.com', 'strong_password', 'Moderator', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'moderator'),
+    ('Alice Johnson', 'alicej', 'alice@example.com', '12345', 'Curious learner', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Bob Smith', 'bobsmith', 'bob@example.com', 'bob123', 'Coding enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Eve Davis', 'evedavis', 'eve@example.com', 'password456', 'Loves technology', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Charlie Brown', 'charlieb', 'charlie@example.com', 'charlie789', 'Web developer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Grace Adams', 'gracea', 'grace@example.com', 'securepass', 'AI enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Sam Wilson', 'samw', 'sam@example.com', 'sam1234', 'Software engineer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
+    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png','admin');
 
 INSERT INTO Faq (question, answer)
 VALUES

@@ -13,6 +13,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\FileController;
+
 
 
 
@@ -77,6 +79,10 @@ class User extends Authenticatable
             ->join('question', 'question.id', '=', 'answer.question_id')
             ->where('content.user_id', $this->id)
             ->get();
+    }
+
+    public function getProfileImage() {
+        return FileController::get('profile', $this->id);
     }
 }
 
