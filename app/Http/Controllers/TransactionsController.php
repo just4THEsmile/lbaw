@@ -6,6 +6,7 @@ use App\Models\Content;
 use App\Models\Commentable;
 use App\Models\Comment;
 use App\Models\Answer;
+use App\Models\User;
 class TransactionsController extends Controller
 {
     public static function createQuestion($user_id,$title,$content1)
@@ -174,5 +175,42 @@ class TransactionsController extends Controller
             \Log::error('Transaction failed: ' . $e->getMessage());
         }
     }
+    public static function deleteUser($user_id):bool {
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+            $user = User::find($user_id);
+            $user->username = null;
+            $user->name = "Deleted";
+            $user->email = null;
+            $user->password = null;
+            $user->bio = null;
+            $user->profilepicture = null;
+            $user->paylink = null;
+            $user->save();
+            DB::table('question')
+            ->join('commentable', 'question.id', '=', 'commentable.id')
+            ->join('content', 'commentable.id', '=', 'content.id')
+            ->where('content.user_id', $user_id)
+            ->update(['question.title' => 'Deleted' ]);
+            DB::table('content')
+            ->where('content.user_id', $user_id)
+            ->update(['content.content' => 'Deleted', 'content.deleted' => true]);
 
+            DB::commit();
+            echo "User deleted successfully.\n";
+
+            return true;
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+        
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+            dd($e);
+            return false;
+        }
+    }
 }
