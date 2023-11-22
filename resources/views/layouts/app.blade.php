@@ -11,6 +11,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Styles -->
+        @yield('style')
         <link href="{{ url('css/milligram.min.css') }}" rel="stylesheet">
         <link href="{{ url('css/app.css') }}" rel="stylesheet">
         <script type="text/javascript">
