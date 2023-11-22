@@ -107,7 +107,7 @@ paths:
               examples:
                 302Success:
                   description: 'Successful authentication. Redirect to user profile.'
-                  value: '/users/{id}'
+                  value: '/user/{id}'
                 302Error:
                   description: 'Failed authentication. Redirect to login form.'
                   value: '/login'
@@ -167,7 +167,7 @@ paths:
               examples:
                 302Success:
                   description: 'Successful authentication. Redirect to user profile.'
-                  value: '/users/{id}'
+                  value: '/user/{id}'
                 302Error:
                   description: 'Failed resgister. Redirect to register form.'
                   value: '/register'
@@ -210,11 +210,11 @@ paths:
         '302':
           description: 'Ok. Show Register UI' 
 
-  /user/edit:
+  /edituser/{id}:
     get:
       operationId: R202
       summary: 'R202: Edit Profile Form'
-      description: 'Provide Edit Profile Form. Access: OWN'
+      description: 'Provide Edit Profile Form. Access: OWN ADM'
       tags:
         - 'M02: User'
       responses:
@@ -230,6 +230,7 @@ paths:
                 302Error:
                   description: 'User is not logged in. Redirect to login form.'
                   value: '/login'
+  /updateuser/{id}/:
     post:
       operationId: R203
       summary: 'R203: Edit Profile Action'
@@ -254,16 +255,8 @@ paths:
                 password:    # <!--- form field name
                   type: string
                   format: password
-                confirm_password:    # <!--- form field name
-                  type: string
-                  format: password
                 bio:    # <!--- form field name
                   type: string
-              required:
-                - name
-                - username
-                - email
-                - bio
 
       responses:
         '302':
@@ -275,10 +268,10 @@ paths:
               examples:
                 302Success:
                   description: 'Successful edition. Redirect to user profile.'
-                  value: '/users/{id}'
+                  value: '/profile/{id}'
                 302Error:
                   description: 'Failed edition. Redirect to login form.'
-                  value: '/user/edit'
+                  value: '/updateuser/{id}/'
 ############notifications##############
   /home/notifications:
     get:
@@ -332,7 +325,7 @@ paths:
               302Error:
                 description: 'Not Successful deletion. Redirect to User profile.'
                 value: '/user/{id}'
-  /user/questions:
+  /myquestions/{id}:
     get:
       operationId: R206
       summary: 'R206: Questions of the user'
@@ -382,7 +375,7 @@ paths:
                     votes: 19
                     author: ["Donald Trump", "https//image.com/userid=4"]
                     tags: ["cars", "tesla"]
-  /user/answers:
+  /myanswers/{id}:
     get:
       operationId: R207
       summary: 'R207: Answers of the user'
@@ -932,7 +925,7 @@ paths:
                 value: '/question/{id}'
  
 
-  /search/question/byQuestion:
+  /search/question/:
     get:
       operationId: R401
       summary: 'R401: Search for the questions'
@@ -1011,7 +1004,7 @@ paths:
                     author: ["Donald Trump", "https//image.com/userid=4"]
                     tags: ["cars", "tesla"]
 
-  /search/question/byAuthor:
+  /questions/:
     get:
       operationId: R402
       summary: 'R402: Search for the questions by the author'
@@ -1090,7 +1083,7 @@ paths:
                     author: ["Donald Trump", "https//image.com/userid=4"]
                     tags: ["cars", "tesla"]
 
-  /search/user:
+  /search/users/:
     get:
       operationId: R403
       summary: 'R403: Search for the users'
@@ -1139,78 +1132,10 @@ paths:
                     picture: https//image.com/userid=4
                     badges: ["gold", "silver","platinum"]
 
-  /user/{id}/editadmin:
-    get:
-      operationId: R501
-      summary: 'R501: Edit Profile Admin Form'
-      description: 'Provide Edit Profile Admin Form. Access: ADM'
-      tags:
-        - 'M05: Administration'
-      responses:
-        '200':
-          description: 'Ok. Show Edit Profile Admin page UI'
-        '302':
-          description: 'Redirect to homepage user does not have permissions.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Error:
-                  description: 'User is not logged in or doesnt have permissions.'
-                  value: '/home'
-    post:
-      operationId: R203
-      summary: 'R203: Edit Profile Action'
-      description: 'Edits the profile of the user. Access: ADM'
-      tags:
-        - 'M05: Administration'
 
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                usertype:
-                  type: string
-                name:          # <!--- form field name
-                  type: string
-                username:    # <!--- form field name
-                  type: string
-                email:    # <!--- form field name
-                  type: string
-                  format: email
-                password:    # <!--- form field name
-                  type: string
-                  format: password
-                confirm_password:    # <!--- form field name
-                  type: string
-                  format: password
-                bio:    # <!--- form field name
-                  type: string
-              required:
-                - usertype
-                - name
-                - username
-                - email
-                - bio
 
-      responses:
-        '302':
-          description: 'Redirect after processing the Edit profile.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful edition. Redirect to user profile.'
-                  value: '/users/{id}'
-                302Error:
-                  description: 'Failed edition. Redirect to login form.'
-                  value: '/user/{id}/editadmin'
+
+
 
 
 ```
