@@ -18,7 +18,7 @@ class UsersController extends Controller
     if (strlen($query) == 0) {
         $results = User::all();
     } else {
-        $results = User::where('username', 'ilike', "%$query%");
+        $results = User::where('username', 'ilike', "%$query%")->get();
     }
 
     if($sortBy == 'name'){
@@ -26,7 +26,7 @@ class UsersController extends Controller
     } else if($sortBy == 'points'){
         $results = $results->orderBy('points', 'desc');
     } else if($sortBy == 'username'){
-        $results = $results->orderBy('username', 'desc');
+        $results = $results->orderBy('', 'desc');
     }
     return response()->json($results);
     }
