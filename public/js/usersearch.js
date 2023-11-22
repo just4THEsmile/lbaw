@@ -18,7 +18,7 @@ function searchUsers(){
     const sortBy = sortSelect.value;
     currentPage = 1; 
 
-    fetch(`/search/users?q=${query}&sortBy=${sortBy}`)
+    fetch(`/search/users?q=${query}&SearchBy=${sortBy}`)
         .then(response => response.json())
         .then(data => {
             displayResults(data);
@@ -53,7 +53,7 @@ function displayResults(results) {
     
             const userUsername = document.createElement('h2');
             userUsername.textContent = `Username: ${user.username}`;
-    
+     
             userLink.appendChild(profileImg);
             userLink.appendChild(userName);
             userLink.appendChild(userUsername);
