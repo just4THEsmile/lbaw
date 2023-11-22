@@ -13,6 +13,11 @@
     <div id='search'>
         <div style="color:white; font-size:0.0001em;">Home</div>
         <input class="searchbar" type="text" id="searchUserInput" placeholder="Search...">
+        <label for="sortSelect">Search By:</label>
+        <select id="sortSelect">
+            <option value="username">Username</option>
+            <option value="name">Name</option>
+        </select>
     </div>
     <div class="users">
         @foreach ($users as $user)

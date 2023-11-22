@@ -17,10 +17,10 @@ class UserController extends Controller
         
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
-
-        $this->authorize('edit', $userAuth);
-
         $user = User::find($userId);
+        $this->authorize('edit', $user);
+
+
 
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -39,9 +39,8 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
-
-        $user = User::find($userId); 
+        $user = User::find($userId);
+        $this->authorize('edit', $user);
     
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -61,9 +60,8 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
-
-        $user = User::find($userId); 
+        $user = User::find($userId);
+        $this->authorize('edit', $user);
         // Validate the incoming request data
         $validatedData = $request->validate([
             'email' => 'required|email|max:255|unique:appuser', 
@@ -82,9 +80,8 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
-
-        $user = User::find($userId); 
+        $user = User::find($userId);
+        $this->authorize('edit', $user);
                 
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -104,9 +101,8 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
-
-        $user = User::find($userId); 
+        $user = User::find($userId);
+        $this->authorize('edit', $user);
             
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -125,9 +121,8 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
-
-        $user = User::find($userId); 
+        $user = User::find($userId);
+        $this->authorize('edit', $user);
     
         if ($request->hasFile('profilepicture')) {
 
@@ -151,9 +146,8 @@ class UserController extends Controller
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
 
-        $this->authorize('edit', $userAuth);
-
-        $user = User::find($userId); 
+        $user = User::find($userId);
+        $this->authorize('edit', $user);
         // Validate the incoming request data
         $validatedData = $request->validate([
             'paylink' => 'required|url', 
@@ -164,5 +158,13 @@ class UserController extends Controller
         $user->save();
     
         return redirect()->route('editprofile', ['id' => $user->id]);
+    }
+    public function deleteAccount(Request $request,string $id)
+    {
+        $userBeingDeleted = User::find($id);
+
+        $this->authorize('delete', $userBeingDeleted);
+        TransactionsController::deleteUser($userBeingDeleted->id);
+        return redirect()->route('logout');
     }
 }

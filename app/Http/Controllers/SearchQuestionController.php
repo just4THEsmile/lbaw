@@ -29,6 +29,7 @@ class SearchQuestionController extends Controller
             $results= Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
             ->join('content', 'question.id', '=', 'content.id')
             ->join('appuser', 'content.user_id', '=', 'appuser.id')
+            ->where('content.deleted', '=', False)
             ->orderBy($sortby,'desc')
             ->get();
             return response()->json($results);
@@ -37,6 +38,7 @@ class SearchQuestionController extends Controller
             ->join('content', 'question.id', '=', 'content.id')
             ->join('appuser', 'content.user_id', '=', 'appuser.id')
             ->where('question.title', 'ILIKE', "%$query%")
+            ->where('content.deleted', '=', False)
             ->orderBy($sortby,'desc')
             ->get();
         return response()->json($results);
