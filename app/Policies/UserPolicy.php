@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Auth;
 class UserPolicy
 {
     
-    public function edit(User $user,string $userid) 
+    public function edit(User $userAuth,User $user) 
     {
-      return $user->id === $user_id || $user->usertype === "admin" || $user->usertype === "moderator";
+
+      return $userAuth->id === $user->id || $userAuth->usertype === "admin" || $userAuth->usertype === "moderator";
     }   
-    public function delete(User $user,string $userid): bool
+    public function delete(User $userAuth,User $user) 
     {
-      return $user->id === $user_id || $user->usertype === "admin" || $user->usertype === "moderator";
+
+      return $userAuth->id === $user->id || $userAuth->usertype === "admin" || $userAuth->usertype === "moderator";
     }
-    
 }

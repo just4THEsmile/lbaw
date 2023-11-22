@@ -35,6 +35,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/updatebio', [UserController::class, 'updateBio'])->name('updatebio');
     Route::post('/updateprofilepicture', [UserController::class, 'updateProfilePicture'])->name('updateprofilepicture');
     Route::post('/updatepaylink', [UserController::class, 'updatePayLink'])->name('updatepaylink');
+    Route::post('/user/{id}/delete', 'deleteAccount')->name('deleteaccount');
 });
 
 
@@ -52,6 +53,7 @@ Route::controller(SearchQuestionController::class)->group(function () {
     Route::get('/questions',  'show')->name('questions');
     Route::get('/search/questions',  'search');
 });
+
 Route::controller(UsersController::class)->group(function () {
     Route::get('/users',  'getUsers')->name('users');
     Route::get('/search/users','search');

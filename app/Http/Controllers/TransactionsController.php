@@ -6,6 +6,7 @@ use App\Models\Content;
 use App\Models\Commentable;
 use App\Models\Comment;
 use App\Models\Answer;
+use App\Models\User;
 class TransactionsController extends Controller
 {
     public static function createQuestion($user_id,$title,$content1)
@@ -174,39 +175,32 @@ class TransactionsController extends Controller
             \Log::error('Transaction failed: ' . $e->getMessage());
         }
     }
-    public static function deleteUser($user_id){
+    public static function deleteUser($user_id):bool {
         try {
             // Start the transaction
             DB::beginTransaction();
             $user = User::find($user_id);
-            $user->username = "Deleted";
-            $user->email = "Deleted";
-            $user->password = "Deleted";
-            $user->bio = "Deleted";
-            $user->points = 0;
-            $user->nquestion = 0;
-            $user->nanswer = 0;
-            $user->profilepicture = "Deleted";
-            $user->paylink = "Deleted";
-            $user->usertype = "Deleted";
+            $user->username = null;
+            $user->name = "Deleted";
+            $user->email = null;
+            $user->password = null;
+            $user->bio = null;
+            $user->profilepicture = null;
+            $user->paylink = null;
             $user->save();
-            DB::table('content')
-            ->join('commentable', 'commentable.id', '=', 'content.id')
-            ->join('question', 'question.id', '=', 'commentable.id')
+            DB::table('question')
+            ->join('commentable', 'question.id', '=', 'commentable.id')
+            ->join('content', 'commentable.id', '=', 'content.id')
             ->where('content.user_id', $user_id)
-            ->update(['content.content' => 'Deleted', 'question.title' => 'Deleted' , 'content.deleted' => true]);
+            ->update(['question.title' => 'Deleted' ]);
             DB::table('content')
-            ->join('commentable', 'commentable.id', '=', 'content.id')
-            ->join('answer', 'answer.id', '=', 'commentable.id')
             ->where('content.user_id', $user_id)
             ->update(['content.content' => 'Deleted', 'content.deleted' => true]);
-            // Commit the transaction
-            DB::table('content')
-            ->join('comment', 'comment.id', '=', 'content.id')
-            ->where('content.user_id', $user_id)
-            ->update(['content.content' => 'Deleted', 'content.deleted' => true]);
+
             DB::commit();
-            return $user;
+            echo "User deleted successfully.\n";
+
+            return true;
         
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
@@ -215,6 +209,8 @@ class TransactionsController extends Controller
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
+            dd($e);
+            return false;
         }
     }
 }

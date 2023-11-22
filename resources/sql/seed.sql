@@ -62,9 +62,9 @@ CREATE DOMAIN Today AS TIMESTAMP DEFAULT now();
 CREATE TABLE AppUser (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
-    username VARCHAR UNIQUE NOT NULL,
-    email VARCHAR UNIQUE NOT NULL,
-    password VARCHAR NOT NULL,
+    username VARCHAR UNIQUE,
+    email VARCHAR UNIQUE,
+    password VARCHAR,
     bio TEXT,
     points INTEGER CHECK (points >= 0) DEFAULT 0,
     nquestion INTEGER CHECK (nquestion >= 0) DEFAULT 0,
