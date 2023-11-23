@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
 use App\Models\Content;
 use App\Models\Commentable;
+use App\Models\FollowQuestion;
+use App\Models\User;
 
 class QuestionController extends Controller
 {
@@ -93,34 +95,24 @@ class QuestionController extends Controller
         }
         return redirect('/question/' . $question->id);
     }
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    /*
-    public function listuserquestions()
-    {
-        // Check if the user is logged in.
-        if (!Auth::check()) {
-            // Not logged in, redirect to login.
-            return redirect('/login');
 
-        } else {
-            // The user is logged in.
+    public function follow(Request $request, $id){
 
-            // Get questions for user ordered by id.
-            $questions = Question::orderBy('id')->get();
-            // Check if the current user can list the questions.
-            $this->authorize('list', Question::class);
+        $question = Question::find($id);
+        $this->authorize('follow', $question);
+        
 
-            // The current user is authorized to list questions.
-
-            // Use the pages.questions template to display all questions.
-            return view('pages.questions', [
-                'question' => $question,
-                'answers' => $answers
-            ]);
+        if (FollowQuestion::where('user_id', Auth::user()->id)->where('question_id', $question->commentable->content->id)->exists()) {
+            return redirect('/question/' . $question->id);
         }
-    }*/
+        $follow = new FollowQuestion([
+            'user_id' => Auth::user()->id,
+            'question_id' => $question->id,
+        ]);
+        
+        $follow->save();
+
+        return redirect('/question/' . $question->id);
+    }
+
 }

@@ -20,7 +20,18 @@ class FollowQuestion extends Model
      * @var array<int, string>
      */
 
+    protected $fillable = [
+        'id',
+        'user_id',
+        'question_id',];
+
     protected $table = 'followquestion';
-    protected $primaryKey = ['user_id', 'question_id'];
+    protected $primaryKey = 'id';
+
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
     
 }

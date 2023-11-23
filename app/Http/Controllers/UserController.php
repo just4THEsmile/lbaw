@@ -10,6 +10,8 @@ use Illuminate\Validation\ValidationException;
 
 
 use App\Models\User;
+use App\Models\FollowQuestion;
+use App\Models\Question;
 
 class UserController extends Controller
 {
@@ -83,6 +85,16 @@ class UserController extends Controller
         $this->authorize('delete', $userBeingDeleted);
         TransactionsController::deleteUser($userBeingDeleted->id);
         return redirect()->route('logout');
+    }
+
+    public function followedQuestions($id)
+    {
+        $user = User::findOrFail($id);
+        
+        $followedQuestions = Question::join('followquestion', 'followquestion.question_id', '=', 'question.id')
+            ->where('followquestion.user_id', $id)
+            ->get();
+        return view('pages/followquestion',  ['user' => $user, 'followedQuestions' => $followedQuestions]);
     }
     
 }
