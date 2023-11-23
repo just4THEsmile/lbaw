@@ -93,34 +93,5 @@ class QuestionController extends Controller
         }
         return redirect('/question/' . $question->id);
     }
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    /*
-    public function listuserquestions()
-    {
-        // Check if the user is logged in.
-        if (!Auth::check()) {
-            // Not logged in, redirect to login.
-            return redirect('/login');
 
-        } else {
-            // The user is logged in.
-
-            // Get questions for user ordered by id.
-            $questions = Question::orderBy('id')->get();
-            // Check if the current user can list the questions.
-            $this->authorize('list', Question::class);
-
-            // The current user is authorized to list questions.
-
-            // Use the pages.questions template to display all questions.
-            return view('pages.questions', [
-                'question' => $question,
-                'answers' => $answers
-            ]);
-        }
-    }*/
 }

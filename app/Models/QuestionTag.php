@@ -33,4 +33,8 @@ class QuestionTag extends Model
         return $this->belongsTo(Tag::class, 'id');
     }
     */
+    public function tag(): BelongsTo
+    {
+        return $this->belongsTo(Tag::class);
+    }
 }

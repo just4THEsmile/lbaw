@@ -31,5 +31,8 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class);
     }
-    
+    public function questionTags(): HasMany
+    {
+        return $this->hasMany(QuestionTag::class);
+    }
 }
