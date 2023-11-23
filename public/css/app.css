@@ -122,7 +122,7 @@ border-color: #0000FF;
 .answercard {
       margin-left: 1em;
   margin-right: 1em;
-  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   padding: 2em;
   background-color: #FFFF;
 }  
@@ -166,6 +166,31 @@ margin-left: 11em;
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
 @media screen and (max-width: 40em) {
+  .realcontent{
+    padding: 1em;
+  }
+  
+  main>#content>.userpage{
+    margin-left: auto;
+  }
+  #search>#sortSelect{
+    width: 70%;
+    margin-left: auto;
+    margin-top: 0em;
+  }
+   .realcontent>#sortSelect{
+    display: block;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0em;
+  }
+  .realcontent>.searchbar{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0em;
+  }
+
 .userpage>#search > .searchbar {
   margin-left: 0em;
   margin-top: 0em;
@@ -247,7 +272,7 @@ margin: 0;
 }
 .searchbar{
   display: block;
-  margin-left: auto;
+  margin-left: 5em;
   margin-right: auto;
 
 
@@ -319,10 +344,48 @@ margin-top: 10.7em;
 }
 
 #search > .searchbar {
-margin-left: 10em;
+margin-left: 5em;
 margin-top: 13em;
 }
 
 #edits{
   margin-top:7em;
+}
+.createquestionbutton>button{
+  font-size: 3em !important;
+  border:2px solid black !important;
+  height: auto   !important;
+  line-height: 2em !important;
+  font-size: 0.8em !important;
+  color: black !important;
+  margin-right: 1em !important;
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  padding: 0.2em !important;
+
+
+   text-transform: lowercase !important;
+   letter-spacing: 0em !important;
+   font-weight: 400 !important;
+   border-radius: 10em !important;
+
+}
+.createquestionbutton{
+  font-size: 1.5em;
+  line-height: 1.5em !important;
+  height: 2em;
+  margin-left: 10%;
+  margin-right: auto;
+}
+#content>.userpage{
+  margin-left: 11em;
+}
+#sortSelect{
+  width: 30%;
+  margin-left: 5em;
+  margin-top: 0em;
+}
+
+#QuestionPagination{
+  display: flex;
+  justify-content: center;
 }

@@ -11,6 +11,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Styles -->
+        @yield('style')
         <link href="{{ url('css/milligram.min.css') }}" rel="stylesheet">
         <link href="{{ url('css/app.css') }}" rel="stylesheet">
         <script type="text/javascript">
@@ -30,14 +31,9 @@
                 @if (Auth::check())
                     @php
                         $user = Auth::user();
-                        $profilePicturePath = $user->profilepicture;
                     @endphp
                     <a id="profile" class="button" href="{{ route('profile', ['id' => $user->id]) }}">
-                    @if ($profilePicturePath)
-                        <img src="{{ asset('storage/' . $user->profilepicture) }}" alt="Profile Picture">
-                    @else
-                        <img src="{{ asset('images/space.png') }}" alt="Default Profile Image">
-                    @endif
+                        <img src="{{ $user->getProfileImage() }}" alt="Profile Picture">
                     </a>
                 @endif
             </header>

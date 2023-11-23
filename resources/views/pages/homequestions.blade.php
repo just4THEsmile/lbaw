@@ -12,7 +12,7 @@
 
 <div style="color:white; font-size:0.0001em;">Home</div>
 <div class="questionslist"> 
-
+<a class="createquestionbutton" href="./createquestion"><button> Create Question</button></a>
 @foreach ($questions as $question)
 
 
