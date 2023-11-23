@@ -30,6 +30,8 @@ function searchUsers(){
 }
 function displayResults(results) {
 
+        let baseURL = window.location.protocol + '//' + window.location.host;
+
         usersContainer.innerHTML = '';
 
         if (results.length === 0) {
@@ -45,7 +47,7 @@ function displayResults(results) {
             userLink.href = `/profile/${user.id}`;
     
             const profileImg = document.createElement('img');
-            profileImg.src = `storage/${user.profilepicture}`;
+            profileImg.src = `${baseURL}/profile/${user.profilepicture}`; 
             profileImg.alt = 'Profile Picture';
     
             const userName = document.createElement('h2');
