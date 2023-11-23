@@ -36,8 +36,10 @@ DROP FUNCTION IF EXISTS update_nanswer() CASCADE;
 DROP FUNCTION IF EXISTS update_content_votes() CASCADE;
 DROP FUNCTION IF EXISTS delete_content_votes() CASCADE;
 DROP FUNCTION IF EXISTS update_points() CASCADE;
-DROP FUNCTION IF EXISTS add_novice_badge() CASCADE;
+DROP FUNCTION IF EXISTS add_beginner_badge() CASCADE;
+DROP FUNCTION IF EXISTS add_novice_badge_to_new_user() CASCADE;
 DROP FUNCTION IF EXISTS add_expert_badge() CASCADE;
+DROP FUNCTION IF EXISTS add_admin_badge() CASCADE;
 DROP FUNCTION IF EXISTS generate_answer_notification() CASCADE;
 DROP FUNCTION IF EXISTS generate_comment_notification() CASCADE;
 DROP FUNCTION IF EXISTS prevent_self_vote() CASCADE;
@@ -461,34 +463,11 @@ FOR EACH ROW
 EXECUTE PROCEDURE update_points();
 
 
-CREATE FUNCTION add_novice_badge() RETURNS TRIGGER AS
+
+CREATE FUNCTION add_beginner_badge() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.points >= 5 AND NOT EXISTS (
-        SELECT 1
-        FROM BadgeAttainment
-        WHERE user_id = NEW.id AND badge_id = 1
-    ) THEN
-        INSERT INTO BadgeAttainment (user_id, badge_id, date)
-        VALUES (NEW.id, 1, now());
-    END IF;
-
-    RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER add_novice_badge_trigger
-AFTER UPDATE ON AppUser
-FOR EACH ROW
-EXECUTE PROCEDURE add_novice_badge();
-
-
-
-CREATE FUNCTION add_expert_badge() RETURNS TRIGGER AS
-$BODY$
-BEGIN
-    IF NEW.points >= 200 AND NOT EXISTS (
         SELECT 1
         FROM BadgeAttainment
         WHERE user_id = NEW.id AND badge_id = 2
@@ -502,10 +481,82 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
+CREATE TRIGGER add_beginner_badge_trigger
+AFTER UPDATE ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_beginner_badge();
+
+
+CREATE FUNCTION add_novice_badge_to_new_user() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 1
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 1, now());
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_novice_badge_to_new_user_trigger
+AFTER INSERT ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_novice_badge_to_new_user();
+
+
+
+
+
+
+CREATE FUNCTION add_expert_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.points >= 200 AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 3
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 3, now());
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
 CREATE TRIGGER add_expert_badge_trigger
 AFTER UPDATE ON AppUser
 FOR EACH ROW
 EXECUTE PROCEDURE add_expert_badge();
+
+CREATE FUNCTION add_admin_badge() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    IF NEW.usertype = 'admin' AND NOT EXISTS (
+        SELECT 1
+        FROM BadgeAttainment
+        WHERE user_id = NEW.id AND badge_id = 8
+    ) THEN
+        INSERT INTO BadgeAttainment (user_id, badge_id, date)
+        VALUES (NEW.id, 8, now());
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_admin_badge_trigger
+AFTER INSERT ON AppUser
+FOR EACH ROW
+EXECUTE PROCEDURE add_admin_badge();
 
 
 
@@ -649,6 +700,32 @@ EXECUTE PROCEDURE question_minimum_tag();
 
 --Populate
 
+INSERT INTO Badge (name, description)
+VALUES
+    ('Novice', 'Awarded to users who complete the onboarding process.'),
+    ('Beginner', 'Given to users who actively contribute to the community.'),
+    ('Expert', 'Awarded to users who demonstrate exceptional knowledge and skills.'),
+    ('Supporter', 'Given to users who help others and provide support.'),
+    ('Verified', 'Badge for verified user accounts.'),
+    ('Top Contributor', 'Awarded to the most active and helpful contributors.'),
+    ('Developer', 'For users who contribute to the development of the application.'),
+    ('Admin', 'Badge for administrator of the application.'),
+    ('Beta Tester', 'Badge for beta testers who provide valuable feedback.'),
+    ('Innovator', 'Given to users with innovative ideas and contributions.'),
+    ('Moderator', 'Badge for users who help moderate the community.'),
+    ('Loyal User', 'Awarded to long-time users who have been with us for years.'),
+    ('Problem Solver', 'Badge for users who consistently provide solutions to complex problems.'),
+    ('Early Adopter', 'Given to users who joined during the early stages of the application.'),
+    ('Eager Learner', 'For users who actively seek knowledge and self-improvement.'),
+    ('Content Creator', 'Badge for users who create valuable content for the community.'),
+    ('Expert Moderator', 'Awarded to moderators who excel in maintaining a positive community environment.'),
+    ('Frequent Poster', 'Given to users who frequently contribute to discussions and posts.'),
+    ('Beta Release Participant', 'Badge for those who participate in testing beta releases.'),
+    ('Community Leader', 'For users who lead and organize community events and activities.'),
+    ('Mentor', 'Awarded to experienced users who mentor and assist newcomers.');    
+
+
+
 INSERT INTO AppUser (name, username, email, password, bio, profilepicture, usertype)
 VALUES
     ('Linda Johnson', 'pintailclowder', 'linda@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Art lover', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
@@ -671,7 +748,7 @@ VALUES
     ('Charlie Brown', 'charlieb', 'charlie@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Web developer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
     ('Grace Adams', 'SERMATIc', 'grace@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'AI enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
     ('Sam Wilson', 'swEtterDock', 'sam@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Software engineer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
-    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png','admin');
+    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','KUeBmxZ5csM5NZpcgv2g7dds2uKeE7NGVEZIvTKx.jpg','admin');
 
 INSERT INTO Faq (question, answer)
 VALUES
@@ -696,33 +773,9 @@ VALUES
     ('How often are updates released?', 'We aim to release regular updates with new features and improvements.'),
     ('Is my data secure?', 'We take data security seriously and use encryption to protect user data.');
 
-INSERT INTO Badge (name, description)
-VALUES
-    ('Beginner', 'Awarded to users who complete the onboarding process.'),
-    ('Contributor', 'Given to users who actively contribute to the community.'),
-    ('Expert', 'Awarded to users who demonstrate exceptional knowledge and skills.'),
-    ('Supporter', 'Given to users who help others and provide support.'),
-    ('Verified', 'Badge for verified user accounts.'),
-    ('Top Contributor', 'Awarded to the most active and helpful contributors.'),
-    ('Developer', 'For users who contribute to the development of the application.'),
-    ('Beta Tester', 'Badge for beta testers who provide valuable feedback.'),
-    ('Innovator', 'Given to users with innovative ideas and contributions.'),
-    ('Moderator', 'Badge for users who help moderate the community.'),
-    ('Loyal User', 'Awarded to long-time users who have been with us for years.'),
-    ('Problem Solver', 'Badge for users who consistently provide solutions to complex problems.'),
-    ('Early Adopter', 'Given to users who joined during the early stages of the application.'),
-    ('Eager Learner', 'For users who actively seek knowledge and self-improvement.'),
-    ('Content Creator', 'Badge for users who create valuable content for the community.'),
-    ('Expert Moderator', 'Awarded to moderators who excel in maintaining a positive community environment.'),
-    ('Frequent Poster', 'Given to users who frequently contribute to discussions and posts.'),
-    ('Beta Release Participant', 'Badge for those who participate in testing beta releases.'),
-    ('Community Leader', 'For users who lead and organize community events and activities.'),
-    ('Mentor', 'Awarded to experienced users who mentor and assist newcomers.');    
 
 INSERT INTO BadgeAttainment (user_id, badge_id, date)
 VALUES
-    (1, 1, NOW() - INTERVAL '7 days'),
-    (2, 1, NOW() - INTERVAL '5 days'),
     (3, 2, NOW() - INTERVAL '10 days'),
     (4, 3, NOW() - INTERVAL '14 days'),
     (5, 2, NOW() - INTERVAL '3 days'),
@@ -730,12 +783,10 @@ VALUES
     (7, 5, NOW() - INTERVAL '12 days'),
     (8, 6, NOW() - INTERVAL '9 days'),
     (9, 7, NOW() - INTERVAL '6 days'),
-    (10, 8, NOW() - INTERVAL '11 days'),
     (1, 4, NOW() - INTERVAL '5 days'),
     (2, 3, NOW() - INTERVAL '8 days'),
     (3, 5, NOW() - INTERVAL '12 days'),
     (4, 6, NOW() - INTERVAL '7 days'),
-    (5, 8, NOW() - INTERVAL '10 days'),
     (6, 7, NOW() - INTERVAL '6 days'),
     (7, 9, NOW() - INTERVAL '9 days'),
     (8, 10, NOW() - INTERVAL '11 days'),
@@ -791,7 +842,7 @@ VALUES
     (10, 'Exploring the molecular structure of water provides insights into its unique properties and importance in sustaining life.', 20, 1, NOW() - INTERVAL '21 days', true),
     (11, 'Exploring the natural ripening process of bananas and their changing colors, from green to yellow to brown, serves as an example of chemical reactions and consumer preferences.', 12, 0, NOW(), false),
     (12, 'The classification of the Antarctic Desert as the largest in the world leads to discussions about the diverse characteristics of deserts beyond arid sandy landscapes.', 5, 1, NOW(), true),
-    (13, 'This question revolves around the serendipitous discovery of penicillin by Alexander Fleming in 1928, marking a significant milestone in the history of medicine and the development of antibiotics.', 20, 2, NOW(), false),
+    (13, 'This question revolves around the serendipitous discovery of penicillin by Alexander Fleming in 1928, marking a significant milestone in the history of medicine and the development of antibiotics.', 2000, 2, NOW(), false),
     (14, 'What is your favorite book/movie/TV show and why?', 8, 0, NOW(), false),
     (15, 'What are some ways to overcome writers block and find inspiration?', 15, 3, NOW(), false),
     (16, 'What are your thoughts on the impact of social media on mental health?', 3, 0, NOW(), true),
