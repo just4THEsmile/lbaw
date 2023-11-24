@@ -11,6 +11,20 @@
             color:white;
         } 
 </style>
+<div>{{ $user->name }}'s followed questions</div>
+<div>Followed questions:</div>
+<ul id='followedquestions'>
+    @foreach($followedQuestions as $followedQuestion)
+        <div class="answercard">
+            <a class="title" href="{{ url('/question/'.$followedQuestion->question_id) }}">{{ $followedQuestion->title }}</a>
+            <div class="content">
+                <p class="votes">ID:{{ $followedQuestion->id }}</p>
+                <p class="question-body">{{ $followedQuestion->commentable->content->content }}</p>
+            </div>
+        </div>
+    @endforeach
+</ul>
+
 @endsection
 
 @section('content3')

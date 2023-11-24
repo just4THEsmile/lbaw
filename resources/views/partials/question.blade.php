@@ -16,6 +16,10 @@
             @if ($question->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'moderator')
                 @include('partials.editquestion', ['question' => $question])
             @endif
+            <form id='followquestion' action="{{ $question->id }}/followquestion" method=POST>
+                @csrf
+                <button type='submit' class='followquestionButton' name="followquestion-button">Follow Question</button>
+            </form>
         </div>
 
     @endif

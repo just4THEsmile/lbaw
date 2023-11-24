@@ -229,9 +229,9 @@ CREATE TABLE FollowTag (
 );
 
 CREATE TABLE FollowQuestion (
+    id SERIAL PRIMARY KEY,
     user_id INTEGER,
     question_id INTEGER,
-    PRIMARY KEY (user_id, question_id),
     FOREIGN KEY (user_id) REFERENCES AppUser(id),
     FOREIGN KEY (question_id) REFERENCES Question(id)
 );
@@ -1154,7 +1154,8 @@ VALUES
     (7, 17),
     (8, 18),
     (9, 19),
-    (10, 20);    
+    (10, 20),
+    (21,20);    
 
 
 -----------------------------
