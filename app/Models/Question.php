@@ -35,4 +35,8 @@ class Question extends Model
     {
         return $this->hasMany(QuestionTag::class);
     }
+    public function Tags()
+    {   
+        return Tag::join('questiontag','questiontag.tag_id','=','tag.id')->where('questiontag.question_id','=',$this->id)->get();
+    }
 }

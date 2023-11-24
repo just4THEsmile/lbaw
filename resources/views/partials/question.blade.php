@@ -12,7 +12,6 @@
                 @csrf
                 <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
             </form>
-
             @if ($question->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'moderator')
                 @include('partials.editquestion', ['question' => $question])
             @endif
