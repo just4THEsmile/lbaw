@@ -72,6 +72,7 @@ class QuestionController extends Controller
         }
         return redirect('/home');
     }
+
     public function editform(string $id){
         $question = Question::findOrFail($id);
         if (Auth::check()) {
@@ -103,14 +104,18 @@ class QuestionController extends Controller
         
 
         if (FollowQuestion::where('user_id', Auth::user()->id)->where('question_id', $question->commentable->content->id)->exists()) {
-            return redirect('/question/' . $question->id);
+            
+            FollowQuestion::where('user_id', Auth::user()->id)->where('question_id', $question->commentable->content->id)->delete();
         }
-        $follow = new FollowQuestion([
-            'user_id' => Auth::user()->id,
-            'question_id' => $question->id,
-        ]);
+        else{
+            $follow = new FollowQuestion([
+                'user_id' => Auth::user()->id,
+                'question_id' => $question->id,
+            ]);
+            
+            $follow->save();
+        }
         
-        $follow->save();
 
         return redirect('/question/' . $question->id);
     }

@@ -18,7 +18,11 @@
             @endif
             <form id='followquestion' action="{{ $question->id }}/followquestion" method=POST>
                 @csrf
-                <button type='submit' class='followquestionButton' name="followquestion-button">Follow Question</button>
+                @if ($question->isFollowed(auth()->user()))
+                    <button type='submit' class='unfollowquestionButton' name="followquestion-button">Unfollow Question</button>
+                @else
+                    <button type='submit' class='followquestionButton' name="followquestion-button">Follow Question</button>
+                @endif
             </form>
         </div>
 

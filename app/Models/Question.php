@@ -31,5 +31,11 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class);
     }
+
+
+    public function isFollowed(User $user): bool
+    {
+        return FollowQuestion::where('user_id', $user->id)->where('question_id', $this->id)->exists();
+    }
     
 }
