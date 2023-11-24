@@ -16,7 +16,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ContentController;
-
+use App\Http\Controllers\TagController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -105,6 +105,10 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 Route::controller(ContentController::class)->group(function () {
-    Route::post('/report/{content_id}', 'report')->name('report');
+    Route::post('/report/{content_id}', 'reportContent')->name('report');
 });
 
+Route::controller(TagController::class)->group(function () {
+    Route::get('/search/tag/', 'search')->name('tagsearch');
+    Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion');
+});

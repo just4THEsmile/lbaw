@@ -17,8 +17,14 @@ class Report extends Model
      *
      * @var array<int, string>
      */
+    protected $fillable = [
+        'user_id',
+        'content_id'
+    ];
     protected $table = 'report';
     protected $primaryKey = ['user_id', 'content_id'];
+    public $incrementing = false;
+
 
     protected function setKeysForSaveQuery($query)
     {

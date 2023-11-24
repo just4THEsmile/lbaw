@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Content;
+
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class ContentPolicy
 {
@@ -15,7 +15,7 @@ class ContentPolicy
     {
         //
     }
-    public function report(): bool
+    public function report(User $user): bool
     {
         return Auth::check();
     }

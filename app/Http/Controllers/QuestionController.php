@@ -41,18 +41,24 @@ class QuestionController extends Controller
     }
     public function create(Request $request)
     {
-        // Create a blank new question.
         $question = new Question();
-
-        // Check if the current user is authorized to create this question.
+        
+        // Check if the current user is authorized to delete this question.
         $this->authorize('create', $question);
-
-        // Save the question and return it as JSON.
-        $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'));
-        if($question === null){
-            return redirect('/home');
+        if(sizeof(explode(",", $request->input('tags'))) > 5){
+            return response()->json([
+                'message' => 'Too many tags',
+            ],500);
         }
-        return redirect("/question/". $question->id);
+        //dd($request->input('tags'));
+        $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'),$request->input('tags'));
+        if($question === null){
+            return response()->json([
+                //'message' => $request->input($result),
+            ], 500);
+        }
+        return response()->json($question->id);
+
     }
 
     /**
@@ -90,11 +96,19 @@ class QuestionController extends Controller
 
         // Check if the current user is authorized to delete this question.
         $this->authorize('edit', $question);
-        $result = TransactionsController::editQuestion($question->id,$request->input('title'),$request->input('content'));
-        if($result === null){
-            return redirect('/question/'. $question->id);
+        if(sizeof(explode(",", $request->input('tags'))) > 5){
+            return response()->json([
+                'message' => 'Too many tags',
+            ],500);
         }
-        return redirect('/question/' . $question->id);
+        //dd($request->input('tags'));
+        $result = TransactionsController::editQuestion($question->id,$request->input('title'),$request->input('content'),$request->input('tags'));
+        if($result === null){
+            return response()->json([
+                'message' => $request->input('tags'),
+            ], 404);
+        }
+        return response()->json($result);
     }
 
     public function follow(Request $request, $id){

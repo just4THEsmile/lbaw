@@ -12,7 +12,6 @@
                 @csrf
                 <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
             </form>
-
             @if ($question->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'moderator')
                 @include('partials.editquestion', ['question' => $question])
             @endif
@@ -24,12 +23,12 @@
                     <button type='submit' class='followquestionButton' name="followquestion-button">Follow Question</button>
                 @endif
             </form>
-            <form id='reportquestion' class='report' action="{{route('report',['content_id'=> $question->commentable->content->id])}}" method='post'>
+            <form  class='report' action="{{route('report',['content_id'=> $question->commentable->content->id])}}" method='post'>
                 @csrf
                 @if ($question->commentable->content->isReported(auth()->user()))
-                    <button type='submit' class='unreportquestionButton' name="reportquestion-button">Unreport Question</button>
+                    <button type='submit' class='unreportButton' name="unreport-button">Unreport Question</button>
                 @else
-                    <button type='submit' class='reportquestionButton' name="reportquestion-button">Report Question</button>
+                    <button type='submit' class='reportButton' name="report-button">Report Question</button>
                 @endif
             </form>
         </div>

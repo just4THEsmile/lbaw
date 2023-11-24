@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon; // Added to use Carbon date formatting.
 // Added to define Eloquent relationships.
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -32,5 +33,13 @@ class Content extends Model
     public function isReported(User $user) : bool
     {
         return $user->reports()->where('content_id', $this->id)->exists();
+    }
+    
+    public function compileddate() : string
+    {
+        $someDate = Carbon::parse($this->date);
+        $deltaTime = $someDate->diffForHumans(); // This gives you a human-readable delta time
+
+        return $deltaTime;
     }
 }
