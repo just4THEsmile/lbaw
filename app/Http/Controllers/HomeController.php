@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
+use App\Models\Content;
     /**
      * Display the home page.
      *
@@ -16,11 +16,10 @@ use Illuminate\Http\Request;
     {
         public function index()
         {
-            $questions = DB::select('
-            SELECT Question.title, Content.content, AppUser.username, Content.date, Content.id as id, AppUser.id as userid, Content.votes
-            FROM Question, Content, AppUser
-            WHERE Question.id = Content.id AND Content.user_id = AppUser.id
-        ');
+        $questions = Question::all();
+        foreach($questions as $result){
+            $result->date = $result->commentable->content->compileddate();
+        }
             return view('pages.homequestions', ['questions' => $questions]);
         }
 

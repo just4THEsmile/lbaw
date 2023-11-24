@@ -16,7 +16,6 @@ class SearchQuestionController extends Controller
         ->join('content', 'question.id', '=', 'content.id')
         ->join('appuser', 'content.user_id', '=', 'appuser.id')
         ->get();
-
         return view('pages.questions', ['questions' => $questions]);
     }
     public function search(Request $request)
@@ -32,6 +31,10 @@ class SearchQuestionController extends Controller
             ->where('content.deleted', '=', False)
             ->orderBy($sortby,'desc')
             ->get();
+            
+            foreach($results as $result){
+                $result->date = $result->commentable->content->compileddate();
+            }
             return response()->json($results);
         }
             $results = Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
@@ -41,6 +44,9 @@ class SearchQuestionController extends Controller
             ->where('content.deleted', '=', False)
             ->orderBy($sortby,'desc')
             ->get();
+            foreach($results as $result){
+                $result->date = $result->commentable->content->compileddate();
+            }
         return response()->json($results);
     }
 }
