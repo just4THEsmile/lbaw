@@ -84,6 +84,8 @@ class User extends Authenticatable
         return FileController::get('profile', $this->id);
     }
 
-    
+    public function reports(){
+        return $this->hasMany(Report::class, 'user_id', 'id');
+    }
 }
 

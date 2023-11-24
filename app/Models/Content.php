@@ -29,6 +29,12 @@ class Content extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    public function isReported(User $user) : bool
+    {
+        return $user->reports()->where('content_id', $this->id)->exists();
+    }
+    
     public function compileddate() : string
     {
         $someDate = Carbon::parse($this->date);

@@ -42,14 +42,19 @@ class QuestionController extends Controller
     public function create(Request $request)
     {
         $question = new Question();
-
+        
         // Check if the current user is authorized to delete this question.
         $this->authorize('create', $question);
+        if(sizeof(explode(",", $request->input('tags'))) > 5){
+            return response()->json([
+                'message' => 'Too many tags',
+            ],500);
+        }
         //dd($request->input('tags'));
         $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'),$request->input('tags'));
         if($question === null){
             return response()->json([
-                'message' => $request->input($result),
+                //'message' => $request->input($result),
             ], 500);
         }
         return response()->json($question->id);
@@ -91,6 +96,11 @@ class QuestionController extends Controller
 
         // Check if the current user is authorized to delete this question.
         $this->authorize('edit', $question);
+        if(sizeof(explode(",", $request->input('tags'))) > 5){
+            return response()->json([
+                'message' => 'Too many tags',
+            ],500);
+        }
         //dd($request->input('tags'));
         $result = TransactionsController::editQuestion($question->id,$request->input('title'),$request->input('content'),$request->input('tags'));
         if($result === null){

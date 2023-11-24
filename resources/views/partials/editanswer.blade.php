@@ -8,6 +8,14 @@
         @csrf
         <button type='submit' class='edit' name="edit-button">Edit</button>
     </form>
+    <form  class='report' action="{{route('report',['content_id'=> $answer->commentable->content->id])}}" method='post'>
+        @csrf
+        @if ($answer->commentable->content->isReported(auth()->user()))
+            <button type='submit' class='unreportButton' name="unreport-button">Unreport Answer</button>
+        @else
+            <button type='submit' class='reportButton' name="report-button">Report Answer</button>
+        @endif
+    </form>
 </div> 
 
 

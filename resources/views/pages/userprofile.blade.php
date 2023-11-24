@@ -136,6 +136,8 @@
                         </form>
                     </div>   
                 </div>
+                <div id='UserBadges'>
+                </div>
             </section>
         </main>
     </body>
