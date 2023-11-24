@@ -28,4 +28,9 @@ class Content extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    public function isReported(User $user) : bool
+    {
+        return $user->reports()->where('content_id', $this->id)->exists();
+    }
 }
