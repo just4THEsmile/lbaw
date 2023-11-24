@@ -9,7 +9,7 @@ use App\Models\Answer;
 use App\Models\User;
 class TransactionsController extends Controller
 {
-    public static function createQuestion($user_id,$title,$content1)
+    public static function createQuestion($user_id,$title,$content1,$tag_ids)
     {
         try {
             // Start the transaction
@@ -31,6 +31,14 @@ class TransactionsController extends Controller
                 'title' => $title,
             ]);
             $question->save();
+            if($tag_ids !== null){
+                $array =explode(",", $tag_ids);
+                foreach($array as $tag_id){
+                    DB::table('questiontag')->insert(
+                        ['question_id' => $question->id, 'tag_id' => $tag_id]
+                    );
+                }
+            }
             // Commit the transaction
             DB::commit();
             return $question;
@@ -44,11 +52,20 @@ class TransactionsController extends Controller
         }
     }
         
-    public static function editQuestion($question_id,$title,$content)
+    public static function editQuestion($question_id,$title,$content,$tag_ids)
     {
         try {
             // Start the transaction
             DB::beginTransaction();
+            DB::table('questiontag')->where('question_id', $question_id)->delete();
+            if($tag_ids !== null){
+                $array =explode(",", $tag_ids);
+                foreach($array as $tag_id){
+                    DB::table('questiontag')->insert(
+                        ['question_id' => $question_id, 'tag_id' => $tag_id]
+                    );
+                }
+            }
             $question = Question::find($question_id);
             $content1 = Content::find($question_id);
             // Delete the question and return it as JSON.
@@ -65,6 +82,7 @@ class TransactionsController extends Controller
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
             DB::rollback();
+            return $e->getMessage();
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
@@ -209,7 +227,6 @@ class TransactionsController extends Controller
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
-            dd($e);
             return false;
         }
     }

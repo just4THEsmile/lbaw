@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
 use App\Models\Content;
 use App\Models\Commentable;
-
+use Illuminate\Support\Facades\DB;
 class QuestionController extends Controller
 {
     public function show(string $id): View
@@ -39,18 +39,19 @@ class QuestionController extends Controller
     }
     public function create(Request $request)
     {
-        // Create a blank new question.
         $question = new Question();
 
-        // Check if the current user is authorized to create this question.
+        // Check if the current user is authorized to delete this question.
         $this->authorize('create', $question);
-
-        // Save the question and return it as JSON.
-        $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'));
+        //dd($request->input('tags'));
+        $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'),$request->input('tags'));
         if($question === null){
-            return redirect('/home');
+            return response()->json([
+                'message' => $request->input($result),
+            ], 500);
         }
-        return redirect("/question/". $question->id);
+        return response()->json($question->id);
+
     }
 
     /**
@@ -87,11 +88,14 @@ class QuestionController extends Controller
 
         // Check if the current user is authorized to delete this question.
         $this->authorize('edit', $question);
-        $result = TransactionsController::editQuestion($question->id,$request->input('title'),$request->input('content'));
+        //dd($request->input('tags'));
+        $result = TransactionsController::editQuestion($question->id,$request->input('title'),$request->input('content'),$request->input('tags'));
         if($result === null){
-            return redirect('/question/'. $question->id);
+            return response()->json([
+                'message' => $request->input('tags'),
+            ], 404);
         }
-        return redirect('/question/' . $question->id);
+        return response()->json($result);
     }
 
 }
