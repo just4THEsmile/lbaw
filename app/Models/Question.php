@@ -39,4 +39,11 @@ class Question extends Model
     {   
         return Tag::join('questiontag','questiontag.tag_id','=','tag.id')->where('questiontag.question_id','=',$this->id)->get();
     }
+
+
+    public function isFollowed(User $user): bool
+    {
+        return FollowQuestion::where('user_id', $user->id)->where('question_id', $this->id)->exists();
+    }
+    
 }

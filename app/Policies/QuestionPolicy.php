@@ -77,4 +77,10 @@ class QuestionPolicy
       // Only a Question owner can delete it.
       return $user->id === $content->user_id || $user->usertype === "admin" || $user->usertype === "moderator";
     }
+
+    public function follow(User $user, Question $question): bool
+    {
+        $check = Auth::check();
+        return $check && $user->id !== $question->commentable->content->user->id;
+    }
 }

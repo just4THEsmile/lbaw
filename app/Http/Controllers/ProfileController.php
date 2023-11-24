@@ -34,8 +34,5 @@ class ProfileController extends Controller
         $user = User::find($id);
         return view('pages/myanswers', ['user' => $user]);
     }
-    public function followquestion($id){
-        $user = User::find($id);
-        return view('pages/followquestion', ['user' => $user]);
-    }
+
 }

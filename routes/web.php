@@ -60,8 +60,9 @@ Route::controller(ProfileController::class)->group(function () {
     Route::get('/profile/{id}', [ProfileController::class, 'index'])->name('profile');
     Route::get('/myquestions/{id}', [ProfileController::class, 'myquestions'])->name('myquestions');
     Route::get('/myanswers/{id}', [ProfileController::class, 'myanswers'])->name('myanswers');
-    Route::get('/followquestion/{id}', [ProfileController::class, 'followquestion'])->name('followquestion');
+    Route::get('/followquestion/{id}', [UserController::class, 'followedQuestions'])->name('followquestion');
 });
+
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');
     Route::post('/createquestion', 'create');
@@ -69,6 +70,7 @@ Route::controller(QuestionController::class)->group(function () {
     Route::post('/question/{id}/delete', 'delete');
     Route::get('/question/{id}/edit', 'editform');
     Route::post('/question/{id}/edit', 'edit');
+    Route::post('/question/{id}/followquestion', 'follow');
 });
 
 Route::controller(AnswerController::class)->group(function () {
@@ -88,22 +90,6 @@ Route::controller(CommentController::class)->group(function () {
 });
 
 Route::post('/file/upload', [FileController::class, 'upload']);
-
-
-
-// API
-/*
-Route::controller(CardController::class)->group(function () {
-    Route::put('/api/cards', 'create');
-    Route::delete('/api/cards/{card_id}', 'delete');
-});
-
-Route::controller(ItemController::class)->group(function () {
-    Route::put('/api/cards/{card_id}', 'create');
-    Route::post('/api/item/{id}', 'update');
-    Route::delete('/api/item/{id}', 'delete');
-});*/
-
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {

@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
 use App\Models\Content;
 use App\Models\Commentable;
-use Illuminate\Support\Facades\DB;
+use App\Models\FollowQuestion;
+use App\Models\User;
+
 class QuestionController extends Controller
 {
     public function show(string $id): View
@@ -71,6 +73,7 @@ class QuestionController extends Controller
         }
         return redirect('/home');
     }
+
     public function editform(string $id){
         $question = Question::findOrFail($id);
         if (Auth::check()) {
@@ -96,6 +99,29 @@ class QuestionController extends Controller
             ], 404);
         }
         return response()->json($result);
+    }
+
+    public function follow(Request $request, $id){
+
+        $question = Question::find($id);
+        $this->authorize('follow', $question);
+        
+
+        if (FollowQuestion::where('user_id', Auth::user()->id)->where('question_id', $question->commentable->content->id)->exists()) {
+            
+            FollowQuestion::where('user_id', Auth::user()->id)->where('question_id', $question->commentable->content->id)->delete();
+        }
+        else{
+            $follow = new FollowQuestion([
+                'user_id' => Auth::user()->id,
+                'question_id' => $question->id,
+            ]);
+            
+            $follow->save();
+        }
+        
+
+        return redirect('/question/' . $question->id);
     }
 
 }
