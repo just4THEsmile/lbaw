@@ -17,7 +17,6 @@ use App\Http\Controllers\FileController;
 
 
 
-
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -83,6 +82,10 @@ class User extends Authenticatable
 
     public function getProfileImage() {
         return FileController::get('profile', $this->id);
+    }
+
+    public function reports(){
+        return $this->hasMany(Report::class, 'user_id', 'id');
     }
 }
 

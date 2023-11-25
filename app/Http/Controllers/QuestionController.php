@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
 use App\Models\Content;
 use App\Models\Commentable;
+use App\Models\FollowQuestion;
+use App\Models\User;
 
 class QuestionController extends Controller
 {
@@ -39,18 +41,24 @@ class QuestionController extends Controller
     }
     public function create(Request $request)
     {
-        // Create a blank new question.
         $question = new Question();
-
-        // Check if the current user is authorized to create this question.
+        
+        // Check if the current user is authorized to delete this question.
         $this->authorize('create', $question);
-
-        // Save the question and return it as JSON.
-        $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'));
-        if($question === null){
-            return redirect('/home');
+        if(sizeof(explode(",", $request->input('tags'))) > 5){
+            return response()->json([
+                'message' => 'Too many tags',
+            ],500);
         }
-        return redirect("/question/". $question->id);
+        //dd($request->input('tags'));
+        $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'),$request->input('tags'));
+        if($question === null){
+            return response()->json([
+                //'message' => $request->input($result),
+            ], 500);
+        }
+        return response()->json($question->id);
+
     }
 
     /**
@@ -70,6 +78,7 @@ class QuestionController extends Controller
         }
         return redirect('/home');
     }
+
     public function editform(string $id){
         $question = Question::findOrFail($id);
         if (Auth::check()) {
@@ -87,40 +96,42 @@ class QuestionController extends Controller
 
         // Check if the current user is authorized to delete this question.
         $this->authorize('edit', $question);
-        $result = TransactionsController::editQuestion($question->id,$request->input('title'),$request->input('content'));
-        if($result === null){
-            return redirect('/question/'. $question->id);
+        if(sizeof(explode(",", $request->input('tags'))) > 5){
+            return response()->json([
+                'message' => 'Too many tags',
+            ],500);
         }
+        //dd($request->input('tags'));
+        $result = TransactionsController::editQuestion($question->id,$request->input('title'),$request->input('content'),$request->input('tags'));
+        if($result === null){
+            return response()->json([
+                'message' => $request->input('tags'),
+            ], 404);
+        }
+        return response()->json($result);
+    }
+
+    public function follow(Request $request, $id){
+
+        $question = Question::find($id);
+        $this->authorize('follow', $question);
+        
+
+        if (FollowQuestion::where('user_id', Auth::user()->id)->where('question_id', $question->commentable->content->id)->exists()) {
+            
+            FollowQuestion::where('user_id', Auth::user()->id)->where('question_id', $question->commentable->content->id)->delete();
+        }
+        else{
+            $follow = new FollowQuestion([
+                'user_id' => Auth::user()->id,
+                'question_id' => $question->id,
+            ]);
+            
+            $follow->save();
+        }
+        
+
         return redirect('/question/' . $question->id);
     }
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    /*
-    public function listuserquestions()
-    {
-        // Check if the user is logged in.
-        if (!Auth::check()) {
-            // Not logged in, redirect to login.
-            return redirect('/login');
 
-        } else {
-            // The user is logged in.
-
-            // Get questions for user ordered by id.
-            $questions = Question::orderBy('id')->get();
-            // Check if the current user can list the questions.
-            $this->authorize('list', Question::class);
-
-            // The current user is authorized to list questions.
-
-            // Use the pages.questions template to display all questions.
-            return view('pages.questions', [
-                'question' => $question,
-                'answers' => $answers
-            ]);
-        }
-    }*/
 }
