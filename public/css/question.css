@@ -96,6 +96,7 @@ button{
      letter-spacing: 0em !important;
      font-weight: 400 !important;
      border-radius: 0.5em !important;
+     transition: color 0.7s !important;
 }
 button:hover{
     background-color: rgba(0, 0, 0, 0.2) !important;

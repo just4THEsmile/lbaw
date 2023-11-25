@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@section('style')
+
+  <link href="{{ asset('css/question_card.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+@endsection
+
+
 @section('title', 'content')
 
 @section('content')
@@ -16,13 +23,28 @@
 @foreach ($questions as $question)
 
 
-<div class= "answercard">
-    <a href="{{ url('/question/'.$question->id) }}">{{ $question->title }}</a>
+<div class= "question">
+  
+  <div class="votes" >
+    <button class="arrow-up">
+      <span class="material-symbols-outlined">
+        expand_less
+      </span>
+    </button>
+    <p class="votesnum" class=>{{ $question->votes }}</p> 
+    <button class="arrow-down">
+      <span class="material-symbols-outlined">
+        expand_more
+      </span>
+    </button>
+  </div>
     <div class ="content">
-    <p class="votes">{{ $question->votes }}</p>
-    <p>{{ $question->content }}</p>
-    <a href="{{ url('/profile/'.$question->userid) }}">{{ $question->username }}</a>
-    <p>{{ $question->date }}</p>
+    <a href="{{ url('/question/'.$question->id) }}"><h3>{{ $question->title }}</h3></a>
+      <p class="questioncontent">{{ $question->content }}</p>
+      <div class="profileinfo">
+        <a href="{{ url('/profile/'.$question->userid) }}">{{ $question->username }}</a>
+        <p>{{ $question->date }}</p>
+      </div>
     </div>
 </div>
 @endforeach

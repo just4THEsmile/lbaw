@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('style')
+
+  <link href="{{ asset('css/users.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+@endsection
+
 @section('title', 'content')
 
 @section('content')
@@ -24,8 +30,10 @@
         <div class="user">
             <a href="{{ '/profile/' . $user->id }}">
             <img src="{{ $user->getProfileImage() }}" alt="Profile Picture">
-            <h2>Name: {{ $user->name }}</h2>
-            <h2>Username: {{ $user->username}}</h2>
+            <p>Name:</p>
+            <h2>{{ $user->name }}</h2>
+            <p>Username:</p>
+            <h2>{{ $user->username}}</h2>
             </a>
         </div>
         @endforeach
