@@ -14,7 +14,8 @@ class ContentController extends Controller
     {
         
         $user = auth()->user();
-
+        $content = Content::find($content_id);
+        $this->authorize("report", $content);
         if(Report::where('user_id', $user->id)->where('content_id', $content_id)->exists()){
             Report::where('user_id', $user->id)->where('content_id', $content_id)->delete();
         }
