@@ -48,7 +48,6 @@ Route::controller(HomeController::class)->group(function () {
 // Search
 Route::controller(SearchQuestionController::class)->group(function () {
     Route::get('/questions',  'show')->name('questions');
-    Route::get('/search/questions',  'search');
 });
 
 Route::controller(UsersController::class)->group(function () {
@@ -112,3 +111,9 @@ Route::controller(TagController::class)->group(function () {
     Route::get('/search/tag/', 'search')->name('tagsearch');
     Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion');
 });
+//api
+Route::get('api/search/questions',  [SearchQuestionController::class,'search']);
+Route::get('api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
+Route::get('api/myanswers/{id}', [ProfileController::class, 'listmyanswers']);
+Route::get('api/search/tag/', [TagController::class,'search']);
+Route::get('api/question/{id}/tags', [TagController::class,'getTagsOfQuestion']);

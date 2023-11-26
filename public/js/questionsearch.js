@@ -18,7 +18,7 @@ function searchQuestions(){
 
     // Perform an AJAX request to your Laravel backend
     let currentPage = 1;
-    fetch(`/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
+    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
         .then(response => response.json())
         .then(data => {
             // Update the search results in the DOM
@@ -37,6 +37,9 @@ window.onload = function () {
 
 function showPage(currentPage){
     searchResults.innerHTML = "";
+    if(results.length == 0){
+        searchResults.innerHTML = "No questions Found";
+    }
     for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
         let result = results[i];
         // Create the main answer card div
