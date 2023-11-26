@@ -748,7 +748,7 @@ VALUES
     ('Charlie Brown', 'charlieb', 'charlie@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Web developer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
     ('Grace Adams', 'SERMATIc', 'grace@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'AI enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
     ('Sam Wilson', 'swEtterDock', 'sam@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Software engineer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
-    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','KUeBmxZ5csM5NZpcgv2g7dds2uKeE7NGVEZIvTKx.jpg','admin');
+    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2','eu gosto de jogar','KUeBmxZ5csM5NZpcgv2g7dds2uKeE7NGVEZIvTKx.jpg','admin');
 
 INSERT INTO Faq (question, answer)
 VALUES

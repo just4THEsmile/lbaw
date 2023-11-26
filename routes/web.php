@@ -112,3 +112,4 @@ Route::controller(TagController::class)->group(function () {
     Route::get('/search/tag/', 'search')->name('tagsearch');
     Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion');
 });
+
