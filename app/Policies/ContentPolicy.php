@@ -5,7 +5,7 @@ namespace App\Policies;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-
+use App\Models\Content;
 class ContentPolicy
 {
     /**
@@ -15,9 +15,9 @@ class ContentPolicy
     {
         //
     }
-    public function report(User $user): bool
+    public function report(User $user,Content $content): bool
     {
-        return Auth::check();
+        return Auth::check() && $user->id !== $content->user_id;
     }
     
 }
