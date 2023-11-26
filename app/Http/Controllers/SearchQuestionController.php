@@ -25,7 +25,7 @@ class SearchQuestionController extends Controller
         $query = $request->input('q');
         $sortby = $request->input('OrderBy');
         if(strlen($query) == 0){
-            $results= Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
+            $results= Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes as votes')
             ->join('content', 'question.id', '=', 'content.id')
             ->join('appuser', 'content.user_id', '=', 'appuser.id')
             ->where('content.deleted', '=', False)
@@ -37,11 +37,29 @@ class SearchQuestionController extends Controller
             }
             return response()->json($results);
         }
-            $results = Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
+            $results = Question::select('question.title', 
+            'content.content', 
+            'appuser.username', 
+            'content.date', 
+            'content.id as id', 
+            'appuser.id as userid', 
+            'content.votes as votes',
+            DB::raw('STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as tags'))
             ->join('content', 'question.id', '=', 'content.id')
             ->join('appuser', 'content.user_id', '=', 'appuser.id')
+            ->join('questiontag', 'questiontag.question_id', '=', 'question.id')
+            ->join('tag', 'tag.id', '=', 'questiontag.tag_id')
             ->where('question.title', 'ILIKE', "%$query%")
             ->where('content.deleted', '=', False)
+            ->groupBy(
+                'question.title',
+                'content.content',
+                'appuser.username',
+                'content.date',
+                'content.id',
+                'appuser.id',
+                'content.votes'
+            )
             ->orderBy($sortby,'desc')
             ->get();
             foreach($results as $result){

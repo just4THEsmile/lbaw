@@ -740,7 +740,7 @@ VALUES
     ('Daniel Martin', 'sn1987a', 'dan@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Fitness enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
     ('John Doe', 'prune', 'john@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'I love coding!', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
     ('Jane Smith', 'cattylover', 'jane@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Tech enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
-    ('Admin User', 'admin@example.com', 'admin@example.com', '$2y$10$ONfUdIrLOFfApp4VSIFvBOZL/ViR2t0HdbPa9xQmrsqvaAZtMVf2y', 'Administrator', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'admin'),
+    ('Admin User','Admin' , 'admin@example.com', '$2y$10$ONfUdIrLOFfApp4VSIFvBOZL/ViR2t0HdbPa9xQmrsqvaAZtMVf2y', 'Administrator', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'admin'),
     ('Moderator User', 'moderator', 'moderator@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Moderator', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'moderator'),
     ('Alice Johnson', 'cabbage', 'alice@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Curious learner', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
     ('Bob Smith', 'pelican', 'bob@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Coding enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
