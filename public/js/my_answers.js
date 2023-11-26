@@ -1,9 +1,10 @@
-const Questions = document.getElementById("Questions");
-const questionpagination = document.getElementById("QuestionPagination")
-const questionsPerPage = 5;
+const Answers = document.getElementById("Answers");
+const questionpagination = document.getElementById("AnswersPagination")
+const user_id = document.getElementById("user_id")
+const AnswersPerPage = 5;
 let results = [];
 
-function updateQuestions(){
+function updateAnswers(){
 
     // Perform an AJAX request to your Laravel backend
     let currentPage = 1;
@@ -20,15 +21,15 @@ function updateQuestions(){
 
 }
 window.onload = function () {
-    updateQuestions();
+    updateAnswers();
 }   
 
 function showPage(currentPage){
-    Questions.innerHTML = "";
+    Answers.innerHTML = "";
     if(results.length == 0){
-        Questions.innerHTML = "No questions Found";
+        Answers.innerHTML = "No Answers Found";
     }
-    for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
+    for (let i = (currentPage - 1)*AnswersPerPage; i < results.length && i<currentPage*AnswersPerPage ; i++) {
         let result = results[i];
         // Create the main answer card div
         const answerCard = document.createElement("div");
@@ -59,13 +60,13 @@ function showPage(currentPage){
         answerCard.appendChild(contentDiv);
 
         // Append the answer card to the search results
-        Questions.appendChild(answerCard);
+        Answers.appendChild(answerCard);
         
     }
     renderPaginationButtons(currentPage);
 }
 function renderPaginationButtons(currentPage) {
-    const totalPages = Math.ceil(results.length / questionsPerPage );
+    const totalPages = Math.ceil(results.length / AnswersPerPage );
     questionpagination.innerHTML = "";
     let delta = currentPage + 3;
     if (delta > totalPages) delta = totalPages;

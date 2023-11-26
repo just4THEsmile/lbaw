@@ -14,9 +14,9 @@
 <div>{{ $user->name }}'s followed questions</div>
 <div>Followed questions:</div>
 <div id="user_id" hidden>{{$user->id}}</div>
-        <ul id="Questions"></ul>
-        <div id ="QuestionPagination"></div>
-        <script type="text/javascript" src={{ url('js/followedQuestions.js') }} defer></script>
+        <ul id="Answers"></ul>
+        <div id ="AnswerPagination"></div>
+        <script type="text/javascript" src={{ url('js/my_answers.js') }} defer></script>
 @endsection
 
 @section('content3')

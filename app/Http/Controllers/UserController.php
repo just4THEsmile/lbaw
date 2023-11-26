@@ -86,5 +86,5 @@ class UserController extends Controller
         TransactionsController::deleteUser($userBeingDeleted->id);
         return redirect()->route('logout');
     }
-    
+       
 }

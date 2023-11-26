@@ -39,13 +39,15 @@ class ProfileController extends Controller
     }
     public function myanswers($id){
         $user = User::find($id);
-        return view('pages/myanswers', ['user_id' => $id]);
+        return view('pages/myanswers', ['user' => $user]);
     }
     public function listmyanswers($id){
         $user = User::find($id); 
-        $questions = $user->questions();
-
-        return response()->json($questions) ;
+        $answers = $user->answers();
+        foreach($answers as $result){
+            $result->date = $result->commentable->content->compileddate();
+        }
+        return response()->json($answers) ;
     }
     public function followedQuestions($id)
     {   
