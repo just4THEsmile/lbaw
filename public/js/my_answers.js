@@ -47,12 +47,18 @@ function showPage(currentPage){
         const dateParagraph = document.createElement("p");
         dateParagraph.textContent = result.date; // Adjust based on your actual result structure
         dateParagraph.classList.add("date");
+        const titleLink = document.createElement("a");
+        titleLink.href = `/question/${result.question_id}`;
+        titleLink.textContent = result.title;
+        titleLink.classList.add("title");
 /*
         const votes = document.createElement("p");
         votes.textContent = result.votes;
         votes.classList.add("votes");
+        
         // Append elements to the content div
         contentDiv.appendChild(votes);*/
+        contentDiv.appendChild(titleLink);
         contentDiv.appendChild(contentParagraph);
         contentDiv.appendChild(dateParagraph);  
 
