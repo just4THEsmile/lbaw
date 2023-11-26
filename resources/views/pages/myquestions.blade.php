@@ -11,25 +11,10 @@
             color:white;
         } 
     </style>
-    @php
-        $questions = $user->questions();
-    @endphp
-    @if($questions->isEmpty())
-        <p>No questions found.</p>
-    @else
-        <ul>
-            @foreach($questions as $question)
-            <div class= "answercard">
-                <a class="title" href="{{ url('/question/'.$question->id) }}">{{ $question->title }}</a>
-                <div class ="content">
-                    <p class="votes">{{ $question->votes }}</p>
-                    <p >{{ $question->content }}</p>
-                    <p class="date">{{ $question->date }}</p>
-                </div>
-            </div>
-            @endforeach
-        </ul>
-    @endif
+        <div id="Questions">
+
+        </div>
+        <script type="text/javascript" src={{ url('js/my_questions.js') }} defer></script>
 @endsection
 
 

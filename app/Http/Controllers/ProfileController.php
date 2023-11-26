@@ -20,7 +20,6 @@ class ProfileController extends Controller
     }
     public function edit($id){
         $user = User::find($id);
-        $auth = Auth::user();
         if(Auth::user()->id !== $user->id && Auth::user()->usertype !== 'admin'){
             return view('pages.profile', ['user' => $user]);
         }
@@ -30,9 +29,17 @@ class ProfileController extends Controller
         $user = User::find($id);
         return view('pages/myquestions', ['user' => $user]);
     }
+    public function listmyquestions($id){
+        $user = User::find($id); 
+        return response()->json($user->questions()) ;
+    }
     public function myanswers($id){
         $user = User::find($id);
         return view('pages/myanswers', ['user' => $user]);
+    }
+    public function listmyanswers($id){
+        $user = User::find($id); 
+        return response()->json($user->questions()) ;
     }
 
 }

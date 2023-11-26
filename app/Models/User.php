@@ -66,6 +66,7 @@ class User extends Authenticatable
             ->join('commentable', 'commentable.id', '=', 'content.id')
             ->join('question', 'question.id', '=', 'commentable.id')
             ->where('content.user_id', $this->id)
+            ->orderBy('content.date','desc')
             ->get();
     }
 
@@ -77,6 +78,7 @@ class User extends Authenticatable
             ->join('answer', 'answer.id', '=', 'commentable.id')
             ->join('question', 'question.id', '=', 'answer.question_id')
             ->where('content.user_id', $this->id)
+            ->orderBy('content.date','desc')
             ->get();
     }
 

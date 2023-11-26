@@ -1,24 +1,13 @@
-const searchInput = document.getElementById("searchInput");
-const searchResults = document.getElementById("searchResults");
-const searchOrderedBy_Selector = document.getElementById("sortSelect");
+const Questions = document.getElementById("Questions");
 const questionpagination = document.getElementById("QuestionPagination")
 const questionsPerPage = 5;
 let results = [];
-document.addEventListener("DOMContentLoaded", function () {
 
-    searchInput.addEventListener("input", function () {
-        searchQuestions();
-    });
-    searchOrderedBy_Selector.addEventListener("change", function () {
-        searchQuestions();
-    });
-});
-function searchQuestions(){
-    const query = searchInput.value;
+function updateQuestions(){
 
     // Perform an AJAX request to your Laravel backend
     let currentPage = 1;
-    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
+    fetch(`/api/myquestions/${user_id.value}`)
         .then(response => response.json())
         .then(data => {
             // Update the search results in the DOM
@@ -32,13 +21,13 @@ function searchQuestions(){
 
 }
 window.onload = function () {
-    searchQuestions();
+    updateQuestions();
 }   
 
 function showPage(currentPage){
-    searchResults.innerHTML = "";
+    Questions.innerHTML = "";
     if(results.length == 0){
-        searchResults.innerHTML = "No questions Found";
+        Questions.innerHTML = "No questions Found";
     }
     for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
         let result = results[i];
@@ -84,7 +73,7 @@ function showPage(currentPage){
         questionCard.appendChild(contentDiv);
 
         // Append the answer card to the search results
-        searchResults.appendChild(questionCard);
+        Questions.appendChild(questionCard);
         
     }
     renderPaginationButtons(currentPage);
