@@ -7,7 +7,7 @@ function updateQuestions(){
 
     // Perform an AJAX request to your Laravel backend
     let currentPage = 1;
-    fetch(`/api/myquestions/${user_id.textContent}`)
+    fetch(`/api/myanswers/${user_id.textContent}`)
         .then(response => response.json())
         .then(data => {
             // Update the search results in the DOM
@@ -31,14 +31,9 @@ function showPage(currentPage){
     for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
         let result = results[i];
         // Create the main answer card div
-        const questionCard = document.createElement("div");
-        questionCard.classList.add("questioncard");
+        const answerCard = document.createElement("div");
+        answerCard.classList.add("answercard");
 
-        // Create the link for the question title
-        const titleLink = document.createElement("a");
-        titleLink.href = `/question/${result.id}`;
-        titleLink.textContent = result.title;
-        titleLink.classList.add("title");
         // Create the content div
         const contentDiv = document.createElement("div");
         contentDiv.classList.add("content");
@@ -61,11 +56,10 @@ function showPage(currentPage){
         contentDiv.appendChild(dateParagraph);  
 
         // Append elements to the answer card div
-        questionCard.appendChild(titleLink);
-        questionCard.appendChild(contentDiv);
+        answerCard.appendChild(contentDiv);
 
         // Append the answer card to the search results
-        Questions.appendChild(questionCard);
+        Questions.appendChild(answerCard);
         
     }
     renderPaginationButtons(currentPage);
@@ -95,4 +89,3 @@ function renderPaginationButtons(currentPage) {
         questionpagination.appendChild(button);
     }
 }
-

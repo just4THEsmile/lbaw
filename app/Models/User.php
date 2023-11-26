@@ -61,13 +61,13 @@ class User extends Authenticatable
 
     public function questions()
     {
-        return DB::table('content')
-            ->select('content.content as content', 'question.title as title', 'content.votes as votes', 'content.id as id', 'content.date as date')
+        return Question::select('content.content as content', 'question.title as title', 'content.votes as votes', 'content.id as id', 'content.date as date')
+            ->join('content', 'content.id', '=', 'question.id')
             ->join('commentable', 'commentable.id', '=', 'content.id')
-            ->join('question', 'question.id', '=', 'commentable.id')
             ->where('content.user_id', $this->id)
             ->orderBy('content.date','desc')
             ->get();
+            
     }
 
     public function answers()

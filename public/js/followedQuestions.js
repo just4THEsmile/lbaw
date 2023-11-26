@@ -7,7 +7,7 @@ function updateQuestions(){
 
     // Perform an AJAX request to your Laravel backend
     let currentPage = 1;
-    fetch(`/api/myquestions/${user_id.textContent}`)
+    fetch(`/api/followedQuestions/${user_id.textContent}`)
         .then(response => response.json())
         .then(data => {
             // Update the search results in the DOM
@@ -46,6 +46,7 @@ function showPage(currentPage){
         // Create a paragraph for the question content
         const contentParagraph = document.createElement("p");
         contentParagraph.textContent = result.content; // Adjust based on your actual result structure
+
 
         // Create a paragraph for the date
         const dateParagraph = document.createElement("p");

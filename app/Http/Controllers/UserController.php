@@ -86,15 +86,5 @@ class UserController extends Controller
         TransactionsController::deleteUser($userBeingDeleted->id);
         return redirect()->route('logout');
     }
-
-    public function followedQuestions($id)
-    {
-        $user = User::findOrFail($id);
-        
-        $followedQuestions = Question::join('followquestion', 'followquestion.question_id', '=', 'question.id')
-            ->where('followquestion.user_id', $id)
-            ->get();
-        return view('pages/followquestion',  ['user' => $user, 'followedQuestions' => $followedQuestions]);
-    }
     
 }

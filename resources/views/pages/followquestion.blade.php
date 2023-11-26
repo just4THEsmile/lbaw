@@ -13,17 +13,10 @@
 </style>
 <div>{{ $user->name }}'s followed questions</div>
 <div>Followed questions:</div>
-<ul id='followedquestions'>
-    @foreach($followedQuestions as $followedQuestion)
-        <div class="answercard">
-            <a class="title" href="{{ url('/question/'.$followedQuestion->question_id) }}">{{ $followedQuestion->title }}</a>
-            <div class="content">
-                <p class="question-body">{{ $followedQuestion->commentable->content->content }}</p>
-            </div>
-        </div>
-    @endforeach
-</ul>
-
+<div id="user_id" hidden>{{$user->id}}</div>
+        <ul id="Questions"></ul>
+        <div id ="QuestionPagination"></div>
+        <script type="text/javascript" src={{ url('js/followedQuestions.js') }} defer></script>
 @endsection
 
 @section('content3')
