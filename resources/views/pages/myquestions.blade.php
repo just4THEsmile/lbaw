@@ -11,34 +11,19 @@
             color:white;
         } 
     </style>
-    @php
-        $questions = $user->questions();
-    @endphp
-    @if($questions->isEmpty())
-        <p>No questions found.</p>
-    @else
-        <ul>
-            @foreach($questions as $question)
-            <div class= "answercard">
-                <a class="title" href="{{ url('/question/'.$question->id) }}">{{ $question->title }}</a>
-                <div class ="content">
-                    <p class="votes">{{ $question->votes }}</p>
-                    <p >{{ $question->content }}</p>
-                    <p class="date">{{ $question->date }}</p>
-                </div>
-            </div>
-            @endforeach
-        </ul>
-    @endif
+    <div id="user_id" hidden>{{$user_id}}</div>
+        <ul id="Questions"></ul>
+        <div id ="QuestionPagination"></div>
+        <script type="text/javascript" src={{ url('js/my_questions.js') }} defer></script>
 @endsection
 
 
 
 @section('content3')
-<div id='Profile'><a class='aside' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a></div>
-<div id='Follow'><a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">Followed Questions</a></div>
-<div id='MyQuestions'><a class='aside' href="{{ route('myquestions', ['id' => $user->id]) }}" >My questions</a></div>
-<div id= 'MyAnswers'><a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">My answers</a></div>
+<div id='Profile'><a class='aside' href="{{ route('profile', ['id' => $user_id]) }}" >Profile</a></div>
+<div id='Follow'><a class='aside' href="{{ route('followquestion', ['id' => $user_id]) }}">Followed Questions</a></div>
+<div id='MyQuestions'><a class='aside' href="{{ route('myquestions', ['id' => $user_id]) }}" >My questions</a></div>
+<div id= 'MyAnswers'><a class='aside' href="{{ route('myanswers', ['id' => $user_id]) }}">My answers</a></div>
 <div id='additional'>
     <div>FAQ</div>
     <div>About us</div>
