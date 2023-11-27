@@ -5,8 +5,11 @@ const questionpagination = document.getElementById("QuestionPagination")
 const questionsPerPage = 5;
 let results = [];
 let loading = false;
+let waiting = false;
 function checkIfThereAreRequestsInQueue(){
+    console.log("checking");
     if(waiting){
+        console.log("waiting");
         searchQuestions(checkIfThereAreRequestsInQueue);
     }
 }
@@ -39,6 +42,7 @@ function searchQuestions(callback){
             console.error('Error fetching search results', error);
         });
     }else{
+        console.log("waiting");
         waiting = true;
     }
     loading = false;
