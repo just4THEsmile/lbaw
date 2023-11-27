@@ -45,6 +45,18 @@ class UserController extends Controller
         $user->bio = $request->input('bio');
 
         $user->paylink = $request->input('paylink');
+
+        $user->usertype = $request->input('usertype');
+        
+        $badges = $request->input('badges');
+        if($badges){
+            $badgeData = [];
+            $date = date('Y-m-d H:i:s'); 
+            foreach($badges as $badge) {
+                $badgeData[$badge] = ['date' => $date];
+            }
+            $user->badges()->sync($badgeData);
+        }
     
         $user->save();
 
@@ -53,30 +65,8 @@ class UserController extends Controller
 
     }
 
-    public function updateProfilePicture(Request $request)
-    {
-        $userId = $request->input('user_id');
-        $userAuth = Auth::user();
 
-        $user = User::find($userId);
-        $this->authorize('edit', $user);
-    
-        if ($request->hasFile('profilepicture')) {
 
-            if ($user->profilepicture) {
-                if($user->profilepicture != 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png')
-                Storage::disk('public')->delete($user->profilepicture);
-            }
-
-            $profilePicture = $request->file('profilepicture');
-            $path = $profilePicture->store('images', 'public');
-
-            $user->profilepicture = $path;
-            $user->save();
-
-            return redirect()->route('editprofile', ['id' => $user->id]);
-        }
-    }
 
     public function deleteAccount(Request $request,string $id)
     {

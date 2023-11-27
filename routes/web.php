@@ -31,9 +31,10 @@ use App\Http\Controllers\TagController;
 //User
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateuser', [UserController::class, 'updateUser'])->name('updateuser');
-    Route::post('/updateprofilepicture', [UserController::class, 'updateProfilePicture'])->name('updateprofilepicture');
     Route::post('/user/{id}/delete', 'deleteAccount')->name('deleteaccount');
 });
+
+Route::post('/file/upload', [FileController::class, 'upload']);
 
 
 // Home
@@ -90,7 +91,6 @@ Route::controller(CommentController::class)->group(function () {
     Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment');
 });
 
-Route::post('/file/upload', [FileController::class, 'upload']);
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
