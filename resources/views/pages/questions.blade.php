@@ -32,10 +32,9 @@
         <ul id="searchResults">
 
         </ul>
-    <div id="QuestionPagination">
-    </div>
-    </div>
-
+    <div id="QuestionPagination"></div>
+</div>
+    <script src="{{ asset('js/questionsearch.js') }}" defer></script>
 </html>
 
 @endsection

@@ -60,7 +60,7 @@ Route::controller(ProfileController::class)->group(function () {
     Route::get('/profile/{id}', [ProfileController::class, 'index'])->name('profile');
     Route::get('/myquestions/{id}', [ProfileController::class, 'myquestions'])->name('myquestions');
     Route::get('/myanswers/{id}', [ProfileController::class, 'myanswers'])->name('myanswers');
-    Route::get('/followquestion/{id}', [UserController::class, 'followedQuestions'])->name('followquestion');
+    Route::get('/followquestion/{id}', [ProfileController::class, 'followedQuestions'])->name('followquestion');
 });
 
 Route::controller(QuestionController::class)->group(function () {
@@ -109,11 +109,14 @@ Route::controller(ContentController::class)->group(function () {
 
 Route::controller(TagController::class)->group(function () {
     Route::get('/search/tag/', 'search')->name('tagsearch');
+    Route::get('/tags', 'tagspage')->name('tags');
     Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion');
 });
 //api
-Route::get('api/search/questions',  [SearchQuestionController::class,'search']);
-Route::get('api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
-Route::get('api/myanswers/{id}', [ProfileController::class, 'listmyanswers']);
-Route::get('api/search/tag/', [TagController::class,'search']);
-Route::get('api/question/{id}/tags', [TagController::class,'getTagsOfQuestion']);
+Route::get('/api/search/questions',  [SearchQuestionController::class,'search']);
+Route::get('/api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
+Route::get('/api/myanswers/{id}', [ProfileController::class, 'listmyanswers']);
+Route::get('/api/followedQuestions/{id}', [ProfileController::class, 'listfollowedquestions']);
+Route::get('/api/search/tag/', [TagController::class,'search']); // search for all tags
+Route::get('/api/fullsearch/tag/', [TagController::class,'searchWithoutLimits']);
+Route::get('/api/question/{id}/tags', [TagController::class,'getTagsOfQuestion']);

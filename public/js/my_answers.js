@@ -1,13 +1,14 @@
-const Questions = document.getElementById("Questions");
-const questionpagination = document.getElementById("QuestionPagination")
-const questionsPerPage = 5;
+const Answers = document.getElementById("Answers");
+const questionpagination = document.getElementById("AnswersPagination")
+const user_id = document.getElementById("user_id")
+const AnswersPerPage = 5;
 let results = [];
 
-function updateQuestions(){
+function updateAnswers(){
 
     // Perform an AJAX request to your Laravel backend
     let currentPage = 1;
-    fetch(`/api/myquestions/${user_id.textContent}`)
+    fetch(`/api/myanswers/${user_id.textContent}`)
         .then(response => response.json())
         .then(data => {
             // Update the search results in the DOM
@@ -20,25 +21,20 @@ function updateQuestions(){
 
 }
 window.onload = function () {
-    updateQuestions();
+    updateAnswers();
 }   
 
 function showPage(currentPage){
-    Questions.innerHTML = "";
+    Answers.innerHTML = "";
     if(results.length == 0){
-        Questions.innerHTML = "No questions Found";
+        Answers.innerHTML = "No Answers Found";
     }
-    for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
+    for (let i = (currentPage - 1)*AnswersPerPage; i < results.length && i<currentPage*AnswersPerPage ; i++) {
         let result = results[i];
         // Create the main answer card div
-        const questionCard = document.createElement("div");
-        questionCard.classList.add("questioncard");
+        const answerCard = document.createElement("div");
+        answerCard.classList.add("answercard");
 
-        // Create the link for the question title
-        const titleLink = document.createElement("a");
-        titleLink.href = `/question/${result.id}`;
-        titleLink.textContent = result.title;
-        titleLink.classList.add("title");
         // Create the content div
         const contentDiv = document.createElement("div");
         contentDiv.classList.add("content");
@@ -51,27 +47,32 @@ function showPage(currentPage){
         const dateParagraph = document.createElement("p");
         dateParagraph.textContent = result.date; // Adjust based on your actual result structure
         dateParagraph.classList.add("date");
+        const titleLink = document.createElement("a");
+        titleLink.href = `/question/${result.question_id}`;
+        titleLink.textContent = result.title;
+        titleLink.classList.add("title");
 /*
         const votes = document.createElement("p");
         votes.textContent = result.votes;
         votes.classList.add("votes");
+        
         // Append elements to the content div
         contentDiv.appendChild(votes);*/
+        contentDiv.appendChild(titleLink);
         contentDiv.appendChild(contentParagraph);
         contentDiv.appendChild(dateParagraph);  
 
         // Append elements to the answer card div
-        questionCard.appendChild(titleLink);
-        questionCard.appendChild(contentDiv);
+        answerCard.appendChild(contentDiv);
 
         // Append the answer card to the search results
-        Questions.appendChild(questionCard);
+        Answers.appendChild(answerCard);
         
     }
     renderPaginationButtons(currentPage);
 }
 function renderPaginationButtons(currentPage) {
-    const totalPages = Math.ceil(results.length / questionsPerPage );
+    const totalPages = Math.ceil(results.length / AnswersPerPage );
     questionpagination.innerHTML = "";
     let delta = currentPage + 3;
     if (delta > totalPages) delta = totalPages;
@@ -95,4 +96,3 @@ function renderPaginationButtons(currentPage) {
         questionpagination.appendChild(button);
     }
 }
-
