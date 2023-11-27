@@ -115,6 +115,7 @@ CREATE TABLE Content (
     date TIMESTAMP NOT NULL CHECK (date <= now()) DEFAULT now(),
     edited BOOLEAN DEFAULT false,
     deleted BOOLEAN DEFAULT false,
+    blocked BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES AppUser(id)
 );
 
@@ -332,8 +333,8 @@ BEGIN
 
         IF report_count >= 5 + vote_count/4 THEN
             UPDATE Content
-            SET banned = TRUE
-            WHERE content_id = NEW.content_id;
+            SET blocked = TRUE
+            WHERE id = NEW.content_id;
         END IF;
     END;
     RETURN NEW;
@@ -748,7 +749,7 @@ VALUES
     ('Charlie Brown', 'charlieb', 'charlie@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Web developer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
     ('Grace Adams', 'SERMATIc', 'grace@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'AI enthusiast', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
     ('Sam Wilson', 'swEtterDock', 'sam@example.com', '$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2', 'Software engineer', 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png', 'user'),
-    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$u4io02cR2mTHKdAsLIBHxeMwVJpxsb83iAglOu0cCyef5wQUO9JNi','eu gosto de jogar','KUeBmxZ5csM5NZpcgv2g7dds2uKeE7NGVEZIvTKx.jpg','admin');
+    ('Rodrigo','Dragon29R','dragon29r@gmail.com','$2y$10$qnxRFeh6f3qrNzMsSbmecO7xMp0OUyqVoOib/CoU3BpvsE3duH5N2','eu gosto de jogar','KUeBmxZ5csM5NZpcgv2g7dds2uKeE7NGVEZIvTKx.jpg','admin');
 
 INSERT INTO Faq (question, answer)
 VALUES
@@ -818,39 +819,39 @@ VALUES
     (19, 'Access Problem', 'Please unblock my account as I can\t sign in.'),
     (20, 'Account Unlock', 'I need my account unlocked to regain access.');
 
-INSERT INTO Content (user_id, content, votes, reports, date, edited)
+INSERT INTO Content (user_id, content, votes, date, edited)
 VALUES
-    (1, 'France is famous for its cultural heritage and diverse cities. Often, visitors might encounter this question when faced with numerous French cities beauty and significance, not always immediately recognizing which city is the capital like Marseille, Lyon, and Nice.', 10, 2, NOW() - INTERVAL '2 days', false),
-    (2, 'Romeo and Juliet, a timeless tragedy, has been part of various educational curricula and pop culture references.', 15, 1, NOW() - INTERVAL '3 days', true),
-    (3, 'The concept of atomic numbers is fundamental in understanding the arrangement of elements in the periodic table and their properties. Hydrogens atomic number signifies its significance as the simplest element.', 20, 0, NOW() - INTERVAL '4 days', false),
-    (4, 'The vastness and intriguing features of Jupiter, including its moons and atmospheric phenomena, make it a fascinating subject for astronomical studies.', 8, 3, NOW() - INTERVAL '5 days', true),
-    (5, 'Knowing the boiling point of water in Celsius aids in understanding basic principles of thermodynamics and has practical implications in various industries and everyday life.', 12, 1, NOW() - INTERVAL '6 days', false),
-    (6, 'The geometric concepts related to finding the area of shapes, such as a rectangle, are fundamental in mathematical studies and real-world applications.', 18, 2, NOW() - INTERVAL '7 days', false),
-    (7, 'The challenges associated with climbing Mount Everest and its significance in the realm of mountaineering and adventure draw attention to this question.', 14, 4, NOW() - INTERVAL '8 days', true),
-    (8, 'Understanding chemical symbols contributes to scientific literacy and the understanding of elements and their properties, including the historical significance of gold.', 11, 0, NOW() - INTERVAL '9 days', false),
-    (9, 'Appreciating the artistic mastery and historical context of the Mona Lisa requires knowledge of the renowned artist, Leonardo da Vinci, and his contributions to the art world.', 6, 2, NOW() - INTERVAL '10 days', false),
-    (10, 'The visual changes in bananas as they ripen offer insights into fruit maturation processes and consumer preferences based on color.', 17, 1, NOW() - INTERVAL '11 days', true),
-    (1, 'Understanding how deserts are defined and categorized leads to discussions about the unique characteristics of the Antarctic Desert and its distinct environment.', 13, 1, NOW() - INTERVAL '12 days', false),
-    (2, 'Acknowledging the pivotal role of Albert Einstein in revolutionizing physics and shaping our understanding of the universe is crucial to the study of modern science.', 19, 3, NOW() - INTERVAL '13 days', true),
-    (3, 'The criteria used to define continents can lead to discussions about geographical, cultural, and geological perspectives.', 22, 0, NOW() - INTERVAL '14 days', false),
-    (4, 'The chemical representation of oxygen is significant in understanding its role in sustaining life and various chemical reactions.', 9, 2, NOW() - INTERVAL '15 days', true),
-    (5, 'Harper Lees novel "To Kill a Mockingbird" explores social issues and moral growth, making it an essential part of literary discussions and cultural reflections.', 14, 1, NOW() - INTERVAL '16 days', false),
-    (6, 'Exploring Tokyos blend of tradition and modernity provides insights into Japans culture, technology, and global significance.', 21, 2, NOW() - INTERVAL '17 days', false),
-    (7, 'Understanding photosynthesis involves the complex biochemical mechanisms crucial for sustaining life on Earth and the interconnectedness of organisms.', 16, 4, NOW() - INTERVAL '18 days', true),
-    (8, 'The mathematical formula for determining the area of a circle plays a role in various fields, including engineering, physics, and mathematics.', 12, 0, NOW() - INTERVAL '19 days', false),
-    (9, 'George Orwells dystopian novel "1984" raises significant questions about government surveillance, individual freedom, and societal control.', 7, 1, NOW() - INTERVAL '20 days', false),
-    (10, 'Exploring the molecular structure of water provides insights into its unique properties and importance in sustaining life.', 20, 1, NOW() - INTERVAL '21 days', true),
-    (11, 'Exploring the natural ripening process of bananas and their changing colors, from green to yellow to brown, serves as an example of chemical reactions and consumer preferences.', 12, 0, NOW(), false),
-    (12, 'The classification of the Antarctic Desert as the largest in the world leads to discussions about the diverse characteristics of deserts beyond arid sandy landscapes.', 5, 1, NOW(), true),
-    (13, 'This question revolves around the serendipitous discovery of penicillin by Alexander Fleming in 1928, marking a significant milestone in the history of medicine and the development of antibiotics.', 2000, 2, NOW(), false),
-    (14, 'What is your favorite book/movie/TV show and why?', 8, 0, NOW(), false),
-    (15, 'What are some ways to overcome writers block and find inspiration?', 15, 3, NOW(), false),
-    (16, 'What are your thoughts on the impact of social media on mental health?', 3, 0, NOW(), true),
-    (17, 'What are some must-read books for personal growth and self-improvement?', 25, 0, NOW(), false),
-    (18, 'How do you manage work-life balance and prevent burnout?', 7, 1, NOW(), true),
-    (19, 'What are some effective techniques for staying motivated and achieving goals?', 10, 0, NOW(), false),
-    (20, 'Share your favorite recipe for a homemade meal or dessert!', 6, 2, NOW(), false),
-    (21, 'Vincent van Gogh created the iconic painting "Starry Night," showcasing his unique style and emotional expression in art.', 15, 1, NOW(), false);
+    (1, 'France is famous for its cultural heritage and diverse cities. Often, visitors might encounter this question when faced with numerous French cities beauty and significance, not always immediately recognizing which city is the capital like Marseille, Lyon, and Nice.', 10,  NOW() - INTERVAL '2 days', false),
+    (2, 'Romeo and Juliet, a timeless tragedy, has been part of various educational curricula and pop culture references.', 15, NOW() - INTERVAL '3 days', true),
+    (3, 'The concept of atomic numbers is fundamental in understanding the arrangement of elements in the periodic table and their properties. Hydrogens atomic number signifies its significance as the simplest element.', 20,  NOW() - INTERVAL '4 days', false),
+    (4, 'The vastness and intriguing features of Jupiter, including its moons and atmospheric phenomena, make it a fascinating subject for astronomical studies.', 8,  NOW() - INTERVAL '5 days', true),
+    (5, 'Knowing the boiling point of water in Celsius aids in understanding basic principles of thermodynamics and has practical implications in various industries and everyday life.', 12,  NOW() - INTERVAL '6 days', false),
+    (6, 'The geometric concepts related to finding the area of shapes, such as a rectangle, are fundamental in mathematical studies and real-world applications.', 18,  NOW() - INTERVAL '7 days', false),
+    (7, 'The challenges associated with climbing Mount Everest and its significance in the realm of mountaineering and adventure draw attention to this question.', 14,  NOW() - INTERVAL '8 days', true),
+    (8, 'Understanding chemical symbols contributes to scientific literacy and the understanding of elements and their properties, including the historical significance of gold.', 11,  NOW() - INTERVAL '9 days', false),
+    (9, 'Appreciating the artistic mastery and historical context of the Mona Lisa requires knowledge of the renowned artist, Leonardo da Vinci, and his contributions to the art world.', 6,  NOW() - INTERVAL '10 days', false),
+    (10, 'The visual changes in bananas as they ripen offer insights into fruit maturation processes and consumer preferences based on color.', 17, NOW() - INTERVAL '11 days', true),
+    (1, 'Understanding how deserts are defined and categorized leads to discussions about the unique characteristics of the Antarctic Desert and its distinct environment.', 13, NOW() - INTERVAL '12 days', false),
+    (2, 'Acknowledging the pivotal role of Albert Einstein in revolutionizing physics and shaping our understanding of the universe is crucial to the study of modern science.', 19, NOW() - INTERVAL '13 days', true),
+    (3, 'The criteria used to define continents can lead to discussions about geographical, cultural, and geological perspectives.', 22, NOW() - INTERVAL '14 days', false),
+    (4, 'The chemical representation of oxygen is significant in understanding its role in sustaining life and various chemical reactions.', 9, NOW() - INTERVAL '15 days', true),
+    (5, 'Harper Lees novel "To Kill a Mockingbird" explores social issues and moral growth, making it an essential part of literary discussions and cultural reflections.', 14, NOW() - INTERVAL '16 days', false),
+    (6, 'Exploring Tokyos blend of tradition and modernity provides insights into Japans culture, technology, and global significance.', 21, NOW() - INTERVAL '17 days', false),
+    (7, 'Understanding photosynthesis involves the complex biochemical mechanisms crucial for sustaining life on Earth and the interconnectedness of organisms.', 16, NOW() - INTERVAL '18 days', true),
+    (8, 'The mathematical formula for determining the area of a circle plays a role in various fields, including engineering, physics, and mathematics.', 12, NOW() - INTERVAL '19 days', false),
+    (9, 'George Orwells dystopian novel "1984" raises significant questions about government surveillance, individual freedom, and societal control.', 7, NOW() - INTERVAL '20 days', false),
+    (10, 'Exploring the molecular structure of water provides insights into its unique properties and importance in sustaining life.', 20, NOW() - INTERVAL '21 days', true),
+    (11, 'Exploring the natural ripening process of bananas and their changing colors, from green to yellow to brown, serves as an example of chemical reactions and consumer preferences.', 12, NOW(), false),
+    (12, 'The classification of the Antarctic Desert as the largest in the world leads to discussions about the diverse characteristics of deserts beyond arid sandy landscapes.', 5,  NOW(), true),
+    (13, 'This question revolves around the serendipitous discovery of penicillin by Alexander Fleming in 1928, marking a significant milestone in the history of medicine and the development of antibiotics.', 2000,  NOW(), false),
+    (14, 'What is your favorite book/movie/TV show and why?', 8, NOW(), false),
+    (15, 'What are some ways to overcome writers block and find inspiration?', 15, NOW(), false),
+    (16, 'What are your thoughts on the impact of social media on mental health?', 3, NOW(), true),
+    (17, 'What are some must-read books for personal growth and self-improvement?', 25, NOW(), false),
+    (18, 'How do you manage work-life balance and prevent burnout?', 7, NOW(), true),
+    (19, 'What are some effective techniques for staying motivated and achieving goals?', 10, NOW(), false),
+    (20, 'Share your favorite recipe for a homemade meal or dessert!', 6,  NOW(), false),
+    (21, 'Vincent van Gogh created the iconic painting "Starry Night," showcasing his unique style and emotional expression in art.', 15,  NOW(), false);
 
 INSERT INTO Commentable (id)
 VALUES

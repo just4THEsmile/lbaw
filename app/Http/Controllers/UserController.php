@@ -19,14 +19,13 @@ class UserController extends Controller
     public function updateUser(Request $request){
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
+        $this->authorize('edit', $userAuth);
         $user = User::find($userId);
-        $this->authorize('edit', $user);
 
-            $request->validate(['name' => 'required|string|max:255',
+        $request->validate(['name' => 'required|string|max:255',
             'paylink' => 'url'
-        
-        
         ]);
+
         if($user->username !== $request->input('username')){
             $request->validate(['username' => 'required|string|max:255|unique:appuser']);
             
@@ -45,7 +44,7 @@ class UserController extends Controller
         $user->bio = $request->input('bio');
 
         $user->paylink = $request->input('paylink');
-    
+
         $user->save();
 
         return redirect()->route('editprofile', ['id' => $user->id]);
@@ -53,30 +52,31 @@ class UserController extends Controller
 
     }
 
-    public function updateProfilePicture(Request $request)
-    {
+    public function updateUserAdmin(Request $request){
+
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
+        $this->authorize('editadmin', $userAuth);
 
         $user = User::find($userId);
-        $this->authorize('edit', $user);
-    
-        if ($request->hasFile('profilepicture')) {
-
-            if ($user->profilepicture) {
-                if($user->profilepicture != 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png')
-                Storage::disk('public')->delete($user->profilepicture);
+        
+        $user->usertype = $request->input('usertype');
+        
+        $badges = $request->input('badges');
+        if($badges){
+            $badgeData = [];
+            $date = date('Y-m-d H:i:s'); 
+            foreach($badges as $badge) {
+                $badgeData[$badge] = ['date' => $date];
             }
-
-            $profilePicture = $request->file('profilepicture');
-            $path = $profilePicture->store('images', 'public');
-
-            $user->profilepicture = $path;
-            $user->save();
-
-            return redirect()->route('editprofile', ['id' => $user->id]);
+            $user->badges()->sync($badgeData);
         }
+    
+        $user->save();
+
+        return redirect()->route('editprofile', ['id' => $user->id]);
     }
+
 
     public function deleteAccount(Request $request,string $id)
     {

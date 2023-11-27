@@ -31,9 +31,11 @@ use App\Http\Controllers\TagController;
 //User
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateuser', [UserController::class, 'updateUser'])->name('updateuser');
-    Route::post('/updateprofilepicture', [UserController::class, 'updateProfilePicture'])->name('updateprofilepicture');
     Route::post('/user/{id}/delete', 'deleteAccount')->name('deleteaccount');
+    Route::post('/updateuseradmin', [UserController::class, 'updateUserAdmin'])->name('updateuseradmin');
 });
+
+Route::post('/file/upload', [FileController::class, 'upload']);
 
 
 // Home
@@ -89,7 +91,6 @@ Route::controller(CommentController::class)->group(function () {
     Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment');
 });
 
-Route::post('/file/upload', [FileController::class, 'upload']);
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
@@ -112,6 +113,7 @@ Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'tagspage')->name('tags');
     Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion');
 });
+
 //api
 Route::get('/api/search/questions',  [SearchQuestionController::class,'search']);
 Route::get('/api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
