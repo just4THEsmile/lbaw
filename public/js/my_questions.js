@@ -5,18 +5,18 @@ let results = [];
 
 function updateQuestions(){
 
-    // Perform an AJAX request to your Laravel backend
-    let currentPage = 1;
-    fetch(`/api/myquestions/${user_id.textContent}`)
-        .then(response => response.json())
-        .then(data => {
-            // Update the search results in the DOM
-            results = data;
-            showPage(currentPage);   
-        })
-        .catch(error => {
-            console.error('Error fetching search results', error);
-        });
+        // Perform an AJAX request to your Laravel backend
+        let currentPage = 1;
+        fetch(`/api/myquestions/${user_id.textContent}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the search results in the DOM
+                results = data;
+                showPage(currentPage);   
+            })
+            .catch(error => {
+                console.error('Error fetching search results', error);
+            });
 
 }
 window.onload = function () {
