@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@section('style')
+
+    <link href="{{ asset('css/search.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/tagpage.css') }}" rel="stylesheet">
+
+@endsection
+
 @section('content')
 <div class="sidebar">
   <a href="/home">Home Page</a>

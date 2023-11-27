@@ -1,0 +1,21 @@
+.Tagcard{
+    padding: 0.5em;
+    margin: 0.5em;
+    border-radius: 1em !important;
+    border: 1px solid grey;
+    width: 10em;	
+}
+
+.Tagcard>content{
+    font-size: 0.8em;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.Tagcard>content>a.title:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+#Tags{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
