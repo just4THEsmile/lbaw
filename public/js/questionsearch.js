@@ -4,37 +4,50 @@ const searchOrderedBy_Selector = document.getElementById("sortSelect");
 const questionpagination = document.getElementById("QuestionPagination")
 const questionsPerPage = 5;
 let results = [];
+let loading = false;
+function checkIfThereAreRequestsInQueue(){
+    if(waiting){
+        searchQuestions(checkIfThereAreRequestsInQueue);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
 
     searchInput.addEventListener("input", function () {
-        searchQuestions();
+        searchQuestions(checkIfThereAreRequestsInQueue);
     });
     searchOrderedBy_Selector.addEventListener("change", function () {
-        searchQuestions();
+        searchQuestions(checkIfThereAreRequestsInQueue);
     });
 });
-function searchQuestions(){
-    const query = searchInput.value;
-    // Perform an AJAX request to your Laravel backend
-    let currentPage = 1;
-    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
-        .then(response => response.json())
-        .then(data => {
-            // Update the search results in the DOM
-            results = data;
-            console.log(data);
-            showPage(currentPage);
-            renderPaginationButtons(currentPage);
+function searchQuestions(callback){
+    if(loading==false){
+        loading = true;
+        const query = searchInput.value;
+        // Perform an AJAX request to your Laravel backend
+        let currentPage = 1;
+        fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the search results in the DOM
+                results = data;
+                console.log(data);
+                showPage(currentPage);
+                renderPaginationButtons(currentPage);
         })
         .catch(error => {
             console.error('Error fetching search results', error);
         });
-        console.log(query);
+    }else{
+        waiting = true;
+    }
+    loading = false;
+    callback();
 
 
 }
 window.onload = function () {
-    searchQuestions();
+    searchQuestions(checkIfThereAreRequestsInQueue);
 }   
 
 function showPage(currentPage){

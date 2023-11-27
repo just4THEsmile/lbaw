@@ -48,6 +48,7 @@ Route::controller(HomeController::class)->group(function () {
 // Search
 Route::controller(SearchQuestionController::class)->group(function () {
     Route::get('/questions',  'show')->name('questions');
+    Route::get('/questions/tag{id}',  'show_with_tags')->name('questionswithtags');
 });
 
 Route::controller(UsersController::class)->group(function () {
