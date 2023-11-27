@@ -25,32 +25,29 @@ class SearchQuestionController extends Controller
         $query = $request->input('q');
         $sortby = $request->input('OrderBy');
         if(strlen($query) == 0){
-            $results= Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes as votes')
+            $results = Question::select(
+                'question.title', 
+                'content.content', 
+                'appuser.username', 
+                'content.date', 
+                'content.id as id', 
+                'appuser.id as userid', 
+                'content.votes as votes',
+                'tags_agg.title as tags',
+                'tags_agg.id as tagsid',
+                DB::raw('COUNT(answer.id) as answernum')
+            )
             ->join('content', 'question.id', '=', 'content.id')
             ->join('appuser', 'content.user_id', '=', 'appuser.id')
-            ->where('content.deleted', '=', False)
-            ->orderBy($sortby,'desc')
-            ->get();
-            
-            foreach($results as $result){
-                $result->date = $result->commentable->content->compileddate();
-            }
-            return response()->json($results);
-        }
-            $results = Question::select('question.title', 
-            'content.content', 
-            'appuser.username', 
-            'content.date', 
-            'content.id as id', 
-            'appuser.id as userid', 
-            'content.votes as votes',
-            DB::raw('STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as tags'))
-            ->join('content', 'question.id', '=', 'content.id')
-            ->join('appuser', 'content.user_id', '=', 'appuser.id')
-            ->join('questiontag', 'questiontag.question_id', '=', 'question.id')
-            ->join('tag', 'tag.id', '=', 'questiontag.tag_id')
+            ->leftjoin('answer', 'answer.question_id', '=', 'question.id')
+            ->leftjoin(
+                DB::raw('(SELECT question.id as qid, STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as title, STRING_AGG(CAST(tag.id AS TEXT), \',\' ORDER BY tag.id ASC) as id FROM questiontag JOIN tag ON tag.id = questiontag.tag_id JOIN question ON question.id = questiontag.question_id GROUP BY question.id) as tags_agg'),
+                'tags_agg.qid',
+                '=',
+                'question.id'
+            )
             ->where('question.title', 'ILIKE', "%$query%")
-            ->where('content.deleted', '=', False)
+            ->where('content.deleted', '=', false)
             ->groupBy(
                 'question.title',
                 'content.content',
@@ -58,10 +55,54 @@ class SearchQuestionController extends Controller
                 'content.date',
                 'content.id',
                 'appuser.id',
-                'content.votes'
+                'content.votes',
+                'tags_agg.title',
+                'tags_agg.id'
             )
-            ->orderBy($sortby,'desc')
+            ->orderBy($sortby, 'desc')
             ->get();
+            
+            foreach($results as $result){
+                $result->date = $result->commentable->content->compileddate();
+            }
+            return response()->json($results);
+        }
+        $results = Question::select(
+            'question.title', 
+            'content.content', 
+            'appuser.username', 
+            'content.date', 
+            'content.id as id', 
+            'appuser.id as userid', 
+            'content.votes as votes',
+            'tags_agg.title as tags',
+            'tags_agg.id as tagsid',
+            DB::raw('COUNT(answer.id) as answernum')
+        )
+        ->join('content', 'question.id', '=', 'content.id')
+        ->join('appuser', 'content.user_id', '=', 'appuser.id')
+        ->leftjoin('answer', 'answer.question_id', '=', 'question.id')
+        ->leftjoin(
+            DB::raw('(SELECT question.id as qid, STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as title, STRING_AGG(CAST(tag.id AS TEXT), \',\' ORDER BY tag.id ASC) as id FROM questiontag JOIN tag ON tag.id = questiontag.tag_id JOIN question ON question.id = questiontag.question_id GROUP BY question.id) as tags_agg'),
+            'tags_agg.qid',
+            '=',
+            'question.id'
+        )
+        ->where('question.title', 'ILIKE', "%$query%")
+        ->where('content.deleted', '=', false)
+        ->groupBy(
+            'question.title',
+            'content.content',
+            'appuser.username',
+            'content.date',
+            'content.id',
+            'appuser.id',
+            'content.votes',
+            'tags_agg.title',
+            'tags_agg.id'
+        )
+        ->orderBy($sortby, 'desc')
+        ->get();
             foreach($results as $result){
                 $result->date = $result->commentable->content->compileddate();
             }

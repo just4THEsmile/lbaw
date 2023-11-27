@@ -104,7 +104,7 @@ button{
     flex-direction: column;
 
 }
-.answerbottom{
+.questionbottom{
     display: flex;
     justify-content: space-between;
 }
@@ -196,4 +196,12 @@ div.content{
     scale: 0.7;
 }
   
+.tags{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
   

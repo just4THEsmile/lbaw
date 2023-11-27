@@ -40,7 +40,7 @@
     </div>
     <div class ="content">
     <a href="{{ url('/question/'.$question->id) }}"><h3>{{ $question->title }}</h3></a>
-      <div class="answerbottom">
+      <div class="questionbottom">
         <div class="tags">
           @foreach($question->Tags() as $tag)
             <div class="tag"><a href="{{ url('/tag/'.$tag->id) }}">{{ $tag->title }}</a></div>

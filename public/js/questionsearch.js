@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 function searchQuestions(){
     const query = searchInput.value;
-
     // Perform an AJAX request to your Laravel backend
     let currentPage = 1;
     fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
@@ -23,12 +22,15 @@ function searchQuestions(){
         .then(data => {
             // Update the search results in the DOM
             results = data;
+            console.log(data);
             showPage(currentPage);
             renderPaginationButtons(currentPage);
         })
         .catch(error => {
             console.error('Error fetching search results', error);
         });
+        console.log(query);
+
 
 }
 window.onload = function () {
@@ -105,13 +107,39 @@ function showPage(currentPage){
         const questionDate = document.createElement("p");
         questionDate.textContent = result.date; // Replace with actual date
 
+        const questionbottom= document.createElement("div");
+        questionbottom.classList.add("questionbottom");
+
+        const questiontags = document.createElement("div");
+        questiontags.classList.add("tags");
+
+       // Split the comma-separated strings into arrays
+       const tagsArray = result.tags ? result.tags.split(',') : [result.tags];
+       const tagsidArray = result.tagsid ? result.tagsid.split(',') : [result.tagsid];
+
+        // Create a dictionary object with tag IDs as keys and tag names as values
+        for (let i = 0; i < tagsArray.length; i++) {
+            const tagElement = document.createElement("div");
+            tagElement.classList.add("tag");
         
-        console.log(result);  
+            const tagLink = document.createElement("a");
+            tagLink.href = `/tag/${tagsidArray[i]}`;
+            tagLink.textContent = tagsArray[i];
+        
+            tagElement.appendChild(tagLink);
+            questiontags.appendChild(tagElement);
+        }
+
 
         contentDiv.appendChild(questionLink);
+
         profileInfoDiv.appendChild(userProfileLink);
         profileInfoDiv.appendChild(questionDate);
-        contentDiv.appendChild(profileInfoDiv);
+
+        questionbottom.appendChild(questiontags);
+        questionbottom.append(profileInfoDiv);
+
+        contentDiv.appendChild(questionbottom);
 
         questionCard.appendChild(votes);
         questionCard.appendChild(contentDiv);
