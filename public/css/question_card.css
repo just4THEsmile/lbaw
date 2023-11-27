@@ -1,0 +1,207 @@
+
+.question{
+    border: 1px solid black;
+    display: flex; /* Use flexbox */
+    margin: 1em;
+    padding: 1em;
+    border-radius: 1em
+
+}
+.votes{
+    text-align: center;
+    display: flex;
+    margin-right: 1em;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+/* Default styling for the link */
+a {
+    color: #696969 !important;
+    text-decoration: none !important; /* Remove underline by default */
+    transition: color 0.7s !important; /* Add a smooth transition for the color change */
+}
+
+/* Change color to grey on hover */
+a:hover {
+    color: 	#D3D3D3 !important;
+}
+button{
+    width: 100%;
+    font-size: 3em !important;
+    border:0em solid black !important;
+    height: auto   !important;
+    line-height: 2em !important;
+    font-size: 1em !important;
+    color: black !important;
+    margin-right: 1em !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    padding: 0.2em !important;
+
+
+     text-transform: lowercase !important;
+     letter-spacing: 0em !important;
+     font-weight: 400 !important;
+     border-radius: 1em !important;
+     transition: all 0.7s !important;
+     margin-bottom: 0em !important;
+     
+}
+
+.btn {
+    width: 170px;
+    height: 60px;
+    font-size: 18px;
+    background: #fff;
+    border: none;
+    border-radius: 50px;
+    color: #000;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.4s;
+  }
+
+  .arrow-up,
+  .arrow-down {
+    margin-right: 0em !important;
+    width: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .arrow-up:hover,
+  .arrow-down:hover {
+    box-shadow: inset 0 0 0 2px #ef476f, 
+                inset 0 0 0 4px #ffd166, 
+                inset 0 0 0 6px #06d6a0,
+                inset 0 0 0 8px #118ab2;
+    background: #000 !important;
+    color: #fff !important;
+  }
+  .content >a >h3{
+    margin-bottom: 0em;
+    margin-top: 0em;
+  }
+
+  
+
+.profileinfo>p{
+    margin-bottom: 0em;
+
+}
+  
+.votesnum{
+    margin-bottom: 0em;
+    margin-top: 0em;
+}
+
+.profileinfo{
+    margin-left: 1em;
+    display: flex;
+    align-items: end;
+    flex-direction: column;
+
+}
+.questionbottom{
+    display: flex;
+    justify-content: space-between;
+}
+
+div.content{
+    width: 100%;
+}
+.createquestionbutton>button{
+        padding: 0.6em 1em;
+        border: 4px solid #000 !important;
+        transition: ease-in-out 0.3s;
+        background-color: transparent;
+        color: #000 !important;
+        font-weight: bolder;
+        font-size: 16px;
+
+        width:auto;
+}
+.createquestionbutton>button:hover {
+    transform: scale(1.2) rotate(10deg);
+    background-color: #000!important;
+    color: white !important;
+   }
+.sidebar a.active {
+    background-color: #0000FF;
+    color: white !important;
+    }
+    
+    /* Links on mouse-over */
+    .sidebar a:hover:not(.active) {
+    background-color: #555 !important;
+    color: white !important;
+    }
+
+    #QuestionPagination>button{
+        width:2em
+    }
+
+
+
+#QuestionPagination>button {
+    position: relative;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    color: white;
+    flex-direction: column;
+    justify-content: center;
+    border: none;
+    padding: 12px;
+    gap: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+#QuestionPagination>button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: -4px;
+    top: -1px;
+    margin: auto;
+    border-radius: 10px;
+    background: gray;
+    z-index: -10;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#QuestionPagination>button::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, #fff 0%, #000 100% );
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(20px);
+}
+
+#QuestionPagination>button:hover::after {
+    filter: blur(30px);
+}
+
+#QuestionPagination>button:hover::before {
+    transform: rotate(-180deg);
+}
+
+#QuestionPagination>button:active::before {
+    scale: 0.7;
+}
+  
+.tags{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+  
