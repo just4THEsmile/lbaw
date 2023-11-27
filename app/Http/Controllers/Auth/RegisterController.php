@@ -40,7 +40,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'usertype' => 'user',
-            'profilepicture' => 'profile/NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png'
+            'profilepicture' => 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png'
         ]);
 
         $credentials = $request->only('email', 'password');
