@@ -117,39 +117,6 @@
                                 <input type="url" id="paylink" name='paylink' value="{{ $user->paylink }}" placeholder="Enter your PayPal link" required>
                         </div>  
                     </div>
-                    <div id='typecard' class='card'>
-                        <div class='left-card'>
-                            <h1>User Type</h1>
-                            <p>Here you can change your user type, which is used to distinguish you from other users within the system. </p>
-                        </div>
-                        <div class='right-card'>
-                            <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            <select name="usertype" id="usertype">
-                                <option value="user" @if($user->usertype == 'user') selected @endif>User</option>
-                                <option value="moderator" @if($user->usertype == 'moderator') selected @endif>Moderator</option>
-                                <option value="admin" @if($user->usertype == 'admin') selected @endif>Admin</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div id='badgescard' class='card'>
-                        <div class='left-card'>
-                            <h1>Badges</h1>
-                            <p>Here you can change your badges, which are used to distinguish you from other users within the system. </p>
-                        </div>            
-                        <div class='right-card'>
-                            <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            @php $badges = App\Models\Badge::all(); @endphp
-                            @php $userbadges = $user->badges()->get()->pluck('id')->toArray(); @endphp
-                            @foreach($badges as $badge)
-                                <label>
-                                    <input type='checkbox' name='badges[]' value='{{ $badge->id }}' {{ in_array($badge->id, $userbadges) ? 'checked' : '' }}>
-                                    {{ $badge->name }}
-                                </label> 
-                            @endforeach
-                            <input type="text" id="badge-search" placeholder="Search badges">
-                            <div id="badge-results"></div>
-                        </div>
-                    </div>
                     <button type='submit' class='submitbuttons' name="user-form">Save Changes</button>
                 </form>
                 <div id='profilecard' class='card'>
@@ -167,6 +134,42 @@
                         </form>
                     </div>   
                 </div>
+                @if(Auth::user()->usertype === 'admin')
+                <form id='useradminform' action="{{route('updateuseradmin', ['id' => $user->id])}}" method='post'>
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    <div id='typecard' class='card'>
+                        <div class='left-card'>
+                            <h1>User Type</h1>
+                            <p>Here you can change your user type, which is used to distinguish you from other users within the system. </p>
+                        </div>
+                        <div class='right-card'>
+                            <select name="usertype" id="usertype">
+                                <option value="user" @if($user->usertype == 'user') selected @endif>User</option>
+                                <option value="moderator" @if($user->usertype == 'moderator') selected @endif>Moderator</option>
+                                <option value="admin" @if($user->usertype == 'admin') selected @endif>Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id='badgescard' class='card'>
+                        <div class='left-card'>
+                            <h1>Badges</h1>
+                            <p>Here you can change your badges, which are used to distinguish you from other users within the system. </p>
+                        </div>            
+                        <div class='right-card'>
+                            @php $badges = App\Models\Badge::all(); @endphp
+                            @php $userbadges = $user->badges()->get()->pluck('id')->toArray(); @endphp
+                            @foreach($badges as $badge)
+                                <label>
+                                    <input type='checkbox' name='badges[]' value='{{ $badge->id }}' {{ in_array($badge->id, $userbadges) ? 'checked' : '' }}>
+                                    {{ $badge->name }}
+                                </label> 
+                            @endforeach
+                        </div>
+                    </div>
+                    <button type='submit' class='submitbuttons' name="useradminform">Save Changes</button>
+                </form>
+                @endif
             </section>
         </main>
     </body>

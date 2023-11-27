@@ -19,14 +19,13 @@ class UserController extends Controller
     public function updateUser(Request $request){
         $userId = $request->input('user_id');
         $userAuth = Auth::user();
+        $this->authorize('edit', $userAuth);
         $user = User::find($userId);
-        $this->authorize('edit', $user);
 
-            $request->validate(['name' => 'required|string|max:255',
+        $request->validate(['name' => 'required|string|max:255',
             'paylink' => 'url'
-        
-        
         ]);
+
         if($user->username !== $request->input('username')){
             $request->validate(['username' => 'required|string|max:255|unique:appuser']);
             
@@ -46,6 +45,21 @@ class UserController extends Controller
 
         $user->paylink = $request->input('paylink');
 
+        $user->save();
+
+        return redirect()->route('editprofile', ['id' => $user->id]);
+
+
+    }
+
+    public function updateUserAdmin(Request $request){
+
+        $userId = $request->input('user_id');
+        $userAuth = Auth::user();
+        $this->authorize('editadmin', $userAuth);
+
+        $user = User::find($userId);
+        
         $user->usertype = $request->input('usertype');
         
         $badges = $request->input('badges');
@@ -61,11 +75,7 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('editprofile', ['id' => $user->id]);
-
-
     }
-
-
 
 
     public function deleteAccount(Request $request,string $id)

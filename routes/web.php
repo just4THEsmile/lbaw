@@ -32,6 +32,7 @@ use App\Http\Controllers\TagController;
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateuser', [UserController::class, 'updateUser'])->name('updateuser');
     Route::post('/user/{id}/delete', 'deleteAccount')->name('deleteaccount');
+    Route::post('/updateuseradmin', [UserController::class, 'updateUserAdmin'])->name('updateuseradmin');
 });
 
 Route::post('/file/upload', [FileController::class, 'upload']);
