@@ -28,7 +28,20 @@ class TagController extends Controller
         ->Where('questiontag.question_id', '=', $id)
         ->get();//fix query to not return tags already in question
 
-    return response()->json( $results);
+        return response()->json( $results);
+    }
+    public function searchWithoutLimits(Request $request){
+        $query = $request->input('query');
+        if (strlen($query) == 0) {
+            $results = Tag::get();//fix query to not return tags already in question
+        } else {
+            // Use where() with the 'like' operator to search usernames containing the query string
+            $results = Tag::where('title','ILIKE',"%$query%" )->get();
+        }
+        return response()->json( $results);
+    }
+    public function tagspage(){
+        return view("pages.tagsearch");
     }
  
     

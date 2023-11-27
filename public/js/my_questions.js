@@ -1,30 +1,18 @@
-const searchInput = document.getElementById("searchInput");
-const searchResults = document.getElementById("searchResults");
-const searchOrderedBy_Selector = document.getElementById("sortSelect");
+const Questions = document.getElementById("Questions");
 const questionpagination = document.getElementById("QuestionPagination")
 const questionsPerPage = 5;
 let results = [];
-document.addEventListener("DOMContentLoaded", function () {
 
-    searchInput.addEventListener("input", function () {
-        searchQuestions();
-    });
-    searchOrderedBy_Selector.addEventListener("change", function () {
-        searchQuestions();
-    });
-});
-function searchQuestions(){
-    const query = searchInput.value;
+function updateQuestions(){
 
     // Perform an AJAX request to your Laravel backend
     let currentPage = 1;
-    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
+    fetch(`/api/myquestions/${user_id.textContent}`)
         .then(response => response.json())
         .then(data => {
             // Update the search results in the DOM
             results = data;
-            showPage(currentPage);
-            renderPaginationButtons(currentPage);
+            showPage(currentPage);   
         })
         .catch(error => {
             console.error('Error fetching search results', error);
@@ -32,13 +20,13 @@ function searchQuestions(){
 
 }
 window.onload = function () {
-    searchQuestions();
+    updateQuestions();
 }   
 
 function showPage(currentPage){
-    searchResults.innerHTML = "";
+    Questions.innerHTML = "";
     if(results.length == 0){
-        searchResults.innerHTML = "No questions Found";
+        Questions.innerHTML = "No questions Found";
     }
     for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
         let result = results[i];
@@ -59,12 +47,6 @@ function showPage(currentPage){
         const contentParagraph = document.createElement("p");
         contentParagraph.textContent = result.content; // Adjust based on your actual result structure
 
-        // Create a link for the username
-        const usernameLink = document.createElement("a");
-        usernameLink.href = `/profile/${result.userid}`;
-        usernameLink.textContent = result.username; // Adjust based on your actual result structure
-        usernameLink.classList.add("username");
-
         // Create a paragraph for the date
         const dateParagraph = document.createElement("p");
         dateParagraph.textContent = result.date; // Adjust based on your actual result structure
@@ -76,7 +58,6 @@ function showPage(currentPage){
         // Append elements to the content div
         contentDiv.appendChild(votes);*/
         contentDiv.appendChild(contentParagraph);
-        contentDiv.appendChild(usernameLink);
         contentDiv.appendChild(dateParagraph);  
 
         // Append elements to the answer card div
@@ -84,15 +65,14 @@ function showPage(currentPage){
         questionCard.appendChild(contentDiv);
 
         // Append the answer card to the search results
-        searchResults.appendChild(questionCard);
+        Questions.appendChild(questionCard);
         
     }
     renderPaginationButtons(currentPage);
 }
 function renderPaginationButtons(currentPage) {
     const totalPages = Math.ceil(results.length / questionsPerPage );
-    const paginationContainer = document.getElementById("QuestionPagination")
-    paginationContainer.innerHTML = "";
+    questionpagination.innerHTML = "";
     let delta = currentPage + 3;
     if (delta > totalPages) delta = totalPages;
     let start = currentPage - 3;
@@ -112,7 +92,7 @@ function renderPaginationButtons(currentPage) {
             
         });
 
-        paginationContainer.appendChild(button);
+        questionpagination.appendChild(button);
     }
 }
 
