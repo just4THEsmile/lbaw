@@ -21,7 +21,9 @@ class CommentNotification extends Model
      */
 
     protected $fillable = [
-        'comment_id'
+        'notification_id',
+        'comment_id',
+
     ];
 
     protected $table = 'commentnotification';

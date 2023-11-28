@@ -16,7 +16,7 @@
 <div id="user_id" hidden>{{$user->id}}</div>
         <ul id="Answers"></ul>
         <div id ="AnswerPagination"></div>
-        <script type="text/javascript" src={{ url('js/my_answers.js') }} defer></script>
+        <script type="text/javascript" src={{ url('js/followedQuestions.js') }} defer></script>
 @endsection
 
 @section('content3')

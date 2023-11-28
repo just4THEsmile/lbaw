@@ -5,9 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // Added to define Eloquent relationships.
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AnswerNotification extends Model
 {
@@ -21,7 +20,7 @@ class AnswerNotification extends Model
      */
 
     protected $fillable = [
-        'question_id',
+        'notification_id',
         'answer_id'
     ];
 
@@ -44,5 +43,8 @@ class AnswerNotification extends Model
         return $this->belongsTo(Answer::class, 'commentable_id');
     }
     */
-
+    public function answer() : BelongsTo
+    {
+        return $this->belongsTo(Answer::class);
+    }
 }

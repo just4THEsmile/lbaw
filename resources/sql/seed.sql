@@ -162,17 +162,15 @@ CREATE TABLE QuestionTag (
 CREATE TABLE Notification (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    date TIMESTAMP NOT NULL CHECK (date <= now()),
+    date TIMESTAMP NOT NULL CHECK (date <= now()) DEFAULT now(),
     viewed BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES AppUser(id)
 );
 
 CREATE TABLE AnswerNotification (
     notification_id INTEGER PRIMARY KEY,
-    question_id INTEGER NOT NULL,
     answer_id INTEGER NOT NULL,
     FOREIGN KEY (notification_id) REFERENCES Notification(id),
-    FOREIGN KEY (question_id) REFERENCES Question(id),
     FOREIGN KEY (answer_id) REFERENCES Answer(id)
 );
 
@@ -199,16 +197,15 @@ CREATE TABLE Vote (
     FOREIGN KEY (user_id) REFERENCES AppUser(id),
     FOREIGN KEY (content_id) REFERENCES Content(id)
 );
-
+-- delete notification when vote is changed
 CREATE TABLE VoteNotification (
     notification_id INTEGER,
     user_id INTEGER,
     content_id INTEGER,
     vote BOOLEAN NOT NULL,
-    PRIMARY KEY (notification_id, user_id, content_id),
+    PRIMARY KEY (notification_id),
     FOREIGN KEY (notification_id) REFERENCES Notification(id),
-    FOREIGN KEY (user_id) REFERENCES AppUser(id),
-    FOREIGN KEY (content_id) REFERENCES Content(id)
+    FOREIGN KEY (user_id,content_id) REFERENCES Vote(user_id, content_id)
 );
 
 CREATE TABLE BadgeAttainmentNotification (
@@ -559,7 +556,7 @@ FOR EACH ROW
 EXECUTE PROCEDURE add_admin_badge();
 
 
-
+/*
 CREATE FUNCTION generate_answer_notification() RETURNS TRIGGER AS
 $BODY$
 DECLARE
@@ -579,8 +576,8 @@ BEGIN
     VALUES (question_author_id, now());
 
     -- Insert a new answer notification for the notification
-    INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
-    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.id);
+    INSERT INTO AnswerNotification (notification_id, answer_id)
+    VALUES (currval('notification_id_seq'), NEW.id);
 
     RETURN NEW;
 END;
@@ -590,7 +587,7 @@ LANGUAGE plpgsql;
 CREATE TRIGGER generate_answer_notification_trigger
 AFTER INSERT ON Answer
 FOR EACH ROW
-EXECUTE PROCEDURE generate_answer_notification();
+EXECUTE PROCEDURE generate_answer_notification();*/
 
 /*
 CREATE FUNCTION generate_comment_notification() RETURNS TRIGGER AS
@@ -1043,18 +1040,18 @@ VALUES
     (9, NOW() - INTERVAL '29 days', true),
     (10, NOW() - INTERVAL '30 days', false);
 
-INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
+INSERT INTO AnswerNotification (notification_id, answer_id)
 VALUES
 
-    (12, 12, 22),
-    (13, 13, 23),
-    (14, 14, 24),
-    (15, 15, 25),
-    (16, 16, 26),
-    (17, 17, 27),
-    (18, 18, 28),
-    (19, 19, 29),
-    (20, 20, 30);    
+    (12,  22),
+    (13, 23),
+    (14, 24),
+    (15,  25),
+    (16, 26),
+    (17, 27),
+    (18, 28),
+    (19, 29),
+    (20, 30);    
 
 INSERT INTO CommentNotification (notification_id, comment_id)
 VALUES
@@ -1106,16 +1103,15 @@ VALUES
 
 INSERT INTO VoteNotification (notification_id, user_id, content_id, vote)
 VALUES
-    (21, 1, 11, true),
-    (22, 2, 12, false),
-    (23, 3, 13, true),
-    (24, 4, 14, true),
-    (25, 5, 15, false),
-    (26, 6, 16, true),
-    (27, 7, 17, false),
-    (28, 8, 18, true),
-    (29, 9, 19, true),
-    (30, 10, 20, false);    
+    (21, 1, 10, true),
+    (22, 2, 11, false),
+    (23, 3, 12, true),
+    (24, 4, 13, true),
+    (25, 5, 14, false),
+    (26, 6, 15, true),
+    (28, 8, 17, true),
+    (29, 9, 18, true),
+    (30, 10, 19, false);    
 
 INSERT INTO BadgeAttainmentNotification (notification_id, user_id, badge_id)
 VALUES

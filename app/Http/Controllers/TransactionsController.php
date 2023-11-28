@@ -7,6 +7,9 @@ use App\Models\Commentable;
 use App\Models\Comment;
 use App\Models\Answer;
 use App\Models\User;
+use App\Models\Notification;
+use App\Models\AnswerNotification;
+use App\Models\CommentNotification;
 class TransactionsController extends Controller
 {
     public static function createQuestion($user_id,$title,$content1,$tag_ids)
@@ -14,7 +17,6 @@ class TransactionsController extends Controller
         try {
             // Start the transaction
             DB::beginTransaction();
-        
             // Insert Content
             $content = new Content([
                 'user_id' => $user_id,
@@ -123,7 +125,6 @@ class TransactionsController extends Controller
         try {
             // Start the transaction
             DB::beginTransaction();
-        
             // Insert Content
             $content1 = new Content([
                 'user_id' => $user_id,
@@ -142,7 +143,16 @@ class TransactionsController extends Controller
             ]);
 
             $answer->save();
+            $notification = new Notification([
+                'user_id' => $user_id,
+            ]);
+            $notification->save();
 
+            $answerNotification = new AnswerNotification([
+                'notification_id' => $notification->id,
+                'answer_id' => $answer->id,
+            ]);
+            $answerNotification->save();
             // Commit the transaction
             DB::commit();
             return $answer;
@@ -150,7 +160,6 @@ class TransactionsController extends Controller
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
             DB::rollback();
-        
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
@@ -168,8 +177,7 @@ class TransactionsController extends Controller
                 'user_id' => $user_id,
                 'content' => $content,
             ]);
-            $commentable = commentable::find($commentable_id);
-
+            $commentable = commentable::findOrFail($commentable_id);
             $content1->save();
             // Insert Answer
 
@@ -180,6 +188,16 @@ class TransactionsController extends Controller
 
 
             $comment->save();
+            $notification = new Notification([
+                'user_id' => $user_id,
+            ]);
+            $notification->save();
+
+            $commentNotification = new CommentNotification([
+                'notification_id' => $notification->id,
+                'comment_id' => $comment->id,
+            ]);
+            $commentNotification->save();
             // Commit the transaction
             DB::commit();
             return $comment;
@@ -187,7 +205,6 @@ class TransactionsController extends Controller
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
             DB::rollback();
-        
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
@@ -206,14 +223,6 @@ class TransactionsController extends Controller
             $user->profilepicture = null;
             $user->paylink = null;
             $user->save();
-            DB::table('question')
-            ->join('commentable', 'question.id', '=', 'commentable.id')
-            ->join('content', 'commentable.id', '=', 'content.id')
-            ->where('content.user_id', $user_id)
-            ->update(['question.title' => 'Deleted' ]);
-            DB::table('content')
-            ->where('content.user_id', $user_id)
-            ->update(['content.content' => 'Deleted', 'content.deleted' => true]);
 
             DB::commit();
             echo "User deleted successfully.\n";

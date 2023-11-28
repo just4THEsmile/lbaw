@@ -19,7 +19,9 @@ function updateTags(){
         .then(response => response.json())
         .then(data => {
             // Update the search results in the DOM
-            results = data;
+            if(query==searchTagInput.value){
+                results = data;
+            }
             showPage(currentPage);   
         })
         .catch(error => {

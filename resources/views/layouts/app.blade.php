@@ -21,7 +21,6 @@
         <script type="text/javascript" src={{ url('js/app.js') }} defer>
             
         </script>
-        <script src="{{ asset('js/usersearch.js') }}" defer></script>
     </head>
     <body>
         <main>
