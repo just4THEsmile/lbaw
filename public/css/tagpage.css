@@ -6,17 +6,37 @@
     width: 10em;	
 }
 
-.Tagcard>content{
+.Tagcard>.content{
     
     font-size: 0.8em;
-    background-color: rgba(0, 0, 0, 0.1);
+
 }
-.Tagcard>content>a.title:hover{
-    background-color: rgba(0, 0, 0, 0.1);
+
+.Tagcard>.content>a{
+
+    margin: 0.3em;
+    padding: 0.3em;
+    background-color: rgba(173, 204, 230, 0.5);
+    border-radius: 0.5em !important;
 }
+
+
+.Tagcard>.content>a:hover{
+    color: #0000FF;
+    background-color: rgb(173, 204, 230, 1);
+
+}
+
+
 #Tags{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+
+}
+
+.Tagcard>.content>p{
+    margin-top: 0.3em;
+
 
 }

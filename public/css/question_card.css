@@ -16,17 +16,9 @@
 
 }
 
-/* Default styling for the link */
-a {
-    color: #696969 !important;
-    text-decoration: none !important; /* Remove underline by default */
-    transition: color 0.7s !important; /* Add a smooth transition for the color change */
-}
+
 
 /* Change color to grey on hover */
-a:hover {
-    color: 	#D3D3D3 !important;
-}
 button{
     width: 100%;
     font-size: 3em !important;
@@ -129,16 +121,6 @@ div.content{
     background-color: #000!important;
     color: white !important;
    }
-.sidebar a.active {
-    background-color: #0000FF;
-    color: white !important;
-    }
-    
-    /* Links on mouse-over */
-    .sidebar a:hover:not(.active) {
-    background-color: #555 !important;
-    color: white !important;
-    }
 
     #QuestionPagination>button{
         width:2em

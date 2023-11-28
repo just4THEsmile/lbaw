@@ -2,7 +2,7 @@
 <div class='right-card'>
     <form id='passwordform' action="{{ $question->id }}/delete" method='post'>
         @csrf
-        <button type='submit' class='delete' name="delete-button">&#10761;</button>
+        <button type='submit' class='delete' name="delete-button">delete</button>
     </form>
 </div> 
 <form class="new_item" action="{{ $question->id }}/edit" method='get'>

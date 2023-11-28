@@ -114,3 +114,22 @@ select {
   display: flex;
   justify-content: center;
 }
+
+button {
+
+  font-size: 3em !important;
+  border: 0em solid black !important;
+
+  line-height: 2em !important;
+  font-size: 1em !important;
+  color: black !important;
+  margin-right: 1em !important;
+  background-color: rgba(0, 0, 0, 0.1) !important;
+
+  text-transform: lowercase !important;
+  letter-spacing: 0em !important;
+  font-weight: 400 !important;
+  border-radius: 1em !important;
+  transition: all 0.7s !important;
+  margin-bottom: 0em !important;
+}

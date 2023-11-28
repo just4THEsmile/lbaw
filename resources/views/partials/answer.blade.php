@@ -1,6 +1,6 @@
 
 <span class="answer" data-id="{{$answer->id}}">
-    <label>
+    <div>
         <span>{{ $answer->commentable->content->content }}</span>
         @if(!$answer->commentable->content->deleted)
             <div class= "commentbuttons">
@@ -14,7 +14,7 @@
                 @endif
             </div>    
         @endif
-    </label>
+</div>
 </span>
 <span class="comments">
     @each('partials.comment', $answer->commentable->comments()->orderBy('id')->get(), 'comment')

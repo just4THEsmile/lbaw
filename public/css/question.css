@@ -52,11 +52,18 @@
 }
 
 
+button.delete{
+    border: 1px solid rgba(255, 0, 0, 1) !important;
 
 
+}
+
+.edit-comment,
+.commentbuttons,
 .questionbuttons {
     margin-top: 0.5em;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row; /* This will arrange the buttons vertically */
     align-items: flex-start; /* Adjust alignment as needed */
 }
@@ -95,8 +102,8 @@ button{
      text-transform: lowercase !important;
      letter-spacing: 0em !important;
      font-weight: 400 !important;
-     border-radius: 0.5em !important;
-     transition: color 0.7s !important;
+     border-radius: 1em !important;
+     transition: all 0.7s !important;
 }
 button:hover{
     background-color: rgba(0, 0, 0, 0.2) !important;
@@ -113,7 +120,7 @@ button:hover{
     align-items: flex-start; /* Adjust alignment as needed */
 
 }
-.comment >label{
+.comment >div{
     padding: 0.5em;
     margin-top: 0.5em;
     margin-left: 2em;
@@ -133,7 +140,7 @@ ul>.comments{
 
     margin-top: 2em;
 }
-ul>.answer>label>span{
+ul>.answer>div>span{
     padding: 0.5em;
     width: 80%;
     font-size: 1em;
@@ -141,7 +148,7 @@ ul>.answer>label>span{
     margin-bottom: 1em;
 
 }
-ul span label {
+ul>span>div {
     margin-top: 1em;
     padding: 0.5em;
     background-color: rgba(0, 0, 0, 0.1);
@@ -166,6 +173,8 @@ ul span label {
     
 }
 .question>header{
+  display: flex;
+  flex-direction: row;
   padding: 0.5em;
   border:1px black solid;
   background-color: rgba(0, 0, 0, 0.2);
@@ -174,6 +183,39 @@ ul span label {
   margin-bottom: 0em;
 
 }
+.votes {
+  text-align: center;
+  display: flex;
+  margin-right: 1em;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.arrow-up, .arrow-down {
+  margin-right: 0em !important;
+  width: 2em;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.votesnum {
+  margin-bottom: 0em;
+  margin-top: 0em;
+}
 span.commentText{
   font-size: 0.8em;
+}
+
+.arrow-up:hover,
+.arrow-down:hover {
+  width: 2em !important;
+  box-shadow: inset 0 0 0 2px #ef476f, 
+              inset 0 0 0 4px #ffd166, 
+              inset 0 0 0 6px #06d6a0,
+              inset 0 0 0 8px #118ab2;
+  background: #000 !important;
+  color: #fff !important;
 }
