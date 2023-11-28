@@ -29,5 +29,6 @@
             {{ session('success') }}
         </p>
     @endif
+    <a href="{{ route('forgot')}}">Forgot your password?</a>
 </form>
 @endsection

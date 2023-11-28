@@ -97,6 +97,10 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');
     Route::post('/login', 'authenticate');
     Route::get('/logout', 'logout')->name('logout');
+    Route::get('/forgot', 'ForgotPassword')->name('forgot');
+    Route::post('/password', 'ResetPasswordMail')->name('password');
+    Route::get('/reset/{token}', 'ResetForm')->name('reset');
+    Route::post('/resetpassword', 'ResetPassword')->name('resetpassword');
 });
 
 Route::controller(RegisterController::class)->group(function () {

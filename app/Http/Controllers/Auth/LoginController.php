@@ -7,8 +7,13 @@ use Illuminate\Http\Request;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ForgotPasswordMail;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -57,4 +62,55 @@ class LoginController extends Controller
         return redirect()->route('login')
             ->withSuccess('You have logged out successfully!');
     } 
+
+    public function forgotPassword()
+    {
+        return view('auth.forgot');
+    }
+
+    public function ResetPasswordMail(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if(!empty($user)){
+            $user->remember_token = Str::random(40);
+            $user->save();
+
+
+            Mail::to($user->email)->send(new ForgotPasswordMail($user));
+
+            return redirect()->back()->withSuccess('A password reset link has been sent to your email address.');
+
+        }
+        else{
+            return redirect()->back()->withErrors(['email' => 'The provided email does not exist.']);
+        }
+    }
+
+    public function ResetForm(){
+
+        $user = User::where('remember_token', request()->route('token'))->first();
+        if(!empty($user)){
+            return view('auth.reset', ['user' => $user]);
+        }
+        else{
+            return redirect()->route('login')->withErrors(['email' => 'The provided email does not exist.']);
+        }
+    }
+
+    public function ResetPassword(Request $request){
+
+        $request->validate([
+            'password' => ['required', 'confirmed'],
+        ]);
+        
+        $user = User::where('remember_token', $request->token)->first();
+        if(!empty($user)){
+            
+            $user->password = Hash::make($request->password);
+            $user->remember_token = null;
+            $user->save();
+            return redirect()->route('login')->withSuccess('Password reset successfully!');
+        }
+        
+    }
 }
