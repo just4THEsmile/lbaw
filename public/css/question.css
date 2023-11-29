@@ -61,7 +61,7 @@ button.delete{
 .edit-comment,
 .commentbuttons,
 .questionbuttons {
-    margin-top: 0.5em;
+
     display: flex;
     flex-wrap: wrap;
     flex-direction: row; /* This will arrange the buttons vertically */
@@ -148,15 +148,22 @@ ul>.answer>div>span{
     margin-bottom: 1em;
 
 }
-ul>span>div {
-    margin-top: 1em;
-    padding: 0.5em;
-    background-color: rgba(0, 0, 0, 0.1);
-
-    font-size: 1em;
-
-    margin-bottom: 1em; /* Adjust as needed */
+.answercontent{
+  width: 100%;
 }
+.answer{
+  width: 100%;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-top: 1em;
+  padding: 0.5em;
+  background-color: rgba(0, 0, 0, 0.1);
+
+  font-size: 1em;
+
+  margin-bottom: 1em; /* Adjust as needed */
+}
+
 .commentbuttons{
     display: flex;
     flex-direction: row; /* This will arrange the buttons vertically */
@@ -168,10 +175,7 @@ ul>span>div {
     flex-direction: row; /* This will arrange the buttons vertically */
     align-items: flex-start; /* Adjust alignment as needed */
 }
-.commentbuttons{
-    margin-top: 0.7em;
-    
-}
+
 .question>header{
   display: flex;
   flex-direction: row;
@@ -193,7 +197,7 @@ ul>span>div {
 
 .arrow-up, .arrow-down {
   margin-right: 0em !important;
-  width: 2em;
+  font-size: 1em !important;
   margin-top: 0em;
   margin-bottom: 0em;
   display: flex;
@@ -211,11 +215,40 @@ span.commentText{
 
 .arrow-up:hover,
 .arrow-down:hover {
-  width: 2em !important;
+
   box-shadow: inset 0 0 0 2px #ef476f, 
               inset 0 0 0 4px #ffd166, 
               inset 0 0 0 6px #06d6a0,
               inset 0 0 0 8px #118ab2;
   background: #000 !important;
   color: #fff !important;
+}
+
+.questioncontent>h3{
+  font-size: 1em;
+} 
+div.profileinfo{
+  font-size: 0.7em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 0em;
+}
+div.profileinfo>p{
+  margin-bottom: 0em;
+}
+div.questioncontent{
+  width: 100%;
+}
+button{
+  margin-bottom: 0em !important;
+}
+.edittag{
+  font-weight: 600 !important;
+  font-size: 0.7em;
+  text-align: right;
+  margin-bottom: 0em !important;
+}
+.questioncontent>h3{
+  margin-bottom: 0em !important;
 }

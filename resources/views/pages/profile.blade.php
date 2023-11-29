@@ -43,7 +43,7 @@
         </div>
         @if(Auth::user()->id === $user->id || Auth::user()->usertype === 'admin')
         <div id='edit'>
-            <form method="POST" action="{{ route('deleteaccount',['id' => Auth::user()->id]) }}">
+            <form method="POST" action="{{ route('deleteaccount',['id' => Auth::user()->id]) }}" onsubmit="disableSubmitButton()">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                 <button type="submit" class="button">Delete Account</button>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="{{ route('create_comment',['id' => $commentable_id]) }}">
+    <form method="post" action="{{ route('create_comment',['id' => $commentable_id]) }}" onsubmit="disableSubmitButton()">
         @csrf
         <div class="form-group">
             <label for="content">Content:</label>
