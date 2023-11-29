@@ -19,4 +19,9 @@ class UserPolicy
 
       return $userAuth->id === $user->id || $userAuth->usertype === "admin" || $userAuth->usertype === "moderator";
     }
+    public function editadmin(User $userAuth,User $user) 
+    {
+
+      return $userAuth->usertype === "admin";
+    }
 }

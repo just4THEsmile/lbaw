@@ -28,7 +28,7 @@
                 <p>{{ $answer->commentable->content->compileddate()}}</p>
             </div>
             <div class= "commentbuttons">
-                <form id='createcomment' action="{{ route('create_comment_form',['id' => $answer->id]) }}" method='get' onsubmit="disableSubmitButton()">
+                <form id='createcomment' action="{{ route('create_comment_form',['id' => $answer->id]) }}" method='get'>
                     @csrf
                     <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
                 </form>
