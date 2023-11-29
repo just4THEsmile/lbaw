@@ -88,5 +88,9 @@ class User extends Authenticatable
     public function reports(){
         return $this->hasMany(Report::class, 'user_id', 'id');
     }
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
 }
 

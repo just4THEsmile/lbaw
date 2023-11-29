@@ -5,7 +5,7 @@ use Illuminate\Pagination\Paginator;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {   
@@ -25,9 +25,12 @@ class UsersController extends Controller
     }
  
     public function getUsers(){
-
-        $users = User::all();
-        return view('pages.users', ['users' => $users]);
+        if( Auth::check()){
+            $users = User::all();
+            return view('pages.users', ['users' => $users]);
+        } else {
+            return redirect('/login');
+        }
 
     }
     

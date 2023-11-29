@@ -151,6 +151,7 @@ class TransactionsController extends Controller
             $answerNotification = new AnswerNotification([
                 'notification_id' => $notification->id,
                 'answer_id' => $answer->id,
+                'question_id' => $question_id,
             ]);
             $answerNotification->save();
             // Commit the transaction

@@ -5,7 +5,7 @@ use Illuminate\Pagination\Paginator;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {   
@@ -41,7 +41,12 @@ class TagController extends Controller
         return response()->json( $results);
     }
     public function tagspage(){
-        return view("pages.tagsearch");
+        if(Auth::check()){
+            return view("pages.tagsearch");
+        } else {
+            return redirect('/login');
+        }
+
     }
  
     

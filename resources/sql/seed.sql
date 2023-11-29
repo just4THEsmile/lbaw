@@ -169,8 +169,10 @@ CREATE TABLE Notification (
 
 CREATE TABLE AnswerNotification (
     notification_id INTEGER PRIMARY KEY,
+    question_id INTEGER NOT NULL,
     answer_id INTEGER NOT NULL,
     FOREIGN KEY (notification_id) REFERENCES Notification(id),
+    FOREIGN KEY (question_id) REFERENCES Question(id),
     FOREIGN KEY (answer_id) REFERENCES Answer(id)
 );
 
@@ -1040,18 +1042,19 @@ VALUES
     (9, NOW() - INTERVAL '29 days', true),
     (10, NOW() - INTERVAL '30 days', false);
 
-INSERT INTO AnswerNotification (notification_id, answer_id)
+INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
 VALUES
 
-    (12,  22),
-    (13, 23),
-    (14, 24),
-    (15,  25),
-    (16, 26),
-    (17, 27),
-    (18, 28),
-    (19, 29),
-    (20, 30);    
+    (12, 12, 22),
+    (13, 13, 23),
+    (14, 14, 24),
+    (15, 15, 25),
+    (16, 16, 26),
+    (17, 17, 27),
+    (18, 18, 28),
+    (19, 19, 29),
+    (20, 20, 30);  
+   
 
 INSERT INTO CommentNotification (notification_id, comment_id)
 VALUES

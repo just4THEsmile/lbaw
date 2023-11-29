@@ -21,7 +21,8 @@ class AnswerNotification extends Model
 
     protected $fillable = [
         'notification_id',
-        'answer_id'
+        'answer_id',
+        'question_id'
     ];
 
     protected $table = 'answernotification';
