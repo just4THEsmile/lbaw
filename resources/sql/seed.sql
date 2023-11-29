@@ -72,7 +72,7 @@ CREATE TABLE AppUser (
     nquestion INTEGER CHECK (nquestion >= 0) DEFAULT 0,
     nanswer INTEGER CHECK (nanswer >= 0) DEFAULT 0,
     profilepicture VARCHAR,
-    paylink VARCHAR UNIQUE,
+    paylink VARCHAR,
     usertype VARCHAR NOT NULL CHECK (usertype IN ('user', 'moderator', 'admin')),
     remember_token VARCHAR
 );

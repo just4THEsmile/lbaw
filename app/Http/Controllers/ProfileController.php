@@ -26,6 +26,19 @@ class ProfileController extends Controller
         }
         return view('pages/userprofile', ['user' => $user]);
     }
+
+
+
+    public function edit2($id){
+        $user = User::find($id);
+        if(Auth::user()->id !== $user->id && Auth::user()->usertype !== 'admin'){
+            return view('pages.profile', ['user' => $user]);
+        }
+        return view('pages/userprofile2', ['user' => $user]);
+    }
+
+    
+
     public function myquestions($id){
         return view('pages/myquestions', ['user_id' => $id]);
     }

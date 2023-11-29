@@ -1,0 +1,10 @@
+img{
+    width: 15em;
+    height: 15em;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+h3{
+    margin-top: 1em;
+}

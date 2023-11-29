@@ -126,3 +126,4 @@ Route::get('/api/followedQuestions/{id}', [ProfileController::class, 'listfollow
 Route::get('/api/search/tag/', [TagController::class,'search']); // search for all tags
 Route::get('/api/fullsearch/tag/', [TagController::class,'searchWithoutLimits']);
 Route::get('/api/question/{id}/tags', [TagController::class,'getTagsOfQuestion']);
+
