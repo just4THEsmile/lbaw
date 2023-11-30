@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="./answer">
+    <form method="post" action="./answer" onsubmit="disableSubmitButton()">
         @csrf
         <div class="form-group">
             <label for="content">Content:</label>

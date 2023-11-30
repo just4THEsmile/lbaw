@@ -29,7 +29,7 @@
             </header>
             <section id='edits'>
                 <h1>Profile Settings</h1>
-                <form id='userform' action="{{route('updateuser', ['id' => $user->id])}}" method='post'>
+                <form id='userform' action="{{route('updateuser', ['id' => $user->id])}}" method='post' onsubmit="disableSubmitButton()">
                     @csrf
                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                     <div id='namecard' class='card'>
@@ -125,7 +125,7 @@
                         <p>Here you can change your profile picture, which is used to represent you within the system. Your profile picture may be displayed on your profile, on messages you send, and in other areas where your identity is relevant. Updating your profile picture can help ensure that you are recognized accurately and consistently by other users or participants in the system.</p>
                     </div>
                     <div class='right-card'>
-                        <form id='profileform' action="/file/upload" method='post' enctype="multipart/form-data">
+                        <form id='profileform' action="/file/upload" method='post' enctype="multipart/form-data" onsubmit="disableSubmitButton()">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
                             <input type="file" name="profilepicture" accept="image/png,image/jpeg,image/png" multiple>

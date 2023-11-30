@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="{{ route('edit_comment',['id' => $comment->commentable_id , 'comment_id' => $comment->id]) }}">
+    <form method="post" action="{{ route('edit_comment',['id' => $comment->commentable_id , 'comment_id' => $comment->id]) }}" onsubmit="disableSubmitButton()">
         @csrf
         <div class="form-group">
             <label for="content">Content:</label>
@@ -9,4 +9,5 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    
 @endsection
