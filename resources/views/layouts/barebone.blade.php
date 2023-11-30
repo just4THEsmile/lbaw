@@ -25,7 +25,7 @@
     </head>
     <body>
         <main>
-            <header>
+            <header >
                 <h1><a href="{{ url('/home') }}">QthenA</a></h1>
                 @if (Auth::check())
                     <div>
