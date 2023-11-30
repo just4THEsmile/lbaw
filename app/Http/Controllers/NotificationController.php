@@ -10,53 +10,86 @@ use App\Models\VoteNotification;
 use App\Models\CommentNotification;
 use App\Models\AnswerNotification;
 use App\Models\BadgeAttainmentNotification;
-
+use Illuminate\Support\Facades\DB;
 class NotificationController extends Controller
 {
     function cmp($a, $b) {
         return strcmp($a->date, $b->date);
     }
-    public function getNewNotifications(Request $request)
+    public function getnotifications(Request $request)
     {
         if( Auth::check()){
-            $user = auth()->user();
-            $badgesNotifications = Notification::select('badge.name as name')
-            ->where('user_id', $user->id)
-            ->where('viewed', false)
-            ->join('badgeattainmentnotification', 'badgeattainmentnotification.id', '=', 'notification.id')
-            ->join('badge', 'badge.id', '=', 'badgeattainmentnotification.badge_id')
-            ->get();
-            $answernotifications = Notification::select('appuser.username as username', 'answer.question_id as question_id')
-            ->where('user_id', $user->id)
-            ->where('viewed', false)
-            ->join('answernotification', 'notification.id', '=', 'answernotification.id')
-            ->join('content', 'content.id', '=', 'answernotification.answer_id')
-            ->join('appuser', 'appuser.id', '=','content.user_id' )
-            ->get();
-            $commentnotifications = Notification::select('appuser.username as username', 'content.content as content', 'content.id as contentid') 
-            ->where('user_id', $user->id)
-            ->where('viewed', false)
-            ->join('commentnotification', 'notification.id', '=', 'commentnotification.id')
-            ->join('comment', 'comment.id', '=', 'commentnotification.comment_id')
-            ->join('content', 'content.id', '=', 'commentnotification.comment_id')
-            ->join('appuser', 'appuser.id', '=','content.user_id' )
-            ->get();
-            $result = [];
-            foreach($badgesNotifications as $notification){
-                $string = 'You have earned the badge ' . $notification->name;
-                array_push($result, ['date' => $notification->date, 'content' => $string , 'link' => "/profile/" . $user->id]);
-            }
-            foreach($answernotifications as $notification){
-                $string = 'You have new Answer from ' . $notification->username;
-                array_push($result, ['date' => $notification->date, 'content' => $string ,'link' => "/question/" . $notification->question_id ]);
-            }
-            foreach($commentnotifications as $notification){
-                $string = 'You have new Comment from ' . $notification->username;
-                array_push($result, ['date' => $notification->date, 'content' => $string ,'link' => null ]);
-            }
-                
-            usort($result, "cmp");
-            return view('pages/notifications', ['notifications' => $result]);
+            $limit = 10;
+            $currentPage = $request->input('currpage');
+            $offset = $currentPage * $limit;
+            $sql = "
+            SELECT 
+                'Vote' AS notification_type,
+                n.id AS notification_id,
+                n.user_id,
+                vn.content_id,
+                vn.vote,
+                n.date AS notification_date,
+                n.viewed
+            FROM 
+                Notification n
+            LEFT JOIN 
+                VoteNotification vn ON n.id = vn.notification_id
+
+            UNION
+
+            SELECT 
+                'Badge Attainment' AS notification_type,
+                n.id AS notification_id,
+                ban.user_id,
+                ban.badge_id AS content_id,
+                NULL AS vote,
+                n.date AS notification_date,
+                n.viewed
+            FROM 
+                Notification n
+            LEFT JOIN 
+                BadgeAttainmentNotification ban ON n.id = ban.notification_id
+
+            UNION
+
+            SELECT 
+                'Answer' AS notification_type,
+                n.id AS notification_id,
+                c.user_id,
+                an.answer_id AS content_id,
+                NULL AS vote,
+                n.date AS notification_date,
+                n.viewed
+            FROM 
+                Notification n
+            LEFT JOIN 
+                AnswerNotification an ON n.id = an.notification_id
+            LEFT JOIN 
+                Content c ON an.answer_id = c.id
+            UNION
+
+            SELECT 
+                'Comment' AS notification_type,
+                n.id AS notification_id,
+                c.user_id,
+                cn.comment_id AS content_id,
+                NULL AS vote,
+                n.date AS notification_date,
+                n.viewed
+            FROM 
+                Notification n
+            LEFT JOIN 
+                CommentNotification cn ON n.id = cn.notification_id
+            LEFT JOIN 
+                Content c ON cn.comment_id = c.id
+            ORDER BY
+                notification_date DESC
+        ";
+
+        // Execute the raw SQL query and fetch the results
+            $results = DB::select($sql);
+            return view('pages.notifications', ['notifications' => $results ,'current_page' =>$currentPage]);
         } else {
             return redirect('/login');
         }

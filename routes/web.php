@@ -17,6 +17,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -112,6 +113,9 @@ Route::controller(TagController::class)->group(function () {
     Route::get('/search/tag/', 'search')->name('tagsearch');
     Route::get('/tags', 'tagspage')->name('tags');
     Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion');
+});
+Route::controller(NotificationController::class)->group(function () {
+    Route::get('/notifications', 'getnotifications')->name('notifications_page');
 });
 //api
 Route::get('/api/search/questions',  [SearchQuestionController::class,'search']);
