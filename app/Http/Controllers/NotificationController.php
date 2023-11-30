@@ -26,23 +26,36 @@ class NotificationController extends Controller
             SELECT 
                 'Vote' AS notification_type,
                 n.id AS notification_id,
+                0 as question_id,
+                NULL as question_title,
                 n.user_id,
+                u.username,
+                u.profilepicture,
                 vn.content_id,
+                c.content AS content,
                 vn.vote,
                 n.date AS notification_date,
                 n.viewed
             FROM 
                 Notification n
-            LEFT JOIN 
+            JOIN 
                 VoteNotification vn ON n.id = vn.notification_id
-
+            JOIN
+                APPUSER u ON n.user_id = u.id
+            JOIN
+                Content c ON vn.content_id = c.id
             UNION
 
             SELECT 
                 'Badge Attainment' AS notification_type,
                 n.id AS notification_id,
+                0 as question_id,
+                NULL as question_title,
                 ban.user_id,
+                u.username,
+                u.profilepicture,
                 ban.badge_id AS content_id,
+                NULL AS content,
                 NULL AS vote,
                 n.date AS notification_date,
                 n.viewed
@@ -50,39 +63,58 @@ class NotificationController extends Controller
                 Notification n
             LEFT JOIN 
                 BadgeAttainmentNotification ban ON n.id = ban.notification_id
-
+            JOIN
+                APPUSER u ON ban.user_id = u.id
             UNION
 
             SELECT 
                 'Answer' AS notification_type,
                 n.id AS notification_id,
+                q.id as question_id,
+                q.title as question_title,
                 c.user_id,
+                u.username,
+                u.profilepicture,
                 an.answer_id AS content_id,
+                c.content AS content,
                 NULL AS vote,
                 n.date AS notification_date,
                 n.viewed
             FROM 
                 Notification n
-            LEFT JOIN 
+            JOIN 
                 AnswerNotification an ON n.id = an.notification_id
-            LEFT JOIN 
+            JOIN 
                 Content c ON an.answer_id = c.id
+            JOIN
+                Answer a ON an.answer_id = a.id
+            JOIN
+                Question q ON a.question_id = q.id
+            JOIN
+                APPUSER u ON c.user_id = u.id
             UNION
 
             SELECT 
                 'Comment' AS notification_type,
                 n.id AS notification_id,
+                0 as question_id,
+                NULL as question_title,
                 c.user_id,
+                u.username,
+                u.profilepicture,
                 cn.comment_id AS content_id,
+                c.content AS content,
                 NULL AS vote,
                 n.date AS notification_date,
                 n.viewed
             FROM 
                 Notification n
-            LEFT JOIN 
+            JOIN 
                 CommentNotification cn ON n.id = cn.notification_id
-            LEFT JOIN 
+            JOIN 
                 Content c ON cn.comment_id = c.id
+            JOIN
+                APPUSER u ON c.user_id = u.id
             ORDER BY
                 notification_date DESC
         ";

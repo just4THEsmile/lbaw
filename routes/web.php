@@ -70,7 +70,7 @@ Route::controller(ProfileController::class)->group(function () {
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');
     Route::post('/createquestion', 'create');
-    Route::get('/question/{id}', 'show');
+    Route::get('/question/{id}', 'show')->name("question.show");
     Route::post('/question/{id}/delete', 'delete');
     Route::get('/question/{id}/edit', 'editform');
     Route::post('/question/{id}/edit', 'edit');
@@ -117,7 +117,7 @@ Route::controller(ContentController::class)->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/search/tag/', 'search')->name('tagsearch');
     Route::get('/tags', 'tagspage')->name('tags');
-    Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion');
+    Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion'); //api
 });
 Route::controller(NotificationController::class)->group(function () {
     Route::get('/notifications', 'getnotifications')->name('notifications_page');

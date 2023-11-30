@@ -19,12 +19,13 @@
                     <h6 class="m-0">Recent</h6>
                 </div>
                 @foreach ($notifications as $notification)
-                    <li>{{ $notification->notification_type }}</li>
                     @if ($notification->notification_type == 'Answer')
-                        @break
-                    elseif ($notification->notification_type == 'Comment')
+                        @include('partials.notification.answer', ['notification' => $notification])
+                    @elseif ($notification->notification_type == 'Comment')
+                        @include('partials.notification.comment', ['notification' => $notification])
+                    @elseif ($notification->notification_type == 'Badge')
 
-                    elseif ($notification->notification_type == 'Badge')
+                    @elseif ($notification->notification_type == 'Vote')
 
                     @endif
                     @if ($notification->viewed)
