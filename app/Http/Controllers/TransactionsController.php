@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Models\Notification;
 use App\Models\AnswerNotification;
 use App\Models\CommentNotification;
+use App\Models\VoteNotification;
+use App\Models\BadgeAttainmentNotification;
 class TransactionsController extends Controller
 {
     public static function createQuestion($user_id,$title,$content1,$tag_ids)
@@ -227,6 +229,60 @@ class TransactionsController extends Controller
 
             DB::commit();
             echo "User deleted successfully.\n";
+
+            return true;
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+        
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+    public static function deleteNotifications($user_id):bool {
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+            Notification::where('user_id', $user_id)
+            ->delete();
+            VoteNotification::where('user_id', $user_id)           
+            ->delete();
+            AnswerNotification::join('answer', 'answer.id', '=', 'answernotification.answer_id')
+            ->join('content', 'content.id', '=', 'answer.id')
+            ->where('content.user_id', $user_id)
+            ->delete();
+            BadgeAttainmentNotification::where('user_id', $user_id)
+            ->delete();
+            DB::commit();
+
+            return true;
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+        
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+    public static function deleteNotification($notification_id):bool {
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+            Notification::where('id', $notification_id)
+            ->delete();
+            VoteNotification::where('notification_id', $notification_id)           
+            ->delete();
+            AnswerNotification::where('notification_id', $notification_id)
+            ->delete();
+            BadgeAttainmentNotification::where('notification_id', $notification_id)
+            ->delete();
+            DB::commit();
 
             return true;
         

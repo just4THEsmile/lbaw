@@ -17,6 +17,6 @@
             </div>
         </div>
         <br />
-        <div class="text-right text-muted pt-1">3d</div>
+        <div class="text-right text-muted pt-1">{{ $notification->notification_date }}</div>
     </span>
 </div>

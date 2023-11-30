@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Report;
+use App\Models\Content;
 use App\Models\Notification;
 use App\Models\VoteNotification;
 use App\Models\CommentNotification;
@@ -55,7 +56,7 @@ class NotificationController extends Controller
                 u.username,
                 u.profilepicture,
                 ban.badge_id AS content_id,
-                NULL AS content,
+                b.name AS content,
                 NULL AS vote,
                 n.date AS notification_date,
                 n.viewed
@@ -65,6 +66,8 @@ class NotificationController extends Controller
                 BadgeAttainmentNotification ban ON n.id = ban.notification_id
             JOIN
                 APPUSER u ON ban.user_id = u.id
+            JOIN
+                Badge b ON b.id = ban.badge_id
             UNION
 
             SELECT 
@@ -121,6 +124,9 @@ class NotificationController extends Controller
 
         // Execute the raw SQL query and fetch the results
             $results = DB::select($sql);
+            foreach($results as $result){
+                $result->notification_date = Content::datecompiled($result->notification_date);
+            }
             return view('pages.notifications', ['notifications' => $results ,'current_page' =>$currentPage]);
         } else {
             return redirect('/login');
@@ -135,22 +141,29 @@ class NotificationController extends Controller
             ->update(['viewed' => True]);
         } else {
             return redirect('/login');
-        }
+        } 
     }
     public function DeleteNotifications(Request $request)
     {
         if( Auth::check()){
-            $user = auth()->user();
-            Notification::where('user_id', $user->id)
-            ->delete();
-            VoteNotification::where('user_id', $user->id)           
-            ->delete();
-            AnswerNotification::join('answer', 'answer.id', '=', 'answernotification.answer_id')
-            ->join('content', 'content.id', '=', 'answer.id')
-            ->where('content.user_id', $user->id)
-            ->delete();
-            BadgeAttainmentNotification::where('user_id', $user->id)
-            ->delete();
+            if(TransactionsController::deleteNotifications(Auth::user()->id)){
+                return redirect('/notifications');
+            } else {
+                return redirect('/notifications');
+            }
+        } else {
+            return redirect('/login');
+        }
+    }
+    public function deleteNotification(Request $request)
+    {
+        if( Auth::check()){
+            $notification_id = $request->input('notification_id');
+            if(TransactionsController::deleteNotification($notification_id)){
+                return redirect('/notifications');
+            } else {
+                return redirect('/notifications');
+            }
         } else {
             return redirect('/login');
         }

@@ -23,8 +23,8 @@
                         @include('partials.notification.answer', ['notification' => $notification])
                     @elseif ($notification->notification_type == 'Comment')
                         @include('partials.notification.comment', ['notification' => $notification])
-                    @elseif ($notification->notification_type == 'Badge')
-
+                    @elseif ($notification->notification_type == 'Badge Attainment')
+                        @include('partials.notification.badge', ['notification' => $notification])
                     @elseif ($notification->notification_type == 'Vote')
 
                     @endif

@@ -11,8 +11,10 @@ use Illuminate\Validation\ValidationException;
 
 use App\Models\User;
 use App\Models\FollowQuestion;
+use App\Models\Notification;
+use App\Models\BadgeAttainmentNotification;
 use App\Models\Question;
-
+use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
 
@@ -63,6 +65,7 @@ class UserController extends Controller
         $user->usertype = $request->input('usertype');
         
         $badges = $request->input('badges');
+        $userBadges = $user->badges()->get();
         if($badges){
             $badgeData = [];
             $date = date('Y-m-d H:i:s'); 
@@ -70,6 +73,19 @@ class UserController extends Controller
                 $badgeData[$badge] = ['date' => $date];
             }
             $user->badges()->sync($badgeData);
+            foreach($userBadges as $t){
+                if( $t->id !== $badge){
+                    $notification = Notification::create([
+                        'user_id' => $user->id,
+                        'date' => $date
+                    ]);
+                    $notification->save();
+                    DB::table('badgeattainmentnotification')->insert(
+                        ['user_id' => $user->id,'badge_id' => $badge,'notification_id' => $notification->id]
+                    );
+                    break;
+                }
+            }
         }
     
         $user->save();

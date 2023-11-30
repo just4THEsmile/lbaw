@@ -34,7 +34,11 @@ class Content extends Model
     {
         return $user->reports()->where('content_id', $this->id)->exists();
     }
-    
+    public static function datecompiled($date){
+        $someDate = Carbon::parse($date);
+        $deltaTime = $someDate->diffForHumans(); 
+        return $deltaTime;
+    }
     public function compileddate() : string
     {
         $someDate = Carbon::parse($this->date);
