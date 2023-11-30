@@ -50,9 +50,15 @@ function showPage(currentPage){
 
         // Create a paragraph for the Tag content
         const contentParagraph = document.createElement("p");
-        contentParagraph.textContent = result.description; // Adjust based on your actual result structure
+
+        if(result.description.length > 100){
+            contentParagraph.textContent = result.description.substring(0,100) + "...";
+        }else{
+            contentParagraph.textContent = result.description;
+        }
         const titleLink = document.createElement("a");
-        titleLink.href = `/Tag/${result.Tag_id}`;
+        console.log(result);
+        titleLink.href = `/Tag/${result.id}`;
         titleLink.textContent = result.title;
         titleLink.classList.add("title");
 /*

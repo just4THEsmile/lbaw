@@ -16,17 +16,9 @@
 
 }
 
-/* Default styling for the link */
-a {
-    color: #696969 !important;
-    text-decoration: none !important; /* Remove underline by default */
-    transition: color 0.7s !important; /* Add a smooth transition for the color change */
-}
+
 
 /* Change color to grey on hover */
-a:hover {
-    color: 	#D3D3D3 !important;
-}
 button{
     width: 100%;
     font-size: 3em !important;
@@ -105,6 +97,7 @@ button{
 
 }
 .questionbottom{
+    font-size: 0.8em;
     display: flex;
     justify-content: space-between;
 }
@@ -128,16 +121,6 @@ div.content{
     background-color: #000!important;
     color: white !important;
    }
-.sidebar a.active {
-    background-color: #0000FF;
-    color: white !important;
-    }
-    
-    /* Links on mouse-over */
-    .sidebar a:hover:not(.active) {
-    background-color: #555 !important;
-    color: white !important;
-    }
 
     #QuestionPagination>button{
         width:2em
@@ -145,56 +128,6 @@ div.content{
 
 
 
-#QuestionPagination>button {
-    position: relative;
-    background-color: #000;
-    display: flex;
-    align-items: center;
-    color: white;
-    flex-direction: column;
-    justify-content: center;
-    border: none;
-    padding: 12px;
-    gap: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-#QuestionPagination>button::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    left: -4px;
-    top: -1px;
-    margin: auto;
-    border-radius: 10px;
-    background: gray;
-    z-index: -10;
-    pointer-events: none;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-#QuestionPagination>button::after {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(-45deg, #fff 0%, #000 100% );
-    transform: translate3d(0, 0, 0) scale(0.95);
-    filter: blur(20px);
-}
-
-#QuestionPagination>button:hover::after {
-    filter: blur(30px);
-}
-
-#QuestionPagination>button:hover::before {
-    transform: rotate(-180deg);
-}
-
-#QuestionPagination>button:active::before {
-    scale: 0.7;
-}
   
 .tags{
     display: flex;

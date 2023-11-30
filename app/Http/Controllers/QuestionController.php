@@ -23,6 +23,9 @@ class QuestionController extends Controller
         // Check if the current user can see (show) the question.
         $this->authorize('show', $question);  
 
+            $question->date = $question->commentable->content->compileddate();
+
+
         // Use the pages.question template to display the question.
         return view('pages.question', [
             'question' => $question

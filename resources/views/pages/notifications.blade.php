@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('sytle')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 <link href="{{ asset('css/cnotification.css') }}" rel="stylesheet">
 @section('content')
 
@@ -21,7 +22,7 @@
                 <div class="box-body p-0">
                     <div class="p-3 d-flex align-items-center bg-light border-bottom osahan-post-header">
                         <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" />
+                            <img class="rounded-circle" src="https://ontent/avatar/avatar3.png" alt="" />
                         </div>
                         <div class="font-weight-bold mr-3">
                             <div class="text-truncate">DAILY RUNDOWN: WEDNESDAY</div>
@@ -43,7 +44,7 @@
                     </div>
                     <div class="p-3 d-flex align-items-center osahan-post-header">
                         <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
+                            <img class="rounded-circle" src="https://ar" alt="" />
                         </div>
                         <div class="font-weight-bold mr-3">
                             <div class="mb-2">We found a job at askbootstrap Ltd that you may be interested in Vivamus imperdiet venenatis est...</div>
@@ -91,7 +92,7 @@
                         </span>
                     </div>
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
-                        <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div>
+                        <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdeyavatar/avatar3.png" alt="" /></div>
                         <div class="font-weight-bold mr-3">
                             <div class="text-truncate">DAILY RUNDOWN: SATURDAY</div>
                             <div class="small">Pellentesque semper ex diam, at tristique ipsum varius sed. Pellentesque non metus ullamcorper</div>
@@ -112,7 +113,7 @@
                     </div>
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
                         <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" />
+                            <img class="rounded-circle" src="https://bootdey.comg" alt="" />
                         </div>
                         <div class="font-weight-bold mr-3">
                             <div class="mb-2"><span class="font-weight-normal">Congratulate Gurdeep Singh Osahan (iamgurdeeposahan)</span> for 5 years at Askbootsrap Pvt.</div>
@@ -134,7 +135,7 @@
                     </div>
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
                         <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="" />
+                            <img class="rounded-circle" src="https://bootdey.r/avatar4.png" alt="" />
                         </div>
                         <div class="font-weight-bold mr-3">
                             <div>
@@ -177,7 +178,7 @@
                         </span>
                     </div>
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
-                        <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div>
+                        <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootatar/avatar3.png" alt="" /></div>
                         <div class="font-weight-bold mr-3">
                             <div class="text-truncate">DAILY RUNDOWN: SATURDAY</div>
                             <div class="small">Pellentesque semper ex diam, at tristique ipsum varius sed. Pellentesque non metus ullamcorper</div>
@@ -198,7 +199,7 @@
                     </div>
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
                         <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
+                            <img class="rounded-circle" src="https://bootdey.com/png" alt="" />
                         </div>
                         <div class="font-weight-bold mr-3">
                             <div class="mb-2"><span class="font-weight-normal">Congratulate Gurdeep Singh Osahan (iamgurdeeposahan)</span> for 5 years at Askbootsrap Pvt.</div>
@@ -220,7 +221,7 @@
                     </div>
                     <div class="p-3 d-flex align-items-center osahan-post-header">
                         <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" />
+                            <img class="rounded-circle" src="https://bootdeyatar2.png" alt="" />
                         </div>
                         <div class="font-weight-bold mr-3">
                             <div>
@@ -247,6 +248,7 @@
         </div>
     </div>
 </div>
+
     <?php /*
     <div style="color:white; font-size:0.0001em;">Home</div>
     <section id="notifications">

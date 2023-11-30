@@ -17,8 +17,7 @@
             // Fix for Firefox autofocus CSS bug
             // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
         </script>
-        <script type="text/javascript" src={{ url('js/app.js') }} defer>
-        </script>
+        <script type="text/javascript" src={{ url('js/app.js') }} defer></script>
     </head>
     <body>
         <main>
@@ -30,7 +29,7 @@
             </header>
             <section id='edits'>
                 <h1>Profile Settings</h1>
-                <form id='userform' action="{{route('updateuser', ['id' => $user->id])}}" method='post'>
+                <form id='userform' action="{{route('updateuser', ['id' => $user->id])}}" method='post' onsubmit="disableSubmitButton()">
                     @csrf
                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                     <div id='namecard' class='card'>
@@ -116,10 +115,9 @@
                         </div>
                         <div class='right-card'>
                                 <input type="url" id="paylink" name='paylink' value="{{ $user->paylink }}" placeholder="Enter your PayPal link" required>
-                                <button type='submit' class='submitbuttons' name="user-form">Save Changes</button>
-                            </form>
                         </div>  
                     </div>
+                    <button type='submit' class='submitbuttons' name="user-form">Save Changes</button>
                 </form>
                 <div id='profilecard' class='card'>
                     <div class='left-card'>
@@ -127,7 +125,7 @@
                         <p>Here you can change your profile picture, which is used to represent you within the system. Your profile picture may be displayed on your profile, on messages you send, and in other areas where your identity is relevant. Updating your profile picture can help ensure that you are recognized accurately and consistently by other users or participants in the system.</p>
                     </div>
                     <div class='right-card'>
-                        <form id='profileform' action="/file/upload" method='post' enctype="multipart/form-data">
+                        <form id='profileform' action="/file/upload" method='post' enctype="multipart/form-data" onsubmit="disableSubmitButton()">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
                             <input type="file" name="profilepicture" accept="image/png,image/jpeg,image/png" multiple>
@@ -136,8 +134,42 @@
                         </form>
                     </div>   
                 </div>
-                <div id='UserBadges'>
-                </div>
+                @if(Auth::user()->usertype === 'admin')
+                <form id='useradminform' action="{{route('updateuseradmin', ['id' => $user->id])}}" method='post'>
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    <div id='typecard' class='card'>
+                        <div class='left-card'>
+                            <h1>User Type</h1>
+                            <p>Here you can change your user type, which is used to distinguish you from other users within the system. </p>
+                        </div>
+                        <div class='right-card'>
+                            <select name="usertype" id="usertype">
+                                <option value="user" @if($user->usertype == 'user') selected @endif>User</option>
+                                <option value="moderator" @if($user->usertype == 'moderator') selected @endif>Moderator</option>
+                                <option value="admin" @if($user->usertype == 'admin') selected @endif>Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id='badgescard' class='card'>
+                        <div class='left-card'>
+                            <h1>Badges</h1>
+                            <p>Here you can change your badges, which are used to distinguish you from other users within the system. </p>
+                        </div>            
+                        <div class='right-card'>
+                            @php $badges = App\Models\Badge::all(); @endphp
+                            @php $userbadges = $user->badges()->get()->pluck('id')->toArray(); @endphp
+                            @foreach($badges as $badge)
+                                <label>
+                                    <input type='checkbox' name='badges[]' value='{{ $badge->id }}' {{ in_array($badge->id, $userbadges) ? 'checked' : '' }}>
+                                    {{ $badge->name }}
+                                </label> 
+                            @endforeach
+                        </div>
+                    </div>
+                    <button type='submit' class='submitbuttons' name="useradminform">Save Changes</button>
+                </form>
+                @endif
             </section>
         </main>
     </body>

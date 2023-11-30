@@ -15,24 +15,27 @@ document.addEventListener("DOMContentLoaded", function () {
         searchQuestions();
     });
 });
-function searchQuestions(callback){
-    const query = searchInput.value;
-    // Perform an AJAX request to your Laravel backend
-    let currentPage = 1;
-    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
-        .then(response => response.json())
-        .then(data => {
-            // Update the search results in the DOM
-            if(query==searchInput.value){
-                results = data;
-            }
-            showPage(currentPage);
-            renderPaginationButtons(currentPage);
-    })
-    .catch(error => {
-        console.error('Error fetching search results', error);
-    });
+function searchQuestions(){
 
+        const query = searchInput.value;
+        // Perform an AJAX request to your Laravel backend
+        let currentPage = 1;
+        fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
+
+            .then(response => response.json())
+            .then(data => {
+                if(searchInput.value==query){
+
+            
+                    results = data;
+                    showPage(currentPage);
+                    renderPaginationButtons(currentPage);
+                }
+
+        })
+        .catch(error => {
+            console.error('Error fetching search results', error);
+        });
 
 
 }

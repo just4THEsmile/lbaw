@@ -31,7 +31,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:16',
             'username' => 'required|string|max:16|unique:appuser',
             'email' => 'required|email|max:40|unique:appuser',
-            'password' => 'required'
+            'password' => 'required|confirmed'
         ]);
 
         User::create([
@@ -40,7 +40,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'usertype' => 'user',
-            'profilepicture' => 'images/xSHEr42ExnTkF65eLIJtvlwAumV6O6B4t0ZeeJ5e.png'
+            'profilepicture' => 'NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png'
         ]);
 
         $credentials = $request->only('email', 'password');
