@@ -1,3 +1,11 @@
+.py-3{
+  margin-left: 10em !important;
+}
+.sidebar a.active {
+  border-right: 4px solid black;
+  
+  }
+
 body {
   background-color: #ffffff;
   color: #0e0e0e;
@@ -49,6 +57,12 @@ margin-top: 10em;
 #content > form input {
   background-color: white;
 }
+/* Default styling for the link */
+a {
+  color: #696969 !important;
+  text-decoration: none !important; /* Remove underline by default */
+  transition: color 0.7s !important; /* Add a smooth transition for the color change */
+}
 
 @media (max-width: 70em) {
   #cards {
@@ -63,6 +77,9 @@ margin-top: 10em;
   }
 }
 @media (max-width: 40em) {
+  .py-3{
+    margin-left: 0em !important;
+  }
   #cards {
     grid-template-columns: 1fr;
   }
@@ -119,6 +136,7 @@ input[type=email]:focus,
 input[type=password]:focus {
 border-color: #0000FF;
 }
+.questioncard,
 .answercard {
       margin-left: 1em;
   margin-right: 1em;
@@ -129,6 +147,7 @@ border-color: #0000FF;
 
 /* The side navigation menu */
 .sidebar {
+  border-top: 1px solid black;
 margin: 0;
 padding: 0;
 width: 10em;
@@ -140,22 +159,20 @@ overflow: auto;
 
 /* Sidebar links */
 .sidebar a {
+  border-left: 1px  solid #0e0e0e;
+  border-right: 1px solid #0e0e0e;
+border-bottom: 1px solid #0e0e0e;
 display: block;
 color: black;
 padding: 0.5em;
 text-decoration: none;
 }
 
-/* Active/current link */
-.sidebar a.active {
-background-color: #0000FF;
-color: white;
-}
 
 /* Links on mouse-over */
 .sidebar a:hover:not(.active) {
-background-color: #555;
-color: white;
+background-color: #555 !important;
+color: white !important;
 }
 
 /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
@@ -166,7 +183,19 @@ margin-left: 11em;
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
 @media screen and (max-width: 40em) {
+  .sidebar a.active {
+    border-right: 1px solid black;
+      border-bottom: 4px solid black;
+      
+
+    
+    }
+  .container{
+    margin-left: 0em ;
+  }
   .realcontent{
+    margin-left: 0em !important;
+    margin-top: 0em !important;
     padding: 1em;
   }
   
@@ -201,7 +230,7 @@ div>.realcontent{
 }
 div.users{
   margin-top: 0em;
-  margin-left: 20%;
+  margin-left: 0em;
 }
 #flexthis>#gridable{
   margin-top: 0em;
@@ -283,7 +312,7 @@ margin: 0;
 }
 
 .userpage {
-  width: 80%; /* Set the width of the container */
+ /* Set the width of the container */
   margin: 0 auto; /* Center the container horizontally */
 }
 
@@ -294,7 +323,7 @@ margin: 0;
 }
 
 .user {
-  flex: 0 0 calc(33.33% - 20px); 
+
   margin-bottom: 20px; 
 }
 
@@ -327,8 +356,7 @@ margin-left: 10em;
 }
 
 .users{
-margin-top: 10em;
-margin-left: 20%;
+  padding: 2em;
 }
 
 div > .sidebar{
@@ -352,6 +380,8 @@ margin-top: 13em;
   margin-top:7em;
 }
 .createquestionbutton>button{
+
+  width:auto;
   font-size: 3em !important;
   border:2px solid black !important;
   height: auto   !important;
@@ -359,7 +389,6 @@ margin-top: 13em;
   font-size: 0.8em !important;
   color: black !important;
   margin-right: 1em !important;
-  background-color: rgba(0, 0, 0, 0.1) !important;
   padding: 0.2em !important;
 
 
@@ -368,12 +397,14 @@ margin-top: 13em;
    font-weight: 400 !important;
    border-radius: 10em !important;
 
+
+
 }
 .createquestionbutton{
   font-size: 1.5em;
   line-height: 1.5em !important;
   height: 2em;
-  margin-left: 10%;
+  margin-left: 1em;
   margin-right: auto;
 }
 #content>.userpage{
@@ -385,7 +416,14 @@ margin-top: 13em;
   margin-top: 0em;
 }
 
-#QuestionPagination{
-  display: flex;
-  justify-content: center;
+
+.users>.user>a{
+  width: 9em;
 }
+
+    /* Links on mouse-over */
+    a:hover {
+      
+    color: black !important;
+    }
+    

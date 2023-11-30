@@ -1,3 +1,18 @@
+function disableSubmitButton() {
+  let submitButtons = document.querySelectorAll('button[type="submit"]');
+            
+  for (let i = 0; i < submitButtons.length; i++) {
+      submitButtons[i].disabled = true;
+  }
+  setTimeout(function () {
+    for (let i = 0; i < submitButtons.length; i++) {
+      submitButtons[i].disabled = false;
+    }
+  }, 4000);
+}
+
+
+
 /*
 function addEventListeners() {
     let itemCheckers = document.querySelectorAll('article.card li.item input[type=checkbox]');

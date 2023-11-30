@@ -12,7 +12,7 @@ VALUES
     ('Daniel Martin', 'danm', 'dan@example.com', 'dan678', 'Fitness enthusiast', 'dan_profile.jpg', 'user'),
     ('John Doe', 'johndoe', 'john@example.com', 'password123', 'I love coding!', 'john_profile.jpg', 'user'),
     ('Jane Smith', 'janesmith', 'jane@example.com', 'p@ssw0rd', 'Tech enthusiast', 'jane_profile.jpg', 'user'),
-    ('Admin Us    <?php echo $question->answers()->where('commentable_id' == 3)->get() ?>er', 'admin', 'admin@example.com', 'secure_password', 'Administrator', 'admin_profile.jpg', 'admin'),
+    ('Admin User', 'admin', 'admin@example.com', 'secure_password', 'Administrator', 'admin_profile.jpg', 'admin'),
     ('Moderator User', 'moderator', 'moderator@example.com', 'strong_password', 'Moderator', 'moderator_profile.jpg', 'moderator'),
     ('Alice Johnson', 'alicej', 'alice@example.com', '12345', 'Curious learner', 'alice_profile.jpg', 'user'),
     ('Bob Smith', 'bobsmith', 'bob@example.com', 'bob123', 'Coding enthusiast', 'bob_profile.jpg', 'user'),

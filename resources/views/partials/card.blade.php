@@ -6,7 +6,7 @@
     <ul>
         @each('partials.item', $card->items()->orderBy('id')->get(), 'item')
     </ul>
-    <form class="new_item">
+    <form class="new_item" onsubmit="disableSubmitButton()">
         <input type="text" name="description" placeholder="new item">
     </form>
 </article>

@@ -49,15 +49,21 @@ function displayResults(results) {
             const profileImg = document.createElement('img');
             profileImg.src = `${baseURL}/profile/${user.profilepicture}`; 
             profileImg.alt = 'Profile Picture';
-    
+
+            const Name = document.createElement('p');
+            Name.textContent = `Name:`;
             const userName = document.createElement('h2');
-            userName.textContent = `Name: ${user.name}`;
-    
+            userName.textContent = `${user.name}`;
+            
+            const Username = document.createElement('p');
+            Username.textContent = `Username:`;
             const userUsername = document.createElement('h2');
-            userUsername.textContent = `Username: ${user.username}`;
+            userUsername.textContent = `${user.username}`;
      
             userLink.appendChild(profileImg);
+            userLink.appendChild(Name);
             userLink.appendChild(userName);
+            userLink.appendChild(Username);
             userLink.appendChild(userUsername);
     
             userDiv.appendChild(userLink);

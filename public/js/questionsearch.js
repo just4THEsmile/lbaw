@@ -4,6 +4,7 @@ const searchOrderedBy_Selector = document.getElementById("sortSelect");
 const questionpagination = document.getElementById("QuestionPagination")
 const questionsPerPage = 5;
 let results = [];
+
 document.addEventListener("DOMContentLoaded", function () {
 
     searchInput.addEventListener("input", function () {
@@ -14,21 +15,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 function searchQuestions(){
-    const query = searchInput.value;
 
-    // Perform an AJAX request to your Laravel backend
-    let currentPage = 1;
-    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
-        .then(response => response.json())
-        .then(data => {
-            // Update the search results in the DOM
-            results = data;
-            showPage(currentPage);
-            renderPaginationButtons(currentPage);
+        const query = searchInput.value;
+        // Perform an AJAX request to your Laravel backend
+        let currentPage = 1;
+        console.log("query");
+        console.log(query);
+        fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
+
+            .then(response => response.json())
+            .then(data => {
+                if(searchInput.value==query){
+
+            
+                    results = data;
+                    showPage(currentPage);
+                    renderPaginationButtons(currentPage);
+                }
+
         })
         .catch(error => {
             console.error('Error fetching search results', error);
         });
+
 
 }
 window.onload = function () {
@@ -44,43 +53,102 @@ function showPage(currentPage){
         let result = results[i];
         // Create the main answer card div
         const questionCard = document.createElement("div");
-        questionCard.classList.add("questioncard");
+        questionCard.classList.add("question");
 
-        // Create the link for the question title
-        const titleLink = document.createElement("a");
-        titleLink.href = `/question/${result.id}`;
-        titleLink.textContent = result.title;
-        titleLink.classList.add("title");
-        // Create the content div
+        //votes
+        const votes = document.createElement("div");
+        votes.classList.add("votes");
+        const upvote = document.createElement("button");
+        upvote.classList.add("arrow-up");
+
+        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_less"
+        const upvoteSpan = document.createElement("span");
+        upvoteSpan.classList.add("material-symbols-outlined");
+        upvoteSpan.textContent = "expand_less";
+
+        upvote.appendChild(upvoteSpan);
+
+        // Create the <p> element with the class "votesnum" and set its content dynamically using data from the server
+        const votesNum = document.createElement("p");
+        votesNum.classList.add("votesnum");
+        votesNum.textContent = result.votes; // Replace with actual data
+
+        // Create the <button> element for downvote with the class "arrow-down"
+        const downvote = document.createElement("button");
+        downvote.classList.add("arrow-down");
+
+        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_more"
+        const downvoteSpan = document.createElement("span");
+        downvoteSpan.classList.add("material-symbols-outlined");
+        downvoteSpan.textContent = "expand_more";
+
+        // Append the <span> element to the downvote button
+        downvote.appendChild(downvoteSpan);
+
+        // Append the created elements to the <div> element
+        votes.appendChild(upvote);
+        votes.appendChild(votesNum);
+        votes.appendChild(downvote);
+
+
+
+        // Content
         const contentDiv = document.createElement("div");
         contentDiv.classList.add("content");
 
-        // Create a paragraph for the question content
-        const contentParagraph = document.createElement("p");
-        contentParagraph.textContent = result.content; // Adjust based on your actual result structure
+        const questionLink = document.createElement("a");
+        questionLink.href = `/question/${result.id}`; // Replace with actual URL
 
-        // Create a link for the username
-        const usernameLink = document.createElement("a");
-        usernameLink.href = `/profile/${result.userid}`;
-        usernameLink.textContent = result.username; // Adjust based on your actual result structure
-        usernameLink.classList.add("username");
+        const questionTitle = document.createElement("h3");
+        questionTitle.textContent = result.title; // Replace with actual title
 
-        // Create a paragraph for the date
-        const dateParagraph = document.createElement("p");
-        dateParagraph.textContent = result.date; // Adjust based on your actual result structure
-        dateParagraph.classList.add("date");
-/*
-        const votes = document.createElement("p");
-        votes.textContent = result.votes;
-        votes.classList.add("votes");
-        // Append elements to the content div
-        contentDiv.appendChild(votes);*/
-        contentDiv.appendChild(contentParagraph);
-        contentDiv.appendChild(usernameLink);
-        contentDiv.appendChild(dateParagraph);  
+        questionLink.appendChild(questionTitle);
 
-        // Append elements to the answer card div
-        questionCard.appendChild(titleLink);
+        const profileInfoDiv = document.createElement("div");
+        profileInfoDiv.classList.add("profileinfo");
+
+        const userProfileLink = document.createElement("a");
+        userProfileLink.href = `/profile/${result.userid}`; // Replace with actual URL
+        userProfileLink.textContent = result.username; // Replace with actual username
+
+        const questionDate = document.createElement("p");
+        questionDate.textContent = result.date; // Replace with actual date
+
+        const questionbottom= document.createElement("div");
+        questionbottom.classList.add("questionbottom");
+
+        const questiontags = document.createElement("div");
+        questiontags.classList.add("tags");
+
+       // Split the comma-separated strings into arrays
+       const tagsArray = result.tags ? result.tags.split(',') : [result.tags];
+       const tagsidArray = result.tagsid ? result.tagsid.split(',') : [result.tagsid];
+
+        // Create a dictionary object with tag IDs as keys and tag names as values
+        for (let i = 0; i < tagsArray.length; i++) {
+            const tagElement = document.createElement("div");
+            tagElement.classList.add("tag");
+        
+            const tagLink = document.createElement("a");
+            tagLink.href = `/tag/${tagsidArray[i]}`;
+            tagLink.textContent = tagsArray[i];
+        
+            tagElement.appendChild(tagLink);
+            questiontags.appendChild(tagElement);
+        }
+
+
+        contentDiv.appendChild(questionLink);
+
+        profileInfoDiv.appendChild(userProfileLink);
+        profileInfoDiv.appendChild(questionDate);
+
+        questionbottom.appendChild(questiontags);
+        questionbottom.append(profileInfoDiv);
+
+        contentDiv.appendChild(questionbottom);
+
+        questionCard.appendChild(votes);
         questionCard.appendChild(contentDiv);
 
         // Append the answer card to the search results

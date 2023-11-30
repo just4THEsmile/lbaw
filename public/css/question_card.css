@@ -1,0 +1,140 @@
+
+.question{
+    border: 1px solid black;
+    display: flex; /* Use flexbox */
+    margin: 1em;
+    padding: 1em;
+    border-radius: 1em
+
+}
+.votes{
+    text-align: center;
+    display: flex;
+    margin-right: 1em;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+
+
+/* Change color to grey on hover */
+button{
+    width: 100%;
+    font-size: 3em !important;
+    border:0em solid black !important;
+    height: auto   !important;
+    line-height: 2em !important;
+    font-size: 1em !important;
+    color: black !important;
+    margin-right: 1em !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    padding: 0.2em !important;
+
+
+     text-transform: lowercase !important;
+     letter-spacing: 0em !important;
+     font-weight: 400 !important;
+     border-radius: 1em !important;
+     transition: all 0.7s !important;
+     margin-bottom: 0em !important;
+     
+}
+
+.btn {
+    width: 170px;
+    height: 60px;
+    font-size: 18px;
+    background: #fff;
+    border: none;
+    border-radius: 50px;
+    color: #000;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.4s;
+  }
+
+  .arrow-up,
+  .arrow-down {
+    margin-right: 0em !important;
+    width: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .arrow-up:hover,
+  .arrow-down:hover {
+    box-shadow: inset 0 0 0 2px #ef476f, 
+                inset 0 0 0 4px #ffd166, 
+                inset 0 0 0 6px #06d6a0,
+                inset 0 0 0 8px #118ab2;
+    background: #000 !important;
+    color: #fff !important;
+  }
+  .content >a >h3{
+    margin-bottom: 0em;
+    margin-top: 0em;
+  }
+
+  
+
+.profileinfo>p{
+    margin-bottom: 0em;
+
+}
+  
+.votesnum{
+    margin-bottom: 0em;
+    margin-top: 0em;
+}
+
+.profileinfo{
+    margin-left: 1em;
+    display: flex;
+    align-items: end;
+    flex-direction: column;
+
+}
+.questionbottom{
+    font-size: 0.8em;
+    display: flex;
+    justify-content: space-between;
+}
+
+div.content{
+    width: 100%;
+}
+.createquestionbutton>button{
+        padding: 0.6em 1em;
+        border: 4px solid #000 !important;
+        transition: ease-in-out 0.3s;
+        background-color: transparent;
+        color: #000 !important;
+        font-weight: bolder;
+        font-size: 16px;
+
+        width:auto;
+}
+.createquestionbutton>button:hover {
+    transform: scale(1.2) rotate(10deg);
+    background-color: #000!important;
+    color: white !important;
+   }
+
+    #QuestionPagination>button{
+        width:2em
+    }
+
+
+
+  
+.tags{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+  

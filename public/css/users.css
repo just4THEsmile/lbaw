@@ -1,0 +1,11 @@
+.users>.user>a>h2{
+    font-size: 1em;
+}
+.users>.user>a>p{
+    font-size: 0.7em;
+    margin-bottom: 0.1em;
+    margin-top: 0.5em;
+}
+div#search{
+    padding: 1em;
+}

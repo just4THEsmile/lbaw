@@ -26,12 +26,12 @@ class UserController extends Controller
         ]);
 
         if($user->username !== $request->input('username')){
-            $request->validate(['username' => 'required|string|max:255|unique:appuser']);
+            $request->validate(['username' => 'required|string|max:16|unique:appuser']);
             
         }
         $user->name = $request->input('name');
         if($user->email !== $request->input('email') ){
-            $request->validate(['email' => 'required|email|max:255|unique:appuser']);
+            $request->validate(['email' => 'required|email|max:40|unique:appuser']);
             $user->email = $request->input('email');
         }
 
