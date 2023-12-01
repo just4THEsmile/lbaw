@@ -1,11 +1,8 @@
-const searchUserInput = document.getElementById("searchUserInput");
-const usersContainer = document.querySelector(".users");
-const sortSelect = document.getElementById("sortSelect");
-let currentPage = 1; 
-const users_per_page = 18;
+const searchInput = document.getElementById("searchUserInput");
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    searchUserInput.addEventListener("input", function () {
+    searchInput.addEventListener("input", function () {
         searchUsers();
     });
 
@@ -18,15 +15,17 @@ window.onload = function () {
     searchUsers();
 }
 function searchUsers(){
-    const query = searchUserInput.value;
+    const sortSelect = document.getElementById("sortSelect");
+    const query = searchInput.value;
     const sortBy = sortSelect.value;
-    currentPage = 1;
+
 
     fetch(`/search/users?q=${query}&SearchBy=${sortBy}`)
         .then(response => response.json())
         .then(data => {
-            if(query== searchUserInput.value && sortBy == sortSelect.value){
-                displayResults(data);
+            if(query== searchInput.value && sortBy == sortSelect.value){
+                console.log(data);
+                showPage(data.data, data.links);
             }
         })
         .catch(error => {
@@ -34,8 +33,8 @@ function searchUsers(){
         });
 
 }
-function displayResults(results) {
-
+function showPage(results,links) {
+    const usersContainer = document.querySelector(".users");
     let baseURL = window.location.protocol + '//' + window.location.host;
 
     usersContainer.innerHTML = '';
@@ -44,7 +43,7 @@ function displayResults(results) {
         usersContainer.innerHTML = '<p>No users found.</p>';
         return;
     }
-    for (let i = (currentPage - 1)*users_per_page; i < results.length && i<currentPage*users_per_page ; i++) {
+    for (let i = 0; i < results.length; i++) {
         let user = results[i];
 
         const userDiv = document.createElement('div');
@@ -76,29 +75,37 @@ function displayResults(results) {
         userDiv.appendChild(userLink);
         usersContainer.appendChild(userDiv);
     }
-        renderPaginationButtons(results,currentPage);
+        renderPaginationButtons(links);
 }
-function renderPaginationButtons(results) {
-    const totalPages = Math.ceil(results.length / users_per_page );
+function renderPaginationButtons(links) {
+    query = searchInput.value;
     const paginationContainer = document.getElementById("pagination")
     paginationContainer.innerHTML = "";
-    let delta = currentPage + 3;
-    if (delta > totalPages) delta = totalPages;
-    let start = currentPage - 3;
-    if (currentPage <= 3) start =1;
-    for (let i = start; i <=delta; i++) {
+    for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
-        button.textContent = i;
-        button.classList.add("pagination-button");
-        // Highlight the current page
-        if (i === currentPage) {
-            button.style.backgroundColor = "#4CAF50";
+        button.innerHTML = links[i].label;
+        if(links[i].active){
+            button.classList.add("active");
+        }else{
+            button.classList.add("pagination-button");
         }
-
         button.addEventListener("click", function () {
-            currentPage = i;
-            displayResults(results);
-            
+            if(links[i].url!=null){
+                fetch(links[i].url)
+
+                .then(response => response.json())
+                .then(data => {
+                    if(searchInput.value==query){
+                        results = data;
+                        showPage(data.data,data.links);
+                        window.scrollTo(0,0); 
+                    }
+        
+                })
+                .catch(error => {
+                    console.error('Error fetching search results', error);
+                });
+        } 
         });
 
         paginationContainer.appendChild(button);

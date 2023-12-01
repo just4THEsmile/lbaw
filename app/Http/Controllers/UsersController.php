@@ -14,14 +14,15 @@ class UsersController extends Controller
     $query = $request->input('q');
     $searchBy = $request->input('SearchBy');
     // If the query is empty, return all users
-    if (strlen($query) == 0) {
-        $results = User::where('name','<>','Deleted')->get();
-    } else {
-        // Use where() with the 'like' operator to search usernames containing the query string
-        $results = User::where($searchBy, 'ilike', "%$query%")->where('name','<>','Deleted')->get();
+    if(Auth::check()){
+            // Use where() with the 'like' operator to search usernames containing the query string
+            $results = User::where($searchBy, 'ilike', "%$query%")->where('name','<>','Deleted')->paginate(15)->withQueryString()->withQueryString();
+            return response()->json($results);
+    }else{
+        return response()->json([
+            'message' => 'Not logged in',
+        ], 302);
     }
-
-    return response()->json($results);
     }
  
     public function getUsers(){

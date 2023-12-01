@@ -11,34 +11,42 @@ class TagController extends Controller
 {   
     public function search(Request $request)
     {
-    $query = $request->input('query');
-    // If the query is empty, return all users
-    if (strlen($query) == 0) {
-        $results = Tag::limit(10)->get();//fix query to not return tags already in question
-    } else {
+        $query = $request->input('query');
         // Use where() with the 'like' operator to search usernames containing the query string
-        $results = Tag::where('title','ILIKE',"%$query%" )->limit(10)->get();
-    }
-
-    return response()->json($results);
+        if(Auth::check()){
+            $results = Tag::where('title','ILIKE',"%$query%" )->limit(10)->get();
+            return response()->json($results);
+        } else {
+            return response()->json([
+                'message' => 'Not logged in',
+            ], 302);
+        }
     }
     public function getTagsOfQuestion(Request $request, $id )
     {
-        $results = Tag::join('questiontag', 'tag.id', '=', 'questiontag.tag_id')
-        ->Where('questiontag.question_id', '=', $id)
-        ->get();//fix query to not return tags already in question
+        if(Auth::check()){
+            $results = Tag::join('questiontag', 'tag.id', '=', 'questiontag.tag_id')
+            ->Where('questiontag.question_id', '=', $id)
+            ->get();//fix query to not return tags already in question
 
-        return response()->json( $results);
+            return response()->json( $results);
+        }else{
+            return response()->json([
+                'message' => 'Not logged in',
+            ], 302);
+        }
     }
     public function searchWithoutLimits(Request $request){
         $query = $request->input('query');
-        if (strlen($query) == 0) {
-            $results = Tag::paginate(15)->withqueryString();//fix query to not return tags already in question
-        } else {
+        if (Auth::check()) {
             // Use where() with the 'like' operator to search usernames containing the query string
             $results = Tag::where('title','ILIKE',"%$query%" )->paginate(15)->withqueryString();
+            return response()->json($results);
+        } else {
+            return response()->json([
+                'message' => 'Not logged in',
+            ], 302);
         }
-        return $results;
     }
     public function tagspage(){
         if(Auth::check()){

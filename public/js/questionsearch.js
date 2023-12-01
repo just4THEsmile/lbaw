@@ -154,10 +154,9 @@ function renderPaginationButtons(links) {
     query = searchInput.value;
     const paginationContainer = document.getElementById("QuestionPagination")
     paginationContainer.innerHTML = "";
-    console.log(links);
     for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
-        button.textContent = links[i].label;
+        button.innerHTML = links[i].label;
         button.classList.add("pagination-button");
         // Highlight the current page
         button.addEventListener("click", function () {

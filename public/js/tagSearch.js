@@ -79,8 +79,13 @@ function renderPaginationButtons(links) {
     paginationContainer.innerHTML = "";
     for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
-        button.textContent = links[i].label;
-        button.classList.add("pagination-button");
+        button.innerHTML = links[i].label;
+        if(links[i].active){
+            button.classList.add("active");
+        }else{
+            button.classList.add("pagination-button");
+        }
+        button.class = links[i].active ? "active" : "";
         // Highlight the current page
         button.addEventListener("click", function () {
             if(links[i].url!=null){
