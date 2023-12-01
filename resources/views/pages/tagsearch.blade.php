@@ -28,7 +28,7 @@
         } 
     </style>
     <div class="realcontent">
-        <input id="searchTagInput"></input>
+        <input id="searchTagInput" placeholder="Search Tag..." ></input>
         <ul id="Tags"></ul>
         <div id ="TagsPagination"></div>
         <script src="{{ asset('js/tagSearch.js') }}" defer></script>

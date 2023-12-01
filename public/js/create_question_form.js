@@ -20,8 +20,8 @@ function refreshHashtags() {
     hashtagSpan.classList = 'hashtag';
     hashtagSpan.textContent = hashtag.title;
     const removeIcon = document.createElement('span');
-    removeIcon.classList = 'remove-icon';
-    removeIcon.textContent = 'x';
+    removeIcon.classList = 'material-symbols-outlined';
+    removeIcon.textContent = 'close';
 
     removeIcon.addEventListener('click', () => {
       hashtags.splice(i, 1);

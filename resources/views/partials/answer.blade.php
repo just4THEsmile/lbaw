@@ -1,6 +1,21 @@
 
 <span class="answer" data-id="{{$answer->id}}">
     @if(!$answer->commentable->content->deleted)
+        @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin')
+            <div class="correctbutton">
+                <button type='submit' class='correctanswerButton' name="correctanswer-button">
+                    <span class="material-symbols-outlined">
+                        check
+                    </span>
+                </button>
+            </div>
+
+        @endif
+        <div class="correct"> 
+        <span class="material-symbols-outlined">
+            check
+        </span>
+        </div>
         <div class="votes" >
             <button type="submit" class="arrow-up" id = "{{ $answer->id }}">
                 <span class="material-symbols-outlined">
