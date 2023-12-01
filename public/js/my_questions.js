@@ -1,18 +1,20 @@
-const Questions = document.getElementById("Questions");
-const questionpagination = document.getElementById("QuestionPagination")
-const questionsPerPage = 5;
-let results = [];
+const searchOrderedBy_Selector = document.getElementById("sortSelect");
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    searchOrderedBy_Selector.addEventListener("change", function () {
+        updateQuestions();
+    });
+});
 function updateQuestions(){
 
         // Perform an AJAX request to your Laravel backend
-        let currentPage = 1;
-        fetch(`/api/myquestions/${user_id.textContent}`)
+        fetch(`/api/myquestions/${user_id.textContent}?OrderBy=${searchOrderedBy_Selector.value}`)
             .then(response => response.json())
             .then(data => {
                 // Update the search results in the DOM
-                results = data;
-                showPage(currentPage);   
+                showPage(data.data,data.links);
+                console.log(data);
             })
             .catch(error => {
                 console.error('Error fetching search results', error);
@@ -23,12 +25,13 @@ window.onload = function () {
     updateQuestions();
 }   
 
-function showPage(currentPage){
+function showPage(results,links){
+    const Questions = document.getElementById("Questions");
     Questions.innerHTML = "";
     if(results.length == 0){
         Questions.innerHTML = "No questions Found";
     }
-    for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
+    for (let i = 0; i < results.length; i++) {
         let result = results[i];
         // Create the main answer card div
         const questionCard = document.createElement("div");
@@ -46,53 +49,56 @@ function showPage(currentPage){
         // Create a paragraph for the question content
         const contentParagraph = document.createElement("p");
         contentParagraph.textContent = result.content; // Adjust based on your actual result structure
-
+        
         // Create a paragraph for the date
         const dateParagraph = document.createElement("p");
         dateParagraph.textContent = result.date; // Adjust based on your actual result structure
         dateParagraph.classList.add("date");
-/*
+
         const votes = document.createElement("p");
         votes.textContent = result.votes;
         votes.classList.add("votes");
         // Append elements to the content div
-        contentDiv.appendChild(votes);*/
+        contentDiv.appendChild(votes);
         contentDiv.appendChild(contentParagraph);
         contentDiv.appendChild(dateParagraph);  
 
         // Append elements to the answer card div
         questionCard.appendChild(titleLink);
         questionCard.appendChild(contentDiv);
-
+        questionCard.appendChild(votes);
         // Append the answer card to the search results
         Questions.appendChild(questionCard);
         
     }
-    renderPaginationButtons(currentPage);
+    renderPaginationButtons(links);
 }
-function renderPaginationButtons(currentPage) {
-    const totalPages = Math.ceil(results.length / questionsPerPage );
-    questionpagination.innerHTML = "";
-    let delta = currentPage + 3;
-    if (delta > totalPages) delta = totalPages;
-    let start = currentPage - 3;
-    if (currentPage <= 3) start =1;
-    for (let i = start; i <=delta; i++) {
+function renderPaginationButtons(links) {
+    const paginationContainer = document.getElementById("pagination")
+    paginationContainer.innerHTML = "";
+    for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
-        button.textContent = i;
+        button.innerHTML = links[i].label;
         button.classList.add("pagination-button");
         // Highlight the current page
-        if (i === currentPage) {
-            button.style.backgroundColor = "#4CAF50";
-        }
-
         button.addEventListener("click", function () {
-            currentPage = i;
-            showPage(currentPage);
-            
+            if(links[i].url!=null){
+                fetch(links[i].url)
+
+                .then(response => response.json())
+                .then(data => {
+                        results = data;
+                        showPage(data.data,data.links);
+                        window.scrollTo(0,0); 
+        
+                })
+                .catch(error => {
+                    console.error('Error fetching search results', error);
+                });
+        } 
         });
 
-        questionpagination.appendChild(button);
+        paginationContainer.appendChild(button);
     }
 }
 

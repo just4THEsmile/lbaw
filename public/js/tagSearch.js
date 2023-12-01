@@ -74,7 +74,7 @@ function showPage(results,links){
     renderPaginationButtons(links);
 }
 function renderPaginationButtons(links) {
-    const paginationContainer = document.getElementById("TagsPagination")
+    const paginationContainer = document.getElementById("pagination")
     query = searchInput.value;
     paginationContainer.innerHTML = "";
     for (let i = 0; i <links.length; i++) {

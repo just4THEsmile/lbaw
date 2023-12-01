@@ -30,7 +30,7 @@
     <div class="realcontent">
         <input id="searchTagInput"></input>
         <ul id="Tags"></ul>
-        <div id ="TagsPagination"></div>
+        <div id ="pagination"></div>
         <script src="{{ asset('js/tagSearch.js') }}" defer></script>
     </div>
 

@@ -13,8 +13,13 @@
         } 
     </style>
     <div id="user_id" hidden>{{$user->id}}</div>
+    <label for="sortSelect">Sort By:</label>
+    <select id="sortSelect">
+        <option value="date">Time</option>
+        <option value="votes">Votes</option>
+    </select>
         <ul id="Answers"></ul>
-        <div id ="AnswersPagination"></div>
+        <div id ="pagination"></div>
         <script type="text/javascript" src={{ url('js/my_answers.js') }} defer></script>
 
 @endsection

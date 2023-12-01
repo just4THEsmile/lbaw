@@ -1,7 +1,6 @@
 const searchInput = document.getElementById("searchInput");
 const searchResults = document.getElementById("searchResults");
 const searchOrderedBy_Selector = document.getElementById("sortSelect");
-const questionpagination = document.getElementById("QuestionPagination")
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -152,7 +151,7 @@ function showPage(results,links){
 }
 function renderPaginationButtons(links) {
     query = searchInput.value;
-    const paginationContainer = document.getElementById("QuestionPagination")
+    const paginationContainer = document.getElementById("pagination")
     paginationContainer.innerHTML = "";
     for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
