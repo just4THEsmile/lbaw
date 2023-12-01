@@ -16,7 +16,26 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 function searchQuestions(){
+    const query = searchInput.value;
+    // Perform an AJAX request to your Laravel backend
+    let currentPage = 1;
+    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
 
+        .then(response => response.json())
+        .then(data => {
+            if(searchInput.value==query){
+
+        
+                results = data;
+                showPage(data->data);
+                console.log(results)
+            }
+
+    })
+    .catch(error => {
+        console.error('Error fetching search results', error);
+    });
+/*
         const query = searchInput.value;
         // Perform an AJAX request to your Laravel backend
         let currentPage = 1;
@@ -35,7 +54,7 @@ function searchQuestions(){
         })
         .catch(error => {
             console.error('Error fetching search results', error);
-        });
+        });*/
 
 
 }
@@ -43,12 +62,12 @@ window.onload = function () {
     searchQuestions();
 }   
 
-function showPage(currentPage){
+function showPage($results){
     searchResults.innerHTML = "";
     if(results.length == 0){
         searchResults.innerHTML = "No questions Found";
     }
-    for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
+    for (let i = 0; i < results.length; i++) {
         let result = results[i];
         // Create the main answer card div
         const questionCard = document.createElement("div");
@@ -154,7 +173,7 @@ function showPage(currentPage){
         searchResults.appendChild(questionCard);
         
     }
-    renderPaginationButtons(currentPage);
+    //renderPaginationButtons(links);
 }
 function renderPaginationButtons(currentPage) {
     const totalPages = Math.ceil(results.length / questionsPerPage );

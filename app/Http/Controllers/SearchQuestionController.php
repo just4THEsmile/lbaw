@@ -5,6 +5,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Console\Input\Input;
 
 class SearchQuestionController extends Controller
 {   
@@ -25,8 +26,8 @@ class SearchQuestionController extends Controller
     {
         // Implement your search logic here
         if (auth::check()){
-            $query = $request->input('q');
-            $sortby = $request->input('OrderBy');
+            $query = $request->get('q');
+            $sortby = $request->get('OrderBy');
             if(strlen($query) == 0){
                 $results = Question::select(
                     'question.title', 
@@ -49,7 +50,6 @@ class SearchQuestionController extends Controller
                     '=',
                     'question.id'
                 )
-                ->where('question.title', 'ILIKE', "%$query%")
                 ->where('content.deleted', '=', false)
                 ->groupBy(
                     'question.title',
@@ -63,12 +63,9 @@ class SearchQuestionController extends Controller
                     'tags_agg.id'
                 )
                 ->orderBy($sortby, 'desc')
-                ->get();
-                
-                foreach($results as $result){
-                    $result->date = $result->commentable->content->compileddate();
-                }
-                return response()->json($results);
+                ->paginate(15)->withQueryString()->withQueryString();
+
+                return $results;
             }else{
                 response()->json([
                     'message' => 'Not logged in',
@@ -110,11 +107,11 @@ class SearchQuestionController extends Controller
             'tags_agg.id'
         )
         ->orderBy($sortby, 'desc')
-        ->get();
-            foreach($results as $result){
+        ->paginate(15)->withQueryString()->withQueryString();
+            /*foreach($results as $result){
                 $result->date = $result->commentable->content->compileddate();
-            }
-        return response()->json($results);
+            }*/
+        return $results;
     }
 }
     /* works but not with ajax
