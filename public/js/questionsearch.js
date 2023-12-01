@@ -2,8 +2,6 @@ const searchInput = document.getElementById("searchInput");
 const searchResults = document.getElementById("searchResults");
 const searchOrderedBy_Selector = document.getElementById("sortSelect");
 const questionpagination = document.getElementById("QuestionPagination")
-const questionsPerPage = 5;
-let results = [];
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -17,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 function searchQuestions(){
     const query = searchInput.value;
-    // Perform an AJAX request to your Laravel backend
-    let currentPage = 1;
     fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
 
         .then(response => response.json())
@@ -27,42 +23,21 @@ function searchQuestions(){
 
         
                 results = data;
-                showPage(data->data);
-                console.log(results)
+                showPage(data.data,data.links);
             }
 
     })
     .catch(error => {
         console.error('Error fetching search results', error);
     });
-/*
-        const query = searchInput.value;
-        // Perform an AJAX request to your Laravel backend
-        let currentPage = 1;
-        fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
-
-            .then(response => response.json())
-            .then(data => {
-                if(searchInput.value==query){
-
-            
-                    results = data;
-                    showPage(currentPage);
-                    renderPaginationButtons(currentPage);
-                }
-
-        })
-        .catch(error => {
-            console.error('Error fetching search results', error);
-        });*/
-
-
 }
+
+
 window.onload = function () {
     searchQuestions();
 }   
 
-function showPage($results){
+function showPage(results,links){
     searchResults.innerHTML = "";
     if(results.length == 0){
         searchResults.innerHTML = "No questions Found";
@@ -173,29 +148,35 @@ function showPage($results){
         searchResults.appendChild(questionCard);
         
     }
-    //renderPaginationButtons(links);
+    renderPaginationButtons(links);
 }
-function renderPaginationButtons(currentPage) {
-    const totalPages = Math.ceil(results.length / questionsPerPage );
+function renderPaginationButtons(links) {
+    query = searchInput.value;
     const paginationContainer = document.getElementById("QuestionPagination")
     paginationContainer.innerHTML = "";
-    let delta = currentPage + 3;
-    if (delta > totalPages) delta = totalPages;
-    let start = currentPage - 3;
-    if (currentPage <= 3) start =1;
-    for (let i = start; i <=delta; i++) {
+    console.log(links);
+    for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
-        button.textContent = i;
+        button.textContent = links[i].label;
         button.classList.add("pagination-button");
         // Highlight the current page
-        if (i === currentPage) {
-            button.style.backgroundColor = "#4CAF50";
-        }
-
         button.addEventListener("click", function () {
-            currentPage = i;
-            showPage(currentPage);
-            
+            if(links[i].url!=null){
+                fetch(links[i].url)
+
+                .then(response => response.json())
+                .then(data => {
+                    if(searchInput.value==query){
+                        results = data;
+                        showPage(data.data,data.links);
+                        window.scrollTo(0,0); 
+                    }
+        
+                })
+                .catch(error => {
+                    console.error('Error fetching search results', error);
+                });
+        } 
         });
 
         paginationContainer.appendChild(button);
