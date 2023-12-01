@@ -33,12 +33,12 @@ class TagController extends Controller
     public function searchWithoutLimits(Request $request){
         $query = $request->input('query');
         if (strlen($query) == 0) {
-            $results = Tag::get();//fix query to not return tags already in question
+            $results = Tag::paginate(15)->withqueryString();//fix query to not return tags already in question
         } else {
             // Use where() with the 'like' operator to search usernames containing the query string
-            $results = Tag::where('title','ILIKE',"%$query%" )->get();
+            $results = Tag::where('title','ILIKE',"%$query%" )->paginate(15)->withqueryString();
         }
-        return response()->json( $results);
+        return $results;
     }
     public function tagspage(){
         if(Auth::check()){
