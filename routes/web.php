@@ -115,6 +115,7 @@ Route::controller(ContentController::class)->group(function () {
 });
 
 Route::controller(TagController::class)->group(function () {
+    Route::get('/tag/{id}', 'tagquestionspage')->name('tagquestions');
     Route::get('/search/tag/', 'search')->name('tagsearch');
     Route::get('/tags', 'tagspage')->name('tags');
     Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion'); //api
@@ -124,6 +125,7 @@ Route::controller(NotificationController::class)->group(function () {
 });
 
 //api
+Route::get('/api/tag/{id}/questions', [TagController::class ,'tagquestions'])->name('tagquestionsapi');
 Route::get('/api/search/questions',  [SearchQuestionController::class,'search']);
 Route::get('/api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
 Route::get('/api/myanswers/{id}', [ProfileController::class, 'listmyanswers']);

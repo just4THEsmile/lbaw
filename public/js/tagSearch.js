@@ -51,7 +51,7 @@ function showPage(results,links){
             contentParagraph.textContent = result.description;
         }
         const titleLink = document.createElement("a");
-        titleLink.href = `/Tag/${result.id}`;
+        titleLink.href = `/tag/${result.id}`;
         titleLink.textContent = result.title;
         titleLink.classList.add("title");
 /*
