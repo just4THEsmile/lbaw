@@ -697,7 +697,128 @@ FOR EACH ROW
 EXECUTE PROCEDURE question_minimum_tag();
 */
 
+-----------------------------
+-- Indexes
+-----------------------------
 
+CREATE INDEX notification_user ON Notification USING btree(id);
+CLUSTER Notification USING notification_user;
+
+CREATE INDEX comment_commentable ON Comment USING btree(commentable_id);
+CLUSTER Comment USING comment_commentable;
+
+CREATE INDEX appuser_content ON Content USING btree(id);
+CLUSTER Content USING appuser_content;
+
+
+-----------------------------
+-- Full Text Search Indexes
+-----------------------------
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Tag
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION tag_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.title), 'A') ||
+            setweight(to_tsvector('english', NEW.description), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.title <> OLD.title OR NEW.description <> OLD.description) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.title), 'A') ||
+                setweight(to_tsvector('english', NEW.description), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+    -- Create a trigger before insert or update on work.
+    CREATE TRIGGER tag_search_update
+    BEFORE INSERT OR UPDATE ON Tag
+    FOR EACH ROW
+    EXECUTE PROCEDURE tag_search_update();
+
+
+    -- Finally, create a GIN index for ts_vectors.
+    CREATE INDEX Tag_search_idx ON Tag USING GIN (tsvectors);
+
+
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Question
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors =to_tsvector('english', NEW.title);
+
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.title <> OLD.title) THEN
+           NEW.tsvectors =to_tsvector('english', NEW.title);
+
+         END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER question_search_update
+ BEFORE INSERT OR UPDATE ON Question
+ FOR EACH ROW
+ EXECUTE PROCEDURE question_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX Question_search_idx ON Question USING GIN (tsvectors);
+
+
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE AppUser
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION user_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.name), 'A') ||
+            setweight(to_tsvector('english', NEW.username), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.name <> OLD.name OR NEW.username <> OLD.username) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.name), 'A') ||
+                setweight(to_tsvector('english', NEW.username), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER user_search_update
+ BEFORE INSERT OR UPDATE ON AppUser
+ FOR EACH ROW
+ EXECUTE PROCEDURE user_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);
 
 --Populate
 
@@ -1157,127 +1278,3 @@ VALUES
     (9, 19),
     (10, 20),
     (21,20);    
-
-
------------------------------
--- Indexes
------------------------------
-
-CREATE INDEX notification_user ON Notification USING btree(id);
-CLUSTER Notification USING notification_user;
-
-CREATE INDEX comment_commentable ON Comment USING btree(commentable_id);
-CLUSTER Comment USING comment_commentable;
-
-CREATE INDEX appuser_content ON Content USING btree(id);
-CLUSTER Content USING appuser_content;
-
-
------------------------------
--- Full Text Search Indexes
------------------------------
-
--- Add column to work to store computed ts_vectors.
-ALTER TABLE Tag
-ADD COLUMN tsvectors TSVECTOR;
-
--- Create a function to automatically update ts_vectors.
-    CREATE FUNCTION tag_search_update() RETURNS TRIGGER AS $$
-    BEGIN
-    IF TG_OP = 'INSERT' THEN
-            NEW.tsvectors = (
-            setweight(to_tsvector('english', NEW.title), 'A') ||
-            setweight(to_tsvector('english', NEW.description), 'B')
-            );
-    END IF;
-    IF TG_OP = 'UPDATE' THEN
-            IF (NEW.title <> OLD.title OR NEW.description <> OLD.description) THEN
-            NEW.tsvectors = (
-                setweight(to_tsvector('english', NEW.title), 'A') ||
-                setweight(to_tsvector('english', NEW.description), 'B')
-            );
-            END IF;
-    END IF;
-    RETURN NEW;
-    END $$
-    LANGUAGE plpgsql;
-
-    -- Create a trigger before insert or update on work.
-    CREATE TRIGGER tag_search_update
-    BEFORE INSERT OR UPDATE ON Tag
-    FOR EACH ROW
-    EXECUTE PROCEDURE tag_search_update();
-
-
-    -- Finally, create a GIN index for ts_vectors.
-    CREATE INDEX Tag_search_idx ON Tag USING GIN (tsvectors);
-
-
-
--- Add column to work to store computed ts_vectors.
-ALTER TABLE Question
-ADD COLUMN tsvectors TSVECTOR;
-
--- Create a function to automatically update ts_vectors.
-CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
-BEGIN
- IF TG_OP = 'INSERT' THEN
-        NEW.tsvectors =to_tsvector('english', NEW.title);
-
- END IF;
- IF TG_OP = 'UPDATE' THEN
-         IF (NEW.title <> OLD.title) THEN
-           NEW.tsvectors =to_tsvector('english', NEW.title);
-
-         END IF;
- END IF;
- RETURN NEW;
-END $$
-LANGUAGE plpgsql;
-
--- Create a trigger before insert or update on work.
-CREATE TRIGGER question_search_update
- BEFORE INSERT OR UPDATE ON Question
- FOR EACH ROW
- EXECUTE PROCEDURE question_search_update();
-
-
--- Finally, create a GIN index for ts_vectors.
-CREATE INDEX Question_search_idx ON Question USING GIN (tsvectors);
-
-
-
--- Add column to work to store computed ts_vectors.
-ALTER TABLE AppUser
-ADD COLUMN tsvectors TSVECTOR;
-
--- Create a function to automatically update ts_vectors.
-    CREATE FUNCTION user_search_update() RETURNS TRIGGER AS $$
-    BEGIN
-    IF TG_OP = 'INSERT' THEN
-            NEW.tsvectors = (
-            setweight(to_tsvector('english', NEW.name), 'A') ||
-            setweight(to_tsvector('english', NEW.username), 'B')
-            );
-    END IF;
-    IF TG_OP = 'UPDATE' THEN
-            IF (NEW.name <> OLD.name OR NEW.username <> OLD.username) THEN
-            NEW.tsvectors = (
-                setweight(to_tsvector('english', NEW.name), 'A') ||
-                setweight(to_tsvector('english', NEW.username), 'B')
-            );
-            END IF;
-    END IF;
-    RETURN NEW;
-    END $$
-    LANGUAGE plpgsql;
-
--- Create a trigger before insert or update on work.
-CREATE TRIGGER user_search_update
- BEFORE INSERT OR UPDATE ON AppUser
- FOR EACH ROW
- EXECUTE PROCEDURE user_search_update();
-
-
--- Finally, create a GIN index for ts_vectors.
-CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);

@@ -26,6 +26,7 @@
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
         <label for="sortSelect">Sort By:</label>
         <select id="sortSelect">
+            <option value="relevance">Relevance</option>
             <option value="date">Time</option>
             <option value="votes">Votes</option>
         </select>
