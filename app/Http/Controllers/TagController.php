@@ -39,8 +39,12 @@ class TagController extends Controller
     public function searchWithoutLimits(Request $request){
         $query = $request->input('query');
         if (Auth::check()) {
-            // Use where() with the 'like' operator to search usernames containing the query string
-            $results = Tag::where('title','ILIKE',"%$query%" )->paginate(15)->withqueryString();
+            if($query == null){
+                $results = Tag::paginate(15)->withqueryString();
+                return response()->json($results);
+            }
+            $results = Tag::whereRaw("tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])
+            ->orderByRaw("ts_rank(tsvectors, to_tsquery(?)) ASC", [$query])->paginate(15)->withqueryString();
             return response()->json($results);
         } else {
             return response()->json([

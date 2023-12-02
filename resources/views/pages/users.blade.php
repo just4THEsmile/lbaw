@@ -21,6 +21,7 @@
         <input class="searchbar" type="text" id="searchUserInput" placeholder="Search...">
         <label for="sortSelect">Search By:</label>
         <select id="sortSelect">
+            <option value="relevance">Relevance</option>
             <option value="username">Username</option>
             <option value="name">Name</option>
         </select>

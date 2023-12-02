@@ -35,41 +35,41 @@ class SearchQuestionController extends Controller
         if($sortby == 'relevance'){
             if($query == null){
 
-            $results = Question::select(
-                'question.title', 
-                'content.content', 
-                'appuser.username', 
-                'content.date', 
-                'content.id as id', 
-                'appuser.id as userid', 
-                'content.votes as votes',
-                'tags_agg.title as tags',
-                'tags_agg.id as tagsid',
-                DB::raw('COUNT(answer.id) as answernum')
-            )
-            ->join('content', 'question.id', '=', 'content.id')
-            ->join('appuser', 'content.user_id', '=', 'appuser.id')
-            ->leftjoin('answer', 'answer.question_id', '=', 'question.id')
-            ->leftjoin(
-                DB::raw('(SELECT question.id as qid, STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as title, STRING_AGG(CAST(tag.id AS TEXT), \',\' ORDER BY tag.id ASC) as id FROM questiontag JOIN tag ON tag.id = questiontag.tag_id JOIN question ON question.id = questiontag.question_id GROUP BY question.id) as tags_agg'),
-                'tags_agg.qid',
-                '=',
-                'question.id'
-            )
-            ->where('content.deleted', '=', false)
-            ->groupBy(
-                'question.title',
-                'content.content',
-                'appuser.username',
-                'content.date',
-                'content.id',
-                'appuser.id',
-                'content.votes',
-                'tags_agg.title',
-                'tags_agg.id'
-            )
-            ->orderBy('date', 'desc')
-            ->paginate(15)->withQueryString()->withQueryString();
+                $results = Question::select(
+                    'question.title', 
+                    'content.content', 
+                    'appuser.username', 
+                    'content.date', 
+                    'content.id as id', 
+                    'appuser.id as userid', 
+                    'content.votes as votes',
+                    'tags_agg.title as tags',
+                    'tags_agg.id as tagsid',
+                    DB::raw('COUNT(answer.id) as answernum')
+                )
+                ->join('content', 'question.id', '=', 'content.id')
+                ->join('appuser', 'content.user_id', '=', 'appuser.id')
+                ->leftjoin('answer', 'answer.question_id', '=', 'question.id')
+                ->leftjoin(
+                    DB::raw('(SELECT question.id as qid, STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as title, STRING_AGG(CAST(tag.id AS TEXT), \',\' ORDER BY tag.id ASC) as id FROM questiontag JOIN tag ON tag.id = questiontag.tag_id JOIN question ON question.id = questiontag.question_id GROUP BY question.id) as tags_agg'),
+                    'tags_agg.qid',
+                    '=',
+                    'question.id'
+                )
+                ->where('content.deleted', '=', false)
+                ->groupBy(
+                    'question.title',
+                    'content.content',
+                    'appuser.username',
+                    'content.date',
+                    'content.id',
+                    'appuser.id',
+                    'content.votes',
+                    'tags_agg.title',
+                    'tags_agg.id'
+                )
+                ->orderBy('date', 'desc')
+                ->paginate(15)->withQueryString()->withQueryString();
 
                 foreach($results as $result){
                     $result->date = $result->commentable->content->compileddate();
@@ -100,6 +100,7 @@ class SearchQuestionController extends Controller
             ->whereRaw("question.tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])
             ->where('content.deleted', '=', false)
             ->groupBy(
+                'question.tsvectors',
                 'question.title',
                 'content.content',
                 'appuser.username',
@@ -109,7 +110,8 @@ class SearchQuestionController extends Controller
                 'content.votes',
                 'tags_agg.title',
                 'tags_agg.id'
-            )->orderBy('date', 'desc')
+            )
+            ->orderByRaw("ts_rank(question.tsvectors, to_tsquery(?)) ASC", [$query])
             ->paginate(15)->withQueryString()->withQueryString();
 
                 foreach($results as $result){
@@ -152,7 +154,7 @@ class SearchQuestionController extends Controller
                 'tags_agg.id'
             )
             ->orderBy($sortby, 'desc')
-            ->paginate(15)->withQueryString()->withQueryString();
+            ->paginate(10)->withQueryString()->withQueryString();
 
                 foreach($results as $result){
                     $result->date = $result->commentable->content->compileddate();
