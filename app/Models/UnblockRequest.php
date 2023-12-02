@@ -21,12 +21,12 @@ class UnblockRequest extends Model
      */
     protected $fillable = [
         'user_id',
-        'title',
+        'content_id',
         'description'
     ];
 
     protected $table = 'unblockrequest';
-    protected $primaryKey = 'id1';
+    protected $primaryKey = 'id';
     /*
     public function user()
     {

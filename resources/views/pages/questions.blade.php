@@ -18,6 +18,8 @@
   <a href="{{'/tags'}}">Tags</a>
   <a class="active" href="{{'/questions'}}">Questions</a>
   <a href="{{'/users'}}">Users</a>
+  <a href="{{'/moderatecontent'}}">Blocked Content</a>
+
 </div>
 
 <div>

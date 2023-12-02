@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
+use App\Models\Content;
 use Illuminate\Support\Facades\DB;
 class ProfileController extends Controller
 {
@@ -40,8 +41,23 @@ class ProfileController extends Controller
     
 
     public function myquestions($id){
-        return view('pages/myquestions', ['user_id' => $id]);
+        $user = User::find($id); 
+        return view('pages/myquestions', ['user' => $user]);
     }
+    public function myanswers($id){
+        $user = User::find($id);
+        return view('pages/myanswers', ['user' => $user]);
+    }
+    public function followedQuestions($id)
+    {   
+        $user = User::find($id); 
+        return view('pages/followquestion',  ['user' => $user]);
+    }
+    public function myblocked($id){
+        $user = User::find($id);
+        return view('pages/myblocked', ['user' => $user]);
+    }
+
     public function listmyquestions($id){
         $user = User::find($id); 
         $questions = $user->questions();
@@ -50,10 +66,7 @@ class ProfileController extends Controller
         }
         return response()->json($questions) ;
     }
-    public function myanswers($id){
-        $user = User::find($id);
-        return view('pages/myanswers', ['user' => $user]);
-    }
+    
     public function listmyanswers($id){
         $user = User::find($id); 
         $answers = $user->answers();
@@ -62,11 +75,7 @@ class ProfileController extends Controller
         }
         return response()->json($answers) ;
     }
-    public function followedQuestions($id)
-    {   
-        $user = User::find($id); 
-        return view('pages/followquestion',  ['user' => $user]);
-    }
+    
     public function listfollowedquestions($id){
         $followedQuestions = Question::select('content.content as content', 'question.title as title', 'content.votes as votes', 'question.id as id', 'content.date as date')
         ->join('followquestion', 'followquestion.question_id', '=', 'question.id')
@@ -78,5 +87,13 @@ class ProfileController extends Controller
             $result->date = $result->commentable->content->compileddate();
         }
         return response()->json($followedQuestions) ;
+    }
+
+    public function listmyblocked($id){
+        $blockedContent = Content::where('user_id', $id)->where('blocked', true)->get();
+        foreach($blockedContent as $result){
+            $result->date = $result->compileddate();
+        }
+        return response()->json($blockedContent) ;
     }
 }

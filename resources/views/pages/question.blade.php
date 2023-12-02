@@ -14,6 +14,7 @@
     <a href="{{'/tags'}}">Tags</a>
     <a class="active" href="{{'/questions'}}">Questions</a>
     <a href="{{'/users'}}">Users</a>
+    <a href="{{'/moderatecontent'}}">Blocked Content</a>
     </div>
 
     <div style="color:white; font-size:0.0001em;">Home</div>

@@ -64,6 +64,7 @@ Route::controller(ProfileController::class)->group(function () {
     Route::get('/myquestions/{id}', [ProfileController::class, 'myquestions'])->name('myquestions');
     Route::get('/myanswers/{id}', [ProfileController::class, 'myanswers'])->name('myanswers');
     Route::get('/followquestion/{id}', [ProfileController::class, 'followedQuestions'])->name('followquestion');
+    Route::get('/myblocked/{id}', [ProfileController::class, 'myblocked'])->name('myblocked');
 });
 
 Route::controller(QuestionController::class)->group(function () {
@@ -111,6 +112,8 @@ Route::controller(RegisterController::class)->group(function () {
 
 Route::controller(ContentController::class)->group(function () {
     Route::post('/report/{content_id}', 'reportContent')->name('report');
+    Route::get('/api/unblockrequest/{id}','unblockrequest')->name('unblockrequest');
+    Route::post('sendunblock', 'sendunblock')->name('sendunblock');
 });
 
 Route::controller(TagController::class)->group(function () {
@@ -127,4 +130,9 @@ Route::get('/api/followedQuestions/{id}', [ProfileController::class, 'listfollow
 Route::get('/api/search/tag/', [TagController::class,'search']); // search for all tags
 Route::get('/api/fullsearch/tag/', [TagController::class,'searchWithoutLimits']);
 Route::get('/api/question/{id}/tags', [TagController::class,'getTagsOfQuestion']);
+Route::get('/api/myblocked/{id}',  [ProfileController::class,'listmyblocked']);
 
+
+Route::get('/moderatecontent', [ContentController::class, 'moderatecontent'])->name('moderatecontent');
+Route::get('/reviewcontent/{id}', [ContentController::class, 'reviewcontent'])->name('reviewcontent');
+Route::post('/processRequest', [ContentController::class, 'processRequest'])->name('processRequest');
