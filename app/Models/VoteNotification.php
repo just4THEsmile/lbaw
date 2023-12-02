@@ -26,5 +26,9 @@ class VoteNotification extends Model
 
     protected $table = 'votenotification';
     protected $primaryKey = ['notification_id','user_id', 'content_id'];
-    
+
+    public function notification() : BelongsTo
+    {
+        return $this->belongsTo(Notification::class);
+    }
 }

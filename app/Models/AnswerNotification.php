@@ -48,4 +48,8 @@ class AnswerNotification extends Model
     {
         return $this->belongsTo(Answer::class);
     }
+    public function notification() : BelongsTo
+    {
+        return $this->belongsTo(Notification::class);
+    }
 }

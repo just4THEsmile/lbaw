@@ -39,4 +39,12 @@ class CommentNotification extends Model
         return $this->belongsTo(Question::class, 'comment_id');
     }
     */
+    public function comment() : BelongsTo
+    {
+        return $this->belongsTo(Comment::class);
+    }
+    public function notification() : BelongsTo
+    {
+        return $this->belongsTo(Notification::class);
+    }
 }

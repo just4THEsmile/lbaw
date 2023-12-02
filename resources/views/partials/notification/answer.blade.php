@@ -3,8 +3,8 @@
         <img class="rounded-circle" src="{{asset('profile/' . $notification->profilepicture)}}" alt="" />
     </div>
     <div class="font-weight-bold mr-3">
-        <div class="text-truncate">{{ $notification->username}} answered to your question</div>
-        <div class="small">{{ $notification->username}} answer to "{{ $notification->question_title }}" with "{{ $notification->content }}"</div>
+        <div class="text-truncate">Someone answered one of your question</div>
+        <div class="small">If you want more details press the button to see the answer</div>
         <a href="{{ route('question.show', $notification->question_id) }}" class="btn btn-outline-success btn-sm">View Question</a>
     </div>
     <span class="ml-auto mb-auto">

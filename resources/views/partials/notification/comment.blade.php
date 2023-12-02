@@ -3,8 +3,7 @@
         <img class="rounded-circle" src="{{asset('profile/' . $notification->profilepicture)}}"  alt="" />
     </div>
     <div class="font-weight-bold mr-3">
-        <div class="text-truncate">{{ $notification->username}} commented in your content</div>
-        <div class="small">{{ $notification->username}} commented with "{{ $notification->content }}"</div>
+        <div class="text-truncate">Someone commented your content</div>
     </div>
     <span class="ml-auto mb-auto">
         <div class="btn-group">
