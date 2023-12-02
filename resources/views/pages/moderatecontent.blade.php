@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+
 @section('content')
 <div class="sidebar">
   <a href="/home">Home Page</a>
@@ -13,10 +14,13 @@
 <div style="color:white; font-size:0.0001em;">Home</div>
 <div id='fixable'>
   @foreach ($unblockRequests as $unblockRequest)
-      <a href="{{ '/reviewcontent/' . $unblockRequest->id }}">Review Content</a>
+  <code>{{ $unblockRequest}}</code>
+  <a href="{{ '/reviewcontent/' . $unblockRequest->id }}">Review Content</a>
 
   @endforeach
+  {{ $unblockRequests->links('vendor.pagination.custom') }}
+
 </div>
 
-{{ $unblockRequests->links() }}
+
 @endsection

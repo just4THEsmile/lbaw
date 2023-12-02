@@ -27,10 +27,15 @@ class UnblockRequest extends Model
 
     protected $table = 'unblockrequest';
     protected $primaryKey = 'id';
-    /*
+    
     public function user()
     {
-        return $this->belongsTo(AppUser::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
-    */
+    
+
+    public function content()
+    {
+        return $this->belongsTo(Content::class, 'content_id');
+    }
 }

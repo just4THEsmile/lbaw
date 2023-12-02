@@ -19,6 +19,7 @@ class ContentController extends Controller
         $this->authorize("report", $content);
         if(Report::where('user_id', $user->id)->where('content_id', $content_id)->exists()){
             Report::where('user_id', $user->id)->where('content_id', $content_id)->delete();
+            $content->reports--;
         }
         else{
             $report = new Report([
@@ -27,8 +28,9 @@ class ContentController extends Controller
             ]);
 
             $report->save();
+            $content->reports++;
         }
-
+        $content->save();
         return redirect()->back();
     }
 
@@ -58,7 +60,8 @@ class ContentController extends Controller
 
     public function moderatecontent() {
         //$this->authorize("moderate", $Auth::user());
-        $unblockRequests = UnblockRequest::paginate(5);
+        $unblockRequests = UnblockRequest::with(['content', 'user'])->paginate(5);
+
         return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests]);
     }
 
