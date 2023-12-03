@@ -26,7 +26,7 @@ class TransactionsController extends Controller
 
             // Commit the transaction
             DB::commit();
-            return ($content->votes - 1);
+            return ($content->votes);
         
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
@@ -52,7 +52,7 @@ class TransactionsController extends Controller
              $content = Content::find($content_id);
              // Commit the transaction
              DB::commit();
-            return ($content->votes + 1);
+            return ($content->votes);
         
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
@@ -73,7 +73,7 @@ class TransactionsController extends Controller
                 $content = Content::find($content_id);
                 $vote->delete();
                 DB::commit();
-                return ($content->votes - 1);
+                return ($content->votes-1);
             }
             else{
                 $content = Content::find($content_id);
@@ -81,7 +81,7 @@ class TransactionsController extends Controller
                 $vote->delete();
                 DB::commit();
                 
-                return ($content->votes + 1);
+                return ($content->votes+1);
             }
         
         } catch (\Exception $e) {

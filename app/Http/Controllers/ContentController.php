@@ -40,7 +40,7 @@ class ContentController extends Controller
             if($vote->vote == True){
                 if($request->input('value') == "up"){
                     $transaction = TransactionsController::deletevote($user->id, $content_id);
-                    if($transaction === null){
+                    if($transaction === null or !is_int($transaction)){
                         return response()->json([
                             'message' => 'error voting up',
                         ], 500);
@@ -54,13 +54,13 @@ class ContentController extends Controller
                 }
                 else{
                     $transaction = TransactionsController::deletevote($user->id, $content_id);
-                    if($transaction === null){
+                    if($transaction === null or !is_int($transaction)){
                         return response()->json([
                             'message' => 'error voting down',
                         ], 500);
                     }
                     $transaction = TransactionsController::votedowncontent($user->id, $content_id);
-                    if($transaction === null){
+                    if($transaction === null or !is_int($transaction)){
                         return response()->json([
                             'message' => 'error voting down',
                         ], 500);
@@ -75,13 +75,13 @@ class ContentController extends Controller
             }else{
                 if($request->input('value') == "up"){
                     $transaction=TransactionsController::deletevote($user->id, $content_id);
-                    if($transaction === null){
+                    if($transaction === null or !is_int($transaction)){
                         return response()->json([
                             'message' => 'error voting up',
                         ], 500);
                     }
                     $transaction= TransactionsController::voteupcontent($user->id, $content_id);
-                    if($transaction === null){
+                    if($transaction === null or !is_int($transaction)){
                         return response()->json([
                             'message' => 'error voting up',
                         ], 500);
@@ -96,20 +96,24 @@ class ContentController extends Controller
                     return response()->json("up");
                 }else{
                     $transaction = TransactionsController::deletevote($user->id, $content_id);
-                    if($transaction === null){
+                    if($transaction === null or !is_int($transaction)){
                         return response()->json([
                             'message' => 'error voting down',
                         ], 500);
+                    }else{
+                        return response()->json([
+                            'id' => $content_id,
+                            'votes' => $transaction,
+                            'message' => 'none',
+                        ], 200);
                     }
-
-                    return response()->json("none");
                 }
             }
         }else{
 
             if($request->input('value') == "up"){
                 $transaction = TransactionsController::voteupcontent($user->id, $content_id);
-                if($transaction === null){
+                if($transaction === null or !is_int($transaction)){
                     return response()->json([
                         'message' => 'error voting up',
                     ], 500);
@@ -124,7 +128,7 @@ class ContentController extends Controller
             }else{
 
                 $transaction = TransactionsController::votedowncontent($user->id, $content_id);
-                if($transaction === null){
+                if($transaction === null or !is_int($transaction)){
                     return response()->json([
                         'message' => 'error voting down',
                     ], 500);

@@ -1,9 +1,9 @@
 
-
+const errorDiv = document.getElementById('error');
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const errorDiv = document.getElementById('error');
+
     const votesup = document.getElementsByClassName("arrow-up");
     const votesdown = document.getElementsByClassName("arrow-down");
     //updatevoteStates();
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function downvote(id) { 
 
-    sendAjaxRequest('post', '/api/vote/'+id, {'value': "down"}, upvoteHandler);
+    sendAjaxRequest('post', '/api/vote/'+id, {'value': "down"}, downvoteHandler);
 
 }
 
@@ -31,24 +31,54 @@ function upvote(id) {
     sendAjaxRequest('post', '/api/vote/'+id, {'value': "up"}, upvoteHandler);
 
 }
+function downvoteHandler() {
+    if (this.status != 200) {
+        let error = JSON.parse(this.responseText);
+        errorDiv.textContent = error.message;
+        return;
+    }
+    let vote = JSON.parse(this.responseText);
+    let id = vote.id;
+    let element = document.querySelector(`[id='${id}'].arrow-down`);
+    let element2 = document.querySelector(`[id='${id}'].arrow-up`);
+    if(vote.message == "down"){
+        element2.classList.remove("voted");
+        element.classList.add("voted");
+        element.previousElementSibling.textContent = vote.votes;
+    }else{
+        
+        element.classList.remove("voted");
+        element.previousElementSibling.textContent = vote.votes;
+    }  
+
+    console.log(vote);
+}
 
 function upvoteHandler() {
     if (this.status != 200) {
-        console.log(this.responseText);
+        let error = JSON.parse(this.responseText);
+        errorDiv.textContent = error.message;
         return;
     }
-    let response = JSON.parse(this.responseText);
-    let vote = document.getElementById(response.id);
-    let votevalue = vote.getElementsByClassName("votevalue")[0];
-    votevalue.innerHTML = response.value;
-    updatevoteStates();
+    let vote = JSON.parse(this.responseText);
+    let id = vote.id;
+    let element = document.querySelector(`[id='${id}'].arrow-up`);
+    let element2 = document.querySelector(`[id='${id}'].arrow-down`);
+    if(vote.message == "up"){
+        element2.classList.remove("voted");
+        element.classList.add("voted");
+        element.nextElementSibling.textContent = vote.votes;
+    }else{
+        element.classList.remove("voted");
+        element.nextElementSibling.textContent = vote.votes;
+    }  
+
+    console.log(vote);
 }
 
 function sendAjaxRequest(method, url, data, handler) {
     let request = new XMLHttpRequest();
-    console.log(url);
     request.open(method, url, true);
-    console.log(request);
     request.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.addEventListener('load', handler);

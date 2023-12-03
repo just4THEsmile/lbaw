@@ -1,5 +1,38 @@
 <article class="question" data-id="{{ $question->id }}">
     <header>
+    @php
+    use App\Enums\vote;
+    $vote = $question->commentable->content->get_vote()
+    @endphp
+    @if ($vote == vote::VOTEUP)
+        <div class="votes" >
+            <button type="submit" class="arrow-up voted" id = "{{ $question->id }}">
+                <span class="material-symbols-outlined">
+                    expand_less 
+                </span>
+            </button>
+            <p class="votesnum" class=>{{ $question->commentable->content->votes }}</p> 
+            <button type = "submit" class="arrow-down" id = "{{ $question->id }}">
+                <span class="material-symbols-outlined">
+                    expand_more 
+                </span>
+            </button>
+        </div>
+    @elseif ($vote == App\Enums\vote::VOTEDOWN)
+        <div class="votes" >
+            <button type="submit" class="arrow-up" id = "{{ $question->id }}">
+                <span class="material-symbols-outlined">
+                    expand_less 
+                </span>
+            </button>
+            <p class="votesnum" class=>{{ $question->commentable->content->votes }}</p> 
+            <button type = "submit" class="arrow-down voted" id = "{{ $question->id }}">
+                <span class="material-symbols-outlined">
+                    expand_more 
+                </span>
+            </button>
+        </div>
+    @else        
     <div class="votes" >
         <button type="submit" class="arrow-up" id = "{{ $question->id }}">
             <span class="material-symbols-outlined">
@@ -13,6 +46,7 @@
             </span>
         </button>
     </div>
+    @endif
     <div class="questioncontent">
         <h2>{{ $question->title }}</h2>
         @if (!$question->commentable->content->deleted)

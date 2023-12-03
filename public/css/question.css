@@ -257,3 +257,16 @@ button{
 h2{
   margin-bottom: 0em !important;
 }
+
+.voted.arrow-up span{
+  color: green !important;
+}
+.voted.arrow-down span{
+  color: red !important;
+}
+#error{
+  font-weight: 600 !important;
+  color: red;
+  display: flex;
+  justify-content: center;
+}
