@@ -17,6 +17,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,7 +52,7 @@ Route::controller(HomeController::class)->group(function () {
 // Search
 Route::controller(SearchQuestionController::class)->group(function () {
     Route::get('/questions',  'show')->name('questions');
-    Route::get('/questions/tag{id}',  'show_with_tags')->name('questionswithtags');
+    Route::get('/questions/tag/{id}',  'show_with_tags')->name('questionswithtags');
 });
 
 Route::controller(UsersController::class)->group(function () {
@@ -71,7 +72,7 @@ Route::controller(ProfileController::class)->group(function () {
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');
     Route::post('/createquestion', 'create');
-    Route::get('/question/{id}', 'show');
+    Route::get('/question/{id}', 'show')->name("question.show");
     Route::post('/question/{id}/delete', 'delete');
     Route::get('/question/{id}/edit', 'editform');
     Route::post('/question/{id}/edit', 'edit');
@@ -118,12 +119,17 @@ Route::controller(ContentController::class)->group(function () {
 });
 
 Route::controller(TagController::class)->group(function () {
+    Route::get('/tag/{id}', 'tagquestionspage')->name('tagquestions');
     Route::get('/search/tag/', 'search')->name('tagsearch');
     Route::get('/tags', 'tagspage')->name('tags');
-    Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion');
+    Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion'); //api
+});
+Route::controller(NotificationController::class)->group(function () {
+    Route::get('/notifications', 'getnotifications')->name('notifications_page');
 });
 
 //api
+Route::get('/api/tag/{id}/questions', [TagController::class ,'tagquestions'])->name('tagquestionsapi');
 Route::get('/api/search/questions',  [SearchQuestionController::class,'search']);
 Route::get('/api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
 Route::get('/api/myanswers/{id}', [ProfileController::class, 'listmyanswers']);

@@ -165,7 +165,7 @@ CREATE TABLE QuestionTag (
 CREATE TABLE Notification (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    date TIMESTAMP NOT NULL CHECK (date <= now()),
+    date TIMESTAMP NOT NULL CHECK (date <= now()) DEFAULT now(),
     viewed BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES AppUser(id)
 );
@@ -202,16 +202,15 @@ CREATE TABLE Vote (
     FOREIGN KEY (user_id) REFERENCES AppUser(id),
     FOREIGN KEY (content_id) REFERENCES Content(id)
 );
-
+-- delete notification when vote is changed
 CREATE TABLE VoteNotification (
     notification_id INTEGER,
     user_id INTEGER,
     content_id INTEGER,
     vote BOOLEAN NOT NULL,
-    PRIMARY KEY (notification_id, user_id, content_id),
+    PRIMARY KEY (notification_id),
     FOREIGN KEY (notification_id) REFERENCES Notification(id),
-    FOREIGN KEY (user_id) REFERENCES AppUser(id),
-    FOREIGN KEY (content_id) REFERENCES Content(id)
+    FOREIGN KEY (user_id,content_id) REFERENCES Vote(user_id, content_id)
 );
 
 CREATE TABLE BadgeAttainmentNotification (
@@ -562,7 +561,7 @@ FOR EACH ROW
 EXECUTE PROCEDURE add_admin_badge();
 
 
-
+/*
 CREATE FUNCTION generate_answer_notification() RETURNS TRIGGER AS
 $BODY$
 DECLARE
@@ -582,8 +581,8 @@ BEGIN
     VALUES (question_author_id, now());
 
     -- Insert a new answer notification for the notification
-    INSERT INTO AnswerNotification (notification_id, question_id, answer_id)
-    VALUES (currval('notification_id_seq'), NEW.question_id, NEW.id);
+    INSERT INTO AnswerNotification (notification_id, answer_id)
+    VALUES (currval('notification_id_seq'), NEW.id);
 
     RETURN NEW;
 END;
@@ -593,7 +592,7 @@ LANGUAGE plpgsql;
 CREATE TRIGGER generate_answer_notification_trigger
 AFTER INSERT ON Answer
 FOR EACH ROW
-EXECUTE PROCEDURE generate_answer_notification();
+EXECUTE PROCEDURE generate_answer_notification();*/
 
 /*
 CREATE FUNCTION generate_comment_notification() RETURNS TRIGGER AS
@@ -699,7 +698,128 @@ FOR EACH ROW
 EXECUTE PROCEDURE question_minimum_tag();
 */
 
+-----------------------------
+-- Indexes
+-----------------------------
 
+CREATE INDEX notification_user ON Notification USING btree(id);
+CLUSTER Notification USING notification_user;
+
+CREATE INDEX comment_commentable ON Comment USING btree(commentable_id);
+CLUSTER Comment USING comment_commentable;
+
+CREATE INDEX appuser_content ON Content USING btree(id);
+CLUSTER Content USING appuser_content;
+
+
+-----------------------------
+-- Full Text Search Indexes
+-----------------------------
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Tag
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION tag_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.title), 'A') ||
+            setweight(to_tsvector('english', NEW.description), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.title <> OLD.title OR NEW.description <> OLD.description) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.title), 'A') ||
+                setweight(to_tsvector('english', NEW.description), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+    -- Create a trigger before insert or update on work.
+    CREATE TRIGGER tag_search_update
+    BEFORE INSERT OR UPDATE ON Tag
+    FOR EACH ROW
+    EXECUTE PROCEDURE tag_search_update();
+
+
+    -- Finally, create a GIN index for ts_vectors.
+    CREATE INDEX Tag_search_idx ON Tag USING GIN (tsvectors);
+
+
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE Question
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors =to_tsvector('english', NEW.title);
+
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.title <> OLD.title) THEN
+           NEW.tsvectors =to_tsvector('english', NEW.title);
+
+         END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER question_search_update
+ BEFORE INSERT OR UPDATE ON Question
+ FOR EACH ROW
+ EXECUTE PROCEDURE question_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX Question_search_idx ON Question USING GIN (tsvectors);
+
+
+
+-- Add column to work to store computed ts_vectors.
+ALTER TABLE AppUser
+ADD COLUMN tsvectors TSVECTOR;
+
+-- Create a function to automatically update ts_vectors.
+    CREATE FUNCTION user_search_update() RETURNS TRIGGER AS $$
+    BEGIN
+    IF TG_OP = 'INSERT' THEN
+            NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.name), 'A') ||
+            setweight(to_tsvector('english', NEW.username), 'B')
+            );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+            IF (NEW.name <> OLD.name OR NEW.username <> OLD.username) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('english', NEW.name), 'A') ||
+                setweight(to_tsvector('english', NEW.username), 'B')
+            );
+            END IF;
+    END IF;
+    RETURN NEW;
+    END $$
+    LANGUAGE plpgsql;
+
+-- Create a trigger before insert or update on work.
+CREATE TRIGGER user_search_update
+ BEFORE INSERT OR UPDATE ON AppUser
+ FOR EACH ROW
+ EXECUTE PROCEDURE user_search_update();
+
+
+-- Finally, create a GIN index for ts_vectors.
+CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);
 
 --Populate
 
@@ -1068,7 +1188,8 @@ VALUES
     (17, 17, 27),
     (18, 18, 28),
     (19, 19, 29),
-    (20, 20, 30);    
+    (20, 20, 30);  
+   
 
 INSERT INTO CommentNotification (notification_id, comment_id)
 VALUES
@@ -1120,16 +1241,15 @@ VALUES
 
 INSERT INTO VoteNotification (notification_id, user_id, content_id, vote)
 VALUES
-    (21, 1, 11, true),
-    (22, 2, 12, false),
-    (23, 3, 13, true),
-    (24, 4, 14, true),
-    (25, 5, 15, false),
-    (26, 6, 16, true),
-    (27, 7, 17, false),
-    (28, 8, 18, true),
-    (29, 9, 19, true),
-    (30, 10, 20, false);    
+    (21, 1, 10, true),
+    (22, 2, 11, false),
+    (23, 3, 12, true),
+    (24, 4, 13, true),
+    (25, 5, 14, false),
+    (26, 6, 15, true),
+    (28, 8, 17, true),
+    (29, 9, 18, true),
+    (30, 10, 19, false);    
 
 INSERT INTO BadgeAttainmentNotification (notification_id, user_id, badge_id)
 VALUES
@@ -1170,127 +1290,3 @@ VALUES
     (9, 19),
     (10, 20),
     (21,20);    
-
-
------------------------------
--- Indexes
------------------------------
-
-CREATE INDEX notification_user ON Notification USING btree(id);
-CLUSTER Notification USING notification_user;
-
-CREATE INDEX comment_commentable ON Comment USING btree(commentable_id);
-CLUSTER Comment USING comment_commentable;
-
-CREATE INDEX appuser_content ON Content USING btree(id);
-CLUSTER Content USING appuser_content;
-
-
------------------------------
--- Full Text Search Indexes
------------------------------
-
--- Add column to work to store computed ts_vectors.
-ALTER TABLE Tag
-ADD COLUMN tsvectors TSVECTOR;
-
--- Create a function to automatically update ts_vectors.
-    CREATE FUNCTION tag_search_update() RETURNS TRIGGER AS $$
-    BEGIN
-    IF TG_OP = 'INSERT' THEN
-            NEW.tsvectors = (
-            setweight(to_tsvector('english', NEW.title), 'A') ||
-            setweight(to_tsvector('english', NEW.description), 'B')
-            );
-    END IF;
-    IF TG_OP = 'UPDATE' THEN
-            IF (NEW.title <> OLD.title OR NEW.description <> OLD.description) THEN
-            NEW.tsvectors = (
-                setweight(to_tsvector('english', NEW.title), 'A') ||
-                setweight(to_tsvector('english', NEW.description), 'B')
-            );
-            END IF;
-    END IF;
-    RETURN NEW;
-    END $$
-    LANGUAGE plpgsql;
-
-    -- Create a trigger before insert or update on work.
-    CREATE TRIGGER tag_search_update
-    BEFORE INSERT OR UPDATE ON Tag
-    FOR EACH ROW
-    EXECUTE PROCEDURE tag_search_update();
-
-
-    -- Finally, create a GIN index for ts_vectors.
-    CREATE INDEX Tag_search_idx ON Tag USING GIN (tsvectors);
-
-
-
--- Add column to work to store computed ts_vectors.
-ALTER TABLE Question
-ADD COLUMN tsvectors TSVECTOR;
-
--- Create a function to automatically update ts_vectors.
-CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
-BEGIN
- IF TG_OP = 'INSERT' THEN
-        NEW.tsvectors =to_tsvector('english', NEW.title);
-
- END IF;
- IF TG_OP = 'UPDATE' THEN
-         IF (NEW.title <> OLD.title) THEN
-           NEW.tsvectors =to_tsvector('english', NEW.title);
-
-         END IF;
- END IF;
- RETURN NEW;
-END $$
-LANGUAGE plpgsql;
-
--- Create a trigger before insert or update on work.
-CREATE TRIGGER question_search_update
- BEFORE INSERT OR UPDATE ON Question
- FOR EACH ROW
- EXECUTE PROCEDURE question_search_update();
-
-
--- Finally, create a GIN index for ts_vectors.
-CREATE INDEX Question_search_idx ON Question USING GIN (tsvectors);
-
-
-
--- Add column to work to store computed ts_vectors.
-ALTER TABLE AppUser
-ADD COLUMN tsvectors TSVECTOR;
-
--- Create a function to automatically update ts_vectors.
-    CREATE FUNCTION user_search_update() RETURNS TRIGGER AS $$
-    BEGIN
-    IF TG_OP = 'INSERT' THEN
-            NEW.tsvectors = (
-            setweight(to_tsvector('english', NEW.name), 'A') ||
-            setweight(to_tsvector('english', NEW.username), 'B')
-            );
-    END IF;
-    IF TG_OP = 'UPDATE' THEN
-            IF (NEW.name <> OLD.name OR NEW.username <> OLD.username) THEN
-            NEW.tsvectors = (
-                setweight(to_tsvector('english', NEW.name), 'A') ||
-                setweight(to_tsvector('english', NEW.username), 'B')
-            );
-            END IF;
-    END IF;
-    RETURN NEW;
-    END $$
-    LANGUAGE plpgsql;
-
--- Create a trigger before insert or update on work.
-CREATE TRIGGER user_search_update
- BEFORE INSERT OR UPDATE ON AppUser
- FOR EACH ROW
- EXECUTE PROCEDURE user_search_update();
-
-
--- Finally, create a GIN index for ts_vectors.
-CREATE INDEX User_search_idx ON AppUser USING GIN (tsvectors);

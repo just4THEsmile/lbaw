@@ -11,11 +11,17 @@
             color:white;
         } 
 </style>
-<div>{{ $user->name }}'s followed questions</div>
+    <label for="sortSelect">Sort By:</label>
+    <select id="sortSelect">
+        <option value="date">Time</option>
+        <option value="votes">Votes</option>
+    </select>
+
 <div>Followed questions:</div>
+<div>{{ $user->name }}'s followed questions</div>
 <div id="user_id" hidden>{{$user->id}}</div>
-        <ul id="Answers"></ul>
-        <div id ="AnswerPagination"></div>
+        <ul id="Questions"></ul>
+        <div id ="pagination"></div>
         <script type="text/javascript" src={{ url('js/followedQuestions.js') }} defer></script>
 @endsection
 

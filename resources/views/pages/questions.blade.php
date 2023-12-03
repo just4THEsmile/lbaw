@@ -30,13 +30,14 @@
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
         <label for="sortSelect">Sort By:</label>
         <select id="sortSelect">
+            <option value="relevance">Relevance</option>
             <option value="date">Time</option>
             <option value="votes">Votes</option>
         </select>
         <ul id="searchResults">
 
         </ul>
-    <div id="QuestionPagination"></div>
+    <div id="pagination"></div>
 </div>
     <script src="{{ asset('js/questionsearch.js') }}" defer></script>
 </html>
