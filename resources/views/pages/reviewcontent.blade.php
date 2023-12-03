@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section ('style')
   <link href="{{ url('css/auth.css') }}" rel="stylesheet">
-  <link href="{{ url('css/unblock.css') }}" rel="stylesheet">
 @endsection
 @section('content')
 

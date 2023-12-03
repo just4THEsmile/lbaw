@@ -45,6 +45,7 @@ Route::redirect('/', '/login');
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/faq',[HomeController::class,'faq']);
 });
 
 // Search
@@ -136,3 +137,5 @@ Route::get('/api/myblocked/{id}',  [ProfileController::class,'listmyblocked']);
 Route::get('/moderatecontent', [ContentController::class, 'moderatecontent'])->name('moderatecontent');
 Route::get('/reviewcontent/{id}', [ContentController::class, 'reviewcontent'])->name('reviewcontent');
 Route::post('/processRequest', [ContentController::class, 'processRequest'])->name('processRequest');
+
+

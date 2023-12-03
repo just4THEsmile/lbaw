@@ -42,7 +42,9 @@
                     <a href="{{'/tags'}}">Tags</a>
                     <a href="{{'/questions'}}">Questions</a>
                     <a class="active" href="{{'/users'}}" >Users</a>
-                    <a href="{{'/moderatecontent'}}">Blocked Content</a>
+                    @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+                        <a href="{{'/moderatecontent'}}">Blocked Content</a>
+                    @endif
 
                 </div>
         
