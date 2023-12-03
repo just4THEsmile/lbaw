@@ -249,12 +249,12 @@ CREATE FUNCTION enforce_vote() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF EXISTS (
-        SELECT 1
+        SELECT *
         FROM Vote
-        WHERE user_id = NEW.user_id AND content_id = NEW.content_id
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id AND vote = NEW.vote
     ) THEN
         DELETE FROM Vote
-        WHERE user_id = NEW.user_id AND content_id = NEW.content_id;
+        WHERE user_id = NEW.user_id AND content_id = NEW.content_id AND vote = NOT NEW.vote;
     END IF;
     RETURN NEW;
 END;

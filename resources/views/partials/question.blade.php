@@ -24,7 +24,7 @@
         @if (!$question->commentable->content->deleted)
             <div class="questioninfo">
             <div class="profileinfo">
-                <a href="{{ url('/profile/'.$question->userid) }}">{{ $question->commentable->content->user->username }}</a>
+                <a href="{{ url('/profile/'.$question->commentable->content->user->id) }}">{{ $question->commentable->content->user->username }}</a>
                 <p>{{ $question->date }}</p>
             </div>
                 <div class="questionbuttons">

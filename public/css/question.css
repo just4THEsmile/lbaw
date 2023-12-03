@@ -254,3 +254,6 @@ button{
 .correctbutton>.correctanswerButton{
   margin-right: 0em !important;
 }
+h2{
+  margin-bottom: 0em !important;
+}

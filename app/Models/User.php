@@ -85,6 +85,14 @@ class User extends Authenticatable
         return FileController::get('profile', $this->id);
     }
 
+    public function VotedUP($content_id){
+        $vote = DB::table('vote')->where('user_id', $this->id)->where('content_id', $content_id)->where('vote', 1)->first();
+        if($vote === null){
+            return false;
+        }
+        return true;
+    }
+
     public function reports(){
         return $this->hasMany(Report::class, 'user_id', 'id');
     }

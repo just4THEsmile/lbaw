@@ -120,6 +120,7 @@ Route::controller(TagController::class)->group(function () {
 });
 
 //api
+Route::post('/api/vote/{id}', [ContentController::class, 'voteContent']);
 Route::get('/api/search/questions',  [SearchQuestionController::class,'search']);
 Route::get('/api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
 Route::get('/api/myanswers/{id}', [ProfileController::class, 'listmyanswers']);

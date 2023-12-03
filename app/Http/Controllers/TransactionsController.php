@@ -7,8 +7,93 @@ use App\Models\Commentable;
 use App\Models\Comment;
 use App\Models\Answer;
 use App\Models\User;
+use App\Models\Vote;
 class TransactionsController extends Controller
 {
+    public static function votedowncontent($user_id,$content_id)
+    {
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+            $vote = new vote([
+                'user_id' => $user_id,
+                'content_id' => $content_id,
+                'vote' => False,
+            ]);
+            $vote->save();
+            $content = Content::find($content_id);
+            
+
+            // Commit the transaction
+            DB::commit();
+            return ($content->votes - 1);
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+            return $e->getMessage();
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+        }
+    }
+
+    public static function voteupcontent($user_id, $content_id)
+    {
+        try {
+             // Start the transaction
+             DB::beginTransaction();
+             $vote = new vote([
+                 'user_id' => $user_id,
+                 'content_id' => $content_id,
+                 'vote' => True,
+             ]);
+             $vote->save();
+             $content = Content::find($content_id);
+             // Commit the transaction
+             DB::commit();
+            return ($content->votes + 1);
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+            return $e->getMessage();
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+        }
+    }
+    public static function deletevote($user_id, $content_id)
+    {
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+            $vote = Vote::where('user_id', $user_id)->where('content_id', $content_id)->first();
+            if($vote->vote){
+                $content = Content::find($content_id);
+                $vote->delete();
+                DB::commit();
+                return ($content->votes - 1);
+            }
+            else{
+                $content = Content::find($content_id);
+
+                $vote->delete();
+                DB::commit();
+                
+                return ($content->votes + 1);
+            }
+        
+        } catch (\Exception $e) {
+            dd($e);
+            // An error occurred, rollback the transaction
+            DB::rollback();
+            return $e->getMessage();
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+        }
+    }
     public static function createQuestion($user_id,$title,$content1,$tag_ids)
     {
         try {

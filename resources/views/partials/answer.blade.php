@@ -3,7 +3,7 @@
     @if(!$answer->commentable->content->deleted)
         @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin')
             <div class="correctbutton">
-                <button type='submit' class='correctanswerButton' name="correctanswer-button">
+                <button type='submit' id="{{ $answer->id }}" class='correctanswerButton' name="correctanswer-button">
                     <span class="material-symbols-outlined">
                         check
                     </span>
@@ -39,7 +39,7 @@
         <span>{{ $answer->commentable->content->content }}</span>
         @if(!$answer->commentable->content->deleted)
             <div class="profileinfo">
-                <a href="{{ url('/profile/'.$answer->userid) }}">{{ $answer->commentable->content->user->username }}</a>
+                <a href="{{ url('/profile/'.$answer->commentable->content->user->id) }}">{{ $answer->commentable->content->user->username }}</a>
                 <p>{{ $answer->commentable->content->compileddate()}}</p>
             </div>
             <div class= "commentbuttons">
