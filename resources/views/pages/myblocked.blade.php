@@ -3,18 +3,18 @@
 @section('content2')
 
     <style>
-        #MyQuestions{
+        #MyBlocked{
             background-color: #0000FF;
             
         }
-        #MyQuestions > a{
+        #MyBlocked > a{
             color:white;
         } 
     </style>
     <div id="user_id" hidden>{{$user->id}}</div>
-        <ul id="Questions"></ul>
-        <div id ="QuestionPagination"></div>
-        <script type="text/javascript" src={{ url('js/my_questions.js') }} defer></script>
+        <ul id="Blocked"></ul>
+        <div id ="BlockedPagination"></div>
+        <script type="text/javascript" src={{ url('js/my_blocked.js') }} defer></script>
 @endsection
 
 

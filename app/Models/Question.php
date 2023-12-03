@@ -47,4 +47,5 @@ class Question extends Model
         return FollowQuestion::where('user_id', $user->id)->where('question_id', $this->id)->exists();
     }
     
+    
 }

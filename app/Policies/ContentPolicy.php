@@ -19,5 +19,12 @@ class ContentPolicy
     {
         return Auth::check() && $user->id !== $content->user_id;
     }
-    
+    public function unblock(User $user,Content $content): bool
+    {
+        return Auth::check() && $user->id === $content->user_id;
+    }
+    public function moderate(User $user): bool
+    {
+        return Auth::check() && ($user->usertype === 'admin' || $user->usertype === 'moderator');
+    }
 }

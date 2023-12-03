@@ -22,8 +22,7 @@ class UserController extends Controller
         $this->authorize('edit', $userAuth);
         $user = User::find($userId);
 
-            $request->validate(['name' => 'required|string|max:16',
-            'paylink' => 'url'
+        $request->validate(['name' => 'required|string|max:255',
         ]);
 
         if($user->username !== $request->input('username')){
@@ -41,6 +40,13 @@ class UserController extends Controller
             $request->validate(['password' => 'required|string|min:8']);
             $user->password = Hash::make($request->input('password'));
         }
+
+        $new_paylink = $request->input('paylink');
+        if( strlen($new_paylink )!== 0){
+            $request->validate(['paylink' => 'url']);
+            $user->paylink = $request->input('paylink');
+        }
+        
         $user->bio = $request->input('bio');
 
         $user->paylink = $request->input('paylink');
