@@ -40,11 +40,11 @@ class TagController extends Controller
         $query = $request->input('query');
         if (Auth::check()) {
             if($query == null){
-                $results = Tag::paginate(15)->withqueryString();
+                $results = Tag::simplePaginate(15)->withqueryString();
                 return response()->json($results);
             }
             $results = Tag::whereRaw("tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])
-            ->orderByRaw("ts_rank(tsvectors, to_tsquery(?)) ASC", [$query])->paginate(15)->withqueryString();
+            ->orderByRaw("ts_rank(tsvectors, to_tsquery(?)) ASC", [str_replace(' ', ' & ',$query)])->simplePaginate(15)->withqueryString();
             return response()->json($results);
         } else {
             return response()->json([

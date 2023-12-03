@@ -2,27 +2,22 @@
 
 @section('content2')
 
-
     <style>
-        #MyAnswers{
+        #MyBlocked{
             background-color: #0000FF;
             
         }
-        #MyAnswers > a{
+        #MyBlocked > a{
             color:white;
         } 
     </style>
     <div id="user_id" hidden>{{$user->id}}</div>
-    <label for="sortSelect">Sort By:</label>
-    <select id="sortSelect">
-        <option value="date">Time</option>
-        <option value="votes">Votes</option>
-    </select>
-        <ul id="Answers"></ul>
-        <div id ="pagination"></div>
-        <script type="text/javascript" src={{ url('js/my_answers.js') }} defer></script>
-
+        <ul id="Blocked"></ul>
+        <div id ="BlockedPagination"></div>
+        <script type="text/javascript" src={{ url('js/my_blocked.js') }} defer></script>
 @endsection
+
+
 
 @section('content3')
 <div id='Profile'><a class='aside' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a></div>

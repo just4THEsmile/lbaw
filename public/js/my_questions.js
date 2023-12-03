@@ -35,14 +35,46 @@ function showPage(results,links){
         let result = results[i];
         // Create the main answer card div
         const questionCard = document.createElement("div");
-        questionCard.classList.add("questioncard");
+        questionCard.classList.add("question");
 
-        // Create the link for the question title
-        const titleLink = document.createElement("a");
-        titleLink.href = `/question/${result.id}`;
-        titleLink.textContent = result.title;
-        titleLink.classList.add("title");
-        // Create the content div
+        //votes
+        const votes = document.createElement("div");
+        votes.classList.add("votes");
+        const upvote = document.createElement("button");
+        upvote.classList.add("arrow-up");
+
+        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_less"
+        const upvoteSpan = document.createElement("span");
+        upvoteSpan.classList.add("material-symbols-outlined");
+        upvoteSpan.textContent = "expand_less";
+
+        upvote.appendChild(upvoteSpan);
+
+        // Create the <p> element with the class "votesnum" and set its content dynamically using data from the server
+        const votesNum = document.createElement("p");
+        votesNum.classList.add("votesnum");
+        votesNum.textContent = result.votes; // Replace with actual data
+
+        // Create the <button> element for downvote with the class "arrow-down"
+        const downvote = document.createElement("button");
+        downvote.classList.add("arrow-down");
+
+        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_more"
+        const downvoteSpan = document.createElement("span");
+        downvoteSpan.classList.add("material-symbols-outlined");
+        downvoteSpan.textContent = "expand_more";
+
+        // Append the <span> element to the downvote button
+        downvote.appendChild(downvoteSpan);
+
+        // Append the created elements to the <div> element
+        votes.appendChild(upvote);
+        votes.appendChild(votesNum);
+        votes.appendChild(downvote);
+
+
+
+        // Content
         const contentDiv = document.createElement("div");
         contentDiv.classList.add("content");
 
@@ -54,17 +86,12 @@ function showPage(results,links){
         const dateParagraph = document.createElement("p");
         dateParagraph.textContent = result.date; // Adjust based on your actual result structure
         dateParagraph.classList.add("date");
-
-        const votes = document.createElement("p");
-        votes.textContent = result.votes;
-        votes.classList.add("votes");
         // Append elements to the content div
         contentDiv.appendChild(votes);
         contentDiv.appendChild(contentParagraph);
         contentDiv.appendChild(dateParagraph);  
 
-        // Append elements to the answer card div
-        questionCard.appendChild(titleLink);
+        questionCard.appendChild(votes);
         questionCard.appendChild(contentDiv);
         questionCard.appendChild(votes);
         // Append the answer card to the search results

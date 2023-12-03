@@ -72,7 +72,7 @@ CREATE TABLE AppUser (
     nquestion INTEGER CHECK (nquestion >= 0) DEFAULT 0,
     nanswer INTEGER CHECK (nanswer >= 0) DEFAULT 0,
     profilepicture VARCHAR,
-    paylink VARCHAR UNIQUE,
+    paylink VARCHAR,
     usertype VARCHAR NOT NULL CHECK (usertype IN ('user', 'moderator', 'admin')),
     remember_token VARCHAR
 );
@@ -99,14 +99,6 @@ CREATE TABLE BadgeAttainment (
     FOREIGN KEY (badge_id) REFERENCES Badge(id)
 );
 
-CREATE TABLE UnblockRequest (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    title VARCHAR NOT NULL,
-    description TEXT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES AppUser(id)
-);
-
 CREATE TABLE Content (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
@@ -118,6 +110,15 @@ CREATE TABLE Content (
     deleted BOOLEAN DEFAULT false,
     blocked BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES AppUser(id)
+);
+
+CREATE TABLE UnblockRequest (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    content_id INTEGER NOT NULL,
+    description TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES AppUser(id),
+    FOREIGN KEY (content_id) REFERENCES Content(id)
 );
 
 CREATE TABLE Commentable (
@@ -917,7 +918,7 @@ VALUES
     (21, 7, NOW());    
 
 
-INSERT INTO UnblockRequest (user_id, title, description)
+/*INSERT INTO UnblockRequest (user_id, title, description)
 VALUES
     (1, 'Unblock Request 1', 'I would like to request an unblock for my account.'),
     (2, 'Account Access Request', 'Please unblock my account as I am unable to access it.'),
@@ -939,6 +940,7 @@ VALUES
     (18, 'Account Access Issue', 'Requesting an unblock to resolve my account access problem.'),
     (19, 'Access Problem', 'Please unblock my account as I can\t sign in.'),
     (20, 'Account Unlock', 'I need my account unlocked to regain access.');
+    */
 
 INSERT INTO Content (user_id, content, votes, date, edited)
 VALUES
@@ -973,7 +975,17 @@ VALUES
     (19, 'What are some effective techniques for staying motivated and achieving goals?', 10, NOW(), false),
     (20, 'Share your favorite recipe for a homemade meal or dessert!', 6,  NOW(), false),
     (21, 'Vincent van Gogh created the iconic painting "Starry Night," showcasing his unique style and emotional expression in art.', 15,  NOW(), false);
-
+    
+INSERT INTO Content (user_id, content, votes, date, edited, blocked)
+VALUES
+    (21, 'Este está bloqueado1', 0 , Now(), false, true),
+    (21, 'Este está bloqueado2', 0 , Now(), false, true),
+    (21, 'Este está bloqueado3', 0 , Now(), false, true),
+    (21, 'Este está bloqueado4', 0 , Now(), false, true),
+    (21, 'Este está bloqueado5', 0 , Now(), false, true),
+    (21, 'Este está bloqueado6', 0 , Now(), false, true),
+    (21, 'Este está bloqueado7', 0 , Now(), false, true),
+    (21, 'Este está bloqueado8', 0 , Now(), false, true);
 INSERT INTO Commentable (id)
 VALUES
     (1),

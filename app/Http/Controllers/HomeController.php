@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Content;
+use App\Models\Faq;
     /**
      * Display the home page.
      *
@@ -30,4 +31,9 @@ use App\Models\Content;
             return view('users.index', compact('users')); 
         }
         
+        public function faq()
+        {
+            $faqs = Faq::all();
+            return view('pages.faq', ['faqs' => $faqs]);
+        }
     }

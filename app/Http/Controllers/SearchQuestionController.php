@@ -111,7 +111,7 @@ class SearchQuestionController extends Controller
                 'tags_agg.title',
                 'tags_agg.id'
             )
-            ->orderByRaw("ts_rank(question.tsvectors, to_tsquery(?)) ASC", [$query])
+            ->orderByRaw("ts_rank(question.tsvectors, to_tsquery(?)) ASC", [str_replace(' ', ' & ', $query)])
             ->paginate(15)->withQueryString()->withQueryString();
 
                 foreach($results as $result){

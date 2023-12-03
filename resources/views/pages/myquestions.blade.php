@@ -29,10 +29,5 @@
 <div id='Follow'><a class='aside' href="{{ route('followquestion', ['id' => $user_id]) }}">Followed Questions</a></div>
 <div id='MyQuestions'><a class='aside' href="{{ route('myquestions', ['id' => $user_id]) }}" >My questions</a></div>
 <div id= 'MyAnswers'><a class='aside' href="{{ route('myanswers', ['id' => $user_id]) }}">My answers</a></div>
-<div id='additional'>
-    <div>FAQ</div>
-    <div>About us</div>
-    <div>Contact us</div>
-    <div>Terms of service</div>
-</div>
+<div id= 'MyBlocked'><a class='aside' href="{{ route('myblocked', ['id' => $user_id]) }}">My blocked</a></div>
 @endsection

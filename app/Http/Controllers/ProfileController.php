@@ -30,10 +30,37 @@ class ProfileController extends Controller
         }
         return view('pages.userprofile', ['user' => $user]);
     }
-    public function myquestions($id){
-        return view('pages.myquestions', ['user_id' => $id]);
+
+
+
+    public function edit2($id){
+        $user = User::find($id);
+        if(Auth::user()->id !== $user->id && Auth::user()->usertype !== 'admin'){
+            return view('pages.profile', ['user' => $user]);
+        }
+        return view('pages/userprofile2', ['user' => $user]);
     }
-    public function listmyquestions(Request $request,$id){
+
+    
+
+    public function myquestions($id){
+        if(Auth::check()){
+            $user = User::find($id);
+            return view('pages.myquestions', ['user_id' => $id]);
+        }else{
+            return redirect('/login');
+        }
+    }
+    public function myanswers($id){
+        $user = User::find($id);
+        return view('pages/myanswers', ['user' => $user]);
+    }
+    public function myblocked($id){
+        $user = User::find($id);
+        return view('pages/myblocked', ['user' => $user]);
+    }
+
+    public function listmyquestions(Request $request ,$id){
         $user = User::find($id); 
         if($user == null){
             return response()->json([
@@ -51,10 +78,6 @@ class ProfileController extends Controller
             $result->date = $result->compileddate();
         }
         return response()->json($questions) ;
-    }
-    public function myanswers($id){
-        $user = User::find($id);
-        return view('pages/myanswers', ['user' => $user]);
     }
     public function listmyanswers(Request $request,$id){
         $orderBy = $request->input('OrderBy');
@@ -82,10 +105,9 @@ class ProfileController extends Controller
             return redirect('/login');
         }
     }
-    public function listfollowedquestions(Request $request,$id){
+    public function listfollowedquestions(Request $request , $id){
         $orderBy = $request->input('OrderBy');
-        $followedQuestions = Content::select('content.content as content', 'question.title as title', 'content.votes as votes', 'question.id as id', 'content.date as date')
-        ->join('question', 'content.id', '=', 'question.id')
+        $followedQuestions = Question::select('content.content as content', 'question.title as title', 'content.votes as votes', 'question.id as id', 'content.date as date')
         ->join('followquestion', 'followquestion.question_id', '=', 'question.id')
         ->where('followquestion.user_id', $id)
         ->orderBy($orderBy, 'desc')
@@ -94,5 +116,13 @@ class ProfileController extends Controller
             $result->date = $result->compileddate();
         }
         return response()->json($followedQuestions) ;
+    }
+
+    public function listmyblocked($id){
+        $blockedContent = Content::where('user_id', $id)->where('blocked', true)->get();
+        foreach($blockedContent as $result){
+            $result->date = $result->compileddate();
+        }
+        return response()->json($blockedContent) ;
     }
 }
