@@ -1,6 +1,8 @@
 @extends('layouts.barebone')
 
 @section('content2')
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
 
     <style>
         #MyBlocked{
@@ -12,9 +14,18 @@
         } 
     </style>
     <div id="user_id" hidden>{{$user->id}}</div>
-        <ul id="Blocked"></ul>
-        <div id ="BlockedPagination"></div>
-        <script type="text/javascript" src={{ url('js/my_blocked.js') }} defer></script>
+    <ul id="Blocked">
+        @foreach($blockedContent as $block)
+           <div class="blocked">
+                <p>{{$block->content}}</p>
+                <a href="/api/unblockrequest/{{ $block->id }}?user_id={{ $block->user_id }}" class="unblock">Request Unblock</a>
+           </div>
+        @endforeach
+    </ul>
+    <div class="d-flex justify-content-center mt-4">
+        {{ $blockedContent->links('pagination::bootstrap-4') }}
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 @endsection
 
 
