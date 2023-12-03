@@ -16,7 +16,6 @@
         <link href="{{ url('css/milligram.min.css') }}" rel="stylesheet">
         <link href="{{ url('css/app.css') }}" rel="stylesheet">
         <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/footers/">
-        
                 <script type="text/javascript">
                     
             // Fix for Firefox autofocus CSS bug
@@ -25,7 +24,6 @@
         <script type="text/javascript" src={{ url('js/app.js') }} defer>
             
         </script>
-        <script src="{{ asset('js/usersearch.js') }}" defer></script>
     </head>
     <body>
         <main>

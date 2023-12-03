@@ -1,18 +1,20 @@
-const Questions = document.getElementById("Questions");
-const questionpagination = document.getElementById("QuestionPagination")
-const questionsPerPage = 5;
-let results = [];
+const searchOrderedBy_Selector = document.getElementById("sortSelect");
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    searchOrderedBy_Selector.addEventListener("change", function () {
+        updateQuestions();
+    });
+});
 function updateQuestions(){
 
         // Perform an AJAX request to your Laravel backend
-        let currentPage = 1;
-        fetch(`/api/myquestions/${user_id.textContent}`)
+        fetch(`/api/myquestions/${user_id.textContent}?OrderBy=${searchOrderedBy_Selector.value}`)
             .then(response => response.json())
             .then(data => {
                 // Update the search results in the DOM
-                results = data;
-                showPage(currentPage);   
+                showPage(data.data,data.links);
+                console.log(data);
             })
             .catch(error => {
                 console.error('Error fetching search results', error);
@@ -23,12 +25,13 @@ window.onload = function () {
     updateQuestions();
 }   
 
-function showPage(currentPage){
+function showPage(results,links){
+    const Questions = document.getElementById("Questions");
     Questions.innerHTML = "";
     if(results.length == 0){
         Questions.innerHTML = "No questions Found";
     }
-    for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
+    for (let i = 0; i < results.length; i++) {
         let result = results[i];
         // Create the main answer card div
         const questionCard = document.createElement("div");
@@ -75,90 +78,54 @@ function showPage(currentPage){
         const contentDiv = document.createElement("div");
         contentDiv.classList.add("content");
 
-        const questionLink = document.createElement("a");
-        questionLink.href = `/question/${result.id}`; // Replace with actual URL
-
-        const questionTitle = document.createElement("h3");
-        questionTitle.textContent = result.title; // Replace with actual title
-
-        questionLink.appendChild(questionTitle);
-
-        const profileInfoDiv = document.createElement("div");
-        profileInfoDiv.classList.add("profileinfo");
-
-        const userProfileLink = document.createElement("a");
-        userProfileLink.href = `/profile/${result.userid}`; // Replace with actual URL
-        userProfileLink.textContent = result.username; // Replace with actual username
-
-        const questionDate = document.createElement("p");
-        questionDate.textContent = result.date; // Replace with actual date
-
-        const questionbottom= document.createElement("div");
-        questionbottom.classList.add("questionbottom");
-
-        const questiontags = document.createElement("div");
-        questiontags.classList.add("tags");
-
-       // Split the comma-separated strings into arrays
-       const tagsArray = result.tags ? result.tags.split(',') : [result.tags];
-       const tagsidArray = result.tagsid ? result.tagsid.split(',') : [result.tagsid];
-
-        // Create a dictionary object with tag IDs as keys and tag names as values
-        for (let i = 0; i < tagsArray.length; i++) {
-            const tagElement = document.createElement("div");
-            tagElement.classList.add("tag");
+        // Create a paragraph for the question content
+        const contentParagraph = document.createElement("p");
+        contentParagraph.textContent = result.content; // Adjust based on your actual result structure
         
-            const tagLink = document.createElement("a");
-            tagLink.href = `/tag/${tagsidArray[i]}`;
-            tagLink.textContent = tagsArray[i];
-        
-            tagElement.appendChild(tagLink);
-            questiontags.appendChild(tagElement);
-        }
-
-
-        contentDiv.appendChild(questionLink);
-
-        profileInfoDiv.appendChild(userProfileLink);
-        profileInfoDiv.appendChild(questionDate);
-
-        questionbottom.appendChild(questiontags);
-        questionbottom.append(profileInfoDiv);
-
-        contentDiv.appendChild(questionbottom);
+        // Create a paragraph for the date
+        const dateParagraph = document.createElement("p");
+        dateParagraph.textContent = result.date; // Adjust based on your actual result structure
+        dateParagraph.classList.add("date");
+        // Append elements to the content div
+        contentDiv.appendChild(votes);
+        contentDiv.appendChild(contentParagraph);
+        contentDiv.appendChild(dateParagraph);  
 
         questionCard.appendChild(votes);
         questionCard.appendChild(contentDiv);
-
+        questionCard.appendChild(votes);
         // Append the answer card to the search results
         Questions.appendChild(questionCard);
         
     }
-    renderPaginationButtons(currentPage);
+    renderPaginationButtons(links);
 }
-function renderPaginationButtons(currentPage) {
-    const totalPages = Math.ceil(results.length / questionsPerPage );
-    questionpagination.innerHTML = "";
-    let delta = currentPage + 3;
-    if (delta > totalPages) delta = totalPages;
-    let start = currentPage - 3;
-    if (currentPage <= 3) start =1;
-    for (let i = start; i <=delta; i++) {
+function renderPaginationButtons(links) {
+    const paginationContainer = document.getElementById("pagination")
+    paginationContainer.innerHTML = "";
+    for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
-        button.textContent = i;
+        button.innerHTML = links[i].label;
         button.classList.add("pagination-button");
         // Highlight the current page
-        if (i === currentPage) {
-            button.style.backgroundColor = "#4CAF50";
-        }
-
         button.addEventListener("click", function () {
-            currentPage = i;
-            showPage(currentPage);
-            
+            if(links[i].url!=null){
+                fetch(links[i].url)
+
+                .then(response => response.json())
+                .then(data => {
+                        results = data;
+                        showPage(data.data,data.links);
+                        window.scrollTo(0,0); 
+        
+                })
+                .catch(error => {
+                    console.error('Error fetching search results', error);
+                });
+        } 
         });
 
-        questionpagination.appendChild(button);
+        paginationContainer.appendChild(button);
     }
 }
 

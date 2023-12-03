@@ -26,4 +26,6 @@ class Notification extends Model
         'viewed'
     ];
     protected $table = 'notification';
+    
+    protected $primaryKey = 'id';
 }

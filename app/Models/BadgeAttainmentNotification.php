@@ -19,9 +19,18 @@ class BadgeAttainmentNotification extends Model
      *
      * @var array<int, string>
      */
-
+    protected $fillable = [
+        'notification_id','user_id', 'badge_id'
+    ];
 
     protected $table = 'badgeattainmentnotification';
     protected $primaryKey = ['notification_id','user_id', 'badge_id'];
-    
+    public function badge() : BelongsTo
+    {
+        return $this->belongsTo(Badge::class);
+    }
+    public function notification() : BelongsTo
+    {
+        return $this->belongsTo(Notification::class);
+    }
 }

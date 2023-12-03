@@ -1,0 +1,70 @@
+@extends('layouts.app')
+
+@section('sytle')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<link href="{{ asset('css/cnotification.css') }}" rel="stylesheet">
+@section('content')
+
+    <div class="sidebar">
+    <a href="/home">Home Page</a>
+    <a href="{{'/tags'}}">Tags</a>
+    <a class="active" href="{{'/questions'}}">Questions</a>
+    <a href="{{'/users'}}">Users</a>
+    </div>
+    <div class="container">
+    <div class="row">
+        <div class="col-lg-9 right">
+            <div class="box shadow-sm rounded bg-white mb-3">
+                <div class="box-title border-bottom p-3">
+                    <h6 class="m-0">Recent</h6>
+                </div>
+                
+                @foreach ($notifications as $notification)
+                    @if ($notification->viewed)
+                        @break
+                    @endif
+                    @if ($notification->type == 'Answer')
+                        @include('partials.notification.answer', ['notification' => $notification])
+                    @elseif ($notification->type == 'Comment')
+                        @include('partials.notification.comment', ['notification' => $notification])
+                    @elseif ($notification->type == 'Badge Attainment')
+                        @include('partials.notification.badge', ['notification' => $notification])
+                    @elseif ($notification->type == 'Vote')
+
+                    @endif
+                @endforeach
+                <div class="box-body p-0">
+
+                </div>
+            </div>
+            <div class="box shadow-sm rounded bg-white mb-3">
+                <div class="box-title border-bottom p-3">
+                    <h6 class="m-0">Earlier</h6>
+                </div>
+                @foreach ($notifications as $notification)
+                    @if (! $notification->viewed)
+                        @continue
+                    @endif
+                    @if ($notification->type == 'Answer')
+                        @include('partials.notification.answer', ['notification' => $notification])
+                    @elseif ($notification->type == 'Comment')
+                        @include('partials.notification.comment', ['notification' => $notification])
+                    @elseif ($notification->type == 'Badge Attainment')
+                        @include('partials.notification.badge', ['notification' => $notification])
+                    @elseif ($notification->type == 'Vote')
+
+                    @endif
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <?php /*
+    @include('partials.question', ['question' => $question])
+    <div style="color:white; font-size:0.0001em;">Home</div>
+    <section id="notifications">
+        @each('partials.notification', $notifications, 'notification')
+
+    </section> */?>
+@endsection

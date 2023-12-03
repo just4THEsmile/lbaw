@@ -1,26 +1,21 @@
-const Tags = document.getElementById("Tags");
-const Tagpagination = document.getElementById("TagsPagination")
-const searchTagInput = document.getElementById("searchTagInput");
-const TagsPerPage = 10;
-let results = [];
+const searchInput = document.getElementById("searchTagInput");
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    searchTagInput.addEventListener("input", function () {
+    searchInput.addEventListener("input", function () {
         updateTags();
     });
 });
 
 function updateTags(){
-    const query = searchTagInput.value;
+    const query = searchInput.value;
     // Perform an AJAX request to your Laravel backend
-    let currentPage = 1;
     fetch(`/api/fullsearch/tag?query=${query}`)
         .then(response => response.json())
         .then(data => {
-            // Update the search results in the DOM
-            results = data;
-            showPage(currentPage);   
+            if(query==searchInput.value){
+                showPage(data.data,data.links);   
+            }
         })
         .catch(error => {
             console.error('Error fetching search results', error);
@@ -31,12 +26,13 @@ window.onload = function () {
     updateTags();
 }   
 
-function showPage(currentPage){
+function showPage(results,links){
+    const Tags = document.getElementById("Tags");
     Tags.innerHTML = "";
     if(results.length == 0){
         Tags.innerHTML = "No Tags Found";
     }
-    for (let i = (currentPage - 1)*TagsPerPage; i < results.length && i<currentPage*TagsPerPage ; i++) {
+    for (let i = 0; i < results.length; i++) {
         let result = results[i];
         // Create the main Tag card div
         const TagCard = document.createElement("div");
@@ -55,8 +51,7 @@ function showPage(currentPage){
             contentParagraph.textContent = result.description;
         }
         const titleLink = document.createElement("a");
-        console.log(result);
-        titleLink.href = `/Tag/${result.id}`;
+        titleLink.href = `/tag/${result.id}`;
         titleLink.textContent = result.title;
         titleLink.classList.add("title");
 /*
@@ -76,30 +71,41 @@ function showPage(currentPage){
         Tags.appendChild(TagCard);
         
     }
-    renderPaginationButtons(currentPage);
+    renderPaginationButtons(links);
 }
-function renderPaginationButtons(currentPage) {
-    const totalPages = Math.ceil(results.length / TagsPerPage );
-    Tagpagination.innerHTML = "";
-    let delta = currentPage + 3;
-    if (delta > totalPages) delta = totalPages;
-    let start = currentPage - 3;
-    if (currentPage <= 3) start =1;
-    for (let i = start; i <=delta; i++) {
+function renderPaginationButtons(links) {
+    const paginationContainer = document.getElementById("pagination")
+    query = searchInput.value;
+    paginationContainer.innerHTML = "";
+    for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
-        button.textContent = i;
-        button.classList.add("pagination-button");
-        // Highlight the current page
-        if (i === currentPage) {
-            button.style.backgroundColor = "#4CAF50";
+        button.innerHTML = links[i].label;
+        if(links[i].active){
+            button.classList.add("active");
+        }else{
+            button.classList.add("pagination-button");
         }
-
+        button.class = links[i].active ? "active" : "";
+        // Highlight the current page
         button.addEventListener("click", function () {
-            currentPage = i;
-            showPage(currentPage);
-            
+            if(links[i].url!=null){
+                fetch(links[i].url)
+
+                .then(response => response.json())
+                .then(data => {
+                    if(searchInput.value==query){
+                        results = data;
+                        showPage(data.data,data.links);
+                        window.scrollTo(0,0); 
+                    }
+        
+                })
+                .catch(error => {
+                    console.error('Error fetching search results', error);
+                });
+        } 
         });
 
-        Tagpagination.appendChild(button);
+        paginationContainer.appendChild(button);
     }
 }

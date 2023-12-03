@@ -1,9 +1,7 @@
 const searchInput = document.getElementById("searchInput");
 const searchResults = document.getElementById("searchResults");
 const searchOrderedBy_Selector = document.getElementById("sortSelect");
-const questionpagination = document.getElementById("QuestionPagination")
-const questionsPerPage = 5;
-let results = [];
+
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -15,41 +13,35 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 function searchQuestions(){
+    const query = searchInput.value;
+    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
 
-        const query = searchInput.value;
-        // Perform an AJAX request to your Laravel backend
-        let currentPage = 1;
-        console.log("query");
-        console.log(query);
-        fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            if(searchInput.value==query){
 
-            .then(response => response.json())
-            .then(data => {
-                if(searchInput.value==query){
+        
+                results = data;
+                showPage(data.data,data.links);
+            }
 
-            
-                    results = data;
-                    showPage(currentPage);
-                    renderPaginationButtons(currentPage);
-                }
-
-        })
-        .catch(error => {
-            console.error('Error fetching search results', error);
-        });
-
-
+    })
+    .catch(error => {
+        console.error('Error fetching search results', error);
+    });
 }
+
+
 window.onload = function () {
     searchQuestions();
 }   
 
-function showPage(currentPage){
+function showPage(results,links){
     searchResults.innerHTML = "";
     if(results.length == 0){
         searchResults.innerHTML = "No questions Found";
     }
-    for (let i = (currentPage - 1)*questionsPerPage; i < results.length && i<currentPage*questionsPerPage ; i++) {
+    for (let i = 0; i < results.length; i++) {
         let result = results[i];
         // Create the main answer card div
         const questionCard = document.createElement("div");
@@ -155,29 +147,34 @@ function showPage(currentPage){
         searchResults.appendChild(questionCard);
         
     }
-    renderPaginationButtons(currentPage);
+    renderPaginationButtons(links);
 }
-function renderPaginationButtons(currentPage) {
-    const totalPages = Math.ceil(results.length / questionsPerPage );
-    const paginationContainer = document.getElementById("QuestionPagination")
+function renderPaginationButtons(links) {
+    query = searchInput.value;
+    const paginationContainer = document.getElementById("pagination")
     paginationContainer.innerHTML = "";
-    let delta = currentPage + 3;
-    if (delta > totalPages) delta = totalPages;
-    let start = currentPage - 3;
-    if (currentPage <= 3) start =1;
-    for (let i = start; i <=delta; i++) {
+    for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
-        button.textContent = i;
+        button.innerHTML = links[i].label;
         button.classList.add("pagination-button");
         // Highlight the current page
-        if (i === currentPage) {
-            button.style.backgroundColor = "#4CAF50";
-        }
-
         button.addEventListener("click", function () {
-            currentPage = i;
-            showPage(currentPage);
-            
+            if(links[i].url!=null){
+                fetch(links[i].url)
+
+                .then(response => response.json())
+                .then(data => {
+                    if(searchInput.value==query){
+                        results = data;
+                        showPage(data.data,data.links);
+                        window.scrollTo(0,0); 
+                    }
+        
+                })
+                .catch(error => {
+                    console.error('Error fetching search results', error);
+                });
+        } 
         });
 
         paginationContainer.appendChild(button);
