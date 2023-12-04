@@ -14,13 +14,12 @@ main > header {
 position: fixed;
   top: 0em;
   width: 100%;
-  
-
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
   background-color: #7CB9E8;
   padding: 1em;
+  z-index: 100;
 }
 main > header h1 {
   margin: 0;
@@ -426,4 +425,13 @@ margin-top: 13em;
       
     color: black !important;
     }
-    
+
+
+#fixable{
+  margin-top:10.4em;
+  margin-left: 10em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+

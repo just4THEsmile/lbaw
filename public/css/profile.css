@@ -204,7 +204,7 @@ body {
     margin-left: 1em;
   }
 
-  #Follow, #MyQuestions, #MyAnswers, #Profile{
+  #Follow, #MyQuestions, #MyAnswers, #Profile, #MyBlocked{
     display:flex;
     justify-content: center;
     padding-bottom: 0.5em;

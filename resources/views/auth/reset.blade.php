@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section ('style')
+  <link href="{{ url('css/auth.css') }}" rel="stylesheet">
+@endsection
 @section('content')
 
 <p style="margin-top:6em">

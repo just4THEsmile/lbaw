@@ -46,4 +46,11 @@ class Content extends Model
 
         return $deltaTime;
     }
+
+    public function blocked(User $user) : bool
+    {
+        return $this->where('user_id', $user->id)->where('blocked', true)->exists();
+    }
+
+    
 }
