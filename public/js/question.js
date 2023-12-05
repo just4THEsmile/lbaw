@@ -2,11 +2,14 @@
 const errorDiv = document.getElementById('error');
 const questionid = document.querySelector(`header > .votes > .arrow-up`).id;
 
+const correct = document.getElementsByClassName("correctanswerButton");
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    const correct = document.getElementsByClassName("correctbutton");
+
 
     for (let i = 0; i < correct.length; i++) {
+
         correct[i].addEventListener("click", function () {
             sendAjaxRequest('post', '/api/correct/'+questionid,{ 'answerid' :correct[i].id}, correctHandler);
         });
@@ -25,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
             downvote(votesup[i].id);
         });
     }
-    
+
 });
 
 function downvote(id) { 
@@ -85,6 +88,29 @@ function upvoteHandler() {
 }
 
 function correctHandler() {
+
+    if (this.status != 200) {
+        let error = JSON.parse(this.responseText);
+        errorDiv.textContent = error.message;
+        return;
+    }
+    let answer = JSON.parse(this.responseText);
+    console.log(answer);
+    let id = answer.answerid;
+    console.log(id);
+    let oldcorrect= document.getElementsByClassName(`correct`)
+    console.log(oldcorrect);
+
+    for(let i = 0; i < oldcorrect.length; i++){
+        if(oldcorrect[i].id == id){
+            console.log("entrou");
+            oldcorrect[i].innerHTML = '<span class="material-symbols-outlined">check</span>';
+        }else{
+            oldcorrect[i].innerHTML = '';
+        }
+    }
+    errorDiv.innerHTML='';
+    return;
 
 }
 

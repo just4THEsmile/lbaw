@@ -13,6 +13,7 @@ use App\Models\Content;
 use App\Models\Commentable;
 use App\Models\FollowQuestion;
 use App\Models\User;
+use Exception;
 
 class QuestionController extends Controller
 {
@@ -137,4 +138,29 @@ class QuestionController extends Controller
         return redirect('/question/' . $question->id);
     }
 
+    public function correctanswer(Request $request, $questionid){
+        try{
+            $user = auth()->user();
+            if($user === null){
+                return response()->json([
+                    'message' => 'not logged in',
+                ], 500);
+            }
+
+            $question = Question::find($questionid);
+
+            $this->authorize('correctanswer', $question);
+            
+            $question->correct_answer_id = $request->input('answerid');
+            $question->save();
+            return response()->json([
+                'answerid' => $request->input('answerid'),
+                'message' => 'success',
+            ], 200);
+        }catch(Exception $e){
+            return response()->json([
+                'message' => 'error',
+            ], 500);
+        }    
+    }
 }

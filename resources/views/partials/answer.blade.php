@@ -4,25 +4,24 @@ $vote = $answer->commentable->content->get_vote();
 @endphp
 <span class="answer" data-id="{{$answer->id}}">
     @if(!$answer->commentable->content->deleted)
-        @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin')
-            <div class="correctbutton" id = "{{ $answer->id }}">
+        <div class="correctbutton" id = "{{ $answer->id }}">
+            @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin')
                 <button type='submit' id="{{ $answer->id }}" class='correctanswerButton' name="correctanswer-button">
                     <span class="material-symbols-outlined">
                         check
                     </span>
                 </button>
-            </div>
-
-        @endif
-        @if($correct!=null)
-            @if($correct == answer->id)
-            <div class="correct"> 
+            @endif
+        </div>
+        <div class="correct" id= "{{ $answer->id }}"> 
+            @if($correct!=null)
+            @if($correct == $answer->id)
             <span class="material-symbols-outlined">
                 check
             </span>
-            </div>
             @endif
-        @endif    
+        @endif   
+        </div> 
         @if ($vote == vote::VOTEUP)
             <div class="votes" >
                 <button type="submit" class="arrow-up voted" id = "{{ $answer->id }}">
