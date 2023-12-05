@@ -49,7 +49,11 @@ class Content extends Model
     {
         return $user->reports()->where('content_id', $this->id)->exists();
     }
-    
+    public static function datecompiled($date){
+        $someDate = Carbon::parse($date);
+        $deltaTime = $someDate->diffForHumans(); 
+        return $deltaTime;
+    }
     public function compileddate() : string
     {
         $someDate = Carbon::parse($this->date);
@@ -57,4 +61,11 @@ class Content extends Model
 
         return $deltaTime;
     }
+
+    public function blocked(User $user) : bool
+    {
+        return $this->where('user_id', $user->id)->where('blocked', true)->exists();
+    }
+
+    
 }

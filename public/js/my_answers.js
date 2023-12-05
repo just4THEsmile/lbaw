@@ -1,19 +1,20 @@
-const Answers = document.getElementById("Answers");
-const questionpagination = document.getElementById("AnswersPagination")
-const user_id = document.getElementById("user_id")
-const AnswersPerPage = 5;
-let results = [];
+const searchOrderedBy_Selector = document.getElementById("sortSelect");
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    searchOrderedBy_Selector.addEventListener("change", function () {
+        updateAnswers();
+    });
+});
 
 function updateAnswers(){
-
-    // Perform an AJAX request to your Laravel backend
-    let currentPage = 1;
-    fetch(`/api/myanswers/${user_id.textContent}`)
+    const user_id = document.getElementById("user_id")
+    console.log(searchOrderedBy_Selector.value)
+    fetch(`/api/myanswers/${user_id.textContent}?OrderBy=${searchOrderedBy_Selector.value}`)
         .then(response => response.json())
         .then(data => {
-            // Update the search results in the DOM
-            results = data;
-            showPage(currentPage);   
+            console.log(data.data);
+            showPage(data.data,data.links);   
         })
         .catch(error => {
             console.error('Error fetching search results', error);
@@ -24,12 +25,13 @@ window.onload = function () {
     updateAnswers();
 }   
 
-function showPage(currentPage){
+function showPage(results,links){
+    const Answers = document.getElementById("Answers");
     Answers.innerHTML = "";
     if(results.length == 0){
         Answers.innerHTML = "No Answers Found";
     }
-    for (let i = (currentPage - 1)*AnswersPerPage; i < results.length && i<currentPage*AnswersPerPage ; i++) {
+    for (let i = 0; i < results.length ; i++) {
         let result = results[i];
         // Create the main answer card div
         const answerCard = document.createElement("div");
@@ -51,13 +53,13 @@ function showPage(currentPage){
         titleLink.href = `/question/${result.question_id}`;
         titleLink.textContent = result.title;
         titleLink.classList.add("title");
-/*
+
         const votes = document.createElement("p");
         votes.textContent = result.votes;
         votes.classList.add("votes");
         
         // Append elements to the content div
-        contentDiv.appendChild(votes);*/
+        contentDiv.appendChild(votes);
         contentDiv.appendChild(titleLink);
         contentDiv.appendChild(contentParagraph);
         contentDiv.appendChild(dateParagraph);  
@@ -69,30 +71,32 @@ function showPage(currentPage){
         Answers.appendChild(answerCard);
         
     }
-    renderPaginationButtons(currentPage);
+    renderPaginationButtons(links);
 }
-function renderPaginationButtons(currentPage) {
-    const totalPages = Math.ceil(results.length / AnswersPerPage );
-    questionpagination.innerHTML = "";
-    let delta = currentPage + 3;
-    if (delta > totalPages) delta = totalPages;
-    let start = currentPage - 3;
-    if (currentPage <= 3) start =1;
-    for (let i = start; i <=delta; i++) {
+function renderPaginationButtons(links) {
+    const paginationContainer = document.getElementById("pagination")
+    paginationContainer.innerHTML = "";
+    for (let i = 0; i <links.length; i++) {
         const button = document.createElement("button");
-        button.textContent = i;
+        button.innerHTML = links[i].label;
         button.classList.add("pagination-button");
         // Highlight the current page
-        if (i === currentPage) {
-            button.style.backgroundColor = "#4CAF50";
-        }
-
         button.addEventListener("click", function () {
-            currentPage = i;
-            showPage(currentPage);
-            
+            if(links[i].url!=null){
+                fetch(links[i].url)
+
+                .then(response => response.json())
+                .then(data => {
+                        showPage(data.data,data.links);
+                        window.scrollTo(0,0); 
+        
+                })
+                .catch(error => {
+                    console.error('Error fetching search results', error);
+                });
+        } 
         });
 
-        questionpagination.appendChild(button);
+        paginationContainer.appendChild(button);
     }
 }

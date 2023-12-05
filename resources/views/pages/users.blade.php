@@ -15,6 +15,10 @@
   <a href="{{'/tags'}}">Tags</a>
   <a href="{{'/questions'}}">Questions</a>
   <a class="active" href="{{'/users'}}">Users</a>
+  @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+    <a href="{{'/moderatecontent'}}">Blocked Content</a>
+  @endif
+
 </div>
 <div class="userpage">
     <div id='search'>
@@ -22,22 +26,14 @@
         <input class="searchbar" type="text" id="searchUserInput" placeholder="Search User..." >
         <label for="sortSelect">Search By:</label>
         <select id="sortSelect">
+            <option value="relevance">Relevance</option>
             <option value="username">Username</option>
             <option value="name">Name</option>
         </select>
     </div>
     <div class="users">
-        @foreach ($users as $user)
-        <div class="user">
-            <a href="{{ '/profile/' . $user->id }}">
-            <img src="{{ $user->getProfileImage() }}" alt="Profile Picture">
-            <p>Name:</p>
-            <h2>{{ $user->name }}</h2>
-            <p>Username:</p>
-            <h2>{{ $user->username}}</h2>
-            </a>
-        </div>
-        @endforeach
     </div>
+    <div id="pagination"></div>
+    <script src="{{ asset('js/usersearch.js') }}" defer></script>
 </div>
 @endsection

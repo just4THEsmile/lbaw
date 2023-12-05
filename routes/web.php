@@ -17,6 +17,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,12 +46,13 @@ Route::redirect('/', '/login');
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/faq',[HomeController::class,'faq']);
 });
 
 // Search
 Route::controller(SearchQuestionController::class)->group(function () {
     Route::get('/questions',  'show')->name('questions');
-    Route::get('/questions/tag{id}',  'show_with_tags')->name('questionswithtags');
+    Route::get('/questions/tag/{id}',  'show_with_tags')->name('questionswithtags');
 });
 
 Route::controller(UsersController::class)->group(function () {
@@ -64,12 +66,13 @@ Route::controller(ProfileController::class)->group(function () {
     Route::get('/myquestions/{id}', [ProfileController::class, 'myquestions'])->name('myquestions');
     Route::get('/myanswers/{id}', [ProfileController::class, 'myanswers'])->name('myanswers');
     Route::get('/followquestion/{id}', [ProfileController::class, 'followedQuestions'])->name('followquestion');
+    Route::get('/myblocked/{id}', [ProfileController::class, 'myblocked'])->name('myblocked');
 });
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');
     Route::post('/createquestion', 'create');
-    Route::get('/question/{id}', 'show');
+    Route::get('/question/{id}', 'show')->name("question.show");
     Route::post('/question/{id}/delete', 'delete');
     Route::get('/question/{id}/edit', 'editform');
     Route::post('/question/{id}/edit', 'edit');
@@ -111,17 +114,24 @@ Route::controller(RegisterController::class)->group(function () {
 
 Route::controller(ContentController::class)->group(function () {
     Route::post('/report/{content_id}', 'reportContent')->name('report');
+    Route::get('/api/unblockrequest/{id}','unblockrequest')->name('unblockrequest');
+    Route::post('sendunblock', 'sendunblock')->name('sendunblock');
 });
 
 Route::controller(TagController::class)->group(function () {
+    Route::get('/tag/{id}', 'tagquestionspage')->name('tagquestions');
     Route::get('/search/tag/', 'search')->name('tagsearch');
     Route::get('/tags', 'tagspage')->name('tags');
-    Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion');
+    Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion'); //api
+});
+Route::controller(NotificationController::class)->group(function () {
+    Route::get('/notifications', 'getnotifications')->name('notifications_page');
 });
 
 //api
 Route::post('/api/correct/{questionid}', [QuestionController::class, 'correctanswer']);
 Route::post('/api/vote/{id}', [ContentController::class, 'voteContent']);
+Route::get('/api/tag/{id}/questions', [TagController::class ,'tagquestions'])->name('tagquestionsapi');
 Route::get('/api/search/questions',  [SearchQuestionController::class,'search']);
 Route::get('/api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
 Route::get('/api/myanswers/{id}', [ProfileController::class, 'listmyanswers']);
@@ -129,3 +139,11 @@ Route::get('/api/followedQuestions/{id}', [ProfileController::class, 'listfollow
 Route::get('/api/search/tag/', [TagController::class,'search']); // search for all tags
 Route::get('/api/fullsearch/tag/', [TagController::class,'searchWithoutLimits']);
 Route::get('/api/question/{id}/tags', [TagController::class,'getTagsOfQuestion']);
+Route::get('/api/myblocked/{id}',  [ProfileController::class,'listmyblocked']);
+
+
+Route::get('/moderatecontent', [ContentController::class, 'moderatecontent'])->name('moderatecontent');
+Route::get('/reviewcontent/{id}', [ContentController::class, 'reviewcontent'])->name('reviewcontent');
+Route::post('/processRequest', [ContentController::class, 'processRequest'])->name('processRequest');
+
+

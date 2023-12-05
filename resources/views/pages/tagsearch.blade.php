@@ -14,6 +14,9 @@
   <a class="active" href="{{'/tags'}}">Tags</a>
   <a href="{{'/questions'}}">Questions</a>
   <a href="{{'/users'}}">Users</a>
+  @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+    <a href="{{'/moderatecontent'}}">Blocked Content</a>
+  @endif
 </div>
 
 <div style="color:white; font-size:0.0001em;">Home</div>
@@ -30,7 +33,7 @@
     <div class="realcontent">
         <input id="searchTagInput" placeholder="Search Tag..." ></input>
         <ul id="Tags"></ul>
-        <div id ="TagsPagination"></div>
+        <div id ="pagination"></div>
         <script src="{{ asset('js/tagSearch.js') }}" defer></script>
     </div>
 
