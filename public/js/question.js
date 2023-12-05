@@ -62,7 +62,7 @@ function downvoteHandler() {
         element.previousElementSibling.textContent = vote.votes;
     }  
 
-    console.log(vote);
+    errorDiv.innerHTML='';
 }
 
 function upvoteHandler() {
@@ -84,7 +84,7 @@ function upvoteHandler() {
         element.nextElementSibling.textContent = vote.votes;
     }  
 
-    console.log(vote);
+    errorDiv.innerHTML='';
 }
 
 function correctHandler() {
@@ -100,10 +100,17 @@ function correctHandler() {
     console.log(id);
     let oldcorrect= document.getElementsByClassName(`correct`)
     console.log(oldcorrect);
+    if(answer.message == 'removed correct answer'){
+        for(let i = 0; i < oldcorrect.length; i++){
+            if(oldcorrect[i].id == id){
+                oldcorrect[i].innerHTML = '';
+            }
+        }
+        return;
+    }
 
     for(let i = 0; i < oldcorrect.length; i++){
         if(oldcorrect[i].id == id){
-            console.log("entrou");
             oldcorrect[i].innerHTML = '<span class="material-symbols-outlined">check</span>';
         }else{
             oldcorrect[i].innerHTML = '';
