@@ -12,9 +12,15 @@ use App\Models\Vote;
 class ContentController extends Controller
 {
     public function reportContent(Request $request, $content_id)
-    {
+    {   
         
+
         $user = auth()->user();
+        if($user === null){
+            return response()->json([
+                'message' => 'not logged in',
+            ], 500);
+        }
         $content = Content::find($content_id);
         $this->authorize("report", $content);
         if(Report::where('user_id', $user->id)->where('content_id', $content_id)->exists()){

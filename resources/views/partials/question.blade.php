@@ -2,8 +2,14 @@
     <header>
     @php
     use App\Enums\vote;
-    $vote = $question->commentable->content->get_vote()
+    $correct = null;
+    $vote = $question->commentable->content->get_vote();
+    if($question->correct_answer_id != null){
+        $correct = $question->correct_answer_id;
+    }
+
     @endphp
+    
     @if ($vote == vote::VOTEUP)
         <div class="votes" >
             <button type="submit" class="arrow-up voted" id = "{{ $question->id }}">
@@ -101,7 +107,13 @@
     @each('partials.comment', $question->commentable->comments()->orderBy('id')->get(), 'comment')
     </div>
     <ul>
-    @each('partials.answer', $question->answers()->orderBy('id')->get(), 'answer')
+    @php
+    $answers = $question->answers()->orderBy('id')->get();
+    @endphp
+
+    @foreach ($answers as $answer)
+        @include('partials.answer', ['answer' => $answer, 'correct' => $correct])
+    @endforeach
     <?php // 
 
     //    @each('partials.answer',DB::table('answer')->where('question_id', $question->commentable_id)->get(), 'answer') 

@@ -1,8 +1,16 @@
 
 const errorDiv = document.getElementById('error');
-
+const questionid = document.querySelector(`header > .votes > .arrow-up`).id;
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    const correct = document.getElementsByClassName("correctbutton");
+
+    for (let i = 0; i < correct.length; i++) {
+        correct[i].addEventListener("click", function () {
+            sendAjaxRequest('post', '/api/correct/'+questionid,{ 'answerid' :correct[i].id}, correctHandler);
+        });
+    }
 
     const votesup = document.getElementsByClassName("arrow-up");
     const votesdown = document.getElementsByClassName("arrow-down");
@@ -74,6 +82,10 @@ function upvoteHandler() {
     }  
 
     console.log(vote);
+}
+
+function correctHandler() {
+
 }
 
 function sendAjaxRequest(method, url, data, handler) {

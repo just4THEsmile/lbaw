@@ -1,8 +1,11 @@
-
+@php
+use App\Enums\vote;
+$vote = $answer->commentable->content->get_vote();
+@endphp
 <span class="answer" data-id="{{$answer->id}}">
     @if(!$answer->commentable->content->deleted)
         @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin')
-            <div class="correctbutton">
+            <div class="correctbutton" id = "{{ $answer->id }}">
                 <button type='submit' id="{{ $answer->id }}" class='correctanswerButton' name="correctanswer-button">
                     <span class="material-symbols-outlined">
                         check
@@ -11,11 +14,44 @@
             </div>
 
         @endif
-        <div class="correct"> 
-        <span class="material-symbols-outlined">
-            check
-        </span>
-        </div>
+        @if($correct!=null)
+            @if($correct == answer->id)
+            <div class="correct"> 
+            <span class="material-symbols-outlined">
+                check
+            </span>
+            </div>
+            @endif
+        @endif    
+        @if ($vote == vote::VOTEUP)
+            <div class="votes" >
+                <button type="submit" class="arrow-up voted" id = "{{ $answer->id }}">
+                    <span class="material-symbols-outlined">
+                        expand_less 
+                    </span>
+                </button>
+                <p class="votesnum" class=>{{ $answer->commentable->content->votes }}</p> 
+                <button type = "submit" class="arrow-down" id = "{{ $answer->id }}">
+                    <span class="material-symbols-outlined">
+                        expand_more 
+                    </span>
+                </button>
+            </div>
+        @elseif ($vote == App\Enums\vote::VOTEDOWN)
+            <div class="votes" >
+                <button type="submit" class="arrow-up" id = "{{ $answer->id }}">
+                    <span class="material-symbols-outlined">
+                        expand_less 
+                    </span>
+                </button>
+                <p class="votesnum" class=>{{ $answer->commentable->content->votes }}</p> 
+                <button type = "submit" class="arrow-down voted" id = "{{ $answer->id }}">
+                    <span class="material-symbols-outlined">
+                        expand_more 
+                    </span>
+                </button>
+            </div>
+        @else        
         <div class="votes" >
             <button type="submit" class="arrow-up" id = "{{ $answer->id }}">
                 <span class="material-symbols-outlined">
@@ -29,6 +65,7 @@
                 </span>
             </button>
         </div>
+        @endif
     @endif
     <div class="answercontent">
         @if (!$answer->commentable->content->deleted)
