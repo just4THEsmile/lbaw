@@ -52,5 +52,18 @@ class Content extends Model
         return $this->where('user_id', $user->id)->where('blocked', true)->exists();
     }
 
-    
+    public function comment()
+    {
+        return $this->hasOne(Comment::class, 'id');
+    }
+
+    public function question()
+    {
+        return $this->hasOne(Question::class, 'id');
+    }
+
+    public function answer()
+    {
+        return $this->hasOne(Answer::class, 'id');
+    }
 }

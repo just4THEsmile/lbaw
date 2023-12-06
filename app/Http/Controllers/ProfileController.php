@@ -56,24 +56,31 @@ class ProfileController extends Controller
         return view('pages/myanswers', ['user' => $user]);
     }
     
-    public function myblocked($id){
+    public function myblocked($id)
+    {
         $user = User::find($id);
-        $blockedContent = Content::where('user_id', $id)->where('blocked', true)
-            ->leftJoin('question', 'content.id', '=', 'question.id')
-            ->leftJoin('answer', 'content.id', '=', 'answer.id')
-            ->leftJoin('comment', 'content.id', '=', 'comment.id')
+    
+        $blockedContent = Content::where('user_id', $id)
+            ->where('blocked', true)
+            ->with(['comment', 'question', 'answer'])
             ->paginate(5);
-        foreach($blockedContent as $result){
-            if($result->commentable_id != null){
+    
+        foreach ($blockedContent as $result) {
+            if ($result->comment) {
                 $result->type = 'comment';
-            }else if($result->answer_id != null){
+                $result->content_id = $result->comment->id;
+            } elseif ($result->answer) {
                 $result->type = 'answer';
-            }else{
+                $result->content_id = $result->answer->id;
+            } elseif ($result->question) {
                 $result->type = 'question';
+                $result->content_id = $result->question->id;
             }
-
         }
-        
+        foreach($blockedContent as $result){
+            $result->date = $result->compileddate();
+        }
+    
         return view('pages/myblocked', ['user' => $user, 'blockedContent' => $blockedContent]);
     }
 
