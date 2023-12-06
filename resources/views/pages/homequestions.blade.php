@@ -51,12 +51,13 @@
         </div>  
         <div class="profileinfo">
           <a href="{{ url('/profile/'.$question->userid) }}">{{ $question->commentable->content->user->username }}</a>
-          <p>{{ $question->date }}</p>
+          <p>{{ $question->commentable->content->compileddate() }}</p>
         </div>
       </div>  
     </div>
   </div>
 @endforeach
+{{ $questions->links() }}
 </div>
 
 @endsection

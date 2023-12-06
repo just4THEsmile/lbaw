@@ -21,6 +21,7 @@
 
     <div style="color:white; font-size:0.0001em;">Home</div>
     <section id="answers">
-        @include('partials.question', ['question' => $question])
+        @include('partials.question', ['question' => $question,'answers' => $answers])
+        {{ $answers->links() }}
     </section>
 @endsection
