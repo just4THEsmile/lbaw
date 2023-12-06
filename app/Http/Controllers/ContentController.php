@@ -55,7 +55,7 @@ class ContentController extends Controller
         $unblockRequest->description = $reason;
         $unblockRequest->save();
 
-        return redirect()->route('profile', ['id' => $user_id]);
+        return redirect()->route('myblocked', ['id' => $user_id]);
     }
 
     public function moderatecontent() {
@@ -98,6 +98,7 @@ class ContentController extends Controller
             if ($action === 'unblock') {
                 $content = Content::find($contentId);
                 $content->blocked = false;
+                $content->deleted = false;
                 $content->save();
             } else if ($action === 'keep_blocked') {
             }
