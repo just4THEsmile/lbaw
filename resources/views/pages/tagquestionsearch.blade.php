@@ -7,6 +7,7 @@
 <link href="{{ asset('css/search.css') }}" rel="stylesheet">
 <link href="{{ asset('css/question_card.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 
 @endsection
 
@@ -15,8 +16,8 @@
 @section('content')
 <div class="sidebar">
   <a href="/home">Home Page</a>
-  <a href="{{'/tags'}}">Tags</a>
-  <a class="active" href="{{'/questions'}}">Questions</a>
+  <a class="active" href="{{'/tags'}}">Tags</a>
+  <a href="{{'/questions'}}">Questions</a>
   <a href="{{'/users'}}">Users</a>
 </div>
 

@@ -6,17 +6,32 @@
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
     <link href="{{ asset('css/search.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="{{ asset('css/createquestion.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
-    <form method="post" action="./answer" onsubmit="disableSubmitButton()">
-        @csrf
-        <div class="form-group">
-            <label for="content">Content:</label>
-            <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+    <div class="sidebar">
+        <a href="/home">Home Page</a>
+        <a href="{{'/tags'}}">Tags</a>
+        <a class="active" href="{{'/questions'}}">Questions</a>
+        <a href="{{'/users'}}">Users</a>
+        @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+            <a href="{{'/moderatecontent'}}">Blocked Content</a>
+        @endif
+    </div>
+    <div class="create">
+        <div class= "forms">
+            <form method="post" action="./answer" onsubmit="disableSubmitButton()">
+                @csrf
+                <div class="form-group">
+                    <label for="content">Create your Answer</label>
+                    <textarea placeholder="write here" class="form-control" id="content" name="content" rows="4" required></textarea>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
+    </div>
 
-
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
 @endsection

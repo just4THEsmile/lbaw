@@ -270,7 +270,7 @@ div.questionslist {margin-left: 0; margin-top: auto;}
 }
 
 /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
-@media screen and (max-width: 20em) {
+@media screen and (max-width: 30em) {
 .sidebar a {
   text-align: center;
   float: none;

@@ -15,27 +15,32 @@
         <a href="{{'/tags'}}">Tags</a>
         <a class="active" href="{{'/questions'}}">Questions</a>
         <a href="{{'/users'}}">Users</a>
+        @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+            <a href="{{'/moderatecontent'}}">Blocked Content</a>
+        @endif
     </div>
     <div class="create">
-        <div id="error"></div>
-        <input id="questionid" hidden value="{{ $question->id }}">
-        <div class="form-group">
-            <div id="titleError" class="error"></div>
-            <label for="title">Title:</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ $question->title}}" required>
-        </div>
-        <div class="form-group">
-        <span id="contentError" class="error"></span>
-            <label for="content">Content:</label>
-            <textarea class="form-control" id="questionContent" name="content" rows="4" required>{{ $question->commentable->content->content}}</textarea>
-        </div>
-        <div id="selectedtags">
-        </div>
-        <div id="errorAddTag" class="error"></div>
-        <label>Add Tags:</label>
-        <input type="text" class="form-control" id="TagsInput" name="title" value="" required>
-        <div id="autocomplete"></div>
-        <button id="submitbutton" class="btn btn-primary">Submit</button>
+        <div class="forms">
+            <div id="error"></div>
+            <input id="questionid" hidden value="{{ $question->id }}">
+            <div class="form-group">
+                <div id="titleError" class="error"></div>
+                <label for="title">Title:</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ $question->title}}" required>
+            </div>
+            <div class="form-group">
+            <span id="contentError" class="error"></span>
+                <label for="content">Content:</label>
+                <textarea class="form-control" id="questionContent" name="content" rows="4" required>{{ $question->commentable->content->content}}</textarea>
+            </div>
+            <div id="selectedtags">
+            </div>
+            <div id="errorAddTag" class="error"></div>
+            <label>Add Tags:</label>
+            <input type="text" class="form-control" id="TagsInput" name="title" value="" required>
+            <div id="autocomplete"></div>
+            <button id="submitbutton" class="btn btn-primary">Submit</button>
+        </div>    
     </div>
     <script type="text/javascript" src={{ url('js/edit_question_form.js') }} defer></script>
 @endsection
