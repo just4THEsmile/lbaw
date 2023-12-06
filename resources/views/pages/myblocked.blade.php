@@ -25,7 +25,6 @@
     <div class="d-flex justify-content-center mt-4">
         {{ $blockedContent->links('pagination::bootstrap-4') }}
     </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 @endsection
 
 
