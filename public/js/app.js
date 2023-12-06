@@ -11,7 +11,9 @@ function disableSubmitButton() {
   }, 4000);
 }
 
-
+function confirmDelete() {
+  return confirm("Are you sure you want to delete your account?");
+}
 
 /*
 function addEventListeners() {

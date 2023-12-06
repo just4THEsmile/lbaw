@@ -57,7 +57,8 @@ class ProfileController extends Controller
     }
     public function myblocked($id){
         $user = User::find($id);
-        return view('pages/myblocked', ['user' => $user]);
+        $blockedContent = Content::where('user_id', $id)->where('blocked', true)->paginate(5);
+        return view('pages/myblocked', ['user' => $user, 'blockedContent' => $blockedContent]);
     }
 
     public function listmyquestions(Request $request ,$id){

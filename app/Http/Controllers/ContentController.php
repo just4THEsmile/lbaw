@@ -59,37 +59,54 @@ class ContentController extends Controller
     }
 
     public function moderatecontent() {
-        //$this->authorize("moderate", $Auth::user());
-        $unblockRequests = UnblockRequest::with(['content', 'user'])->paginate(5);
-
-        return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests]);
+        $user = auth()->user();
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
+        if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
+            $unblockRequests = UnblockRequest::with(['content', 'user'])->paginate(5);
+            return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests]);
+        }
+        return redirect()->route('home');
     }
 
     public function reviewcontent(){
-        //$this->authorize("moderate", Auth::user());
-        $unblockRequest = UnblockRequest::find(request()->route('id'));
-        $content = Content::find($unblockRequest->content_id);
-        return view('pages.reviewcontent', ['unblockRequest' => $unblockRequest, 'content' => $content]);
+        $user = auth()->user();
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
+        if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
+            $unblockRequest = UnblockRequest::find(request()->route('id'));
+            $content = Content::find($unblockRequest->content_id);
+            return view('pages.reviewcontent', ['unblockRequest' => $unblockRequest, 'content' => $content]);
+        }
+        return redirect()->route('home');
     }
 
 
     public function processRequest(Request $request)
     {
-        //$this->authorize("moderate", Auth::user());
-        $action = $request->input('action');
-        $unblockRequestId = $request->input('unblock_request_id');
-        $contentId = $request->input('content_id');
-
-        if ($action === 'unblock') {
-            $content = Content::find($contentId);
-            $content->blocked = false;
-            $content->save();
-        } else if ($action === 'keep_blocked') {
+        $user = auth()->user();
+        if(!Auth::check()){
+            return redirect()->route('login');
         }
+        if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
+            $action = $request->input('action');
+            $unblockRequestId = $request->input('unblock_request_id');
+            $contentId = $request->input('content_id');
 
-        $unblockRequest = UnblockRequest::find($unblockRequestId);
-        $unblockRequest->delete();
+            if ($action === 'unblock') {
+                $content = Content::find($contentId);
+                $content->blocked = false;
+                $content->save();
+            } else if ($action === 'keep_blocked') {
+            }
 
-        return redirect()->route('moderatecontent');
+            $unblockRequest = UnblockRequest::find($unblockRequestId);
+            $unblockRequest->delete();
+
+            return redirect()->route('moderatecontent');
+        }
+        return redirect()->route('home');
     }
 }
