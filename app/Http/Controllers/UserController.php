@@ -106,7 +106,13 @@ class UserController extends Controller
 
         $this->authorize('delete', $userBeingDeleted);
         TransactionsController::deleteUser($userBeingDeleted->id);
-        return redirect()->route('logout');
+        if($id === Auth::user()->id){
+            return redirect()->route('logout');
+        }
+        else{
+            return redirect()->route('users');
+        }
+        
     }
        
 }

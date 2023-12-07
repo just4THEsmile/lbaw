@@ -38,7 +38,20 @@ class ContentController extends Controller
     {
         $this->authorize("unblock", Content::find($id));
         $userId = $request->query('user_id');
-        $content = Content::find($id);
+        $content = Content::where('id', $id)
+        ->with(['comment', 'question', 'answer'])->first();
+        if ($content->comment) {
+            $content->type = 'comment';
+            $content->content_id = $content->comment->id;
+        } elseif ($content->answer) {
+            $content->type = 'answer';
+            $content->content_id = $content->answer->id;
+        } elseif ($content->question) {
+            $content->type = 'question';
+            $content->content_id = $content->question->id;
+        }
+        
+
         return view('pages.unblockrequest', ['content' => $content, 'user_id' => $userId]);
     }
 
@@ -64,7 +77,20 @@ class ContentController extends Controller
             return redirect()->route('login');
         }
         if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
-            $unblockRequests = UnblockRequest::with(['content', 'user'])->paginate(5);
+            $unblockRequests = UnblockRequest::with(['content', 'user'])->with(['comment', 'question', 'answer'])->paginate(5);
+
+            foreach($unblockRequests as $unblockRequest){
+                if ($unblockRequest->comment) {
+                    $unblockRequest->type = 'comment';
+                    $unblockRequest->content_id = $unblockRequest->comment->id;
+                } elseif ($unblockRequest->answer) {
+                    $unblockRequest->type = 'answer';
+                    $unblockRequest->content_id = $unblockRequest->answer->id;
+                } elseif ($unblockRequest->question) {
+                    $unblockRequest->type = 'question';
+                    $unblockRequest->content_id = $unblockRequest->question->id;
+                }
+            }
             return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests]);
         }
         return redirect()->route('home');
@@ -77,7 +103,18 @@ class ContentController extends Controller
         }
         if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
             $unblockRequest = UnblockRequest::find(request()->route('id'));
-            $content = Content::find($unblockRequest->content_id);
+            $content = Content::where('id', $unblockRequest->content_id)
+            ->with(['comment', 'question', 'answer'])->first();
+            if ($content->comment) {
+                $content->type = 'comment';
+                $content->content_id = $content->comment->id;
+            } elseif ($content->answer) {
+                $content->type = 'answer';
+                $content->content_id = $content->answer->id;
+            } elseif ($content->question) {
+                $content->type = 'question';
+                $content->content_id = $content->question->id;
+            }
             return view('pages.reviewcontent', ['unblockRequest' => $unblockRequest, 'content' => $content]);
         }
         return redirect()->route('home');

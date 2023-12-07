@@ -38,4 +38,17 @@ class UnblockRequest extends Model
     {
         return $this->belongsTo(Content::class, 'content_id');
     }
+
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class, 'content_id');
+    }
+    public function question()
+    {
+        return $this->belongsTo(Question::class, 'content_id');
+    }
+    public function answer()
+    {
+        return $this->belongsTo(Answer::class, 'content_id');
+    }
 }
