@@ -10,23 +10,28 @@
     animation-delay: 0.5s;
 }
 #pagination>button {
-    width: 5em;
     margin: 0em !important;
+    width: 2em;
 }
-#pagination :nth-child(2){
-    width: 2.2em;
-}
-#pagination :nth-child(3){
-    width: 2.2em;
-}
-
-#pagination>button:hover{
-    background-color: #adadad !important;
+#pagination :nth-child(1),
+#pagination :last-child{
+    width: 5em;
 }
 
-#pagination>button:hover{
+
+
+#pagination>button:hover:not(.active){
     background-color: #adadad !important;
 }
 #pagination>.active{
-    background-color: #808080 !important;
+    background-color: black !important;
+    color: white !important;
+}
+
+.pagination{
+    justify-content: center;
+}
+nav>.pagination>li.page-item.active>span.page-link{
+    background-color:black !important;
+    border-color: black !important;
 }
