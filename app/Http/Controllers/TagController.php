@@ -40,7 +40,7 @@ class TagController extends Controller
         $query = $request->input('query');
         if (Auth::check()) {
             if($query == null){
-                $results = Tag::simplePaginate(15)->withqueryString();
+                $results = Tag::Paginate(15)->withqueryString();
                 return response()->json($results);
             }
             $results = Tag::whereRaw("tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])

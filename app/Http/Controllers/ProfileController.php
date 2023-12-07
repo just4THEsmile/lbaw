@@ -55,9 +55,32 @@ class ProfileController extends Controller
         $user = User::find($id);
         return view('pages/myanswers', ['user' => $user]);
     }
-    public function myblocked($id){
+    
+    public function myblocked($id)
+    {
         $user = User::find($id);
-        $blockedContent = Content::where('user_id', $id)->where('blocked', true)->paginate(5);
+    
+        $blockedContent = Content::where('user_id', $id)
+            ->where('blocked', true)
+            ->with(['comment', 'question', 'answer'])
+            ->paginate(5);
+    
+        foreach ($blockedContent as $result) {
+            if ($result->comment) {
+                $result->type = 'comment';
+                $result->content_id = $result->comment->id;
+            } elseif ($result->answer) {
+                $result->type = 'answer';
+                $result->content_id = $result->answer->id;
+            } elseif ($result->question) {
+                $result->type = 'question';
+                $result->content_id = $result->question->id;
+            }
+        }
+        foreach($blockedContent as $result){
+            $result->date = $result->compileddate();
+        }
+    
         return view('pages/myblocked', ['user' => $user, 'blockedContent' => $blockedContent]);
     }
 
@@ -107,9 +130,15 @@ class ProfileController extends Controller
         }
     }
     public function listfollowedquestions(Request $request , $id){
+        if(! Auth::check()){
+            return response()->json([
+                'message' => 'Not logged in',
+            ], 302);
+        }
         $orderBy = $request->input('OrderBy');
-        $followedQuestions = Question::select('content.content as content', 'question.title as title', 'content.votes as votes', 'question.id as id', 'content.date as date')
-        ->join('followquestion', 'followquestion.question_id', '=', 'question.id')
+        $followedQuestions = Content::select('question.title as title', 'question.id as question_id')
+        ->join('followquestion', 'followquestion.question_id', '=', 'content.id')
+        ->join('question', 'content.id', '=', 'question.id')
         ->where('followquestion.user_id', $id)
         ->orderBy($orderBy, 'desc')
         ->paginate(15)->withqueryString();
@@ -120,6 +149,11 @@ class ProfileController extends Controller
     }
 
     public function listmyblocked($id){
+        if(! Auth::check()){
+            return response()->json([
+                'message' => 'Not logged in',
+            ], 302);
+        }
         $blockedContent = Content::where('user_id', $id)->where('blocked', true)->get();
         foreach($blockedContent as $result){
             $result->date = $result->compileddate();

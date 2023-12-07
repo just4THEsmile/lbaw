@@ -15,6 +15,7 @@ use App\Models\FollowQuestion;
 use App\Models\User;
 use Exception;
 
+use App\Models\Answer;
 class QuestionController extends Controller
 {
     public function show(string $id): View
@@ -22,14 +23,16 @@ class QuestionController extends Controller
         // Get the question.
         $question = Question::findOrFail($id);
         // Check if the current user can see (show) the question.
+        if($question === null){
+            return redirect('/login');
+        }
         $this->authorize('show', $question);  
 
-            $question->date = $question->commentable->content->compileddate();
-
-
+        $question->date = $question->commentable->content->compileddate();
+        $answers = Answer::where('question_id' , $id)->paginate(15);
         // Use the pages.question template to display the question.
         return view('pages.question', [
-            'question' => $question
+            'question' => $question , 'answers' => $answers
         ]);
     }
     /**

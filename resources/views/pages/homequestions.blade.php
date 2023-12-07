@@ -3,6 +3,7 @@
 @section('style')
   <link href="{{ asset('css/tag.css') }}" rel="stylesheet">
   <link href="{{ asset('css/question_card.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/home.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 @endsection
 
@@ -29,7 +30,7 @@
   <div class= "question">
     
     <div class="votes">
-      <p class= "answersnum" class=>DONTFORGET answers</p>
+      <p class= "answersnum" class=>{{ $question->answernum}} answers</p>
       <p class="votesnum" class=>{{ $question->commentable->content->votes }} votes</p> 
     </div>
     <div class ="content">
@@ -41,13 +42,14 @@
           @endforeach
         </div>  
         <div class="profileinfo">
-          <a href="{{ url('/profile/'.$question->commentable->content->user->id) }}">{{ $question->commentable->content->user->username }}</a>
-          <p>{{ $question->date }}</p>
+          <a href="{{ url('/profile/'.$question->userid) }}">{{ $question->commentable->content->user->username }}</a>
+          <p>{{ $question->commentable->content->compileddate() }}</p>
         </div>
       </div>  
     </div>
   </div>
 @endforeach
+{{ $questions->links() }}
 </div>
 
 @endsection
