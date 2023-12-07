@@ -13,11 +13,7 @@ class SearchQuestionController extends Controller
     public function show()
     {
         if( Auth::check()){
-            $questions = Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
-            ->join('content', 'question.id', '=', 'content.id')
-            ->join('appuser', 'content.user_id', '=', 'appuser.id')
-            ->get();
-            return view('pages.questions', ['questions' => $questions]);
+            return view('pages.questions');
         } else {
             return redirect('/login');
         }
