@@ -22,6 +22,58 @@ class TagController extends Controller
             ], 302);
         }
     }
+    public function create(Request $request)
+    {
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->usertype !== 'admin'){
+            return redirect('/home');
+        }
+        $request->validate(['title' => 'required|string|min:8|max:80',
+        'description' => 'required|string|min:8|max:255']);
+        authorize('create', Tag::class);
+        $tag = new Tag();
+        $tag->title = $request->input('title');
+        $tag->description = $request->input('description');
+        $tag->save();
+        return redirect()->route('tagquestions', ['id' => $tag->id]);
+    }
+    public function update(Request $request)
+    {
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->usertype !== 'admin'){
+            return redirect('/home');
+        }
+        $request->validate(['title' => 'required|string|min:8|max:80',
+        'description' => 'required|string|min:8|max:255']);
+        $tag = new Tag();
+        $tag->title = $request->input('title');
+        $tag->description = $request->input('description');
+        $tag->save();
+        return redirect()->route('tagquestions', ['id' => $tag->id]);
+    }
+    public function delete(Request $request, $id)
+    {
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->usertype !== 'admin'){
+            return redirect('/home');
+        }
+        authorize('delete', Tag::class);
+        $tag = Tag::find($id);
+        if($tag === null){
+            return redirect()->route('tags')->withErrors(['tag' => 'The provided tag does not exist.']);
+        }
+        $result=TransactionController::deleteTag($tag);
+        if($result !== true){
+            return redirect()->route('tags')->withErrors(['tag' => $result]);
+        }
+        return redirect()->route('tags')->withSuccess('You have deleted a tag!');
+    }
     public function getTagsOfQuestion(Request $request, $id )
     {
         if(Auth::check()){
@@ -38,7 +90,6 @@ class TagController extends Controller
     }
     public function searchWithoutLimits(Request $request){
         $query = $request->input('query');
-        $query = str_replace('&', "\&", $query);
         if (Auth::check()) {
             if($query == null){
                 $results = Tag::Paginate(15)->withqueryString();
