@@ -38,13 +38,16 @@ class TagController extends Controller
     }
     public function searchWithoutLimits(Request $request){
         $query = $request->input('query');
+        $query = str_replace('&', "\&", $query);
         if (Auth::check()) {
             if($query == null){
                 $results = Tag::Paginate(15)->withqueryString();
                 return response()->json($results);
             }
-            $results = Tag::whereRaw("tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])
-            ->orderByRaw("ts_rank(tsvectors, to_tsquery(?)) ASC", [str_replace(' ', ' & ',$query)])->simplePaginate(15)->withqueryString();
+            $results = Tag::whereRaw("tsvectors @@ plainto_tsquery(?)", [$query])
+            ->orderByRaw("ts_rank(tsvectors, plainto_tsquery(?)) DESC", [$query])
+            ->paginate(15)
+            ->withQueryString();
             return response()->json($results);
         } else {
             return response()->json([

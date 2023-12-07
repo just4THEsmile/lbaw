@@ -97,7 +97,7 @@ class SearchQuestionController extends Controller
                 '=',
                 'question.id'
             )
-            ->whereRaw("question.tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])
+            ->whereRaw("question.tsvectors @@ plainto_tsquery(?)", [$query])
             ->where('content.deleted', '=', false)
             ->groupBy(
                 'question.tsvectors',
@@ -111,7 +111,7 @@ class SearchQuestionController extends Controller
                 'tags_agg.title',
                 'tags_agg.id'
             )
-            ->orderByRaw("ts_rank(question.tsvectors, to_tsquery(?)) ASC", [str_replace(' ', ' & ', $query)])
+            ->orderByRaw("ts_rank(question.tsvectors, plainto_tsquery(?)) ASC", [$query])
             ->paginate(15)->withQueryString()->withQueryString();
 
                 foreach($results as $result){

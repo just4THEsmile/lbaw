@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 function searchQuestions(){
     const query = searchInput.value;
-    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
+    fetch(`/api/search/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${encodeURIComponent(query)}`)
 
         .then(response => response.json())
         .then(data => {
