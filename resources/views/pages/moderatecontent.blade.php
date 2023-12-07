@@ -19,6 +19,7 @@
 <div id="fixable" class="card-container">
   @foreach ($unblockRequests as $unblockRequest)
   <div class="card">
+      <p class="card-info">Type:{{ $unblockRequest->type}}</p>
       <p class="card-info">Unblock Request ID:{{ $unblockRequest->id}}</p>
       <p class="card-info">Name:{{ $unblockRequest->user->name}}</p>
       <p class="card-info">UserName:{{ $unblockRequest->user->username}}</p>
