@@ -24,6 +24,7 @@
     <div id="tag_id" hidden>{{$tag_id}}</div>
     <div style="color:white; font-size:0.0001em;">Home</div>
     <div class="realcontent">
+        <div id="tag_title">Questions with the tag [{{ $tag_title }}]</div>
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
         <label for="sortSelect">Sort By:</label>
         <select id="sortSelect">

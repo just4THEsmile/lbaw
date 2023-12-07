@@ -12,6 +12,9 @@ use App\Models\AnswerNotification;
 use App\Models\CommentNotification;
 use App\Models\VoteNotification;
 use App\Models\BadgeAttainmentNotification;
+use App\Models\Tag;
+use App\Models\QuestionTag;
+use App\Models\FollowTag;
 class TransactionsController extends Controller
 {
     public static function createQuestion($user_id,$title,$content1,$tag_ids)
@@ -293,7 +296,27 @@ class TransactionsController extends Controller
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
-            return false;
+            return $e->getMessage();
+        }
+    }
+    public static function deleteTag(Tag $tag){
+        try {
+            // Start the transaction
+            DB::beginTransaction();
+            FollowTag::where('tag_id', $tag->id)->delete();
+            QuestionTag::where('tag_id', $tag->id)->delete();
+            $tag->delete();
+            DB::commit();
+            return true;
+        
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+        
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+            return $e->getMessage();
         }
     }
 }

@@ -32,6 +32,15 @@
     </style>
     <div class="realcontent">
         <input id="searchTagInput"></input>
+        <div id="user_type" hidden>{{ $user_type }}</div>
+        @if(Auth::user() && Auth::user()->usertype === 'admin')
+        <a class="createquestionbutton" href="{{ route('tagcreateform') }}"><button> Create Tag</button></a>
+        @endif
+        @if ($errors->has('tag'))
+                <span class="error">
+                    {{ $errors->first('tag') }}
+                </span>
+            @endif
         <ul id="Tags"></ul>
         <div id ="pagination"></div>
         <script src="{{ asset('js/tagSearch.js') }}" defer></script>

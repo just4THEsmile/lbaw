@@ -20,7 +20,7 @@ function searchUsers(){
     const sortBy = sortSelect.value;
 
 
-    fetch(`/search/users?q=${query}&SearchBy=${sortBy}`)
+    fetch(`/search/users?q=${encodeURIComponent(query)}&SearchBy=${sortBy}`)
         .then(response => response.json())
         .then(data => {
             if(query== searchInput.value && sortBy == sortSelect.value){

@@ -13,11 +13,7 @@ class SearchQuestionController extends Controller
     public function show()
     {
         if( Auth::check()){
-            $questions = Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
-            ->join('content', 'question.id', '=', 'content.id')
-            ->join('appuser', 'content.user_id', '=', 'appuser.id')
-            ->get();
-            return view('pages.questions', ['questions' => $questions]);
+            return view('pages.questions');
         } else {
             return redirect('/login');
         }
@@ -97,7 +93,7 @@ class SearchQuestionController extends Controller
                 '=',
                 'question.id'
             )
-            ->whereRaw("question.tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])
+            ->whereRaw("question.tsvectors @@ plainto_tsquery(?)", [$query])
             ->where('content.deleted', '=', false)
             ->groupBy(
                 'question.tsvectors',
@@ -111,7 +107,7 @@ class SearchQuestionController extends Controller
                 'tags_agg.title',
                 'tags_agg.id'
             )
-            ->orderByRaw("ts_rank(question.tsvectors, to_tsquery(?)) ASC", [str_replace(' ', ' & ', $query)])
+            ->orderByRaw("ts_rank(question.tsvectors, plainto_tsquery(?)) ASC", [$query])
             ->paginate(15)->withQueryString()->withQueryString();
 
                 foreach($results as $result){

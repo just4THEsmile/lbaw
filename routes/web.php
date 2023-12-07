@@ -119,10 +119,16 @@ Route::controller(ContentController::class)->group(function () {
 });
 
 Route::controller(TagController::class)->group(function () {
+    Route::get('/tag/create', 'createform')->name('tagcreateform');
+    Route::post('/tag/create', 'create')->name('tagcreate');
+    Route::get('/tag/{id}/edit', 'editform')->name('tageditform');
+    Route::post('/tag/{id}/edit', 'edit')->name('tagedit');
+    Route::post('/tag/{id}/delete', 'delete')->name('tagdelete');
     Route::get('/tag/{id}', 'tagquestionspage')->name('tagquestions');
-    Route::get('/search/tag/', 'search')->name('tagsearch');
+    Route::get('/search/tag', 'search')->name('tagsearch');
     Route::get('/tags', 'tagspage')->name('tags');
     Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion'); //api
+    Route::post('/tag/{id}/followtag', 'follow')->name('followtag');
 });
 Route::controller(NotificationController::class)->group(function () {
     Route::get('/notifications', 'getnotifications')->name('notifications_page');
@@ -135,7 +141,7 @@ Route::get('/api/myquestions/{id}', [ProfileController::class, 'listmyquestions'
 Route::get('/api/myanswers/{id}', [ProfileController::class, 'listmyanswers']);
 Route::get('/api/followedQuestions/{id}', [ProfileController::class, 'listfollowedquestions']);
 Route::get('/api/search/tag/', [TagController::class,'search']); // search for all tags
-Route::get('/api/fullsearch/tag/', [TagController::class,'searchWithoutLimits']);
+Route::get('/api/fullsearch/tag', [TagController::class,'searchWithoutLimits']);
 Route::get('/api/question/{id}/tags', [TagController::class,'getTagsOfQuestion']);
 Route::get('/api/myblocked/{id}',  [ProfileController::class,'listmyblocked']);
 
