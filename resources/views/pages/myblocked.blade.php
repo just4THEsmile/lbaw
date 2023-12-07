@@ -5,6 +5,15 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 @endsection
 
+@section('sidebar')
+<a class='aside' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a>
+<a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">Followed Questions</a>
+<a class='aside' href="{{ route('myquestions', ['id' => $user->id]) }}" >My questions</a>
+<a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">My answers</a>
+<a class='aside active' href="{{ route('myblocked', ['id' => $user->id]) }}">My blocked</a>
+
+@endsection
+
 @section('content2')
 
     <link href="{{ asset('css/blocked.css') }}" rel="stylesheet">

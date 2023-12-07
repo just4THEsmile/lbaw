@@ -3,9 +3,9 @@ main>#content{
 }
 
 main>.sidebar{
-  margin-top: 5.7em;
+  margin-top: 5.4em;
 }
-.py-3{
+.botoooom{
   margin-left: 10em !important;
 }
 .sidebar a.active {
@@ -86,7 +86,7 @@ a {
   main>#content{
     margin-top: 0em;
   }
-  .py-3{
+  .botoooom{
     margin-left: 0em !important;
   }
   #cards {
@@ -349,7 +349,7 @@ margin: 0;
 
 
 #gridable{
-margin-top: 5.9em;
+margin-top: 5.7em;
 margin-left: 10em;
 }
 
@@ -434,3 +434,6 @@ align-items: center;
   align-items: center;
 }
 
+.py-3.my-4{
+  z-index: 2 !important;
+}

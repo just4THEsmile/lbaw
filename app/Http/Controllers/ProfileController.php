@@ -50,7 +50,7 @@ class ProfileController extends Controller
     public function myquestions($id){
         if(Auth::check()){
             $user = User::find($id);
-            return view('pages.myquestions', ['user_id' => $id]);
+            return view('pages.myquestions', ['user' => $user]);
         }else{
             return redirect('/login');
         }

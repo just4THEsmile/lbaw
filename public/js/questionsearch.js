@@ -20,7 +20,7 @@ function searchQuestions(){
         .then(data => {
             if(searchInput.value==query){
 
-        
+                
                 results = data;
                 showPage(data.data,data.links);
             }
@@ -50,38 +50,21 @@ function showPage(results,links){
         //votes
         const votes = document.createElement("div");
         votes.classList.add("votes");
-        const upvote = document.createElement("button");
-        upvote.classList.add("arrow-up");
 
-        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_less"
-        const upvoteSpan = document.createElement("span");
-        upvoteSpan.classList.add("material-symbols-outlined");
-        upvoteSpan.textContent = "expand_less";
-
-        upvote.appendChild(upvoteSpan);
-
+        const answernum = document.createElement("p");
+        answernum.classList.add("answernum");
+        answernum.textContent = result.answernum + " answers"; // Replace with actual data
         // Create the <p> element with the class "votesnum" and set its content dynamically using data from the server
         const votesNum = document.createElement("p");
         votesNum.classList.add("votesnum");
-        votesNum.textContent = result.votes; // Replace with actual data
+        votesNum.textContent = result.votes + " votes"; // Replace with actual data
 
-        // Create the <button> element for downvote with the class "arrow-down"
-        const downvote = document.createElement("button");
-        downvote.classList.add("arrow-down");
 
-        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_more"
-        const downvoteSpan = document.createElement("span");
-        downvoteSpan.classList.add("material-symbols-outlined");
-        downvoteSpan.textContent = "expand_more";
 
-        // Append the <span> element to the downvote button
-        downvote.appendChild(downvoteSpan);
 
-        // Append the created elements to the <div> element
-        votes.appendChild(upvote);
+
+        votes.appendChild(answernum);
         votes.appendChild(votesNum);
-        votes.appendChild(downvote);
-
 
 
         // Content

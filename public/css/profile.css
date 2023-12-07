@@ -103,19 +103,18 @@ body {
   }
   
   #profile {
-    display: inline-block;
-    height: 10em; 
-    background: none;
-    border: none;
+    display: flex;
+    align-items: center;
   }
   
   #profile img {
-    width: 10em;
-    height: 10em;
+    max-width: 6em;
+    width: 6em;
+    height: 6em;
     object-fit: cover;
     border-radius: 50%;
-    margin-left: 1em;
-    margin-bottom: 1.1em;
+    margin-bottom: 0em;
+    margin-left: 0em;
   }
   #flexthis{
     display: flex;
@@ -154,10 +153,10 @@ body {
   }
 
   section#info{
-    margin-top: 1em;
+    justify-content: space-between;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+
   }
 
   #username{
@@ -165,13 +164,13 @@ body {
   }
 
   #paylink{
-    margin-left: 4em;
-    padding: 2em;
-    background-color: #0000FF;
-    border-color: #0000FF;
-    height: 2em;
-    border-radius: 15%;
-    padding-top: 0.5em;
+    color:black;
+    padding: 0.5em;
+    border-radius: 1em;
+  }
+  #paylink>a{
+    color:black !important;
+
   }
 
   #paylink > a{
@@ -179,10 +178,10 @@ body {
   }
 
   #stats{
-    margin-left: 3em;
     display:flex;
-    border: 0.2em solid black;
+    border: 1px solid black;
     height:4em;
+    border-radius: 1em;
   }
   #stats > div{
     margin-left: 1em;
@@ -191,18 +190,15 @@ body {
     margin-right: 1em;
   }
 
-  section#about{
-    margin-top: 1em;
-    margin-left: 1em;
-  }
+
 
   #about > p{
-    border: 0.2em solid black;
+    border: 1px solid black;
+    padding: 1em;
+    border-radius: 0.5em;
   }
 
-  #badges{
-    margin-left: 1em;
-  }
+
 
   #Follow, #MyQuestions, #MyAnswers, #Profile, #MyBlocked{
     display:flex;
@@ -219,7 +215,7 @@ body {
 
   #arrow{
     font-size: 2em;
-    margin-left: 0.5em;
+
   }
 
   #edit{
@@ -232,3 +228,104 @@ body {
     align-items: center;
   }
 
+  #gridable{
+    padding: 1em;
+  }
+
+  #badges >ul{
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 1em;
+
+    list-style: none;
+    display:flex;
+    flex-direction: column;
+
+
+
+  }
+  #badges >ul>li{
+
+    margin-bottom: 0em;
+  }
+  .badgename>span{
+    color: white;
+    background-color: black;
+    padding: 0.4em;
+    border-radius: 1em;
+  }
+  .badgedescription{
+    margin-left: 1em;
+    display: flex;
+    align-items: center;
+    font-size: 0.7em;
+  }
+  .badgecontent{
+    display: flex;
+    margin-bottom: 0.5em;
+  }
+  .button{
+    font-size: 1em;
+    font-weight: 400 !important;
+    display: flex;
+    border: 0px;
+    background-color: rgba(112, 63, 63, 0.1) !important;
+    border-radius: 1em;
+    margin-left: 0.5em;
+    margin-right: 0.5em !important;
+    width: auto;
+    padding: 0.5em;
+    align-items: center;
+    justify-content: center;
+    color:black !important;
+    transition: all 2s !important;
+    text-transform: none;
+  }
+
+  .button:hover{
+    background-color: rgba(0, 0, 0, 0.4) !important;
+  }
+  #username>h1{
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+  #edit{
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+  #edit>form{
+    display: flex;
+    justify-content: center;
+    
+    margin-bottom: 1em;
+  }
+  header>div{
+
+    display: flex;
+    align-items: center;
+  }
+  header>div>.button{
+    margin-bottom: 0em !important;
+  }
+
+  @media (max-width: 70em) {
+    #stats{
+      margin-top: 0.5em;
+      margin-bottom:0.5em ;
+    }
+    #info{
+      display: flex;
+      flex-direction: column;
+    }
+    div#container{
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+    
+    
+  }
