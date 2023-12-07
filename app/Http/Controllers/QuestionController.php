@@ -88,10 +88,12 @@ class QuestionController extends Controller
 
     public function editform(string $id){
         $question = Question::findOrFail($id);
+        
         if (Auth::check()) {
-            return view('pages.questionedit', [
-                'question' => $question
-            ]);
+            if(Auth::user()->id == $question->commentable->content->user_id || Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'){
+                return view('pages.questionedit', ['question' => $question]);
+            }
+            return redirect('/home');
         } else {
             return redirect('/login');
         }

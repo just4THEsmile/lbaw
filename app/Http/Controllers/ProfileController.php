@@ -25,9 +25,13 @@ class ProfileController extends Controller
     }
     public function edit($id){
         $user = User::find($id);
+        if(Auth::user() == null){
+            return redirect('/login');
+        }
         if(Auth::user()->id !== $user->id && Auth::user()->usertype !== 'admin'){
             return view('pages.profile', ['user' => $user]);
         }
+        
         return view('pages.userprofile', ['user' => $user]);
     }
 
@@ -52,12 +56,18 @@ class ProfileController extends Controller
         }
     }
     public function myanswers($id){
-        $user = User::find($id);
-        return view('pages/myanswers', ['user' => $user]);
+        if(Auth::check()){
+            $user = User::find($id);
+            return view('pages.myanswers', ['user' => $user]);
+        }
+        return redirect('/login');
     }
     
     public function myblocked($id)
     {
+        if(Auth::user()== null){
+            return redirect('/login');
+        }
         $user = User::find($id);
     
         $blockedContent = Content::where('user_id', $id)

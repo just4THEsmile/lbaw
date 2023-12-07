@@ -8,6 +8,7 @@ use App\Models\Report;
 use App\Models\Content;
 use App\Models\Vote;
 use App\Models\UnblockRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 
 
 class ContentController extends Controller
@@ -154,7 +155,15 @@ class ContentController extends Controller
 
     public function unblockrequest(Request $request, $id)
     {
-        $this->authorize("unblock", Content::find($id));
+        try {
+            $this->authorize("unblock", Content::find($id));
+        } catch (AuthorizationException $e) {
+            if (Auth::check()) {
+                return redirect()->route('home');
+            } else {
+                return redirect()->route('login');
+            }
+        }
         $userId = $request->query('user_id');
         $content = Content::where('id', $id)
         ->with(['comment', 'question', 'answer'])->first();
