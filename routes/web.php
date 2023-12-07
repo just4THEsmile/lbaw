@@ -31,6 +31,7 @@ use App\Http\Controllers\NotificationController;
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateuser', [UserController::class, 'updateUser'])->name('updateuser');
     Route::post('/user/{id}/delete', 'deleteAccount')->name('deleteaccount');
+    Route::post('/user/{id}/block', 'blockAccount')->name('blockaccount');
     Route::post('/updateuseradmin', [UserController::class, 'updateUserAdmin'])->name('updateuseradmin');
 });
 
@@ -145,3 +146,4 @@ Route::get('/reviewcontent/{id}', [ContentController::class, 'reviewcontent'])->
 Route::post('/processRequest', [ContentController::class, 'processRequest'])->name('processRequest');
 
 
+Route::get('/unblockaccountform/{id}', [UserController::class, 'unblockaccountform'])->name('unblockaccountform');

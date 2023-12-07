@@ -114,5 +114,27 @@ class UserController extends Controller
         }
         
     }
+
+
+    public function blockAccount(Request $request,string $id)
+    {
+        $userBeingBlocked = User::find($id);
+        $this->authorize('block', $userBeingBlocked);
+        if($userBeingBlocked->blocked === true){
+            $userBeingBlocked->blocked = false;
+        }
+        else{
+            $userBeingBlocked->blocked = true;
+        }
+        $userBeingBlocked->save();
+        
+        return redirect()->route('users');
+    }
        
+    public function unblockaccountform(Request $request,string $id)
+    {
+        $userBeingUnblocked = User::find($id);
+        $this->authorize('unblockform', $userBeingUnblocked);
+        return view('auth.unblockaccount', ['user' => $userBeingUnblocked]);
+    }
 }
