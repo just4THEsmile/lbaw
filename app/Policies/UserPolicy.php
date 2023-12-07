@@ -24,4 +24,12 @@ class UserPolicy
 
       return $userAuth->usertype === "admin";
     }
+    public function block(User $userAuth,User $user) 
+    {
+      return $userAuth->usertype === "admin";
+    }
+    public function unblockform(User $userAuth,User $user) 
+    {
+      return Auth::check() && $user->id === Auth::user()->id;
+    }
 }

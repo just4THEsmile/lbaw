@@ -58,6 +58,17 @@
                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                 <button type="submit" class="button">Delete Account</button>
             </form>
+            @if(Auth::user()->usertype === 'admin')
+            <form method="POST" action="{{ route('blockaccount',['id' => $user->id]) }}" onsubmit="return confirmBlock()">
+                @csrf
+                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                @if($user->blocked)
+                <button type="submit" class="button">Unblock Account</button>
+                @else
+                <button type="submit" class="button">Block Account</button>
+                @endif
+            </form>
+            @endif
             <a class="button" href="{{ route('editprofile', ['id' => $user->id]) }}">Edit Profile</a>  
         </div>
         @endif
