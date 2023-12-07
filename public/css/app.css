@@ -1,6 +1,7 @@
 main>#content{
   margin-top: 5.7em;
 }
+
 main>.sidebar{
   margin-top: 5.7em;
 }
@@ -284,7 +285,7 @@ margin: 0;
 
 #profile {
   display: inline-block;
-
+  padding: 0em;
   background: none;
   border: none;
 }

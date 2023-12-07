@@ -4,6 +4,10 @@
     padding: 20px;
 }
 
+.faq-container{
+    margin-left: 10em;
+
+}
 .faq-list {
     border-top: 1px solid #ccc;
 }
@@ -38,4 +42,10 @@
 
 #content{
     margin-top: 10em;
+}
+@media screen and (max-width: 40em) {
+    .faq-container {
+        margin-left: 0em;
+    }
+    
 }

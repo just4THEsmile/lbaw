@@ -28,18 +28,9 @@
 
   <div class= "question">
     
-    <div class="votes" >
-      <button class="arrow-up">
-        <span class="material-symbols-outlined">
-          expand_less
-        </span>
-      </button>
-      <p class="votesnum" class=>{{ $question->commentable->content->votes }}</p> 
-      <button class="arrow-down">
-        <span class="material-symbols-outlined">
-          expand_more
-        </span>
-      </button>
+    <div class="votes">
+      <p class= "answersnum" class=>DONTFORGET answers</p>
+      <p class="votesnum" class=>{{ $question->commentable->content->votes }} votes</p> 
     </div>
     <div class ="content">
     <a href="{{ url('/question/'.$question->id) }}"><h3>{{ $question->title }}</h3></a>
