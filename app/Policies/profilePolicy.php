@@ -6,7 +6,7 @@ namespace App\Policies;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Content;
-class ContentPolicy
+class ProfilePolicy
 {
     /**
      * Create a new policy instance.

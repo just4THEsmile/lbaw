@@ -83,4 +83,11 @@ class QuestionPolicy
         $check = Auth::check();
         return $check && $user->id !== $question->commentable->content->user->id;
     }
+
+    public function correctanswer(User $user, Question $question): bool
+    {
+        $content= Content::find($question->id);
+      // Only a Answer owner can delete it.
+      return $user->id === $content->user_id || $user->usertype === "admin";
+    }
 }

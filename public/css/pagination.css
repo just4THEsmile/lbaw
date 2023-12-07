@@ -1,0 +1,32 @@
+#pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+
+}
+#pagination>button {
+    padding: 0em;
+    animation-delay: 0.5s;
+}
+#pagination>button {
+    width: 5em;
+    margin: 0em !important;
+}
+#pagination :nth-child(2){
+    width: 2.2em;
+}
+#pagination :nth-child(3){
+    width: 2.2em;
+}
+
+#pagination>button:hover{
+    background-color: #adadad !important;
+}
+
+#pagination>button:hover{
+    background-color: #adadad !important;
+}
+#pagination>.active{
+    background-color: #808080 !important;
+}

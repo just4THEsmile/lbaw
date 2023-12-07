@@ -3,7 +3,9 @@
 @section('style')
 
   <link href="{{ asset('css/users.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/search.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 @endsection
 
 @section('title', 'content')
@@ -22,7 +24,7 @@
 <div class="userpage">
     <div id='search'>
         <div style="color:white; font-size:0.0001em;">Home</div>
-        <input class="searchbar" type="text" id="searchUserInput" placeholder="Search...">
+        <input class="searchbar" type="text" id="searchUserInput" placeholder="Search User..." >
         <label for="sortSelect">Search By:</label>
         <select id="sortSelect">
             <option value="relevance">Relevance</option>

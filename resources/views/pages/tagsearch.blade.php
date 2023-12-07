@@ -5,7 +5,7 @@
     <link href="{{ asset('css/search.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tagpage.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
+    <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -31,7 +31,7 @@
         } 
     </style>
     <div class="realcontent">
-        <input id="searchTagInput"></input>
+        <input id="searchTagInput" placeholder="Search Tag..." ></input>
         <ul id="Tags"></ul>
         <div id ="pagination"></div>
         <script src="{{ asset('js/tagSearch.js') }}" defer></script>

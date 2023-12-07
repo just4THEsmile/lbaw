@@ -1,9 +1,27 @@
 @extends('layouts.app')
 
+@section('style')
+    <link href="{{ asset('css/createquestion.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/error.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/tag.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+@endsection    
+
+
 @section('content')
-    <form >
-    </form>
-        <div id="error"></div>
+    <div class="sidebar">
+        <a href="/home">Home Page</a>
+        <a href="{{'/tags'}}">Tags</a>
+        <a class="active" href="{{'/questions'}}">Questions</a>
+        <a href="{{'/users'}}">Users</a>
+        @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+            <a href="{{'/moderatecontent'}}">Blocked Content</a>
+        @endif
+    </div>
+    <div class="create">
+        <div class="forms">
+            <div id="error"></div>
             <input id="questionid" hidden value="{{ $question->id }}">
             <div class="form-group">
                 <div id="titleError" class="error"></div>
@@ -18,9 +36,11 @@
             <div id="selectedtags">
             </div>
             <div id="errorAddTag" class="error"></div>
+            <label>Add Tags:</label>
             <input type="text" class="form-control" id="TagsInput" name="title" value="" required>
             <div id="autocomplete"></div>
             <button id="submitbutton" class="btn btn-primary">Submit</button>
-
+        </div>    
+    </div>
     <script type="text/javascript" src={{ url('js/edit_question_form.js') }} defer></script>
 @endsection

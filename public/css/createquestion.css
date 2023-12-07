@@ -1,0 +1,98 @@
+.button {
+
+    font: inherit ;
+    border: none ;
+    background: none ;
+    cursor: pointer ;
+  }
+  
+  .create {
+
+    margin-left: 10em;
+    background-color: #e6e6e6;
+    padding: 10%;
+    display: flex;
+
+    justify-content: center;
+    flex-direction: column;
+
+  }
+  
+input{
+    background-color: #ffffff !important;
+}
+.autocomplete-option{
+    border-radius:0.1em;
+    padding: 0.2em;
+    width: 100%;
+    background-color: #ffffff !important;
+    transition: all 0.7s !important;
+}
+.autocomplete-option:hover{
+    background-color: #b1b1b1 !important;
+}
+
+#autocomplete{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5em;
+}
+.form-group{
+    margin-top: 1em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.form-group > input{
+    font-size: 1em;
+}
+
+.form-group>textarea{
+    font-size: 1em;
+    width: 100%;
+    height: 10em;
+}
+
+
+
+#TagsInput{
+    font-size: 1em;
+    width:30%
+}
+
+#selectedtags{
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.forms{
+    padding: 2EM;
+    width: 100%;
+    background-color: #ffffff;
+}
+.hashtag{
+    margin-bottom: 0.5em;
+    margin-right: 1em;
+}
+
+@media screen and (max-width: 40em) {
+    #autocomplete{
+        width: 100%;
+    }
+    #TagsInput{
+        width: 100%;
+    }
+    .create {
+        margin-top: 0em;
+        margin-left: 0em;
+
+    
+      }
+}
