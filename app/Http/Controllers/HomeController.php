@@ -17,6 +17,7 @@ use App\Models\Faq;
     {
         public function index()
         {
+            if(auth()->user() != null){
             $results = Question::select(
                 'question.title', 
                 'content.content', 
@@ -53,17 +54,16 @@ use App\Models\Faq;
             ->orderBy('date', 'desc')
             ->paginate(15);
             return view('pages.homequestions', ['questions' => $results]);
+            }
+            return redirect('login');
         }
 
-        public function users()
-        {
-            $users = User::all(); 
-            return view('users.index', compact('users')); 
-        }
-        
         public function faq()
         {
-            $faqs = Faq::all();
-            return view('pages.faq', ['faqs' => $faqs]);
+            if(auth()->user() != null){
+                $faqs = Faq::all();
+                return view('pages.faq', ['faqs' => $faqs]);
+            }
+            return redirect('login');
         }
     }
