@@ -102,22 +102,57 @@ class ProfileController extends Controller
             ], 302);
         }
         $orderBy= $request->input('OrderBy');
-        $questions = Content::select('question.title as title', 'content.content as content', 'content.votes as votes', 'question.id as id', 'content.date as date')
-        ->where('user_id', $id)
-        ->join('question','question.id','=','content.id')
+        $questions = Question::select(
+            'question.title', 
+            'content.content', 
+            'appuser.username', 
+            'content.date', 
+            'content.id as id', 
+            'appuser.id as userid', 
+            'content.votes as votes',
+            'tags_agg.title as tags',
+            'tags_agg.id as tagsid',
+            DB::raw('COUNT(answer.id) as answernum')
+        )
+        ->join('content', 'question.id', '=', 'content.id')
+        ->join('appuser', 'content.user_id', '=', 'appuser.id')
+        ->leftjoin('answer', 'answer.question_id', '=', 'question.id')
+        ->leftjoin(
+            DB::raw('(SELECT question.id as qid, STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as title, STRING_AGG(CAST(tag.id AS TEXT), \',\' ORDER BY tag.id ASC) as id FROM questiontag JOIN tag ON tag.id = questiontag.tag_id JOIN question ON question.id = questiontag.question_id GROUP BY question.id) as tags_agg'),
+            'tags_agg.qid',
+            '=',
+            'question.id'
+        )
+        ->where('content.deleted', '=', false)
+        ->where('content.user_id', '=', $id)
+        ->groupBy(
+            'question.title',
+            'content.content',
+            'appuser.username',
+            'content.date',
+            'content.id',
+            'appuser.id',
+            'content.votes',
+            'tags_agg.title',
+            'tags_agg.id'
+        )
         ->orderBy($orderBy, 'desc')
-        ->paginate(10)
+        ->paginate(15)
         ->withqueryString(); 
         foreach($questions as $result){
-            $result->date = $result->compileddate();
+            $result->date = $result->commentable->content->compileddate();
         }
         return response()->json($questions) ;
     }
     public function listmyanswers(Request $request,$id){
         $orderBy = $request->input('OrderBy');
         if(Auth::check()){
-            $answers = Content::where('user_id', $id)
+            $answers = Content::select('question.id as question_id','content.content as content','content.votes as votes', 'content.reports as reports','question.title as tile','content.blocked as blocked', 'question.correct_answer_id as correct_answer_id','content.date as date', 'content.deleted as deleted','content.edited as edited','content.id as id', 'appuser.username as username')
             ->join('answer','content.id','=','answer.id')
+            ->join('question','question.id','=','answer.question_id')
+            ->join('appuser','appuser.id','=','content.user_id')
+            ->where('content.deleted', '=', false)
+            ->where('user_id', $id)
             ->orderBy($orderBy, 'desc')
             ->paginate(15)->withqueryString(); 
             foreach($answers as $result){
@@ -146,16 +181,46 @@ class ProfileController extends Controller
             ], 302);
         }
         $orderBy = $request->input('OrderBy');
-        $followedQuestions = Content::select('question.title as title', 'question.id as question_id')
-        ->join('followquestion', 'followquestion.question_id', '=', 'content.id')
-        ->join('question', 'content.id', '=', 'question.id')
-        ->where('followquestion.user_id', $id)
+        $followedQuestions = Question::select(
+            'question.title', 
+            'content.content', 
+            'appuser.username', 
+            'content.date', 
+            'content.id as id', 
+            'appuser.id as userid', 
+            'content.votes as votes',
+            'tags_agg.title as tags',
+            'tags_agg.id as tagsid',
+            DB::raw('COUNT(answer.id) as answernum')
+        )
+        ->join('content', 'question.id', '=', 'content.id')
+        ->join('appuser', 'content.user_id', '=', 'appuser.id')
+        ->leftjoin('answer', 'answer.question_id', '=', 'question.id')
+        ->leftjoin(
+            DB::raw('(SELECT question.id as qid, STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as title, STRING_AGG(CAST(tag.id AS TEXT), \',\' ORDER BY tag.id ASC) as id FROM questiontag JOIN tag ON tag.id = questiontag.tag_id JOIN question ON question.id = questiontag.question_id GROUP BY question.id) as tags_agg'),
+            'tags_agg.qid',
+            '=',
+            'question.id'
+        )
+        ->where('content.deleted', '=', false)
+        ->where('content.user_id', '=', $id)
+        ->groupBy(
+            'question.title',
+            'content.content',
+            'appuser.username',
+            'content.date',
+            'content.id',
+            'appuser.id',
+            'content.votes',
+            'tags_agg.title',
+            'tags_agg.id'
+        )
         ->orderBy($orderBy, 'desc')
         ->paginate(15)->withqueryString();
         foreach($followedQuestions as $result){
-            $result->date = $result->compileddate();
+            $result->date = $result->commentable->content->compileddate();
         }
-        return response()->json($followedQuestions) ;
+        return response()->json($followedQuestions);
     }
 
     public function listmyblocked($id){
