@@ -70,29 +70,4 @@ function showPage(currentPage){
     }
     renderPaginationButtons(currentPage);
 }
-function renderPaginationButtons(currentPage) {
-    const totalPages = Math.ceil(results.length / questionsPerPage );
-    questionpagination.innerHTML = "";
-    let delta = currentPage + 3;
-    if (delta > totalPages) delta = totalPages;
-    let start = currentPage - 3;
-    if (currentPage <= 3) start =1;
-    for (let i = start; i <=delta; i++) {
-        const button = document.createElement("button");
-        button.textContent = i;
-        button.classList.add("pagination-button");
-        // Highlight the current page
-        if (i === currentPage) {
-            button.style.backgroundColor = "#4CAF50";
-        }
-
-        button.addEventListener("click", function () {
-            currentPage = i;
-            showPage(currentPage);
-            
-        });
-
-        questionpagination.appendChild(button);
-    }
-}
 

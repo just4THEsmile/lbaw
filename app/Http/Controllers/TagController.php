@@ -53,10 +53,6 @@ class TagController extends Controller
         return redirect()->route('tagquestions', ['id' => $tag->id]);
     }
     public function editform(Request $request, $id){
-        $request->validate([
-            'description' => 'required|string|min:8|max:100',
-            'title' => 'required|string|min:2|max:30',
-        ]);
         $this->authorize('edit', Tag::class);
         if(!Auth::check()){
             return redirect('/login');
@@ -134,8 +130,6 @@ class TagController extends Controller
                         $result->followed = true;
                     }
                 }
-                echo json_encode($results);
-                dd();
                 return response()->json($results);
             }
             $results = Tag::whereRaw("tsvectors @@ plainto_tsquery(?)", [$query])
