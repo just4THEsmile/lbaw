@@ -58,8 +58,8 @@
   </div>
   @endforeach
   <div class="d-flex justify-content-center mt-4">
-    @if($unblockRequests->count() > 0)
-    {{ $unblockRequests->links('pagination::bootstrap-4') }}
+    @if($unblockAccounts->count() > 0)
+    {{ $unblockAccounts->links('pagination::bootstrap-4') }}
     @else
     <p>No More Unblock Requests Found.</p>
     @endif
