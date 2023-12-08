@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-
+    
     <div class="sidebar">
     <a href="/home">Home Page</a>
     <a href="{{'/tags'}}">Tags</a>
@@ -20,8 +20,10 @@
     </div>
 
     <div style="color:white; font-size:0.0001em;">Home</div>
+    <div id="error"></div>
     <section id="answers">
         @include('partials.question', ['question' => $question,'answers' => $answers])
         {{ $answers->links() }}
     </section>
+    <script type="text/javascript" src={{ url('js/question.js') }} defer></script>
 @endsection

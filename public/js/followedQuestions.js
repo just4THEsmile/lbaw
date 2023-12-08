@@ -27,6 +27,7 @@ window.onload = function () {
 }   
 
 function showPage(results,links){
+    console.log(results);
     const Questions = document.getElementById("Questions");
     Questions.innerHTML = "";
     if(results.length == 0){
@@ -40,7 +41,7 @@ function showPage(results,links){
 
         // Create the link for the question title
         const titleLink = document.createElement("a");
-        titleLink.href = `/question/${result.id}`;
+        titleLink.href = `/question/${result.question_id}`;
         titleLink.textContent = result.title;
         titleLink.classList.add("title");
         // Create the content div

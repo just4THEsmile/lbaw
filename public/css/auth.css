@@ -50,7 +50,7 @@
   }
   
   .inputForm:focus-within {
-    border: 1.5px solid #2d79f3;
+    border: 1.5px solid black;
   }
   
   .flex-row {
@@ -125,3 +125,6 @@
     margin-left: 0em !important;
 }
       
+#content > form {
+  border: 1px solid black !important;
+}

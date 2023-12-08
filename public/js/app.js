@@ -12,7 +12,11 @@ function disableSubmitButton() {
 }
 
 function confirmDelete() {
-  return confirm("Are you sure you want to delete your account?");
+  return confirm("Are you sure you want to delete the account?");
+}
+
+function confirmBlock() {
+  return confirm("Are you sure you want to proceed with the action?");
 }
 function encodeForAjax(data) {
   if (data == null) return null;

@@ -6,15 +6,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Report;
 use App\Models\Content;
+use App\Models\Vote;
 use App\Models\UnblockRequest;
+use App\Models\UnblockAccount;
+use Illuminate\Auth\Access\AuthorizationException;
 
 
 class ContentController extends Controller
 {
     public function reportContent(Request $request, $content_id)
-    {
+    {   
         
+
         $user = auth()->user();
+        if($user === null){
+            return response()->json([
+                'message' => 'not logged in',
+            ], 500);
+        }
         $content = Content::find($content_id);
         $this->authorize("report", $content);
         if(Report::where('user_id', $user->id)->where('content_id', $content_id)->exists()){
@@ -33,12 +42,144 @@ class ContentController extends Controller
         $content->save();
         return redirect()->back();
     }
+    public function voteContent( Request $request, $content_id )
+    {   
+
+        $user = auth()->user();
+        $vote = Vote::where('user_id', $user->id)->where('content_id', $content_id)->first();
+        if($vote != null){
+            if($vote->vote == True){
+                if($request->input('value') == "up"){
+                    $transaction = TransactionsController::deletevote($user->id, $content_id);
+                    if($transaction === null or !is_int($transaction)){
+                        return response()->json([
+                            'message' => 'error voting up',
+                        ], 500);
+                    }else{
+                        return response()->json([
+                            'id' => $content_id,
+                            'votes' => $transaction,
+                            'message' => 'none',
+                        ], 200);
+                    }
+                }
+                else{
+                    $transaction = TransactionsController::deletevote($user->id, $content_id);
+                    if($transaction === null or !is_int($transaction)){
+                        return response()->json([
+                            'message' => 'error voting down',
+                        ], 500);
+                    }
+                    $transaction = TransactionsController::votedowncontent($user->id, $content_id);
+                    if($transaction === null or !is_int($transaction)){
+                        return response()->json([
+                            'message' => 'error voting down',
+                        ], 500);
+                    }else{
+                        return response()->json([
+                            'id' => $content_id,
+                            'votes' => $transaction,
+                            'message' => 'down',
+                        ], 200);
+                    }
+                }
+            }else{
+                if($request->input('value') == "up"){
+                    $transaction=TransactionsController::deletevote($user->id, $content_id);
+                    if($transaction === null or !is_int($transaction)){
+                        return response()->json([
+                            'message' => 'error voting up',
+                        ], 500);
+                    }
+                    $transaction= TransactionsController::voteupcontent($user->id, $content_id);
+                    if($transaction === null or !is_int($transaction)){
+                        return response()->json([
+                            'message' => 'error voting up',
+                        ], 500);
+                    }else{
+                        return response()->json([
+                            'id' => $content_id,
+                            'votes' => $transaction,
+                            'message' => 'up',
+                        ], 200);
+                    }
+
+                    return response()->json("up");
+                }else{
+                    $transaction = TransactionsController::deletevote($user->id, $content_id);
+                    if($transaction === null or !is_int($transaction)){
+                        return response()->json([
+                            'message' => 'error voting down',
+                        ], 500);
+                    }else{
+                        return response()->json([
+                            'id' => $content_id,
+                            'votes' => $transaction,
+                            'message' => 'none',
+                        ], 200);
+                    }
+                }
+            }
+        }else{
+
+            if($request->input('value') == "up"){
+                $transaction = TransactionsController::voteupcontent($user->id, $content_id);
+                if($transaction === null or !is_int($transaction)){
+                    return response()->json([
+                        'message' => 'error voting up',
+                    ], 500);
+                }else{
+                    return response()->json([
+                        'id' => $content_id,
+                        'votes' => $transaction,
+                        'message' => 'up',
+                    ], 200);
+                }
+
+            }else{
+
+                $transaction = TransactionsController::votedowncontent($user->id, $content_id);
+                if($transaction === null or !is_int($transaction)){
+                    return response()->json([
+                        'message' => 'error voting down',
+                    ], 500);
+                }else{
+                    return response()->json([
+                        'id' => $content_id,
+                        'votes' => $transaction,
+                        'message' => 'down',
+                    ], 200);
+                }
+            }
+        }
+    }    
 
     public function unblockrequest(Request $request, $id)
     {
-        $this->authorize("unblock", Content::find($id));
+        try {
+            $this->authorize("unblock", Content::find($id));
+        } catch (AuthorizationException $e) {
+            if (Auth::check()) {
+                return redirect()->route('home');
+            } else {
+                return redirect()->route('login');
+            }
+        }
         $userId = $request->query('user_id');
-        $content = Content::find($id);
+        $content = Content::where('id', $id)
+        ->with(['comment', 'question', 'answer'])->first();
+        if ($content->comment) {
+            $content->type = 'comment';
+            $content->content_id = $content->comment->id;
+        } elseif ($content->answer) {
+            $content->type = 'answer';
+            $content->content_id = $content->answer->id;
+        } elseif ($content->question) {
+            $content->type = 'question';
+            $content->content_id = $content->question->id;
+        }
+        
+
         return view('pages.unblockrequest', ['content' => $content, 'user_id' => $userId]);
     }
 
@@ -64,8 +205,23 @@ class ContentController extends Controller
             return redirect()->route('login');
         }
         if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
-            $unblockRequests = UnblockRequest::with(['content', 'user'])->paginate(5);
-            return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests]);
+            $unblockRequests = UnblockRequest::with(['content', 'user'])->with(['comment', 'question', 'answer'])->paginate(5);
+
+            foreach($unblockRequests as $unblockRequest){
+                if ($unblockRequest->comment) {
+                    $unblockRequest->type = 'comment';
+                    $unblockRequest->content_id = $unblockRequest->comment->id;
+                } elseif ($unblockRequest->answer) {
+                    $unblockRequest->type = 'answer';
+                    $unblockRequest->content_id = $unblockRequest->answer->id;
+                } elseif ($unblockRequest->question) {
+                    $unblockRequest->type = 'question';
+                    $unblockRequest->content_id = $unblockRequest->question->id;
+                }
+            }
+
+            $unblockAccounts = UnblockAccount::with(['user'])->paginate(5);
+            return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests, 'unblockAccounts' => $unblockAccounts]);
         }
         return redirect()->route('home');
     }
@@ -77,7 +233,18 @@ class ContentController extends Controller
         }
         if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
             $unblockRequest = UnblockRequest::find(request()->route('id'));
-            $content = Content::find($unblockRequest->content_id);
+            $content = Content::where('id', $unblockRequest->content_id)
+            ->with(['comment', 'question', 'answer'])->first();
+            if ($content->comment) {
+                $content->type = 'comment';
+                $content->content_id = $content->comment->id;
+            } elseif ($content->answer) {
+                $content->type = 'answer';
+                $content->content_id = $content->answer->id;
+            } elseif ($content->question) {
+                $content->type = 'question';
+                $content->content_id = $content->question->id;
+            }
             return view('pages.reviewcontent', ['unblockRequest' => $unblockRequest, 'content' => $content]);
         }
         return redirect()->route('home');

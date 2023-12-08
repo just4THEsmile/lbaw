@@ -32,6 +32,7 @@ function showPage(results,links){
         Questions.innerHTML = "No questions Found";
     }
     for (let i = 0; i < results.length; i++) {
+        if(tagsArray[i] == null) continue;
         let result = results[i];
         // Create the main answer card div
         const questionCard = document.createElement("div");

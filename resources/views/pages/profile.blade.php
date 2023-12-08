@@ -12,6 +12,14 @@
 </style>
 @endsection
 
+@section('sidebar')
+<a class='aside active' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a>
+<a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">Followed Questions</a>
+<a class='aside' href="{{ route('myquestions', ['id' => $user->id]) }}" >My questions</a>
+<a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">My answers</a>
+<a class='aside' href="{{ route('myblocked', ['id' => $user->id]) }}">My blocked</a>
+@endsection
+
 @section('content2')
     <nav>
         <a id='arrow' href="{{'/users'}}" >&larr;</a>
@@ -19,37 +27,48 @@
     <section id='info'>
         <div id='container'>
             <div id="profile">
-                    <img src="{{ $user->getProfileImage() }}" alt="Profile Picture">
+                <img src="{{ $user->getProfileImage() }}" alt="Profile Picture">
             </div>
             <div id='username'>   
                 <h1>{{ $user->username }}</h1>
             </div>
-            
-            <div id='paylink'>
-                <a href="{{$user->paylink}}">Donate</a>
-            </div>
-            <div id='stats'>
-                <div id='points'>
-                    <div>Points</div>
-                    <p>{{ $user->points}}</p>
-                </div>
-                <div id='questions'>
-                    <div>Questions</div>
-                    <p>{{ $user->nquestion }}</p>
-                </div>
-                <div id='answers'>
-                    <div>Answers</div>
-                    <p>{{ $user->nanswer }}</p>
-                </div>	
-            </div>
         </div>
+        <div class="button" id='paylink'>
+            <a href="{{$user->paylink}}">Donate</a>
+        </div>
+        <div id='stats'>
+            <div id='points'>
+                <div>Points</div>
+                <p>{{ $user->points}}</p>
+            </div>
+            <div id='questions'>
+                <div>Questions</div>
+                <p>{{ $user->nquestion }}</p>
+            </div>
+            <div id='answers'>
+                <div>Answers</div>
+                <p>{{ $user->nanswer }}</p>
+            </div>	
+            </div>
+        
         @if(Auth::user()->id === $user->id || Auth::user()->usertype === 'admin')
         <div id='edit'>
-            <form method="POST" action="{{ route('deleteaccount',['id' => Auth::user()->id]) }}" onsubmit="return confirmDelete()">
+            <form method="POST" action="{{ route('deleteaccount',['id' => $user->id]) }}" onsubmit="return confirmDelete()">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                 <button type="submit" class="button">Delete Account</button>
             </form>
+            @if(Auth::user()->usertype === 'admin')
+            <form method="POST" action="{{ route('blockaccount',['id' => $user->id]) }}" onsubmit="return confirmBlock()">
+                @csrf
+                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                @if($user->blocked)
+                <button type="submit" class="button">Unblock Account</button>
+                @else
+                <button type="submit" class="button">Block Account</button>
+                @endif
+            </form>
+            @endif
             <a class="button" href="{{ route('editprofile', ['id' => $user->id]) }}">Edit Profile</a>  
         </div>
         @endif
@@ -62,17 +81,10 @@
             <h3>Badges Unlocked</h3>
             <ul>
                 @foreach($user->badges as $badge)
-                    <li>{{ $badge->name }} - {{ $badge->description }}</li>
+                    <li><div class="badgecontent"><div class="badgename"><span>{{ $badge->name }} </span></div><div class="badgedescription"> {{ $badge->description }}</div></div></li>
                 @endforeach
             </ul>
         </section>
         
 @endsection
 
-@section('content3')
-<div id='Profile'><a class='aside' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a></div>
-<div id='Follow'><a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">Followed Questions</a></div>
-<div id='MyQuestions'><a class='aside' href="{{ route('myquestions', ['id' => $user->id]) }}" >My questions</a></div>
-<div id= 'MyAnswers'><a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">My answers</a></div>
-<div id= 'MyBlocked'><a class='aside' href="{{ route('myblocked', ['id' => $user->id]) }}">My blocked</a></div>
-@endsection

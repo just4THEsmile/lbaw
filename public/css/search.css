@@ -1,3 +1,4 @@
+#searchTagInput,
 .searchbar {
     border: 2px solid #e8e8e8 !important;
     padding: 15px;
@@ -45,12 +46,21 @@ select {
   
 
   
-
+#searchTagInput:focus,
 .searchbar:focus {
     outline-color: black !important;
     background-color: #fff;
     color: #000;
     box-shadow: 5px 5px #888888;
+}
+#searchTagInput,
+.searchbar{
+  display: block;
+  margin-left: 5em;
+  margin-right: auto;
+
+
+  width: 70% !important;
 }
 
 #TagsPagination>button,

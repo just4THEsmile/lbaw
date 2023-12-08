@@ -47,7 +47,7 @@
 
 #answers{
     padding: 1em;
-    margin-top: 10em;
+
     margin-left: 10em;
 }
 
@@ -140,14 +140,12 @@ ul>.comments{
 
     margin-top: 2em;
 }
-ul>.answer>div>span{
-    padding: 0.5em;
-    width: 80%;
-    font-size: 1em;
-    border-radius: 0.5em ;
-    margin-bottom: 1em;
-
+.correct{
+  display:flex;
+  color: green;
+  align-items: center;
 }
+
 .answercontent{
   width: 100%;
 }
@@ -251,4 +249,24 @@ button{
 }
 .questioncontent>h3{
   margin-bottom: 0em !important;
+}
+
+.correctbutton>.correctanswerButton{
+  margin-right: 0em !important;
+}
+h2{
+  margin-bottom: 0em !important;
+}
+
+.voted.arrow-up span{
+  color: green !important;
+}
+.voted.arrow-down span{
+  color: red !important;
+}
+#error{
+  font-weight: 600 !important;
+  color: red;
+  display: flex;
+  justify-content: center;
 }

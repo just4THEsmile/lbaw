@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\vote;
+use App\Models\Vote as ModelsVote;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,6 +30,19 @@ class Content extends Model
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function get_vote() : Vote {
+        $vote = ModelsVote::where('user_id', auth()->user()->id)->where('content_id', $this->id)->first();
+        if ($vote == null) {
+            return Vote::NONE;
+        }
+        else if ($vote->vote == True) {
+            return Vote::VOTEUP;
+        }
+        else {
+            return Vote::VOTEDOWN;
+        }
     }
     
     public function isReported(User $user) : bool

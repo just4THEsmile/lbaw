@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('style')
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -16,9 +15,17 @@
 </div>
 
 <div style="color:white; font-size:0.0001em;">Home</div>
-<div id="fixable" class="card-container">
+
+<div id="buttonlist">
+<button id="contentRequestsButton">View Content Unblock Requests</button>
+<button id="accountRequestsButton">View Account Unblock Requests</button>
+</div>
+
+<div id="fixable" class="card-container   unblockcontent">
+  <p>Blocked Content Appeals</p>
   @foreach ($unblockRequests as $unblockRequest)
   <div class="card">
+      <p class="card-info">Type:{{ $unblockRequest->type}}</p>
       <p class="card-info">Unblock Request ID:{{ $unblockRequest->id}}</p>
       <p class="card-info">Name:{{ $unblockRequest->user->name}}</p>
       <p class="card-info">UserName:{{ $unblockRequest->user->username}}</p>
@@ -37,4 +44,39 @@
   </div>
 </div>
 
+<div id="fixable" class="card-container unblockaccount" style="display:none">
+  <p>Blocked Account Appeals</p>
+  @foreach ($unblockAccounts as $unblockAccount)
+
+  <div class="card">
+      <p class="card-info">Unblock Request ID:{{ $unblockAccount->id}}</p>
+      <p class="card-info">Name: {{ $unblockAccount->user->name}}</p>
+      <p class="card-info">UserName: {{ $unblockAccount->user->username}}</p>
+      <p class="card-info">Email: {{ $unblockAccount->user->email}}</p>
+      <p class="card-info">Reason to Unblock: {{ $unblockAccount->appeal}}</p>
+      <a href="{{ '/reviewaccount/' . $unblockAccount->id }}" class="card-link">Review Account</a>
+  </div>
+  @endforeach
+  <div class="d-flex justify-content-center mt-4">
+    @if($unblockRequests->count() > 0)
+    {{ $unblockRequests->links('pagination::bootstrap-4') }}
+    @else
+    <p>No More Unblock Requests Found.</p>
+    @endif
+  </div>
+</div>
+
+
+
+<script>
+    document.getElementById('contentRequestsButton').addEventListener('click', function() {
+        document.querySelector('.unblockcontent').style.display = 'flex';
+        document.querySelector('.unblockaccount').style.display = 'none';
+    });
+
+    document.getElementById('accountRequestsButton').addEventListener('click', function() {
+        document.querySelector('.unblockcontent').style.display = 'none';
+        document.querySelector('.unblockaccount').style.display = 'flex';
+    });
+</script>
 @endsection

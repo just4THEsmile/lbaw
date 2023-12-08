@@ -14,6 +14,7 @@ use App\Models\FollowQuestion;
 use App\Models\Notification;
 use App\Models\BadgeAttainmentNotification;
 use App\Models\Question;
+use App\Models\UnblockAccount;
 use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
@@ -106,7 +107,76 @@ class UserController extends Controller
 
         $this->authorize('delete', $userBeingDeleted);
         TransactionsController::deleteUser($userBeingDeleted->id);
-        return redirect()->route('logout');
+        if($id === Auth::user()->id){
+            return redirect()->route('logout');
+        }
+        else{
+            return redirect()->route('users');
+        }
+        
+    }
+
+
+    public function blockAccount(Request $request,string $id)
+    {
+        $userBeingBlocked = User::find($id);
+        $this->authorize('block', $userBeingBlocked);
+        if($userBeingBlocked->blocked === true){
+            $userBeingBlocked->blocked = false;
+        }
+        else{
+            $userBeingBlocked->blocked = true;
+        }
+        $userBeingBlocked->save();
+        
+        return redirect()->route('users');
     }
        
+    public function unblockaccountform(Request $request,string $id)
+    {
+        $userBeingUnblocked = User::find($id);
+        $this->authorize('unblockform', $userBeingUnblocked);
+        return view('auth.unblockaccount', ['user' => $userBeingUnblocked]);
+    }
+
+    public function unblockaccountrequest(Request $request,string $id)
+    {
+        $userBeingUnblocked = User::find($id);
+        $this->authorize('unblockform', $userBeingUnblocked);
+        $request->validate(['appeal' => 'required|string|max:255']);
+        $unblockAccount = UnblockAccount::create([
+            'user_id' => $userBeingUnblocked->id,
+            'appeal' => $request->input('appeal')
+        ]);
+        $unblockAccount->save();
+        return redirect()->route('profile', ['id' => $userBeingUnblocked->id]);
+    }
+
+    public function reviewaccount(Request $request,string $id)
+    {
+        $userReviewing = Auth::user();
+        $this->authorize('review', $userReviewing);
+        $unblockAccount = UnblockAccount::where('id',$id)->with(['user'])->first();
+        return view('pages.reviewaccount', ['unblockaccount' => $unblockAccount]);
+    }
+
+    public function processaccount(Request $request)
+    {
+        $userReviewing = Auth::user();
+        $id = $request->input('unblock_request_id');
+        $this->authorize('process', $userReviewing);
+        $unblockAccount = UnblockAccount::where('id',$id)->with(['user'])->first();
+        $userBeingReviewed = $unblockAccount->user;
+        $action = $request->input('action');
+        if($action=== 'unblock'){
+            $userBeingReviewed->blocked = false;
+            $userBeingReviewed->save();
+        }
+        elseif($action=== 'keep_blocked'){
+            $userBeingReviewed->blocked = true;
+            $userBeingReviewed->save();
+        }
+        $unblockAccount->delete();
+        return redirect()->route('moderatecontent');
+    }
 }

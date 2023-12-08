@@ -7,7 +7,7 @@
         @endif
         <span class="commentText">{{ $comment->content->content }}</span>
         <div class="profileinfo">
-            <a href="{{ url('/profile/'.$comment->content->user->userid) }}">{{ $comment->content->user->username }}</a>
+            <a href="{{ url('/profile/'.$comment->content->user->id) }}">{{ $comment->content->user->username }}</a>
             <p>{{ $comment->content->compileddate()}}</p>
         </div>
             @if (($comment->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'moderator' ) && !$comment->content->deleted)

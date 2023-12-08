@@ -4,22 +4,31 @@
     <link href="{{ url('css/editprofile.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-            <div class="container-xl px-4 mt-4">
+            <div class="sidebar">
+                <a class="active" href="/home">Home Page</a>
+                <a href="{{'/tags'}}">Tags</a>
+                <a href="{{'/questions'}}">Questions</a>
+                <a href="{{'/users'}}">Users</a>
+                @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+                    <a href="{{'/moderatecontent'}}">Blocked Content</a>
+                @endif
+            </div>
+            <div id="editcontent" class="container-xl px-4 mt-4">
             <!-- Account page navigation-->
             <div class="row">
                 <div class="col-xl-4">
                     <!-- Profile picture card-->
-                    <div class="card mb-4 mb-xl-0">
+                    <div class="card mb-4 mb-xl-0" style = "padding: 0.5em">
                         <div class="card-header">Profile Picture</div>
                         <p>Upload a profile picture to personalize your account.</p>
                         <div class="card-body text-center">
                             <img class="img-account-profile rounded-circle mb-2" src="{{ $user->getProfileImage() }}" alt="Profile Picture">
-                            <form id='profileform' action="/file/upload" method='post' enctype="multipart/form-data">
+                            <form style="display: flex; flex-direction: column;" id='profileform' action="/file/upload" method='post' enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                <input type="file" name="profilepicture" accept="image/png,image/jpeg,image/png" multiple>
+                                <input style="align-self: center; font-size:0.7em;" type="file" name="profilepicture" accept="image/png,image/jpeg,image/png" multiple>
                                 <input name="type" type="text" value="profile" hidden>
-                                <button class="btn btn-primary" type="submit" name="profile-form">Upload new image</button>
+                                <button style="width:15em;" class="btn btn-primary" type="submit" name="profile-form">Upload new image</button>
                             </form>
                         </div>
                     </div>

@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-//use App\Http\Controllers\CardController;
-use App\Http\Controllers\ItemController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CommentController;
@@ -33,6 +31,7 @@ use App\Http\Controllers\NotificationController;
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateuser', [UserController::class, 'updateUser'])->name('updateuser');
     Route::post('/user/{id}/delete', 'deleteAccount')->name('deleteaccount');
+    Route::post('/user/{id}/block', 'blockAccount')->name('blockaccount');
     Route::post('/updateuseradmin', [UserController::class, 'updateUserAdmin'])->name('updateuseradmin');
 });
 
@@ -135,6 +134,8 @@ Route::controller(NotificationController::class)->group(function () {
 });
 
 //api
+Route::post('/api/correct/{questionid}', [QuestionController::class, 'correctanswer']);
+Route::post('/api/vote/{id}', [ContentController::class, 'voteContent']);
 Route::get('/api/tag/{id}/questions', [TagController::class ,'tagquestions'])->name('tagquestionsapi');
 Route::get('/api/search/questions',  [SearchQuestionController::class,'search']);
 Route::get('/api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
@@ -151,3 +152,7 @@ Route::get('/reviewcontent/{id}', [ContentController::class, 'reviewcontent'])->
 Route::post('/processRequest', [ContentController::class, 'processRequest'])->name('processRequest');
 
 
+Route::get('/unblockaccountform/{id}', [UserController::class, 'unblockaccountform'])->name('unblockaccountform');
+Route::post('/unblockaccountrequest/{id}', [UserController::class, 'unblockaccountrequest'])->name('unblockaccount');
+Route::get('/reviewaccount/{id}/', [UserController::class, 'reviewaccount'])->name('reviewaccount');
+Route::post('/processAccount', [UserController::class, 'processaccount'])->name('processAccount');
