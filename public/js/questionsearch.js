@@ -18,6 +18,7 @@ function searchQuestions(){
 
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             if(searchInput.value==query){
 
         
