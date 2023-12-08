@@ -147,3 +147,6 @@ Route::post('/processRequest', [ContentController::class, 'processRequest'])->na
 
 
 Route::get('/unblockaccountform/{id}', [UserController::class, 'unblockaccountform'])->name('unblockaccountform');
+Route::post('/unblockaccountrequest/{id}', [UserController::class, 'unblockaccountrequest'])->name('unblockaccount');
+Route::get('/reviewaccount/{id}/', [UserController::class, 'reviewaccount'])->name('reviewaccount');
+Route::post('/processAccount', [UserController::class, 'processaccount'])->name('processAccount');

@@ -42,3 +42,12 @@
         margin: 0em;
     }
 }
+
+#fixable{
+    margin-top: 0em;
+}
+#buttonlist{
+    display: flex;
+    justify-content: center;
+    margin-left: 10em;
+}
