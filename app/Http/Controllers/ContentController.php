@@ -205,7 +205,9 @@ class ContentController extends Controller
             return redirect()->route('login');
         }
         if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
-            $unblockRequests = UnblockRequest::with(['content', 'user'])->with(['comment', 'question', 'answer'])->paginate(5);
+            $unblockRequests = UnblockRequest::with(['content', 'user'])->with(['comment', 'question', 'answer'])->paginate(
+                $perPage = 5, $columns=['*'], $pagename='unblockrequests'
+            );
 
             foreach($unblockRequests as $unblockRequest){
                 if ($unblockRequest->comment) {
@@ -220,7 +222,9 @@ class ContentController extends Controller
                 }
             }
 
-            $unblockAccounts = UnblockAccount::with(['user'])->paginate(5);
+            $unblockAccounts = UnblockAccount::with(['user'])->paginate(
+                $perPage = 5, $columns=['*'] ,$pagename='unblockaccounts'
+            );
             return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests, 'unblockAccounts' => $unblockAccounts]);
         }
         return redirect()->route('home');
