@@ -25,26 +25,27 @@
 </form>
 </div>
 
-<div id="fixable" class="card-container   unblockcontent">
-  <p>Blocked Content Appeals</p>
-  @foreach ($unblockRequests as $unblockRequest)
+<div id="fixable" class="card-container unblockaccount">
+  <p>Blocked Account Appeals</p>
+  <?php echo json_decode($unblockAccounts) ?>
+  @foreach ($unblockAccounts as $unblockAccount)
+
   <div class="card">
-      <p class="card-info">Type:{{ $unblockRequest->type}}</p>
-      <p class="card-info">Unblock Request ID:{{ $unblockRequest->id}}</p>
-      <p class="card-info">Name:{{ $unblockRequest->user->name}}</p>
-      <p class="card-info">UserName:{{ $unblockRequest->user->username}}</p>
-      <p class="card-info">Email:{{ $unblockRequest->user->email}}</p>
-      <p class="card-info">Content ID:{{ $unblockRequest->content->id}}</p>
-      <p class="card-info">Reason to Unblock:{{ $unblockRequest->description}}</p>
-      <a href="{{ '/reviewcontent/' . $unblockRequest->id }}" class="card-link">Review Content</a>
+      <p class="card-info">Unblock Request ID:{{ $unblockAccount->id}}</p>
+      <p class="card-info">Name: {{ $unblockAccount->user->name}}</p>
+      <p class="card-info">UserName: {{ $unblockAccount->user->username}}</p>
+      <p class="card-info">Email: {{ $unblockAccount->user->email}}</p>
+      <p class="card-info">Reason to Unblock: {{ $unblockAccount->appeal}}</p>
+      <a href="{{ '/reviewaccount/' . $unblockAccount->id }}" class="card-link">Review Account</a>
   </div>
   @endforeach
   <div class="d-flex justify-content-center mt-4">
-    @if($unblockRequests->count() > 0)
-    {{ $unblockRequests->links('pagination::bootstrap-4') }}
+    @if($unblockAccounts->count() > 0)
+    {{ $unblockAccounts->links('pagination::bootstrap-4') }}
     @else
     <p>No More Unblock Requests Found.</p>
     @endif
   </div>
 </div>
+
 @endsection

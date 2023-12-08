@@ -205,9 +205,7 @@ class ContentController extends Controller
             return redirect()->route('login');
         }
         if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
-            $unblockRequests = UnblockRequest::with(['content', 'user'])->with(['comment', 'question', 'answer'])->paginate(
-                $perPage = 5, $columns=['*'], $pagename='unblockrequests'
-            );
+            $unblockRequests = UnblockRequest::with(['content', 'user'])->with(['comment', 'question', 'answer'])->paginate(5);
 
             foreach($unblockRequests as $unblockRequest){
                 if ($unblockRequest->comment) {
@@ -221,11 +219,18 @@ class ContentController extends Controller
                     $unblockRequest->content_id = $unblockRequest->question->id;
                 }
             }
-
-            $unblockAccounts = UnblockAccount::with(['user'])->paginate(
-                $perPage = 5, $columns=['*'] ,$pagename='unblockaccounts'
-            );
-            return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests, 'unblockAccounts' => $unblockAccounts]);
+            return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests]);
+        }
+        return redirect()->route('home');
+    }
+    public function moderateusers() {
+        $user = auth()->user();
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
+        if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
+            $unblockAccounts = UnblockAccount::with(['user'])->paginate(5);
+            return view('pages.moderateusers', ['unblockAccounts' => $unblockAccounts]);
         }
         return redirect()->route('home');
     }
