@@ -18,6 +18,7 @@
         <option value="date">Time</option>
         <option value="votes">Votes</option>
     </select>
+    <span class="error" id ="error"></span>
         <ul id="Answers"></ul>
         <div id ="pagination"></div>
         <script type="text/javascript" src={{ url('js/my_answers.js') }} defer></script>

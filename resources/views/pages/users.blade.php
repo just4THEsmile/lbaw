@@ -23,6 +23,7 @@
     <div id='search'>
         <div style="color:white; font-size:0.0001em;">Home</div>
         <input class="searchbar" type="text" id="searchUserInput" placeholder="Search...">
+        <span class="error" id ="error"></span>
         <label for="sortSelect">Search By:</label>
         <select id="sortSelect">
             <option value="relevance">Relevance</option>

@@ -26,6 +26,7 @@
     <div class="realcontent">
         <div id="tag_title">Questions with the tag [{{ $tag_title }}]</div>
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
+        <span class="error" id ="error"></span>
         <label for="sortSelect">Sort By:</label>
         <select id="sortSelect">
             <option value="relevance">Relevance</option>
