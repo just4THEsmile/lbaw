@@ -1,14 +1,10 @@
 <?php
 
 namespace App\Models;
-
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 // Added to define Eloquent relationships.
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Builder;
 class FollowTag extends Model
 {
     // Don't add create and update timestamps in database.
@@ -21,15 +17,19 @@ class FollowTag extends Model
      */
 
     protected $table = 'followtag';
+    protected $fillable = [
+        'user_id',
+        'tag_id'
+    ];
     protected $primaryKey = ['user_id', 'tag_id'];
-
+    public $incrementing = false;
     /**
  * Set the keys for a save update query.
  *
  * @param  \Illuminate\Database\Eloquent\Builder  $query
  * @return \Illuminate\Database\Eloquent\Builder
  */
-protected function setKeysForSaveQuery(Builder $query)
+protected function setKeysForSaveQuery($query)
 {
     $keys = $this->getKeyName();
     if(!is_array($keys)){

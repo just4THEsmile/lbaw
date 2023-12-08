@@ -28,6 +28,7 @@
     </style>
     <div id="user_id" hidden>{{$user->id}}</div>
     <div class="card-container">
+    <span class="error" id ="error"></span>
         @foreach ($blockedContent as $block)
             {{-- Check content type and include respective partial --}}
             @if ($block->type === 'question')

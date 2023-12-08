@@ -1,8 +1,13 @@
 <div class="p-3 d-flex align-items-center bg-light border-bottom osahan-post-header">
-
+    <div class="dropdown-list-image mr-3">
+        <img class="rounded-circle" src="{{asset('profile/' . $notification->vote_user_profile_pick)}}"  alt="" />
+    </div>
     <div class="font-weight-bold mr-3">
-        <div class="text-truncate">You just received a new badge "{{ $notification->badge_name }}"</div>
-
+        @if($notification->vote == True)
+            <div class="text-truncate">{{ $notification->vote_username}} liked your content</div>
+        @else
+            <div class="text-truncate">{{ $notification->vote_username}} disliked your content</div>
+        @endif
     </div>
     <span class="ml-auto mb-auto">
         <div class="btn-group">

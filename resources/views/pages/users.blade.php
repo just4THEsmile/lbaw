@@ -16,7 +16,7 @@
   <a href="{{'/tags'}}">Tags</a>
   <a href="{{'/questions'}}">Questions</a>
   <a class="active" href="{{'/users'}}">Users</a>
-  @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+  @if (Auth::check() && (Auth::user()->usertype === 'admin' || Auth::user()->usertype === 'moderator'))
     <a href="{{'/moderatecontent'}}">Blocked Content</a>
   @endif
 
@@ -24,7 +24,8 @@
 <div class="userpage">
     <div id='search'>
         <div style="color:white; font-size:0.0001em;">Home</div>
-        <input class="searchbar" type="text" id="searchUserInput" placeholder="Search User..." >
+        <input class="searchbar" type="text" id="searchUserInput" placeholder="Search User...">
+        <span class="error" id ="error"></span>
         <label for="sortSelect">Search By:</label>
         <select id="sortSelect">
             <option value="relevance">Relevance</option>

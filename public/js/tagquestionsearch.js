@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function searchQuestions(){
     const query = searchInput.value;
     const tag_id = document.getElementById("tag_id").textContent;
-    fetch(`/api/tag/${tag_id}/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${query}`)
+    fetch(`/api/tag/${tag_id}/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${encodeURIComponent(query)}`)
 
         .then(response => response.json())
         .then(data => {
@@ -149,36 +149,5 @@ function showPage(results,links){
         
     }
     renderPaginationButtons(links);
-}
-function renderPaginationButtons(links) {
-    query = searchInput.value;
-    const paginationContainer = document.getElementById("pagination")
-    paginationContainer.innerHTML = "";
-    for (let i = 0; i <links.length; i++) {
-        const button = document.createElement("button");
-        button.innerHTML = links[i].label;
-        button.classList.add("pagination-button");
-        // Highlight the current page
-        button.addEventListener("click", function () {
-            if(links[i].url!=null){
-                fetch(links[i].url)
-
-                .then(response => response.json())
-                .then(data => {
-                    if(searchInput.value==query){
-                        results = data;
-                        showPage(data.data,data.links);
-                        window.scrollTo(0,0); 
-                    }
-        
-                })
-                .catch(error => {
-                    console.error('Error fetching search results', error);
-                });
-        } 
-        });
-
-        paginationContainer.appendChild(button);
-    }
 }
 

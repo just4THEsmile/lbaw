@@ -103,9 +103,9 @@
                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                                         <h3>User Type</h3>
                                         <select name="usertype" id="usertype" class="form-select">
-                                            <option value="user" @if($user->usertype == 'user') selected @endif>User</option>
-                                            <option value="moderator" @if($user->usertype == 'moderator') selected @endif>Moderator</option>
-                                            <option value="admin" @if($user->usertype == 'admin') selected @endif>Admin</option>
+                                            <option value="user" @if($user->usertype === 'user') selected @endif>User</option>
+                                            <option value="moderator" @if($user->usertype === 'moderator') selected @endif>Moderator</option>
+                                            <option value="admin" @if($user->usertype === 'admin') selected @endif>Admin</option>
                                         </select>
                                         <h3>Badges</h3>
                                         <div class='right-card'>

@@ -1,10 +1,10 @@
 <div class="p-3 d-flex align-items-center bg-light border-bottom osahan-post-header">
     <div class="dropdown-list-image mr-3">
-        <img class="rounded-circle" src="{{asset('profile/' . $notification->profilepicture)}}" alt="" />
+        <img class="rounded-circle" src="{{asset('profile/' . $notification->answer_user_picture)}}" alt="" />
     </div>
     <div class="font-weight-bold mr-3">
         <div class="text-truncate">Someone answered one of your question</div>
-        <div class="small">If you want more details press the button to see the answer</div>
+        <div class="small">{{ $notification->answer_username}} answer to "{{ $notification->title }}" with "{{ $notification->answer_content }}"</div>
         <a href="{{ route('question.show', $notification->question_id) }}" class="btn btn-outline-success btn-sm">View Question</a>
     </div>
     <span class="ml-auto mb-auto">

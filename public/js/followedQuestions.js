@@ -76,31 +76,4 @@ function showPage(results,links){
     }
     renderPaginationButtons(links);
 }
-function renderPaginationButtons(links) {
-    const paginationContainer = document.getElementById("pagination")
-    paginationContainer.innerHTML = "";
-    for (let i = 0; i <links.length; i++) {
-        const button = document.createElement("button");
-        button.innerHTML = links[i].label;
-        button.classList.add("pagination-button");
-        // Highlight the current page
-        button.addEventListener("click", function () {
-            if(links[i].url!=null){
-                fetch(links[i].url)
-
-                .then(response => response.json())
-                .then(data => {
-                        showPage(data.data,data.links);
-                        window.scrollTo(0,0); 
-        
-                })
-                .catch(error => {
-                    console.error('Error fetching search results', error);
-                });
-        } 
-        });
-
-        paginationContainer.appendChild(button);
-    }
-}
 
