@@ -8,6 +8,7 @@ use App\Models\Report;
 use App\Models\Content;
 use App\Models\Vote;
 use App\Models\UnblockRequest;
+use App\Models\UnblockAccount;
 use Illuminate\Auth\Access\AuthorizationException;
 
 
@@ -218,7 +219,9 @@ class ContentController extends Controller
                     $unblockRequest->content_id = $unblockRequest->question->id;
                 }
             }
-            return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests]);
+
+            $unblockAccounts = UnblockAccount::with(['user'])->paginate(5);
+            return view('pages.moderatecontent', ['unblockRequests' => $unblockRequests, 'unblockAccounts' => $unblockAccounts]);
         }
         return redirect()->route('home');
     }

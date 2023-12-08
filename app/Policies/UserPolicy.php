@@ -30,6 +30,14 @@ class UserPolicy
     }
     public function unblockform(User $userAuth,User $user) 
     {
-      return Auth::check() && $user->id === Auth::user()->id;
+      return Auth::check() && $user->id === Auth::user()->id && $user->blocked;
+    }
+    public function review(User $userAuth,User $user) 
+    {
+      return $userAuth->usertype === "admin" || $userAuth->usertype === "moderator";
+    }
+    public function process(User $userAuth,User $user) 
+    {
+      return $userAuth->usertype === "admin" || $userAuth->usertype === "moderator";
     }
 }
