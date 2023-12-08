@@ -61,6 +61,7 @@
             </div>
         </div>
     </div>
+    {{ $PaginationController->links() }}
 </div>
     
     <?php /*
