@@ -93,6 +93,7 @@ function showPage(results,links){
 
         // Create a dictionary object with tag IDs as keys and tag names as values
         for (let i = 0; i < tagsArray.length; i++) {
+            if(tagsArray[i] == null) continue;
             const tagElement = document.createElement("div");
             tagElement.classList.add("tag");
         

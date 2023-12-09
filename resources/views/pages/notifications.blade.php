@@ -22,7 +22,7 @@
     @endif
     <form action="{{ route('deletenotifications')}}" method='post' >
         @csrf
-        <button id="deleteNotifications" type='submit' class='edit' name="edit-button">View Content Unblock Requests</button>
+        <button id="deleteNotifications" type='submit' class='edit' name="edit-button">Delete all Notifications</button>
     </form>
 
     <div class="row">

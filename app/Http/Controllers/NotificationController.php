@@ -105,19 +105,20 @@ class NotificationController extends Controller
         }
 
     }
-    public function number_of_notifications($id)
+    public function number_of_notifications()
     {
         if( !Auth::check()){
             return response()->json([
                 'message' => 'Not logged in',
             ], 302);
         }
+        $id = Auth::user()->id;
         if(Auth::user()->id !== $id){
             return response()->json([
                 'message' => 'Not authorized',
             ], 302);
         }
-        $result = Notification::where('user_id', $id)->count();
+        $result = Notification::where('user_id', $id)->where('viewed','false')->count();
         return response()->json($result);
 
     }
