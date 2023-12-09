@@ -4,6 +4,16 @@
 @endsection
 @section('content')
 
+<div class="sidebar">
+    <a href="/home">Home Page</a>
+    <a href="{{'/tags'}}">Tags</a>
+    <a href="{{'/questions'}}">Questions</a>
+    <a href="{{'/users'}}">Users</a>
+    @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+        <a href="{{'/moderatecontent'}}">Blocked Content</a>
+    @endif
+</div>
+
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
