@@ -95,6 +95,12 @@ Route::controller(CommentController::class)->group(function () {
     Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment');
 });
 
+Route::controller(ContentController::class)->group(function () {
+    Route::get('/moderatecontent','moderatecontent')->name('moderatecontent');
+    Route::get('/moderateusers','moderateusers')->name('moderateusers');
+    Route::get('/reviewcontent/{id}','reviewcontent')->name('reviewcontent');
+    Route::post('/processRequest', 'processRequest')->name('processRequest');
+});
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
@@ -131,10 +137,20 @@ Route::controller(TagController::class)->group(function () {
     Route::post('/tag/{id}/followtag', 'follow')->name('followtag');
 });
 Route::controller(NotificationController::class)->group(function () {
+    Route::post('/notification/delete', 'deletenotification')->name('deletenotification');
+    Route::post('/notifications/delete', 'deletenotifications')->name('deletenotifications');
     Route::get('/notifications', 'getnotifications')->name('notifications_page');
 });
 
+//moderate users
+Route::get('/unblockaccountform/{id}', [UserController::class, 'unblockaccountform'])->name('unblockaccountform');
+Route::post('/unblockaccountrequest/{id}', [UserController::class, 'unblockaccountrequest'])->name('unblockaccount');
+Route::get('/reviewaccount/{id}/', [UserController::class, 'reviewaccount'])->name('reviewaccount');
+Route::post('/processAccount', [UserController::class, 'processaccount'])->name('processAccount');
+
+
 //api
+Route::get('/notification/number',  [NotificationController::class,'number_of_notifications']);
 Route::post('/api/correct/{questionid}', [QuestionController::class, 'correctanswer']);
 Route::post('/api/vote/{id}', [ContentController::class, 'voteContent']);
 Route::get('/api/tag/{id}/questions', [TagController::class ,'tagquestions'])->name('tagquestionsapi');
@@ -148,12 +164,5 @@ Route::get('/api/question/{id}/tags', [TagController::class,'getTagsOfQuestion']
 Route::get('/api/myblocked/{id}',  [ProfileController::class,'listmyblocked']);
 
 
-Route::get('/moderatecontent', [ContentController::class, 'moderatecontent'])->name('moderatecontent');
-Route::get('/reviewcontent/{id}', [ContentController::class, 'reviewcontent'])->name('reviewcontent');
-Route::post('/processRequest', [ContentController::class, 'processRequest'])->name('processRequest');
 
 
-Route::get('/unblockaccountform/{id}', [UserController::class, 'unblockaccountform'])->name('unblockaccountform');
-Route::post('/unblockaccountrequest/{id}', [UserController::class, 'unblockaccountrequest'])->name('unblockaccount');
-Route::get('/reviewaccount/{id}/', [UserController::class, 'reviewaccount'])->name('reviewaccount');
-Route::post('/processAccount', [UserController::class, 'processaccount'])->name('processAccount');
