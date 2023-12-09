@@ -8,6 +8,14 @@ main>#content{
   margin-left: 0em;
   margin-top: 0em;
 }
+.row.justify-content-center{
+  flex-direction: column;
+  margin-left: 10em;
+}
+.col-md-8{
+  width: 80%;
+  margin-top: 1em;
+}
 
 main>.sidebar{
   margin-top: 5.4em;
@@ -76,8 +84,16 @@ a {
   text-decoration: none !important; /* Remove underline by default */
   transition: color 0.7s !important; /* Add a smooth transition for the color change */
 }
+.form-control{
+  font-size: 0.8em;
+}
 
 @media (max-width: 70em) {
+  .card{
+    width: 80% ;
+
+  }
+
   #cards {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -90,6 +106,17 @@ a {
   }
 }
 @media (max-width: 40em) {
+  .col-md-8{
+    width: 100%;
+
+  }
+  .card{
+    width:100%;
+
+  }
+  .row.justify-content-center{
+    margin-left: 0em;
+  }
   main>#content{
     margin-top: 0em;
   }

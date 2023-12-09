@@ -142,7 +142,7 @@ class ProfileController extends Controller
         foreach($questions as $result){
             $result->date = $result->commentable->content->compileddate();
         }
-        return response()->json($questions) ;
+        return response()->json($questions);
     }
     public function listmyanswers(Request $request,$id){
         $orderBy = $request->input('OrderBy');

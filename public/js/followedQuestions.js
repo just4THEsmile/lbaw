@@ -27,6 +27,7 @@ window.onload = function () {
 }   
 
 function showPage(results,links){
+    console.log(results);
     const Questions = document.getElementById("Questions");
     Questions.innerHTML = "";
     if(results.length == 0){
