@@ -78,8 +78,8 @@ class NotificationController extends Controller
     {
         if( Auth::check()){
             $result = TransactionsController::deleteNotifications(Auth::user()->id);
-            if($result){
-                return edirect('/notifications');
+            if($result === true){
+                return redirect('/notifications');
             } else {
                 return redirect()->route('notifications_page')->withErrors(['notifications' => 'Something went wrong!']); 
             }
@@ -92,16 +92,33 @@ class NotificationController extends Controller
         if( !Auth::check()){
             redirect('/login'); 
         }
-        $notification = Nofication::find($request->input('notification_id'))->first();
+        $notification_id = $request->input('notification_id');
+        $notification = Notification::find($notification_id)->first();
         if($notification === null){
             return redirect()->route('notifications_page')->withErrors(['notifications' =>'The provided Notification does not exist']); 
         }
-            $notification_id = $request->input('notification_id');
-            if(TransactionsController::deleteNotification($notification_id)){
-                return redirect('/notifications');
-            } else {
-                return redirect('/notifications');
-            }
+        $result = TransactionsController::deleteNotification($notification_id);
+        if($result === true){
+            return redirect('/notifications');
+        } else {
+            return redirect()->route('notifications_page')->withErrors(['notifications' => 'Something went wrong!']);
+        }
+
+    }
+    public function number_of_notifications($id)
+    {
+        if( !Auth::check()){
+            return response()->json([
+                'message' => 'Not logged in',
+            ], 302);
+        }
+        if(Auth::user()->id !== $id){
+            return response()->json([
+                'message' => 'Not authorized',
+            ], 302);
+        }
+        $result = Notification::where('user_id', $id)->count();
+        return response()->json($result);
 
     }
 }

@@ -9,13 +9,13 @@
     </div>
     <span class="ml-auto mb-auto">
         <div class="btn-group">
+            <form action="{{ route('deletenotification')}}" method='post' >
+                @csrf
+                <input type="hidden" name="notification_id" value="{{ $notification->notification_id }}">
+                <button id="contentRequestsButton" type='submit' class="btn btn-light btn-sm rounded" data-toggle="dropdown" aria-haspopup="true" name="delete-button">X</button>
+            </form>
             <button type="button" class="btn btn-light btn-sm rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="mdi mdi-dots-vertical"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button"><i class="mdi mdi-delete"></i> Delete</button>
-                <button class="dropdown-item" type="button"><i class="mdi mdi-close"></i> Turn Off</button>
-            </div>
         </div>
         <br />
         <div class="text-right text-muted pt-1">{{ $notification->notification_date }}</div>

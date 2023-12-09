@@ -137,8 +137,8 @@ Route::controller(TagController::class)->group(function () {
     Route::post('/tag/{id}/followtag', 'follow')->name('followtag');
 });
 Route::controller(NotificationController::class)->group(function () {
-    Route::post('/notification/{id}/delete', 'deletenotification')->name('deletenotification');
-    Route::post('/notifications/delete', 'deletenotifications')->name('deleteallnotifications');
+    Route::post('/notification/delete', 'deletenotification')->name('deletenotification');
+    Route::post('/notifications/delete', 'deletenotifications')->name('deletenotifications');
     Route::get('/notifications', 'getnotifications')->name('notifications_page');
 });
 
@@ -150,6 +150,7 @@ Route::post('/processAccount', [UserController::class, 'processaccount'])->name(
 
 
 //api
+Route::get('/notification/number',  [NotificationController::class,'number_of_notifications']);
 Route::post('/api/correct/{questionid}', [QuestionController::class, 'correctanswer']);
 Route::post('/api/vote/{id}', [ContentController::class, 'voteContent']);
 Route::get('/api/tag/{id}/questions', [TagController::class ,'tagquestions'])->name('tagquestionsapi');
