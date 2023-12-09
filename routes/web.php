@@ -125,6 +125,8 @@ Route::controller(TagController::class)->group(function () {
     Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion'); //api
 });
 Route::controller(NotificationController::class)->group(function () {
+    Route::post('/notification/{id}/delete', 'deletenotification')->name('deletenotification');
+    Route::post('/notifications/delete', 'deletenotifications')->name('deleteallnotifications');
     Route::get('/notifications', 'getnotifications')->name('notifications_page');
 });
 

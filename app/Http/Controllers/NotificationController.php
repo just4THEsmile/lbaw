@@ -65,10 +65,11 @@ class NotificationController extends Controller
     public function DeleteNotifications(Request $request)
     {
         if( Auth::check()){
-            if(TransactionsController::deleteNotifications(Auth::user()->id)){
-                return redirect('/notifications');
+            $result = TransactionsController::deleteNotifications(Auth::user()->id);
+            if($result){
+                return edirect('/notifications');
             } else {
-                return redirect('/notifications');
+                return redirect()->route('notifications_page')->withErrors(['notifications' => 'Something went wrong!']); 
             }
         } else {
             return redirect('/login');
@@ -76,16 +77,20 @@ class NotificationController extends Controller
     }
     public function deleteNotification(Request $request)
     {
-        if( Auth::check()){
+        if( !Auth::check()){
+            redirect('/login'); 
+        }
+        $notification = Nofication::find($request->input('notification_id'))->first();
+        if($notification === null){
+            return redirect()->route('notifications_page')->withErrors(['notifications' =>'The provided Notification does not exist']); 
+        }
             $notification_id = $request->input('notification_id');
             if(TransactionsController::deleteNotification($notification_id)){
                 return redirect('/notifications');
             } else {
                 return redirect('/notifications');
             }
-        } else {
-            return redirect('/login');
-        }
+
     }
 }
 
