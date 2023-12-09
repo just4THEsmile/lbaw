@@ -7,6 +7,7 @@
 <link href="{{ asset('css/search.css') }}" rel="stylesheet">
 <link href="{{ asset('css/question_card.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 
 @endsection
 
@@ -15,16 +16,21 @@
 @section('content')
 <div class="sidebar">
   <a href="/home">Home Page</a>
-  <a href="{{'/tags'}}">Tags</a>
-  <a class="active" href="{{'/questions'}}">Questions</a>
+  <a class="active" href="{{'/tags'}}">Tags</a>
+  <a href="{{'/questions'}}">Questions</a>
   <a href="{{'/users'}}">Users</a>
+  @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+    <a href="{{'/moderatecontent'}}">Blocked Content</a>
+  @endif
 </div>
 
 <div>
     <div id="tag_id" hidden>{{$tag_id}}</div>
     <div style="color:white; font-size:0.0001em;">Home</div>
     <div class="realcontent">
+        <div id="tag_title">Questions with the tag [{{ $tag_title }}]</div>
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
+        <span class="error" id ="error"></span>
         <label for="sortSelect">Sort By:</label>
         <select id="sortSelect">
             <option value="relevance">Relevance</option>

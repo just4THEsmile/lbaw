@@ -1,10 +1,8 @@
 <div class="p-3 d-flex align-items-center bg-light border-bottom osahan-post-header">
-    <div class="dropdown-list-image mr-3">
-        <img class="rounded-circle" src="{{asset('profile/' . $notification->profilepicture)}}"  alt="" />
-    </div>
+
     <div class="font-weight-bold mr-3">
-        <div class="text-truncate">You just received a new badge</div>{{ $notification->notification_date }}
-        <div class="small">You just received the badge {{ $notification->content }}</div>
+        <div class="text-truncate">You just received a new badge "{{ $notification->badge_name }}"</div>
+
     </div>
     <span class="ml-auto mb-auto">
         <div class="btn-group">

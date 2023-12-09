@@ -12,3 +12,16 @@ h3{
 #content{
     margin-top:13em;
 }
+
+#editcontent{
+    width:70%;
+    margin-left: 10em;
+}
+
+@media screen and (max-width: 40em) {
+    #editcontent {
+        width:100%;
+        margin-left: 0em;
+    }
+    
+}

@@ -1,9 +1,22 @@
 @extends('layouts.barebone')
 
+@section('styles')
+    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+@endsection
+
+@section('sidebar')
+<a class='aside' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a>
+<a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">Followed Questions</a>
+<a class='aside' href="{{ route('myquestions', ['id' => $user->id]) }}" >My questions</a>
+<a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">My answers</a>
+<a class='aside active' href="{{ route('myblocked', ['id' => $user->id]) }}">My blocked</a>
+
+@endsection
+
 @section('content2')
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 
-
+    <link href="{{ asset('css/blocked.css') }}" rel="stylesheet">
     <style>
         #MyBlocked{
             background-color: #0000FF;
@@ -14,18 +27,23 @@
         } 
     </style>
     <div id="user_id" hidden>{{$user->id}}</div>
-    <ul id="Blocked">
-        @foreach($blockedContent as $block)
-           <div class="blocked">
-                <p>{{$block->content}}</p>
-                <a href="/api/unblockrequest/{{ $block->id }}?user_id={{ $block->user_id }}" class="unblock">Request Unblock</a>
-           </div>
+    <div class="card-container">
+    <span class="error" id ="error"></span>
+        @foreach ($blockedContent as $block)
+            {{-- Check content type and include respective partial --}}
+            @if ($block->type === 'question')
+                @include('partials.blockedquestion', ['block' => $block])
+            @elseif ($block->type === 'answer')
+                @include('partials.blockeanswer', ['block' => $block])
+            @elseif ($block->type === 'comment')
+                @include('partials.blockecomment', ['block' => $block])
+            @endif
         @endforeach
-    </ul>
-    <div class="d-flex justify-content-center mt-4">
-        {{ $blockedContent->links('pagination::bootstrap-4') }}
+    
+        <div class="d-flex justify-content-center mt-4">
+            {{ $blockedContent->links('pagination::bootstrap-4') }}
+        </div>
     </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 @endsection
 
 

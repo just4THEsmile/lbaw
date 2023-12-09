@@ -2,8 +2,14 @@
     font-size: 0.8em;
 
 }
+.hashtag,
 .tag{
+
     padding: 0.4em;
     border: 1px solid grey;
     border-radius: 1em;
+}
+.hashtag {
+    display: flex;
+    align-items: center;
 }

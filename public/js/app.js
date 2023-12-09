@@ -12,7 +12,11 @@ function disableSubmitButton() {
 }
 
 function confirmDelete() {
-  return confirm("Are you sure you want to delete your account?");
+  return confirm("Are you sure you want to delete the account?");
+}
+
+function confirmBlock() {
+  return confirm("Are you sure you want to proceed with the action?");
 }
 function encodeForAjax(data) {
   if (data == null) return null;
@@ -29,6 +33,40 @@ function sendAjaxRequest(method, url, data, handler) {
   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   request.addEventListener('load', handler);
   request.send(encodeForAjax(data));
+}
+function renderPaginationButtons(links) {
+  query = searchInput.value;
+  const paginationContainer = document.getElementById("pagination")
+  paginationContainer.innerHTML = "";
+  for (let i = 0; i <links.length; i++) {
+      const button = document.createElement("button");
+      button.innerHTML = links[i].label;
+      if(links[i].active){
+          button.classList.add("active");
+      }else{
+          button.classList.add("page-item");
+      }
+      button.addEventListener("click", function () {
+          if(links[i].url!=null){
+              fetch(links[i].url)
+
+              .then(response => response.json())
+              .then(data => {
+                  if(searchInput.value==query){
+                      results = data;
+                      showPage(data.data,data.links);
+                      window.scrollTo(0,0); 
+                  }
+      
+              })
+              .catch(error => {
+                  console.error('Error fetching search results', error);
+              });
+      } 
+      });
+
+      paginationContainer.appendChild(button);
+  }
 }
 /*
 function addEventListeners() {

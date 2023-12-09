@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-//use App\Http\Controllers\CardController;
-use App\Http\Controllers\ItemController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CommentController;
@@ -33,6 +31,7 @@ use App\Http\Controllers\NotificationController;
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateuser', [UserController::class, 'updateUser'])->name('updateuser');
     Route::post('/user/{id}/delete', 'deleteAccount')->name('deleteaccount');
+    Route::post('/user/{id}/block', 'blockAccount')->name('blockaccount');
     Route::post('/updateuseradmin', [UserController::class, 'updateUserAdmin'])->name('updateuseradmin');
 });
 
@@ -53,6 +52,7 @@ Route::controller(HomeController::class)->group(function () {
 Route::controller(SearchQuestionController::class)->group(function () {
     Route::get('/questions',  'show')->name('questions');
     Route::get('/questions/tag/{id}',  'show_with_tags')->name('questionswithtags');
+    Route::get('/feed', 'feed')->name('feed');
 });
 
 Route::controller(UsersController::class)->group(function () {
@@ -95,6 +95,12 @@ Route::controller(CommentController::class)->group(function () {
     Route::post('/commentable/{id}/answer/{comment_id}/edit', 'edit')->name('edit_comment');
 });
 
+Route::controller(ContentController::class)->group(function () {
+    Route::get('/moderatecontent','moderatecontent')->name('moderatecontent');
+    Route::get('/moderateusers','moderateusers')->name('moderateusers');
+    Route::get('/reviewcontent/{id}','reviewcontent')->name('reviewcontent');
+    Route::post('/processRequest', 'processRequest')->name('processRequest');
+});
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
@@ -119,10 +125,16 @@ Route::controller(ContentController::class)->group(function () {
 });
 
 Route::controller(TagController::class)->group(function () {
+    Route::get('/tag/create', 'createform')->name('tagcreateform');
+    Route::post('/tag/create', 'create')->name('tagcreate');
+    Route::get('/tag/{id}/edit', 'editform')->name('tageditform');
+    Route::post('/tag/{id}/edit', 'edit')->name('tagedit');
+    Route::post('/tag/{id}/delete', 'delete')->name('tagdelete');
     Route::get('/tag/{id}', 'tagquestionspage')->name('tagquestions');
-    Route::get('/search/tag/', 'search')->name('tagsearch');
+    Route::get('/search/tag', 'search')->name('tagsearch');
     Route::get('/tags', 'tagspage')->name('tags');
     Route::get('/question/{id}/tags', 'getTagsOfQuestion')->name('getTagsOfQuestion'); //api
+    Route::post('/tag/{id}/followtag', 'follow')->name('followtag');
 });
 Route::controller(NotificationController::class)->group(function () {
     Route::post('/notification/{id}/delete', 'deletenotification')->name('deletenotification');
@@ -130,20 +142,26 @@ Route::controller(NotificationController::class)->group(function () {
     Route::get('/notifications', 'getnotifications')->name('notifications_page');
 });
 
+//moderate users
+Route::get('/unblockaccountform/{id}', [UserController::class, 'unblockaccountform'])->name('unblockaccountform');
+Route::post('/unblockaccountrequest/{id}', [UserController::class, 'unblockaccountrequest'])->name('unblockaccount');
+Route::get('/reviewaccount/{id}/', [UserController::class, 'reviewaccount'])->name('reviewaccount');
+Route::post('/processAccount', [UserController::class, 'processaccount'])->name('processAccount');
+
+
 //api
+Route::post('/api/correct/{questionid}', [QuestionController::class, 'correctanswer']);
+Route::post('/api/vote/{id}', [ContentController::class, 'voteContent']);
 Route::get('/api/tag/{id}/questions', [TagController::class ,'tagquestions'])->name('tagquestionsapi');
 Route::get('/api/search/questions',  [SearchQuestionController::class,'search']);
 Route::get('/api/myquestions/{id}', [ProfileController::class, 'listmyquestions']);
 Route::get('/api/myanswers/{id}', [ProfileController::class, 'listmyanswers']);
 Route::get('/api/followedQuestions/{id}', [ProfileController::class, 'listfollowedquestions']);
 Route::get('/api/search/tag/', [TagController::class,'search']); // search for all tags
-Route::get('/api/fullsearch/tag/', [TagController::class,'searchWithoutLimits']);
+Route::get('/api/fullsearch/tag', [TagController::class,'searchWithoutLimits']);
 Route::get('/api/question/{id}/tags', [TagController::class,'getTagsOfQuestion']);
 Route::get('/api/myblocked/{id}',  [ProfileController::class,'listmyblocked']);
 
 
-Route::get('/moderatecontent', [ContentController::class, 'moderatecontent'])->name('moderatecontent');
-Route::get('/reviewcontent/{id}', [ContentController::class, 'reviewcontent'])->name('reviewcontent');
-Route::post('/processRequest', [ContentController::class, 'processRequest'])->name('processRequest');
 
 

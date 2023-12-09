@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('style')
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -16,9 +15,21 @@
 </div>
 
 <div style="color:white; font-size:0.0001em;">Home</div>
-<div id="fixable" class="card-container">
+
+<div id="buttonlist">
+<form action="{{ route('moderatecontent')}}" method='get' >
+    <button id="contentRequestsButton" type='submit' class='edit' name="edit-button">View Content Unblock Requests</button>
+</form>
+<form action="{{ route('moderateusers') }}" method='get' >
+    <button id="contentRequestsButton" type='submit' class='edit' name="edit-button">View Account Unblock Requests</button>
+</form>
+</div>
+
+<div id="fixable" class="card-container   unblockcontent">
+  <p>Blocked Content Appeals</p>
   @foreach ($unblockRequests as $unblockRequest)
   <div class="card">
+      <p class="card-info">Type:{{ $unblockRequest->type}}</p>
       <p class="card-info">Unblock Request ID:{{ $unblockRequest->id}}</p>
       <p class="card-info">Name:{{ $unblockRequest->user->name}}</p>
       <p class="card-info">UserName:{{ $unblockRequest->user->username}}</p>
@@ -29,10 +40,11 @@
   </div>
   @endforeach
   <div class="d-flex justify-content-center mt-4">
+    @if($unblockRequests->count() > 0)
     {{ $unblockRequests->links('pagination::bootstrap-4') }}
+    @else
+    <p>No More Unblock Requests Found.</p>
+    @endif
   </div>
 </div>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-
 @endsection

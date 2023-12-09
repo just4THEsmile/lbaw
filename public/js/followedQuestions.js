@@ -27,6 +27,7 @@ window.onload = function () {
 }   
 
 function showPage(results,links){
+    console.log(results);
     const Questions = document.getElementById("Questions");
     Questions.innerHTML = "";
     if(results.length == 0){
@@ -40,7 +41,7 @@ function showPage(results,links){
 
         // Create the link for the question title
         const titleLink = document.createElement("a");
-        titleLink.href = `/question/${result.id}`;
+        titleLink.href = `/question/${result.question_id}`;
         titleLink.textContent = result.title;
         titleLink.classList.add("title");
         // Create the content div
@@ -74,32 +75,5 @@ function showPage(results,links){
         
     }
     renderPaginationButtons(links);
-}
-function renderPaginationButtons(links) {
-    const paginationContainer = document.getElementById("pagination")
-    paginationContainer.innerHTML = "";
-    for (let i = 0; i <links.length; i++) {
-        const button = document.createElement("button");
-        button.innerHTML = links[i].label;
-        button.classList.add("pagination-button");
-        // Highlight the current page
-        button.addEventListener("click", function () {
-            if(links[i].url!=null){
-                fetch(links[i].url)
-
-                .then(response => response.json())
-                .then(data => {
-                        showPage(data.data,data.links);
-                        window.scrollTo(0,0); 
-        
-                })
-                .catch(error => {
-                    console.error('Error fetching search results', error);
-                });
-        } 
-        });
-
-        paginationContainer.appendChild(button);
-    }
 }
 

@@ -41,12 +41,13 @@
                     <a href="/home">Home Page</a>
                     <a href="{{'/tags'}}">Tags</a>
                     <a href="{{'/questions'}}">Questions</a>
-                    <a class="active" href="{{'/users'}}" >Users</a>
+                    <a href="{{'/users'}}" >Users</a>
                     @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
                         <a href="{{'/moderatecontent'}}">Blocked Content</a>
                     @endif
+                    @yield('sidebar')
 
-                </div>
+            </div>
         
         <div id='flexthis'>
 
@@ -54,16 +55,9 @@
                 @yield('content2')
             </div>
 
-
-            <aside style= "margin-top: 5.8em">
-
-                @yield('content3')
-                    
-
-            </aside>
             
         </div>
-        <div class="container">
+        <div class="botoooom">
                 <footer class="py-3 my-4">
                     <ul class="nav justify-content-center border-bottom pb-3 mb-3">
                     <li class="nav-item"><a href="/home" class="nav-link px-2 text-muted">Home</a></li>
