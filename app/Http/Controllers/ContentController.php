@@ -275,6 +275,7 @@ class ContentController extends Controller
                 $content = Content::find($contentId);
                 $content->blocked = false;
                 $content->deleted = false;
+                $content->reports = 0;
                 $content->save();
             } else if ($action === 'keep_blocked') {
             }
