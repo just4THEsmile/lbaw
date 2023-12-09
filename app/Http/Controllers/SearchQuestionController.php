@@ -13,11 +13,7 @@ class SearchQuestionController extends Controller
     public function show()
     {
         if( Auth::check()){
-            $questions = Question::select('question.title', 'content.content', 'appuser.username', 'content.date', 'content.id as id', 'appuser.id as userid', 'content.votes')
-            ->join('content', 'question.id', '=', 'content.id')
-            ->join('appuser', 'content.user_id', '=', 'appuser.id')
-            ->get();
-            return view('pages.questions', ['questions' => $questions]);
+            return view('pages.questions');
         } else {
             return redirect('/login');
         }
@@ -97,7 +93,7 @@ class SearchQuestionController extends Controller
                 '=',
                 'question.id'
             )
-            ->whereRaw("question.tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])
+            ->whereRaw("question.tsvectors @@ plainto_tsquery(?)", [$query])
             ->where('content.deleted', '=', false)
             ->groupBy(
                 'question.tsvectors',
@@ -111,7 +107,7 @@ class SearchQuestionController extends Controller
                 'tags_agg.title',
                 'tags_agg.id'
             )
-            ->orderByRaw("ts_rank(question.tsvectors, to_tsquery(?)) ASC", [str_replace(' ', ' & ', $query)])
+            ->orderByRaw("ts_rank(question.tsvectors, plainto_tsquery(?)) ASC", [$query])
             ->paginate(15)->withQueryString()->withQueryString();
 
                 foreach($results as $result){
@@ -161,6 +157,49 @@ class SearchQuestionController extends Controller
                 }
             return response()->json($results);
         }
+    }
+    public function feed(){
+        $results = Question::select(
+            'question.title', 
+            'content.content', 
+            'appuser.username', 
+            'content.date', 
+            'content.id as id', 
+            'appuser.id as userid', 
+            'content.votes as votes',
+            'tags_agg.title as tags',
+            'tags_agg.id as tagsid',
+            DB::raw('COUNT(answer.id) as answernum')
+        )
+        ->join('content', 'question.id', '=', 'content.id')
+        ->join('appuser', 'content.user_id', '=', 'appuser.id')
+        ->join('questiontag', 'questiontag.question_id', '=', 'question.id')
+        ->join('tag', 'tag.id', '=', 'questiontag.tag_id')
+        ->join('followtag', 'followtag.tag_id', '=', 'tag.id')
+        ->join('appuser as followeduser', 'followeduser.id', '=', 'followtag.user_id')
+        ->leftjoin('answer', 'answer.question_id', '=', 'question.id')
+        ->leftjoin(
+            DB::raw('(SELECT question.id as qid, STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as title, STRING_AGG(CAST(tag.id AS TEXT), \',\' ORDER BY tag.id ASC) as id FROM questiontag JOIN tag ON tag.id = questiontag.tag_id JOIN question ON question.id = questiontag.question_id GROUP BY question.id) as tags_agg'),
+            'tags_agg.qid',
+            '=',
+            'question.id'
+        )
+        ->where('content.deleted', '=', false)
+        ->where('followeduser.id', '=', Auth::user()->id)
+        ->groupBy(
+            'question.title',
+            'content.content',
+            'appuser.username',
+            'content.date',
+            'content.id',
+            'appuser.id',
+            'content.votes',
+            'tags_agg.title',
+            'tags_agg.id'
+        )
+        ->orderBy('date', 'desc')
+        ->paginate(15);
+        return view('pages.feed', ['questions' => $results]);
     }
 }
 

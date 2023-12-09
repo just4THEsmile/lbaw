@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
 function updateTags(){
     const query = searchInput.value;
     // Perform an AJAX request to your Laravel backend
-    fetch(`/api/fullsearch/tag?query=${query}`)
+    
+    fetch(`/api/fullsearch/tag?query=${encodeURIComponent(query)}`)
         .then(response => response.json())
         .then(data => {
             if(query==searchInput.value){
@@ -27,6 +28,7 @@ window.onload = function () {
 }   
 
 function showPage(results,links){
+    const usertype = document.getElementById("user_type").textContent;
     const Tags = document.getElementById("Tags");
     Tags.innerHTML = "";
     if(results.length == 0){
@@ -41,7 +43,6 @@ function showPage(results,links){
         // Create the content div
         const contentDiv = document.createElement("div");
         contentDiv.classList.add("content");
-
         // Create a paragraph for the Tag content
         const contentParagraph = document.createElement("p");
 
@@ -62,8 +63,57 @@ function showPage(results,links){
         // Append elements to the content div
         contentDiv.appendChild(votes);*/
         contentDiv.appendChild(titleLink);
-        contentDiv.appendChild(contentParagraph); 
-
+        contentDiv.appendChild(contentParagraph);
+        //admin buttons
+        if(usertype == "admin"){
+            const deleteform = document.createElement("form");
+            deleteform.method = "POST";
+            deleteform.action = `../tag/${result.id}/delete`;
+            const crf = document.createElement("input");
+            crf.type = "hidden";
+            crf.name = "_token";
+            crf.value = document.querySelector('meta[name="csrf-token"]').content;
+            crf.autocomplete = "off";
+            const deletebutton = document.createElement("button");
+            deletebutton.type = "submit";
+            deletebutton.classList.add("delete");
+            deletebutton.classList.add("material-icons")
+            deletebutton.textContent = "delete";
+            deleteform.appendChild(crf);
+            deleteform.appendChild(deletebutton);
+            // edit form
+            const editform = document.createElement("form");
+            editform.method = "GET";    
+            editform.action = `../tag/${result.id}/edit`;
+            const editbutton = document.createElement("button");
+            editbutton.type = "submit";
+            editbutton.classList.add("edit");
+            editbutton.classList.add("material-icons")
+            editbutton.textContent = "edit";
+            editform.appendChild(editbutton);
+            contentDiv.appendChild(deleteform);
+            contentDiv.appendChild(editform);
+        }
+        const followform = document.createElement("form");
+        followform.method = "POST";
+        followform.action = `../tag/${result.id}/followtag`;
+        const crf1 = document.createElement("input");
+        crf1.type = "hidden";
+        crf1.name = "_token";
+        crf1.value = document.querySelector('meta[name="csrf-token"]').content;
+        crf1.autocomplete = "off";
+        const followbutton = document.createElement("button");
+        followbutton.type = "submit";
+        followbutton.classList.add("follow");
+        followbutton.classList.add("material-icons")
+        if(result.followed){
+            followbutton.textContent = "unfollow";
+        }else{
+            followbutton.textContent = "follow";
+        }
+        followform.appendChild(crf1);
+        followform.appendChild(followbutton);
+        contentDiv.appendChild( followform);
         // Append elements to the Tag card div
         TagCard.appendChild(contentDiv);
 
@@ -73,39 +123,4 @@ function showPage(results,links){
     }
     renderPaginationButtons(links);
 }
-function renderPaginationButtons(links) {
-    const paginationContainer = document.getElementById("pagination")
-    query = searchInput.value;
-    paginationContainer.innerHTML = "";
-    for (let i = 0; i <links.length; i++) {
-        const button = document.createElement("button");
-        button.innerHTML = links[i].label;
-        if(links[i].active){
-            button.classList.add("active");
-        }else{
-            button.classList.add("pagination-button");
-        }
-        button.class = links[i].active ? "active" : "";
-        // Highlight the current page
-        button.addEventListener("click", function () {
-            if(links[i].url!=null){
-                fetch(links[i].url)
 
-                .then(response => response.json())
-                .then(data => {
-                    if(searchInput.value==query){
-                        results = data;
-                        showPage(data.data,data.links);
-                        window.scrollTo(0,0); 
-                    }
-        
-                })
-                .catch(error => {
-                    console.error('Error fetching search results', error);
-                });
-        } 
-        });
-
-        paginationContainer.appendChild(button);
-    }
-}

@@ -13,7 +13,7 @@ function searchUsers(){
     const query = searchUserInput.value;
     currentPage = 1; 
 
-    fetch(`/search/users?q=${query}`)
+    fetch(`/search/users?q=${encodeURIComponent(query)}`)
         .then(response => response.json())
         .then(data => {
             displayResults(data);

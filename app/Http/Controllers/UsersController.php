@@ -21,8 +21,8 @@ class UsersController extends Controller
                     $results = User::where('name','<>','Deleted')->paginate(15)->withQueryString();
                     return response()->json($results);
                 }
-                $results = User::whereRaw("tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])
-                ->orderByRaw("ts_rank(tsvectors, to_tsquery(?)) ASC", [$query])
+                $results = User::whereRaw("tsvectors @@ plainto_tsquery(?)", [$query])
+                ->orderByRaw("ts_rank(tsvectors, plainto_tsquery(?)) DESC", [$query])
                 ->where('name','<>','Deleted')->paginate(15)->withQueryString()->withQueryString();
                 return response()->json($results);
             }

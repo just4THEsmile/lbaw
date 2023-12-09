@@ -29,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
             $schema = explode(':', $app_url)[0];
             URL::forceScheme($schema);
         }
+        if(env('APP_ENV') === 'production') {
+        //else register your services you require for production
+            $this->app['request']->server->set('HTTPS', true);
+        }
         Paginator::useBootstrapFive();
         Paginator::useBootstrapFour();
     }

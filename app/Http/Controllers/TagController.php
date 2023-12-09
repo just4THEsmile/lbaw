@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\FollowTag;
 use Illuminate\Pagination\Paginator;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -22,6 +24,83 @@ class TagController extends Controller
             ], 302);
         }
     }
+    public function createform(Request $request){
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->usertype !== 'admin'){
+            return redirect('/home');
+        }
+        return view('pages.tagcreate');
+    }
+    public function create(Request $request)
+    {
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->usertype !== 'admin'){
+            return redirect('/home');
+        }
+        $request->validate([
+            'description' => 'required|string|min:8|max:100',
+            'title' => 'required|string|min:2|max:30',
+        ]);
+        $this->authorize('create', Tag::class);
+        $tag = new Tag();
+        $tag->title = $request->input('title');
+        $tag->description = $request->input('description');
+        $tag->save();
+        return redirect()->route('tagquestions', ['id' => $tag->id]);
+    }
+    public function editform(Request $request, $id){
+        $this->authorize('edit', Tag::class);
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->usertype !== 'admin'){
+            return redirect('/home');
+        }
+        $tag = Tag::find($id);
+        if($tag === null){
+            return redirect()->route('tags')->withErrors(['tag' => 'The provided tag does not exist.']);
+        }
+        return view('pages.tagedit', ['tag' => $tag]);
+    }
+    public function edit(Request $request)
+    {
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->usertype !== 'admin'){
+            return redirect('/home');
+        }
+        $request->validate(['title' => 'required|string|min:8|max:80',
+        'description' => 'required|string|min:8|max:255']);
+        $tag = new Tag();
+        $tag->title = $request->input('title');
+        $tag->description = $request->input('description');
+        $tag->save();
+        return redirect()->route('tagquestions', ['id' => $tag->id]);
+    }
+    public function delete(Request $request, $id)
+    {
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->usertype !== 'admin'){
+            return redirect('/home');
+        }
+        $this->authorize('delete', Tag::class);
+        $tag = Tag::find($id);
+        if($tag === null){
+            return redirect()->route('tags')->withErrors(['tag' => 'The provided tag does not exist.']);
+        }
+        $result= TransactionsController::deleteTag($tag);
+        if($result !== true){
+            return redirect()->route('tags')->withErrors(['tag' => "something went wrong when deleting the tag: $tag->title"]);
+        }
+        return redirect()->route('tags')->withSuccess('You have deleted a tag!');
+    }
     public function getTagsOfQuestion(Request $request, $id )
     {
         if(Auth::check()){
@@ -39,12 +118,35 @@ class TagController extends Controller
     public function searchWithoutLimits(Request $request){
         $query = $request->input('query');
         if (Auth::check()) {
-            if($query == null){
-                $results = Tag::Paginate(15)->withqueryString();
+            if($query === null){
+                $results = Tag::leftjoin('followtag', function ($join) {
+                    $join->on('followtag.tag_id', '=', 'tag.id')
+                         ->where('followtag.user_id', '=', Auth::user()->id);
+                        })->Paginate(15)->withqueryString();
+                foreach($results as $result){
+                    if($result->user_id === null){
+                        $result->followed = false;
+                    }else{
+                        $result->followed = true;
+                    }
+                }
                 return response()->json($results);
             }
-            $results = Tag::whereRaw("tsvectors @@ to_tsquery(?)", [str_replace(' ', ' & ', $query)])
-            ->orderByRaw("ts_rank(tsvectors, to_tsquery(?)) ASC", [str_replace(' ', ' & ',$query)])->simplePaginate(15)->withqueryString();
+            $results = Tag::whereRaw("tsvectors @@ plainto_tsquery(?)", [$query])
+            ->orderByRaw("ts_rank(tsvectors, plainto_tsquery(?)) DESC", [$query])
+            ->leftjoin('followtag', function ($join) {
+                $join->on('followtag.tag_id', '=', 'tag.id')
+                     ->where('followtag.user_id', '=', Auth::user()->id);
+                    })
+            ->paginate(15)
+            ->withQueryString();
+            foreach($results as $result){
+                if($result->user_id === null){
+                    $result->followed = false;
+                }else{
+                    $result->followed = true;
+                }
+            }
             return response()->json($results);
         } else {
             return response()->json([
@@ -54,15 +156,16 @@ class TagController extends Controller
     }
     public function tagspage(){
         if(Auth::check()){
-            return view("pages.tagsearch");
+            return view("pages.tagsearch",['user_type' =>Auth::user()->usertype ]);
         } else {
             return redirect('/login');
         }
 
     }
     public function tagquestionspage($id){
-        if(Auth::check()){
-            return view("pages.tagquestionsearch",['tag_id' => $id]);
+        $tag =Tag::find($id);
+        if(Auth::check() && $tag !== null){
+            return view("pages.tagquestionsearch",['tag_id' => $id, 'tag_title' => $tag->title]);
         } else {
             return redirect('/login');
         }
@@ -212,5 +315,26 @@ class TagController extends Controller
                 }
             return response()->json($results);
         }
+    }
+    public function follow($id){
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        $tag = Tag::find($id);
+        if($tag === null){
+            return redirect()->route('tags')->withErrors(['tag' => 'The provided tag does not exist.']);
+        }
+        $followTag = FollowTag::where('user_id', Auth::user()->id)->where('tag_id', $id)->first();
+        if($followTag !== null){
+            $followTag->delete();
+        }else{
+            $newfollowTag = new FollowTag([
+                'user_id' => Auth::user()->id,
+                'tag_id' => $id
+            ]);
+            $newfollowTag->save();
+        }
+
+        return redirect()->route('tagquestions', ['id' => $tag->id]);
     }
 }

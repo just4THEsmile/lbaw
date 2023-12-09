@@ -26,13 +26,13 @@
                     @if ($notification->viewed)
                         @break
                     @endif
-                    @if ($notification->type == 'Answer')
+                    @if ($notification->type === 'Answer')
                         @include('partials.notification.answer', ['notification' => $notification])
-                    @elseif ($notification->type == 'Comment')
+                    @elseif ($notification->type === 'Comment')
                         @include('partials.notification.comment', ['notification' => $notification])
-                    @elseif ($notification->type == 'Badge Attainment')
+                    @elseif ($notification->type === 'Badge Attainment')
                         @include('partials.notification.badge', ['notification' => $notification])
-                    @elseif ($notification->type == 'Vote')
+                    @elseif ($notification->type === 'Vote')
 
                     @endif
                 @endforeach
@@ -61,6 +61,7 @@
             </div>
         </div>
     </div>
+    {{ $PaginationController->links() }}
 </div>
     
     <?php /*

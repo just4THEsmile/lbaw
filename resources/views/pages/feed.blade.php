@@ -13,7 +13,7 @@
 
 @section('content')
 <div class="sidebar">
-  <a class="active" href="/home">Home Page</a>
+  <a href="/home">Home Page</a>
   <a href="{{'/tags'}}">Tags</a>
   <a href="{{'/questions'}}">Questions</a>
   <a href="{{'/users'}}">Users</a>
