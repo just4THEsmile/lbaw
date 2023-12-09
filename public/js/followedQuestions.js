@@ -37,40 +37,87 @@ function showPage(results,links){
         let result = results[i];
         // Create the main answer card div
         const questionCard = document.createElement("div");
-        questionCard.classList.add("questioncard");
+        questionCard.classList.add("question");
 
-        // Create the link for the question title
-        const titleLink = document.createElement("a");
-        titleLink.href = `/question/${result.question_id}`;
-        titleLink.textContent = result.title;
-        titleLink.classList.add("title");
-        // Create the content div
+        //votes
+        const votes = document.createElement("div");
+        votes.classList.add("votes");
+
+        const answernum = document.createElement("p");
+        answernum.classList.add("answernum");
+        answernum.textContent = result.answernum + " answers"; // Replace with actual data
+        // Create the <p> element with the class "votesnum" and set its content dynamically using data from the server
+        const votesNum = document.createElement("p");
+        votesNum.classList.add("votesnum");
+        votesNum.textContent = result.votes + " votes"; // Replace with actual data
+
+
+
+
+
+        votes.appendChild(answernum);
+        votes.appendChild(votesNum);
+
+
+        // Content
         const contentDiv = document.createElement("div");
         contentDiv.classList.add("content");
 
-        // Create a paragraph for the question content
-        const contentParagraph = document.createElement("p");
-        contentParagraph.textContent = result.content; // Adjust based on your actual result structure
+        const questionLink = document.createElement("a");
+        questionLink.href = `/question/${result.id}`; // Replace with actual URL
+
+        const questionTitle = document.createElement("h3");
+        questionTitle.textContent = result.title; // Replace with actual title
+
+        questionLink.appendChild(questionTitle);
+
+        const profileInfoDiv = document.createElement("div");
+        profileInfoDiv.classList.add("profileinfo");
+
+        const userProfileLink = document.createElement("a");
+        userProfileLink.href = `/profile/${result.userid}`; // Replace with actual URL
+        userProfileLink.textContent = result.username; // Replace with actual username
+
+        const questionDate = document.createElement("p");
+        questionDate.textContent = result.date; // Replace with actual date
+
+        const questionbottom= document.createElement("div");
+        questionbottom.classList.add("questionbottom");
+
+        const questiontags = document.createElement("div");
+        questiontags.classList.add("tags");
+
+       // Split the comma-separated strings into arrays
+       const tagsArray = result.tags ? result.tags.split(',') : [result.tags];
+       const tagsidArray = result.tagsid ? result.tagsid.split(',') : [result.tagsid];
+
+        // Create a dictionary object with tag IDs as keys and tag names as values
+        for (let i = 0; i < tagsArray.length; i++) {
+            const tagElement = document.createElement("div");
+            tagElement.classList.add("tag");
+        
+            const tagLink = document.createElement("a");
+            tagLink.href = `/tag/${tagsidArray[i]}`;
+            tagLink.textContent = tagsArray[i];
+        
+            tagElement.appendChild(tagLink);
+            questiontags.appendChild(tagElement);
+        }
 
 
-        // Create a paragraph for the date
-        const dateParagraph = document.createElement("p");
-        dateParagraph.textContent = result.date; // Adjust based on your actual result structure
-        dateParagraph.classList.add("date");
+        contentDiv.appendChild(questionLink);
 
-        const votes = document.createElement("p");
-        votes.textContent = result.votes;
-        votes.classList.add("votes");
-        // Append elements to the content div
-        contentDiv.appendChild(votes);
-        contentDiv.appendChild(contentParagraph);
-        contentDiv.appendChild(dateParagraph);  
+        profileInfoDiv.appendChild(userProfileLink);
+        profileInfoDiv.appendChild(questionDate);
 
-        // Append elements to the answer card div
-        questionCard.appendChild(titleLink);
+        questionbottom.appendChild(questiontags);
+        questionbottom.append(profileInfoDiv);
+
+        contentDiv.appendChild(questionbottom);
+
+        questionCard.appendChild(votes);
         questionCard.appendChild(contentDiv);
 
-        // Append the answer card to the search results
         Questions.appendChild(questionCard);
         
     }

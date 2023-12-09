@@ -2,6 +2,46 @@ main>#content{
   margin-top: 5.7em;
 }
 
+.notification {
+  margin: 0em;
+  color: white;
+  text-decoration: none;
+  padding: 0.5em 0.5em;
+  position: relative;
+  display: inline-block;
+  border-radius: 1em;
+}
+
+.notification:hover {
+  background: rgba(190, 190, 190, 0.4) !important;
+}
+
+.notification .badge {
+  margin: 0em;
+  position: absolute;
+  top: 0em;
+  right: 0.2em;
+
+  border-radius: 50%;
+  background: white;
+  color: black;
+}
+
+#sortSelect{
+  width: 30%;
+  margin-bottom: 0em;
+  margin-left: 0em;
+  margin-top: 0em;
+}
+.row.justify-content-center{
+  flex-direction: column;
+  margin-left: 10em;
+}
+.col-md-8{
+  width: 80%;
+  margin-top: 1em;
+}
+
 main>.sidebar{
   margin-top: 5.4em;
 }
@@ -24,7 +64,7 @@ position: fixed;
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
-  background-color: #7CB9E8;
+  background-color: black;
   padding: 1em;
   z-index: 100;
 }
@@ -69,8 +109,16 @@ a {
   text-decoration: none !important; /* Remove underline by default */
   transition: color 0.7s !important; /* Add a smooth transition for the color change */
 }
+.form-control{
+  font-size: 0.8em;
+}
 
 @media (max-width: 70em) {
+  .card{
+    width: 80% ;
+
+  }
+
   #cards {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -83,6 +131,17 @@ a {
   }
 }
 @media (max-width: 40em) {
+  .col-md-8{
+    width: 100%;
+
+  }
+  .card{
+    width:100%;
+
+  }
+  .row.justify-content-center{
+    margin-left: 0em;
+  }
   main>#content{
     margin-top: 0em;
   }
@@ -217,6 +276,13 @@ margin-left: 11em;
     margin-top: 0em;
   }
    .realcontent>#sortSelect{
+    display: block;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0em;
+  }
+  #gridable>#sortSelect{
     display: block;
     width: 70%;
     margin-left: auto;
@@ -408,11 +474,6 @@ align-items: center;
 #content>.userpage{
   margin-left: 11em;
 }
-#sortSelect{
-  width: 30%;
-  margin-left: 5em;
-  margin-top: 0em;
-}
 
 
 .users>.user>a{
@@ -437,3 +498,11 @@ align-items: center;
 .py-3.my-4{
   z-index: 2 !important;
 }
+
+header>h1>a{
+  color: white !important;
+}
+header>h1>a:hover{
+  color: gray !important;
+}
+

@@ -13,11 +13,11 @@
 @endsection
 
 @section('sidebar')
-<a class='aside active' href="{{ route('profile', ['id' => $user->id]) }}" >Profile</a>
-<a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">Followed Questions</a>
-<a class='aside' href="{{ route('myquestions', ['id' => $user->id]) }}" >My questions</a>
-<a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">My answers</a>
-<a class='aside' href="{{ route('myblocked', ['id' => $user->id]) }}">My blocked</a>
+<a class='aside active' style="border-top: 4px solid black;" href="{{ route('profile', ['id' => $user->id]) }}" >{{$user->username}}'s Profile</a>
+<a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">{{$user->username}}'s Followed Questions</a>
+<a class='aside' href="{{ route('myquestions', ['id' => $user->id]) }}" >{{$user->username}}'s questions</a>
+<a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">{{$user->username}}'s answers</a>
+<a class='aside' href="{{ route('myblocked', ['id' => $user->id]) }}">{{$user->username}}'s blocked content</a>
 @endsection
 
 @section('content2')
