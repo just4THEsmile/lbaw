@@ -2,6 +2,31 @@ main>#content{
   margin-top: 5.7em;
 }
 
+.notification {
+  margin: 0em;
+  color: white;
+  text-decoration: none;
+  padding: 0.5em 0.5em;
+  position: relative;
+  display: inline-block;
+  border-radius: 1em;
+}
+
+.notification:hover {
+  background: rgba(190, 190, 190, 0.4) !important;
+}
+
+.notification .badge {
+  margin: 0em;
+  position: absolute;
+  top: 0em;
+  right: 0.2em;
+
+  border-radius: 50%;
+  background: white;
+  color: black;
+}
+
 #sortSelect{
   width: 30%;
   margin-bottom: 0em;
