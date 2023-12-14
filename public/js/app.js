@@ -35,7 +35,14 @@ function sendAjaxRequest(method, url, data, handler) {
   request.send(encodeForAjax(data));
 }
 function renderPaginationButtons(links) {
-  query = searchInput.value;
+    use_query = true;
+    try{
+      query = searchInput.value;
+    }catch(error){
+      use_query = false;
+    }
+
+
   const paginationContainer = document.getElementById("pagination")
   paginationContainer.innerHTML = "";
   for (let i = 0; i <links.length; i++) {
@@ -52,10 +59,16 @@ function renderPaginationButtons(links) {
 
               .then(response => response.json())
               .then(data => {
-                  if(searchInput.value==query){
+                  if(use_query){
+                    if(searchInput.value==query){
                       results = data;
                       showPage(data.data,data.links);
                       window.scrollTo(0,0); 
+                   }
+                  }else{
+                    results = data;
+                    showPage(data.data,data.links);
+                    window.scrollTo(0,0); 
                   }
       
               })

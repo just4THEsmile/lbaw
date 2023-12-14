@@ -25,6 +25,9 @@
         <script type="text/javascript" src={{ url('js/app.js') }} defer>
             
         </script>
+        <script type="text/javascript" src={{ url('js/notification.js') }} defer>
+        
+        </script>
     </head>
     <body>
         <main>
@@ -35,11 +38,11 @@
                         $user = Auth::user();
                     @endphp
                     <div style="display:flex;align-items: center;" class="headernotifications">
-                        <a href="#" style="display: flex; width: 3em; justify-content: flex-start;"class="notification">
+                        <a href="{{ route('notifications_page')}}" style="display: flex; width: 3em; justify-content: flex-start;"class="notification">
                         <span class="material-symbols-outlined" style="color:white; margin:0em;">
                             notifications
                         </span>
-                            <span class="badge">3</span>
+                            <span class="badge" id="notification_numbers"></span>
                         </a>
                         <a id="profile" class="button" href="{{ route('profile', ['id' => $user->id]) }}">
                             <img style=" max-width: none; margin:0em;" src="{{ $user->getProfileImage() }}" alt="Profile Picture">

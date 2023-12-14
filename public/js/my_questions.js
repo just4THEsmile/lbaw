@@ -32,7 +32,6 @@ function showPage(results,links){
         Questions.innerHTML = "No questions Found";
     }
     for (let i = 0; i < results.length; i++) {
-        if(tagsArray[i] == null) continue;
         let result = results[i];
         // Create the main answer card div
         const questionCard = document.createElement("div");
@@ -92,6 +91,7 @@ function showPage(results,links){
 
         // Create a dictionary object with tag IDs as keys and tag names as values
         for (let i = 0; i < tagsArray.length; i++) {
+            if(tagsArray[i] == null) continue;
             const tagElement = document.createElement("div");
             tagElement.classList.add("tag");
         
