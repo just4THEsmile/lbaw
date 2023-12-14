@@ -27,6 +27,16 @@
 
 <div id="fixable" class="card-container unblockaccount">
   <p>Blocked Account Appeals</p>
+  @if($errors->has('unblockaccount'))
+      <span class="error">
+          {{ $errors->first('unblockaccount') }}
+      </span>
+  @endif
+  @if($errors->has('user'))
+      <span class="error">
+          {{ $errors->first('user') }}
+      </span>
+  @endif
   <?php echo json_decode($unblockAccounts) ?>
   @foreach ($unblockAccounts as $unblockAccount)
 

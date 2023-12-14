@@ -27,6 +27,16 @@
 
 <div id="fixable" class="card-container   unblockcontent">
   <p>Blocked Content Appeals</p>
+  @if($errors->has('unblockrequest'))
+      <span class="error">
+          {{ $errors->first('unblockrequest') }}
+      </span>
+  @endif
+  @if($errors->has('content'))
+      <span class="error">
+          {{ $errors->first('content') }}
+      </span>
+  @endif
   @foreach ($unblockRequests as $unblockRequest)
   <div class="card">
       <p class="card-info">Type:{{ $unblockRequest->type}}</p>

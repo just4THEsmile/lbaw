@@ -157,6 +157,9 @@ class UserController extends Controller
         $userReviewing = Auth::user();
         $this->authorize('review', $userReviewing);
         $unblockAccount = UnblockAccount::where('id',$id)->with(['user'])->first();
+        if($unblockAccount === null){
+            return redirect()->route('moderateusers')->withErrors(['unblockaccount'=>'The provided unblock account request does not exist']);
+        }
         return view('pages.reviewaccount', ['unblockaccount' => $unblockAccount]);
     }
 
@@ -166,7 +169,13 @@ class UserController extends Controller
         $id = $request->input('unblock_request_id');
         $this->authorize('process', $userReviewing);
         $unblockAccount = UnblockAccount::where('id',$id)->with(['user'])->first();
+        if($unblockAccount === null){
+            return redirect()->route('moderateusers')->withErrors(['unblockaccount'=>'The provided unblock account request does not exist']);
+        }
         $userBeingReviewed = $unblockAccount->user;
+        if($userBeingReviewed === null){
+            return redirect()->route('moderateusers')->withErrors(['user'=>'The provided user account does not exist']);
+        }
         $action = $request->input('action');
         if($action=== 'unblock'){
             $userBeingReviewed->blocked = false;

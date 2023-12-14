@@ -160,7 +160,7 @@ class ContentController extends Controller
             $this->authorize("unblock", Content::find($id));
         } catch (AuthorizationException $e) {
             if (Auth::check()) {
-                return redirect()->route('home');
+                return redirect()->route('myblocked',['id' => Auth::user()->id])->withErrors(['content' => 'The provided content does not exist or doesn']);
             } else {
                 return redirect()->route('login');
             }
@@ -168,6 +168,9 @@ class ContentController extends Controller
         $userId = $request->query('user_id');
         $content = Content::where('id', $id)
         ->with(['comment', 'question', 'answer'])->first();
+        if($content === null){
+            return redirect()->route('myblocked', ['id' => $userId])->withErrors(['content' => 'The provided content does not exist']);
+        }
         if ($content->comment) {
             $content->type = 'comment';
             $content->content_id = $content->comment->id;
@@ -189,7 +192,9 @@ class ContentController extends Controller
         $user_id = $request->input('user_id');
         $reason = $request->input('reason');
         $this->authorize("unblock", Content::find($request->input('content_id')));
-
+        if(Content::find($request->input('content_id')) === null){
+            return redirect()->route('myblocked', ['id' => $user_id])->withErrors(['content' => 'The provided content does not exist']);
+        }
         $unblockRequest = new UnblockRequest;
         $unblockRequest->user_id = $user_id;
         $unblockRequest->content_id = $content_id;
@@ -242,8 +247,14 @@ class ContentController extends Controller
         }
         if(($user->usertype === 'admin' || $user->usertype === 'moderator')){
             $unblockRequest = UnblockRequest::find(request()->route('id'));
+            if($unblockRequest === null){
+                return redirect()->route('moderatecontent')->withErrors(['unblockrequest' => 'The unblock request does not exist']);
+            }
             $content = Content::where('id', $unblockRequest->content_id)
             ->with(['comment', 'question', 'answer'])->first();
+            if($content === null){
+                return redirect()->route('moderatecontent')->withErrors(['content' => 'The provided content does not exist']);
+            }
             if ($content->comment) {
                 $content->type = 'comment';
                 $content->content_id = $content->comment->id;
@@ -270,11 +281,14 @@ class ContentController extends Controller
             $action = $request->input('action');
             $unblockRequestId = $request->input('unblock_request_id');
             $contentId = $request->input('content_id');
-
+            if($action === null or $unblockRequestId === null or $contentId === null){
+                return redirect()->route('moderatecontent')->withErrors(['unblockrequest' => 'The provided unblock request does not exist']);
+            }
             if ($action === 'unblock') {
                 $content = Content::find($contentId);
                 $content->blocked = false;
                 $content->deleted = false;
+                $content->reports = 0;
                 $content->save();
             } else if ($action === 'keep_blocked') {
             }
