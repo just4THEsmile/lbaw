@@ -25,6 +25,7 @@ function updateTags(){
 }
 window.onload = function () {
     updateTags();
+    loadNotifications();
 }   
 
 function showPage(results,links){

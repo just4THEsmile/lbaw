@@ -41,6 +41,7 @@ function showPage(currentPage){
         const unblock = document.createElement("a");
         unblock.setAttribute('href', '/api/unblockrequest/' + result.id + '?user_id=' + result.user_id);
         unblock.classList.add("unblock");
+        unblock.style = "border: black;color:white !important;display: flex;align-items: center;background-color:black";
         unblock.textContent = "Request unblock";
 
         // Add the <p> element to the answer card div

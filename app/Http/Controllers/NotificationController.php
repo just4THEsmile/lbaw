@@ -77,10 +77,11 @@ class NotificationController extends Controller
     public function DeleteNotifications(Request $request)
     {
         if( Auth::check()){
-            if(TransactionsController::deleteNotifications(Auth::user()->id)){
+            $result = TransactionsController::deleteNotifications(Auth::user()->id);
+            if($result === true){
                 return redirect('/notifications');
             } else {
-                return redirect('/notifications');
+                return redirect()->route('notifications_page')->withErrors(['notifications' => 'Something went wrong!']); 
             }
         } else {
             return redirect('/login');
@@ -88,16 +89,38 @@ class NotificationController extends Controller
     }
     public function deleteNotification(Request $request)
     {
-        if( Auth::check()){
-            $notification_id = $request->input('notification_id');
-            if(TransactionsController::deleteNotification($notification_id)){
-                return redirect('/notifications');
-            } else {
-                return redirect('/notifications');
-            }
-        } else {
-            return redirect('/login');
+        if( !Auth::check()){
+            redirect('/login'); 
         }
+        $notification_id = $request->input('notification_id');
+        $notification = Notification::find($notification_id)->first();
+        if($notification === null){
+            return redirect()->route('notifications_page')->withErrors(['notifications' =>'The provided Notification does not exist']); 
+        }
+        $result = TransactionsController::deleteNotification($notification_id);
+        if($result === true){
+            return redirect('/notifications');
+        } else {
+            return redirect()->route('notifications_page')->withErrors(['notifications' => 'Something went wrong!']);
+        }
+
+    }
+    public function number_of_notifications()
+    {
+        if( !Auth::check()){
+            return response()->json([
+                'message' => 'Not logged in',
+            ], 302);
+        }
+        $id = Auth::user()->id;
+        if(Auth::user()->id !== $id){
+            return response()->json([
+                'message' => 'Not authorized',
+            ], 302);
+        }
+        $result = Notification::where('user_id', $id)->where('viewed','false')->count();
+        return response()->json($result);
+
     }
 }
 

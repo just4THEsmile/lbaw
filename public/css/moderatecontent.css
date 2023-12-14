@@ -50,4 +50,42 @@
     display: flex;
     justify-content: center;
     margin-left: 10em;
+    flex-wrap: wrap;
+}
+.botoooom{
+    margin-left: 10em ;
+}
+#buttonlist>form{
+    margin-top: 0.2em !important;
+    margin-bottom: 0.2em !important;
+}
+#buttonlist>form>button{
+    border: black 1px solid !important;
+    display: flex;
+    background-color: white !important;
+    color: black !important;
+    font-size: 0.6em;
+    height: 3em;
+    display: flex;
+    padding: 1em;
+    align-items: center;
+    margin: 0.2em;
+}
+@media screen and (max-width: 50em) {
+    #buttonlist{
+        margin-left: 0em;
+    }
+}
+
+div>.card>a{
+    background-color: black !important;
+    color: white !important;
+}
+#buttonlist>form>button:hover{
+    background-color: gray !important;
+    color: black !important;
+}
+#buttonlist>form>button.active{
+    background-color: black !important;
+    color: white !important;
 }

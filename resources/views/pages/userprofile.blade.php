@@ -5,7 +5,8 @@
 @endsection
 @section('content')
             <div class="sidebar">
-                <a class="active" href="/home">Home Page</a>
+                <a href="/home">Home Page</a>
+                <a href="/feed">Feed</a>
                 <a href="{{'/tags'}}">Tags</a>
                 <a href="{{'/questions'}}">Questions</a>
                 <a href="{{'/users'}}">Users</a>
@@ -28,7 +29,7 @@
                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                                 <input style="align-self: center; font-size:0.7em;" type="file" name="profilepicture" accept="image/png,image/jpeg,image/png" multiple>
                                 <input name="type" type="text" value="profile" hidden>
-                                <button style="width:15em;" class="btn btn-primary" type="submit" name="profile-form">Upload new image</button>
+                                <button style="border: black;width:15em;color:white !important;display: flex;align-items: center;background-color:black;justify-content: center;" class="btn btn-primary" type="submit" name="profile-form">Upload new image</button>
                             </form>
                         </div>
                     </div>
@@ -95,7 +96,7 @@
                                     @endif
                                     <input class="form-control" id="paylink" name="paylink" type="text" placeholder="Enter your paylink" value="{{$user->paylink}}">
                                 </div>
-                                <button  type='submit' class=' btn btn-primary submitbuttons' name="user-form">Save Changes</button>
+                                <button  type='submit' style="border: black; color:white !important;display: flex;align-items: center;background-color:black;justify-content: center;"class=' btn btn-primary submitbuttons' name="user-form">Save Changes</button>
                             </form>
                             @if(Auth::user()->usertype === 'admin')
                             <form id='useradminform' action="{{route('updateuseradmin', ['id' => $user->id])}}" method='post'>
@@ -118,7 +119,7 @@
                                                 </label> 
                                             @endforeach
                                         </div>
-                                <button type='submit' class='btn btn-primary submitbuttons' name="useradminform">Save Changes</button>
+                                <button type='submit' style="color:white !important;display: flex;align-items: center;background-color:black;justify-content: center;"class='btn btn-primary submitbuttons' name="useradminform">Save Changes</button>
                             </form>
                             @endif
                                 </div>

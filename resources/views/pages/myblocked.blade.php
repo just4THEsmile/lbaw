@@ -29,6 +29,11 @@
     <div id="user_id" hidden>{{$user->id}}</div>
     <div class="card-container">
     <span class="error" id ="error"></span>
+        @if($errors->has('content'))
+            <span class="error">
+                {{ $errors->first('content') }}
+            </span>
+        @endif
         @foreach ($blockedContent as $block)
             {{-- Check content type and include respective partial --}}
             @if ($block->type === 'question')

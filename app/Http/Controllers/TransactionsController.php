@@ -330,46 +330,50 @@ class TransactionsController extends Controller
             return false;
         }
     }
-    public static function deleteNotifications($user_id):bool {
+    public static function deleteNotifications($user_id){
         try {
             // Start the transaction
             DB::beginTransaction();
+            VoteNotification::join('notification', 'notification.id', '=', 'votenotification.notification_id')
+            ->where('notification.user_id', $user_id)         
+            ->delete();
+            AnswerNotification::join('notification', 'notification.id', '=', 'answernotification.notification_id')
+            ->where('notification.user_id', $user_id)
+            ->delete();
+            BadgeAttainmentNotification::join('notification', 'notification.id', '=', 'badgeattainmentnotification.notification_id')
+            ->where('notification.user_id', $user_id)
+            ->delete();
+            CommentNotification::join('notification', 'notification.id', '=', 'commentnotification.notification_id')
+            ->where('notification.user_id', $user_id)
+            ->delete();
             Notification::where('user_id', $user_id)
             ->delete();
-            VoteNotification::where('user_id', $user_id)           
-            ->delete();
-            AnswerNotification::join('answer', 'answer.id', '=', 'answernotification.answer_id')
-            ->join('content', 'content.id', '=', 'answer.id')
-            ->where('content.user_id', $user_id)
-            ->delete();
-            BadgeAttainmentNotification::where('user_id', $user_id)
-            ->delete();
             DB::commit();
-
             return true;
         
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
             DB::rollback();
-        
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
-            return false;
+            return $e->getMessage();
         }
     }
-    public static function deleteNotification($notification_id):bool {
+    public static function deleteNotification($notification_id){
         try {
             // Start the transaction
             DB::beginTransaction();
-            Notification::where('id', $notification_id)
-            ->delete();
             VoteNotification::where('notification_id', $notification_id)           
             ->delete();
             AnswerNotification::where('notification_id', $notification_id)
             ->delete();
             BadgeAttainmentNotification::where('notification_id', $notification_id)
             ->delete();
+            CommentNotification::where('notification_id', $notification_id)
+            ->delete();
+            Notification::where('id', $notification_id)
+            ->delete();
             DB::commit();
 
             return true;
@@ -377,11 +381,10 @@ class TransactionsController extends Controller
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
             DB::rollback();
-        
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
-            \Log::error('Transaction failed: ' . $e->getMessage());
             return $e->getMessage();
+            \Log::error('Transaction failed: ' . $e->getMessage());
         }
     }
     public static function deleteTag(Tag $tag){

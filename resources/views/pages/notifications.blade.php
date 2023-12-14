@@ -2,7 +2,7 @@
 
 @section('sytle')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-<link href="{{ asset('css/cnotification.css') }}" rel="stylesheet">
+<link href="{{ asset('css/notification.css') }}" rel="stylesheet">
 @section('content')
 
     <div class="sidebar">
@@ -16,6 +16,16 @@
     @endif
     </div>
     <div class="container">
+    @if ($errors->has('notifications'))
+        <span class="error">
+            {{ $errors->first('notifications') }}
+        </span>
+    @endif
+    <form action="{{ route('deletenotifications')}}" method='post' >
+        @csrf
+        <button id="deleteNotifications" type='submit' class='edit' name="edit-button">Delete all Notifications</button>
+    </form>
+
     <div class="row">
         <div class="col-lg-9 right">
             <div class="box shadow-sm rounded bg-white mb-3">

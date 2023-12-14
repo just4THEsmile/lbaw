@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 window.onload = function () {
     searchUsers();
+    loadNotifications();
 }
 function searchUsers(){
     const sortSelect = document.getElementById("sortSelect");
