@@ -51,6 +51,7 @@
                 @endif
             </header>
             <section id="content">
+                <div id="error" class="error"><div>
                 @yield('content')
             </section>
 

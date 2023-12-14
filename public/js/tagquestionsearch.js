@@ -15,9 +15,16 @@ document.addEventListener("DOMContentLoaded", function () {
 function searchQuestions(){
     const query = searchInput.value;
     const tag_id = document.getElementById("tag_id").textContent;
+    const error = document.getElementById("error");
     fetch(`/api/tag/${tag_id}/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${encodeURIComponent(query)}`)
 
-        .then(response => response.json())
+        .then(response => {         
+            if (response.status == 200) {
+                return response.json();
+            }else{
+                error.textContent = "Error fetching questions";
+            }
+        })
         .then(data => {
             if(searchInput.value==query){
 

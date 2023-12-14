@@ -21,6 +21,9 @@ class CommentPolicy
      */
     public function editform(User $user,Comment $comment): bool
     {
+      if($user->blocked === true){
+        return false;
+      }
         $content= Content::find($comment->id);
       // Only a Question owner can delete it.
       return $user->id === $content->user_id || $user->usertype === "admin" || $user->usertype === "moderator";
@@ -31,6 +34,9 @@ class CommentPolicy
      */
     public function create(User $user): bool
     {
+      if($user->blocked === true){
+        return false;
+      }
         // Any user can create a new Comment.
         return Auth::check();
     }
@@ -40,6 +46,9 @@ class CommentPolicy
      */
     public function edit(User $user, Comment $comment): bool
     {
+      if($user->blocked === true){
+        return false;
+      }
         $content= Content::find($comment->id);
       // Only a Comment owner can delete it.
       return $user->id === $content->user_id || $user->usertype === "admin" || $user->usertype === "moderator";
@@ -50,6 +59,9 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
+      if($user->blocked === true){
+        return false;
+      }
         $content= Content::find($comment->id);
       // Only a Comment owner can delete it.
       return $user->id === $content->user_id || $user->usertype === "admin" || $user->usertype === "moderator";

@@ -4,7 +4,6 @@ function loadNotifications(){
     const notification_counter = document.getElementById("notification_numbers");
     fetch(`/notification/number`)
     .then(response => {
-      console.log(response);
         if (response.status == 200) {
             return response.json();
         }else{

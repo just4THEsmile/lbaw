@@ -19,6 +19,9 @@ class AnswerController extends Controller
      */
     public function createform(string $id){
         if (Auth::check()) {
+            if(Auth::user()->blocked == true){
+                return redirect('/home');
+            }
             return view('pages.answercreate', [
                 'question_id' => $id
             ]);
@@ -31,7 +34,12 @@ class AnswerController extends Controller
     {
         // Create a blank new Answer.
         $answer = new Answer();
-
+        if (Auth::check()) {
+            return redirect('/login');
+        }
+        if(Auth::user()->blocked == true){
+            return redirect('/home');
+        }
         // Check if the current user is authorized to create this Answer.
         $this->authorize('create', $answer);
 
@@ -50,7 +58,12 @@ class AnswerController extends Controller
     {
         // Find the Answer.
         $answer = Answer::find($answer_id);
-
+        if (Auth::check()) {
+            return redirect('/login');
+        }
+        if(Auth::user()->blocked == true){
+            return redirect('/home');
+        }
         // Check if the current user is authorized to delete this Answer.
         $this->authorize('delete', $answer);
         $content1 = Content::find($answer->id);
@@ -62,6 +75,12 @@ class AnswerController extends Controller
         return redirect("/question/". $id);
     }
     public function editform(string $id,string $answer_id){
+        if (Auth::check()) {
+            return redirect('/login');
+        }
+        if(Auth::user()->blocked == true){
+            return redirect('/home');
+        }
         $answer = Answer::find($answer_id);
         if (Auth::check()) {
             return view('pages.answeredit', [

@@ -22,6 +22,9 @@ class AnswerPolicy
     public function editform(User $user,Answer $answer): bool
     {
         $content= Content::find($answer->id);
+        if($user->blocked === true){
+            return false;
+        }
       // Only a Question owner can delete it.
       return $user->id === $content->user_id || $user->usertype === "admin" || $user->usertype === "moderator";
     }
@@ -31,6 +34,9 @@ class AnswerPolicy
      */
     public function create(User $user): bool
     {
+      if($user->blocked === true){
+        return false;
+    }
         // Any user can create a new Answer.
         return Auth::check();
     }
@@ -40,6 +46,9 @@ class AnswerPolicy
      */
     public function edit(User $user, Answer $answer): bool
     {
+      if($user->blocked === true){
+          return false;
+      }
         $content= Content::find($answer->id);
       // Only a Answer owner can delete it.
       return $user->id === $content->user_id || $user->usertype === "admin" || $user->usertype === "moderator";
@@ -50,6 +59,9 @@ class AnswerPolicy
      */
     public function delete(User $user, Answer $answer): bool
     {
+      if($user->blocked === true){
+        return false;
+      } 
         $content= Content::find($answer->id);
       // Only a Answer owner can delete it.
       return $user->id === $content->user_id || $user->usertype === "admin" || $user->usertype === "moderator";
