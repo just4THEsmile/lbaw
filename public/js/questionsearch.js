@@ -35,6 +35,7 @@ function searchQuestions(){
 
 window.onload = function () {
     searchQuestions();
+    loadNotifications();
 }   
 
 function showPage(results,links){
