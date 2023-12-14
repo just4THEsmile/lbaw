@@ -13,3 +13,18 @@
     display: flex;
     align-items: center;
 }
+.botoooom{
+    margin-left: 10em ;
+}
+.Tagcard >.content>div{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.Tagcard >.content>div>form>button{
+    width:100% !important;
+    display: flex;
+    padding: 0.5em;
+    height: 2em;
+    align-items: center;
+}

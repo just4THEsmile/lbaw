@@ -7,6 +7,12 @@
 }
 
 .Tagcard>.content{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* align-content: stretch; */
+    align-items: baseline;
     
     font-size: 0.8em;
 
@@ -39,4 +45,27 @@
     margin-top: 0.3em;
 
 
+}
+.Tagcard >.content>div{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.Tagcard >.content>div>form>button{
+    font-size: 0.9em !important;
+    margin-right: 0.1em !important;
+    display: flex;
+    padding: 0.5em;
+    height: 2em;
+    align-items: center;
+}
+.Tagcard >.content>div>form{
+    margin-bottom: 0.2em;
+}
+.followed{
+    background-color: rgb(21, 21, 21) !important;
+    color: white !important;
+}
+.Tagcard >.content>div>form{
+    margin-top: 0em !important;
 }
