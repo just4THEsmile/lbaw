@@ -19,6 +19,7 @@ use App\Models\Faq;
         {
             if(auth()->user() != null){
             $results = Question::select(
+                'question.correct_answer_id',
                 'question.title', 
                 'content.content', 
                 'appuser.username', 
@@ -41,6 +42,7 @@ use App\Models\Faq;
             )
             ->where('content.deleted', '=', false)
             ->groupBy(
+                'question.correct_answer_id',
                 'question.title',
                 'content.content',
                 'appuser.username',

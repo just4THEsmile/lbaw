@@ -40,6 +40,9 @@ input{
     justify-content: center;
     margin-bottom: 0.5em;
 }
+.botoooom{
+    margin-left: 10em !important;
+  }
 .form-group{
     margin-top: 1em;
     width: 100%;
@@ -82,7 +85,7 @@ input{
     margin-right: 1em;
 }
 
-@media screen and (max-width: 40em) {
+@media screen and (max-width: 50em) {
     #autocomplete{
         width: 100%;
     }

@@ -6,6 +6,7 @@
 
 <div class="sidebar">
     <a href="/home">Home Page</a>
+    <a href="/feed">Feed</a>
     <a href="{{'/tags'}}">Tags</a>
     <a href="{{'/questions'}}">Questions</a>
     <a href="{{'/users'}}">Users</a>
@@ -37,7 +38,7 @@
               <label for="reason">Reason</label>
               <textarea id="reason" name="reason" class="form-control" placeholder="Reason" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">
+            <button style="border: black;color:white !important;display: flex;align-items: center;background-color:black" type="submit" class="btn btn-primary">
               Send Unblock Request
             </button>
           </form>

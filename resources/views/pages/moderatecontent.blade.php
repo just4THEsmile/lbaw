@@ -7,6 +7,7 @@
 <link href="{{ asset('css/moderatecontent.css') }}" rel="stylesheet">
 <div class="sidebar">
   <a href="/home">Home Page</a>
+  <a href="/feed">Feed</a>
   <a href="{{'/tags'}}">Tags</a>
   <a href="{{'/questions'}}">Questions</a>
   <a href="{{'/users'}}">Users</a>
@@ -18,7 +19,7 @@
 
 <div id="buttonlist">
 <form action="{{ route('moderatecontent')}}" method='get' >
-    <button id="contentRequestsButton" type='submit' class='edit' name="edit-button">View Content Unblock Requests</button>
+    <button id="contentRequestsButton" class="active"type='submit' class='edit' name="edit-button">View Content Unblock Requests</button>
 </form>
 <form action="{{ route('moderateusers') }}" method='get' >
     <button id="contentRequestsButton" type='submit' class='edit' name="edit-button">View Account Unblock Requests</button>

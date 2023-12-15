@@ -21,7 +21,7 @@
     <button id="contentRequestsButton" type='submit' class='edit' name="edit-button">View Content Unblock Requests</button>
 </form>
 <form action="{{ route('moderateusers') }}" method='get' >
-    <button id="contentRequestsButton" type='submit' class='edit' name="edit-button">View Account Unblock Requests</button>
+    <button id="contentRequestsButton" class="active" type='submit' class='edit' name="edit-button">View Account Unblock Requests</button>
 </form>
 </div>
 
