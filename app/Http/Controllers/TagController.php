@@ -183,11 +183,12 @@ class TagController extends Controller
         }
         $query = $request->input('q');
         $sortby = $request->input('OrderBy');
-        if($sortby == 'relevance'){
-            if($query == null){
+        if($sortby === 'relevance'){
+            if($query === null){
 
                 $results = Question::select(
-                    'question.title', 
+                    'question.title',
+                    'question.correct_answer_id',  
                     'content.content', 
                     'appuser.username', 
                     'content.date', 
@@ -212,6 +213,7 @@ class TagController extends Controller
                 ->where('content.deleted', '=', false)
                 ->groupBy(
                     'question.title',
+                    'question.correct_answer_id',  
                     'content.content',
                     'appuser.username',
                     'content.date',
@@ -230,7 +232,8 @@ class TagController extends Controller
             return response()->json($results);
             }
             $results = Question::select(
-                'question.title', 
+                'question.title',
+                'question.correct_answer_id',   
                 'content.content', 
                 'appuser.username', 
                 'content.date', 
@@ -257,6 +260,7 @@ class TagController extends Controller
             ->groupBy(
                 'question.tsvectors',
                 'question.title',
+                'question.correct_answer_id',  
                 'content.content',
                 'appuser.username',
                 'content.date',
@@ -275,7 +279,8 @@ class TagController extends Controller
             return response()->json($results);
         }else{
             $results = Question::select(
-                'question.title', 
+                'question.title',
+                'question.correct_answer_id',   
                 'content.content', 
                 'appuser.username', 
                 'content.date', 
@@ -301,6 +306,7 @@ class TagController extends Controller
             ->where('content.deleted', '=', false)
             ->groupBy(
                 'question.title',
+                'question.correct_answer_id',  
                 'content.content',
                 'appuser.username',
                 'content.date',

@@ -195,6 +195,7 @@ class ProfileController extends Controller
         )
         ->join('content', 'question.id', '=', 'content.id')
         ->join('appuser', 'content.user_id', '=', 'appuser.id')
+        ->join('followquestion', 'followquestion.question_id', '=', 'content.id')
         ->leftjoin('answer', 'answer.question_id', '=', 'question.id')
         ->leftjoin(
             DB::raw('(SELECT question.id as qid, STRING_AGG(tag.title, \',\' ORDER BY tag.id ASC) as title, STRING_AGG(CAST(tag.id AS TEXT), \',\' ORDER BY tag.id ASC) as id FROM questiontag JOIN tag ON tag.id = questiontag.tag_id JOIN question ON question.id = questiontag.question_id GROUP BY question.id) as tags_agg'),
@@ -203,7 +204,7 @@ class ProfileController extends Controller
             'question.id'
         )
         ->where('content.deleted', '=', false)
-        ->where('content.user_id', '=', $id)
+        ->where('followquestion.user_id', $id)
         ->groupBy(
             'question.title',
             'content.content',

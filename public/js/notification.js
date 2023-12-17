@@ -1,12 +1,14 @@
 function loadNotifications(){
     const error = document.getElementById("errorNotifications");
-    console.log("Notification script loaded")
     const notification_counter = document.getElementById("notification_numbers");
     fetch(`/notification/number`)
     .then(response => {
         if (response.status == 200) {
             return response.json();
         }else{
+            if(response.status == 302){
+                window.location = '/login';
+            }
           error.textContent = "Error fetching notifications";
         }
     })
