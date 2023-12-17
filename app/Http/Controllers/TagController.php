@@ -66,7 +66,7 @@ class TagController extends Controller
         }
         return view('pages.tagedit', ['tag' => $tag]);
     }
-    public function edit(Request $request)
+    public function edit(Request $request,$id)
     {
         if(!Auth::check()){
             return redirect('/login');
@@ -74,9 +74,12 @@ class TagController extends Controller
         if(Auth::user()->usertype !== 'admin'){
             return redirect('/home');
         }
-        $request->validate(['title' => 'required|string|min:8|max:80',
+        $tag = Tag::find($id);
+        $request->validate(['title' => 'required|string|min:3|max:80',
         'description' => 'required|string|min:8|max:255']);
-        $tag = new Tag();
+        if($tag->title !== $request->input('title')){
+            $request->validate(['title' => 'unique:tag',]);
+        }
         $tag->title = $request->input('title');
         $tag->description = $request->input('description');
         $tag->save();
@@ -180,11 +183,12 @@ class TagController extends Controller
         }
         $query = $request->input('q');
         $sortby = $request->input('OrderBy');
-        if($sortby == 'relevance'){
-            if($query == null){
+        if($sortby === 'relevance'){
+            if($query === null){
 
                 $results = Question::select(
-                    'question.title', 
+                    'question.title',
+                    'question.correct_answer_id',  
                     'content.content', 
                     'appuser.username', 
                     'content.date', 
@@ -209,6 +213,7 @@ class TagController extends Controller
                 ->where('content.deleted', '=', false)
                 ->groupBy(
                     'question.title',
+                    'question.correct_answer_id',  
                     'content.content',
                     'appuser.username',
                     'content.date',
@@ -227,7 +232,8 @@ class TagController extends Controller
             return response()->json($results);
             }
             $results = Question::select(
-                'question.title', 
+                'question.title',
+                'question.correct_answer_id',   
                 'content.content', 
                 'appuser.username', 
                 'content.date', 
@@ -254,6 +260,7 @@ class TagController extends Controller
             ->groupBy(
                 'question.tsvectors',
                 'question.title',
+                'question.correct_answer_id',  
                 'content.content',
                 'appuser.username',
                 'content.date',
@@ -272,7 +279,8 @@ class TagController extends Controller
             return response()->json($results);
         }else{
             $results = Question::select(
-                'question.title', 
+                'question.title',
+                'question.correct_answer_id',   
                 'content.content', 
                 'appuser.username', 
                 'content.date', 
@@ -298,6 +306,7 @@ class TagController extends Controller
             ->where('content.deleted', '=', false)
             ->groupBy(
                 'question.title',
+                'question.correct_answer_id',  
                 'content.content',
                 'appuser.username',
                 'content.date',
