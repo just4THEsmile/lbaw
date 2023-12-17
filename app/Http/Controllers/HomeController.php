@@ -68,4 +68,13 @@ use App\Models\Faq;
             }
             return redirect('login');
         }
+
+        public function about()
+        {
+            if(auth()->user() != null){
+                $contents = Content::all();
+                return view('pages.about', ['contents' => $contents]);
+            }
+            return redirect('login');
+        }
     }

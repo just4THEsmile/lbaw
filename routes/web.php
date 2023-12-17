@@ -46,6 +46,7 @@ Route::redirect('/', '/login');
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/faq',[HomeController::class,'faq']);
+    Route::get('/about',[HomeController::class,'about']);
 });
 
 // Search
