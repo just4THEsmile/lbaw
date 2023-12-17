@@ -42,6 +42,9 @@ class AnswerController extends Controller
         if(Auth::user()->blocked === true){
             return redirect()->route('home')->withErrors(['page' => 'You are blocked u can t answer questions.']);
         }
+        if($question->commentable->content->deleted === true){
+            return redirect()->route('home')->withErrors(['page' => 'The provided question was deleted.']);
+        }
         // Check if the current user is authorized to create this Answer.
         $this->authorize('create', $answer);
         $request->validate(['content' => 'required|string|min:8|max:255',

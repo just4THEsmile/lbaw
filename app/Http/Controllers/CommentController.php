@@ -50,6 +50,10 @@ class CommentController extends Controller
         if($commentable === null){
             return redirect()->route('home')->withErrors(['page' => 'The provided Answer or question does not exist.']);
         }
+        $content = Content::find($id);
+        if($content->deleted === true){
+            return redirect()->route('home')->withErrors(['page' => 'The provided Answer or question was deleted.']);
+        }
         // Save the Comment and return it as JSON.
         $result = TransactionsController::createComment(Auth::user()->id,$id,$request->input('content'));
         if($result=== False){

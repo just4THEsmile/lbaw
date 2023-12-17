@@ -140,11 +140,11 @@ class QuestionController extends Controller
             return redirect('/login');
         }
         if(Auth::user()->blocked === true){
-            return redirect('/home');
+            return redirect('/home')->withErrors(['page' => 'You are blocked']);
         }
         $question = Question::find($id);
         if($question === null || $question->commentable->content->deleted === true){
-            return redirect('/home');
+            return redirect('/home')->withErrors(['page' => 'The provided question was not found.']);
         }
         $this->authorize('follow', $question);
         
