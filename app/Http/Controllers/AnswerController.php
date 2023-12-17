@@ -44,7 +44,8 @@ class AnswerController extends Controller
         }
         // Check if the current user is authorized to create this Answer.
         $this->authorize('create', $answer);
-
+        $request->validate(['content' => 'required|string|min:8|max:255',
+        ]);
         // Save the Answer and return it as JSON.
         $answer = TransactionsController::createAnswer(Auth::user()->id,$id,$request->input('content'));
         if($answer === null){
@@ -113,6 +114,8 @@ class AnswerController extends Controller
         }
         // Check if the current user is authorized to delete this Answer.
         $this->authorize('edit', $answer);
+        $request->validate(['content' => 'required|string|min:8|max:255',
+    ]);
         $content1 = Content::find($answer->id);
         // Delete the question and return it as JSON.
         //probably transaction

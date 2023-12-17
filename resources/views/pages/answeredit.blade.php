@@ -18,6 +18,11 @@
         <div class="forms">
             <form method="post" action="./edit" onsubmit="disableSubmitButton()">
                 @csrf
+                @if ($errors->has('content'))
+                    <span class="error">
+                        {{ $errors->first('content') }}
+                    </span>
+                @endif
                 <div class="form-group">
                     <label for="content">Edit your Answer:</label>
                     <textarea class="form-control" id="content" name="content" rows="4"required>{{ $answer->commentable->content->content}}</textarea>

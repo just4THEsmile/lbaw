@@ -44,6 +44,8 @@ class CommentController extends Controller
         if(Auth::user()->blocked === true){
             return redirect('/home');
         }
+        $request->validate(['content' => 'required|string|min:8|max:255',
+    ]);
         $commentable = Commentable::find($id);
         if($commentable === null){
             return redirect()->route('home')->withErrors(['page' => 'The provided Answer or question does not exist.']);
@@ -126,6 +128,8 @@ class CommentController extends Controller
         }
         // Check if the current user is authorized to delete this Comment.
         $this->authorize('edit', $comment);
+        $request->validate(['content' => 'required|string|min:8|max:255',
+    ]);
         $content1 = Content::find($comment->id);
 
         $content1->content =$request->input('content');

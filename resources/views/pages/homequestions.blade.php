@@ -25,11 +25,15 @@
 <div style="color:white; font-size:0.0001em;">Home</div>
   <div class="questionslist"> 
   <a class="createquestionbutton" href="./createquestion"><button> Create Question</button></a>
+      @if ($errors->has('page'))
+        <div class="error">
+          {{ $errors->first('page') }}
+        </div>
+      @endif
   @foreach ($questions as $question)
 
 
   <div class= "question">
-    
     <div class="votes">
       <p class= "answersnum" class=>{{ $question->answernum}} answers</p>
       <p class="votesnum" class=>{{ $question->commentable->content->votes }} votes</p> 

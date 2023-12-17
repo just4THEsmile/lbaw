@@ -55,6 +55,24 @@ function showPage(results,links){
         const questionCard = document.createElement("div");
         questionCard.classList.add("question");
 
+        //votes
+        const votes = document.createElement("div");
+        votes.classList.add("votes");
+
+        const answernum = document.createElement("p");
+        answernum.classList.add("answernum");
+        answernum.textContent = result.answernum + " answers"; // Replace with actual data
+        // Create the <p> element with the class "votesnum" and set its content dynamically using data from the server
+        const votesNum = document.createElement("p");
+        votesNum.classList.add("votesnum");
+        votesNum.textContent = result.votes + " votes"; // Replace with actual data
+
+
+
+
+
+        votes.appendChild(answernum);
+        votes.appendChild(votesNum);
 
 
         // Content
@@ -91,6 +109,7 @@ function showPage(results,links){
 
         // Create a dictionary object with tag IDs as keys and tag names as values
         for (let i = 0; i < tagsArray.length; i++) {
+            if(tagsArray[i] == null) continue;
             const tagElement = document.createElement("div");
             tagElement.classList.add("tag");
         
@@ -113,11 +132,11 @@ function showPage(results,links){
 
         contentDiv.appendChild(questionbottom);
 
+        questionCard.appendChild(votes);
         questionCard.appendChild(contentDiv);
 
         // Append the answer card to the search results
         searchResults.appendChild(questionCard);
-        
     }
     renderPaginationButtons(links);
 }

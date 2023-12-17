@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Answer;
 class QuestionController extends Controller
 {
-    public function show(string $id): View
+    public function show(string $id)
     {
         // Get the question.
-        $question = Question::findOrFail($id);
+        $question = Question::find($id);
         // Check if the current user can see (show) the question.
         if($question === null){
-            return redirect('/login');
+            return redirect('/home')->withErrors(['page' => 'The provided question was not found.']);
         }
         $this->authorize('show', $question);  
 
@@ -136,7 +136,12 @@ class QuestionController extends Controller
     }
 
     public function follow(Request $request, $id){
-
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
         $question = Question::find($id);
         if($question === null || $question->commentable->content->deleted === true){
             return redirect('/home');

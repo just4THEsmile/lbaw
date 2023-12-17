@@ -52,9 +52,6 @@
             </header>
             <section id="content">
                 <div id="errorNotifications" class="error">
-                @if ($errors->has('page'))
-                    {{ $errors->first('page') }}
-                @endif
                 </div>
                 @yield('content')
             </section>

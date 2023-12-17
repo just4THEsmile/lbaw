@@ -19,6 +19,11 @@
         <div class="forms">
             <form method="post" action="{{ route('create_comment',['id' => $commentable_id]) }}" onsubmit="disableSubmitButton()">
                 @csrf
+                @if ($errors->has('content'))
+                    <span class="error">
+                        {{ $errors->first('content') }}
+                    </span>
+                @endif
                 <div class="form-group">
                     <label for="content">Create your Comment</label>
                     <textarea placeholder="write here" class="form-control" id="content" name="content" rows="4"required></textarea>

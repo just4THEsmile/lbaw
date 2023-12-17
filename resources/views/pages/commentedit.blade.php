@@ -18,6 +18,11 @@
         <div class="forms">
             <form method="post" action="{{ route('edit_comment',['id' => $comment->commentable_id , 'comment_id' => $comment->id]) }}" onsubmit="disableSubmitButton()">
                 @csrf
+                @if ($errors->has('content'))
+                    <span class="error">
+                        {{ $errors->first('content') }}
+                    </span>
+                @endif
                 <div class="form-group">
                     <label for="content">Edit your Comment:</label>
                     <textarea class="form-control" id="content" name="content" rows="4"required>{{ $comment->content->content}}</textarea>
