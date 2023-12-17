@@ -1,6 +1,7 @@
 const hashtagInput = document.getElementById('TagsInput');
 var autocomplete = document.getElementById('autocomplete');
-const errorDiv = document.getElementById('error');
+const errorDiv = document.getElementById('questionerror');
+const errorAddTag = document.getElementById('errorAddTag');
 // const stopshowingtagsbutton = document.getElementById('stopShowingTags');
 var hashtags = [];
 // Listen for hashtag input
@@ -22,7 +23,7 @@ function refreshHashtags() {
     const removeIcon = document.createElement('span');
     removeIcon.classList = 'material-symbols-outlined';
     removeIcon.textContent = 'close';
-
+    errorAddTag.innerHTML = '';
     removeIcon.addEventListener('click', () => {
       hashtags.splice(i, 1);
       refreshHashtags();
@@ -32,9 +33,27 @@ function refreshHashtags() {
   }
 }
 function submitHandler() {
+  const errorTitle = document.getElementById('titleError');
+  const errorContent = document.getElementById('contentError');
+  const errorTags = document.getElementById('errorAddTag');
+  errorTitle.textContent = '';
+  errorContent.textContent = '';
+  errorTags.textContent = '';
   if (this.status != 200){
     let error = JSON.parse(this.responseText);
-    errorDiv.textContent = error.message;
+    const messages = error.messages;
+    if(messages.title){
+      errorTitle.textContent = messages.title;
+    }
+    if(messages.content){
+      errorContent.textContent = messages.content;
+    }
+    if(messages.tags){
+      errorTags.textContent = messages.tags;
+    }
+    if(messages.message){
+      errorDiv.textContent = messages.message;
+    }
   } else{
     window.location = '/question/'+ this.responseText ;
   }
@@ -46,24 +65,14 @@ button.addEventListener('click', function(event) { //Close Autocomplete
 
 function submitAction(){
   title = document.getElementById('title').value;
-  errorTitle = document.getElementById('titleError');
-  errorContent = document.getElementById('contentError');
   description = document.getElementById('questionContent').value;
-  if(title == ''){
-    errorTitle.textContent = 'title cant be empty';
-  }else if(title.length > 70){
-    errorTitle.textContent = 'title cant be longer than 70 characters';
-  }else if(description == ''){
-    errorContent.textContent = 'Content cant be empty';
-  }else if(description.length > 300){
-    errorContent.textContent = 'Content cant be shorter than 300 characters';
-  }else{
+
     let TagIds = [];
     for(let i = 0; i < hashtags.length; i++){
-      TagIds.push(hashtags[i].id);
+      TagIds.push(hashtags[i].id);  
     }
     sendAjaxRequest('post', '/createquestion', {'title':title , 'content':description , 'tags':TagIds}, submitHandler);
-  }
+
 }
 // stopshowingtagsbutton.addEventListener('click', async (event) => {
 // stopshowingtagsbutton.style.display = "none";
@@ -83,19 +92,16 @@ async function activateAutocomplete() {
     // Fetch list of hashtags from server
     const response = await fetch('/search/tag?query='+ encodeURIComponent(hashtagInput.value));
     const autocompletetags = await response.json();
-    //console.log(hashtags);
     // Display autocomplete suggestions
     autocomplete.innerHTML = '';
     let count = 0;
     console.log(hashtags);
-    let errorAddTag = document.getElementById('errorAddTag');
     autocompletetags.forEach((tag) => {
       if(count == 5){
         return;
       }
       for(let i = 0; i < hashtags.length; i++){
         if(hashtags[i].id == tag.id ){
-          console.log(count);
           return;
         }
       }
@@ -108,6 +114,7 @@ async function activateAutocomplete() {
           errorAddTag.textContent = "You can only add 5 tags";
           return;
         }else{
+          errorAddTag.textContent = "";
           hashtags.push({'id': tag.id, 'title': tag.title});
           refreshHashtags();
           autocomplete.innerHTML = '';

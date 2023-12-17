@@ -47,10 +47,12 @@
                         <a id="profile" class="button" href="{{ route('profile', ['id' => $user->id]) }}">
                             <img style=" max-width: none; margin:0em;" src="{{ $user->getProfileImage() }}" alt="Profile Picture">
                         </a>
-                    <div>
+                    </div>
                 @endif
             </header>
             <section id="content">
+                <div id="errorNotifications" class="error">
+                </div>
                 @yield('content')
             </section>
 

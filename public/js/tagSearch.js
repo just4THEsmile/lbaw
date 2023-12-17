@@ -10,9 +10,15 @@ document.addEventListener("DOMContentLoaded", function () {
 function updateTags(){
     const query = searchInput.value;
     // Perform an AJAX request to your Laravel backend
-    
+    const error = document.getElementById("error");
     fetch(`/api/fullsearch/tag?query=${encodeURIComponent(query)}`)
-        .then(response => response.json())
+        .then(response => {         
+            if (response.status == 200) {
+                return response.json();
+            }else{
+                error.textContent = "Error fetching tags";
+            }
+        })
         .then(data => {
             if(query==searchInput.value){
                 showPage(data.data,data.links);   

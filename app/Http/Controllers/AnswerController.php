@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\TransactionsController;
-
 use Illuminate\Http\Request;
 
 use Illuminate\View\View;
@@ -11,34 +10,49 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Answer;
 use App\Models\Content;
 use App\Models\Commentable;
-
+use App\Models\Question;
 class AnswerController extends Controller
 {
     /**
      * Creates a new Answer.
      */
     public function createform(string $id){
-        if (Auth::check()) {
-            return view('pages.answercreate', [
-                'question_id' => $id
-            ]);
-        } else {
+        if (!Auth::check()) {
             return redirect('/login');
         }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
+        return view('pages.answercreate', [
+            'question_id' => $id
+        ]);
 
     }
     public function create(Request $request,string $id)
     {
         // Create a blank new Answer.
         $answer = new Answer();
-
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        $question = Question::find($id);
+        if($question === null){
+            return redirect()->route('home')->withErrors(['page' => 'The provided question does not exist.']);
+        }
+        if(Auth::user()->blocked === true){
+            return redirect()->route('home')->withErrors(['page' => 'You are blocked u can t answer questions.']);
+        }
+        if($question->commentable->content->deleted === true){
+            return redirect()->route('home')->withErrors(['page' => 'The provided question was deleted.']);
+        }
         // Check if the current user is authorized to create this Answer.
         $this->authorize('create', $answer);
-
+        $request->validate(['content' => 'required|string|min:8|max:255',
+        ]);
         // Save the Answer and return it as JSON.
         $answer = TransactionsController::createAnswer(Auth::user()->id,$id,$request->input('content'));
         if($answer === null){
-            return redirect('/question/2'. $id);
+            return redirect()->route('question_show',['id' => $id])->withErrors(['question' => 'There was an error when creating the answer.']);
         }
         return redirect("/question/". $id);
     }
@@ -50,7 +64,15 @@ class AnswerController extends Controller
     {
         // Find the Answer.
         $answer = Answer::find($answer_id);
-
+        if($answer === null){
+            return redirect('/home');
+        }
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
         // Check if the current user is authorized to delete this Answer.
         $this->authorize('delete', $answer);
         $content1 = Content::find($answer->id);
@@ -62,59 +84,48 @@ class AnswerController extends Controller
         return redirect("/question/". $id);
     }
     public function editform(string $id,string $answer_id){
-        $answer = Answer::find($answer_id);
-        if (Auth::check()) {
-            return view('pages.answeredit', [
-                'answer' => $answer
-            ]);
-        } else {
+        if (!Auth::check()) {
             return redirect('/login');
         }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
+        $answer = Answer::find($answer_id);
+        if($answer === null){
+            return redirect()->route('home')->withErrors(['page' => 'The provided answer does not exist.']);
+        }
+        return view('pages.answeredit', [
+            'answer' => $answer
+        ]);
     }
 
     public function edit(Request $request, string $id , string $answer_id)
     {
         // Find the Answer.
         $answer = Answer::find($answer_id);
-
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if($answer === null){
+            return redirect()->route('home')->withErrors(['page' => 'The provided answer does not exist.']);
+        }
+        if(Auth::user()->id !== $answer->user_id && Auth::user()->usertype !== 'admin' && Auth::user()->usertype !== 'moderator' ){
+            return redirect('/home');
+        }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
         // Check if the current user is authorized to delete this Answer.
         $this->authorize('edit', $answer);
+        $request->validate(['content' => 'required|string|min:8|max:255',
+    ]);
         $content1 = Content::find($answer->id);
         // Delete the question and return it as JSON.
         //probably transaction
         $content1->content =$request->input('content');
         $content1->edited = true;
+        $content1->date = now();
         $content1->save();
         return redirect('/question/' . $answer->question_id);
     }
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    /*
-    public function listuserAnswers()
-    {
-        // Check if the user is logged in.
-        if (!Auth::check()) {
-            // Not logged in, redirect to login.
-            return redirect('/login');
-
-        } else {
-            // The user is logged in.
-
-            // Get Answers for user ordered by id.
-            $answers = Answer::orderBy('id')->get();
-            // Check if the current user can list the Answers.
-            $this->authorize('list', Answer::class);
-
-            // The current user is authorized to list Answers.
-
-            // Use the pages.Answers template to display all Answers.
-            return view('pages.Answers', [
-                'Answer' => $answer,
-                'answers' => $answers
-            ]);
-        }
-    }*/
 }

@@ -141,6 +141,7 @@ class TransactionsController extends Controller
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
+            return false;
         }
     }
         
@@ -165,6 +166,7 @@ class TransactionsController extends Controller
             $content1->content = $content;
             $question->title = $title;
             $content1->edited = true;
+            $content1->date = now();
             $question->save();
             $content1->save();
             // Commit the transaction
@@ -174,10 +176,10 @@ class TransactionsController extends Controller
         } catch (\Exception $e) {
             // An error occurred, rollback the transaction
             DB::rollback();
-            return $e->getMessage();
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
+            return false;
         }
     }// Find the question.
     public static function deleteQuestion($question_id)
@@ -208,6 +210,7 @@ class TransactionsController extends Controller
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
+            return false;
         }
     }// Find the question.
     public static function createAnswer($user_id,$question_id,$content)
@@ -254,6 +257,7 @@ class TransactionsController extends Controller
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
+            return false;
         }
     }
     public static function createComment($user_id,$commentable_id,$content)
@@ -299,6 +303,7 @@ class TransactionsController extends Controller
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
+            return false;
         }
     }
     public static function deleteUser($user_id):bool {
@@ -330,7 +335,8 @@ class TransactionsController extends Controller
             return false;
         }
     }
-    public static function deleteNotifications($user_id){
+    public static function deleteNotifications($user_id):bool
+    {
         try {
             // Start the transaction
             DB::beginTransaction();
@@ -357,10 +363,10 @@ class TransactionsController extends Controller
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
-            return $e->getMessage();
+            return false;
         }
     }
-    public static function deleteNotification($notification_id){
+    public static function deleteNotification($notification_id):bool{
         try {
             // Start the transaction
             DB::beginTransaction();
@@ -383,11 +389,12 @@ class TransactionsController extends Controller
             DB::rollback();
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
-            return $e->getMessage();
+            
             \Log::error('Transaction failed: ' . $e->getMessage());
+            return false;
         }
     }
-    public static function deleteTag(Tag $tag){
+    public static function deleteTag(Tag $tag):bool{
         try {
             // Start the transaction
             DB::beginTransaction();
@@ -404,7 +411,7 @@ class TransactionsController extends Controller
             // Handle the exception (log it, show an error message, etc.)
             // For example, you might log the error like this:
             \Log::error('Transaction failed: ' . $e->getMessage());
-            return $e->getMessage();
+            return false;
         }
     }
 }

@@ -12,7 +12,13 @@ function updateQuestions(){
     // Perform an AJAX request to your Laravel backend
     let currentPage = 1;
     fetch(`/api/followedQuestions/${user_id.textContent}?OrderBy=${searchOrderedBy_Selector.value}`)
-        .then(response => response.json())
+        .then(response => {
+            if (response.status == 200) {
+                return response.json();
+            }else{
+                error.textContent = "Error fetching questions";
+            }
+        })
         .then(data => {
             console.log(data);
             showPage(data.data,data.links);   

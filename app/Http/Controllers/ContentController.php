@@ -17,7 +17,9 @@ class ContentController extends Controller
     public function reportContent(Request $request, $content_id)
     {   
         
-
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
         $user = auth()->user();
         if($user === null){
             return response()->json([
@@ -44,7 +46,9 @@ class ContentController extends Controller
     }
     public function voteContent( Request $request, $content_id )
     {   
-
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
         $user = auth()->user();
         $vote = Vote::where('user_id', $user->id)->where('content_id', $content_id)->first();
         $question = Content::find($content_id);
@@ -193,6 +197,9 @@ class ContentController extends Controller
 
     public function sendunblock(Request $request)
     {   
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
         $content_id = $request->input('content_id');
         $user_id = $request->input('user_id');
         $reason = $request->input('reason');

@@ -24,6 +24,11 @@
         <div class= "forms">
             <form method="post" action="./answer" onsubmit="disableSubmitButton()">
                 @csrf
+                @if ($errors->has('content'))
+                    <span class="error">
+                        {{ $errors->first('content') }}
+                    </span>
+                @endif
                 <div class="form-group">
                     <label for="content">Create your Answer</label>
                     <textarea placeholder="write here" class="form-control" id="content" name="content" rows="4" required></textarea>
