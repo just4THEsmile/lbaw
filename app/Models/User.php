@@ -58,7 +58,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Badge::class, 'badgeattainment', 'user_id', 'badge_id');
     }
-
+    public function badgeAttainments()
+    {
+        return $this->hasMany(BadgeAttainment::class);
+    }
     public function questions()
     {
         return Question::select('content.content as content', 'question.title as title', 'content.votes as votes', 'content.id as id', 'content.date as date')

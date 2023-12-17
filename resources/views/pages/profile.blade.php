@@ -80,8 +80,8 @@
         <section id='badges'>
             <h3>Badges Unlocked</h3>
             <ul>
-                @foreach($user->badges as $badge)
-                    <li><div class="badgecontent"><div class="badgename"><span>{{ $badge->name }} </span></div><div class="badgedescription"> {{ $badge->description }}</div></div></li>
+                @foreach($badges as $badge)
+                    <li><div class="badgecontent"><div class="flexbadge"><div class="badgename"><span>{{ $badge->badge->name }} </span></div><div class="badgedescription"> {{ $badge->badge->description }}</div></div><div class="badgedate"><span>{{$badge->date}}</span></div></div></li>
                 @endforeach
             </ul>
         </section>
