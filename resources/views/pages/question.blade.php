@@ -11,6 +11,7 @@
     
     <div class="sidebar">
     <a href="/home">Home Page</a>
+    <a href="/feed">Feed</a>
     <a href="{{'/tags'}}">Tags</a>
     <a class="active" href="{{'/questions'}}">Questions</a>
     <a href="{{'/users'}}">Users</a>

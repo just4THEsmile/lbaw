@@ -98,18 +98,41 @@ function showPage(results,links){
        const tagsidArray = result.tagsid ? result.tagsid.split(',') : [result.tagsid];
 
         // Create a dictionary object with tag IDs as keys and tag names as values
-        for (let i = 0; i < tagsArray.length; i++) {
-            if(tagsArray[i] == null) continue;
+        for (let j = 0; j < tagsArray.length; j++) {
+            if(tagsArray[j] == null) continue;
             const tagElement = document.createElement("div");
             tagElement.classList.add("tag");
         
             const tagLink = document.createElement("a");
-            tagLink.href = `/tag/${tagsidArray[i]}`;
-            tagLink.textContent = tagsArray[i];
+            tagLink.href = `/tag/${tagsidArray[j]}`;
+            tagLink.textContent = tagsArray[j];
         
             tagElement.appendChild(tagLink);
             questiontags.appendChild(tagElement);
         }
+
+        var correctdiv = document.createElement("div");
+
+        // Set the class attribute
+        correctdiv.className = "correct";
+
+        // Set the style attribute
+        correctdiv.style.display = "flex";
+        correctdiv.style.color = "green";
+        correctdiv.style.alignItems = "center";
+
+
+        // Create a new span element
+        var newSpan = document.createElement("span");
+
+        // Set the class attribute for the span element
+        newSpan.className = "material-symbols-outlined";
+
+        // Set the inner text of the span element
+        newSpan.innerText = "check";
+
+        // Append the span element to the div element
+        correctdiv.appendChild(newSpan);
 
 
         contentDiv.appendChild(questionLink);
@@ -122,6 +145,9 @@ function showPage(results,links){
 
         contentDiv.appendChild(questionbottom);
 
+        if(result.correctanswerid !== null){
+            questionCard.appendChild(correctdiv);
+        }
         questionCard.appendChild(votes);
         questionCard.appendChild(contentDiv);
 

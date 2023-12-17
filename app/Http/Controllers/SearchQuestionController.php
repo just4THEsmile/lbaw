@@ -32,6 +32,7 @@ class SearchQuestionController extends Controller
             if($query == null){
 
                 $results = Question::select(
+                    'question.correct_answer_id',
                     'question.title', 
                     'content.content', 
                     'appuser.username', 
@@ -54,6 +55,7 @@ class SearchQuestionController extends Controller
                 )
                 ->where('content.deleted', '=', false)
                 ->groupBy(
+                    'question.correct_answer_id',
                     'question.title',
                     'content.content',
                     'appuser.username',
@@ -73,6 +75,7 @@ class SearchQuestionController extends Controller
             return response()->json($results);
             }
             $results = Question::select(
+                'question.correct_answer_id',
                 'question.title', 
                 'content.content', 
                 'appuser.username', 
@@ -96,6 +99,7 @@ class SearchQuestionController extends Controller
             ->whereRaw("question.tsvectors @@ plainto_tsquery(?)", [$query])
             ->where('content.deleted', '=', false)
             ->groupBy(
+                'question.correct_answer_id',
                 'question.tsvectors',
                 'question.title',
                 'content.content',
@@ -116,6 +120,7 @@ class SearchQuestionController extends Controller
             return response()->json($results);
         }else{
             $results = Question::select(
+                'question.correct_answer_id',
                 'question.title', 
                 'content.content', 
                 'appuser.username', 
@@ -139,6 +144,7 @@ class SearchQuestionController extends Controller
             ->where('question.title', 'ILIKE', "%$query%")
             ->where('content.deleted', '=', false)
             ->groupBy(
+                'question.correct_answer_id',
                 'question.title',
                 'content.content',
                 'appuser.username',
@@ -160,6 +166,7 @@ class SearchQuestionController extends Controller
     }
     public function feed(){
         $results = Question::select(
+            'question.correct_answer_id',
             'question.title', 
             'content.content', 
             'appuser.username', 
@@ -187,6 +194,7 @@ class SearchQuestionController extends Controller
         ->where('content.deleted', '=', false)
         ->where('followeduser.id', '=', Auth::user()->id)
         ->groupBy(
+            'question.correct_answer_id',
             'question.title',
             'content.content',
             'appuser.username',

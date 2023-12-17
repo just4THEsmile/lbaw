@@ -14,6 +14,7 @@
 @section('content')
 <div class="sidebar">
   <a class="active" href="/home">Home Page</a>
+  <a href="/feed">Feed</a>
   <a href="{{'/tags'}}">Tags</a>
   <a href="{{'/questions'}}">Questions</a>
   <a href="{{'/users'}}">Users</a>
@@ -34,6 +35,10 @@
 
 
   <div class= "question">
+    @if($question->correct_answer_id !== null)
+      <div class="correct" style="display: flex;color: green;align-items: center;"><span class="material-symbols-outlined">check</span></div>
+    @endif  
+    
     <div class="votes">
       <p class= "answersnum" class=>{{ $question->answernum}} answers</p>
       <p class="votesnum" class=>{{ $question->commentable->content->votes }} votes</p> 

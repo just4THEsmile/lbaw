@@ -72,6 +72,7 @@ function showPage(results,links){
         contentDiv.appendChild(titleLink);
         contentDiv.appendChild(contentParagraph);
         //admin buttons
+        const buttonDiv = document.createElement("div");
         if(usertype == "admin"){
             const deleteform = document.createElement("form");
             deleteform.method = "POST";
@@ -98,8 +99,8 @@ function showPage(results,links){
             editbutton.classList.add("material-icons")
             editbutton.textContent = "edit";
             editform.appendChild(editbutton);
-            contentDiv.appendChild(deleteform);
-            contentDiv.appendChild(editform);
+            buttonDiv.appendChild(deleteform);
+            buttonDiv.appendChild(editform);
         }
         const followform = document.createElement("form");
         followform.method = "POST";
@@ -114,13 +115,15 @@ function showPage(results,links){
         followbutton.classList.add("follow");
         followbutton.classList.add("material-icons")
         if(result.followed){
+            followbutton.classList.add("followed");
             followbutton.textContent = "unfollow";
         }else{
             followbutton.textContent = "follow";
         }
         followform.appendChild(crf1);
         followform.appendChild(followbutton);
-        contentDiv.appendChild( followform);
+        buttonDiv.appendChild( followform);
+        contentDiv.appendChild(buttonDiv);
         // Append elements to the Tag card div
         TagCard.appendChild(contentDiv);
 

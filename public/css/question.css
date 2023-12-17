@@ -1,4 +1,4 @@
-@media screen and (max-width: 40em) {
+@media screen and (max-width: 50em) {
     .userpage>#search > .searchbar {
       margin-left: 0em;
       margin-top: 0em;
@@ -269,4 +269,7 @@ h2{
   color: red;
   display: flex;
   justify-content: center;
+}
+.botoooom{
+  margin-left: 10em ;
 }
