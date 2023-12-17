@@ -1,7 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="{{ route('tagcreate') }}" style="border:1px solid black;" onsubmit="disableSubmitButton()">
+<div class="sidebar">
+    <a href="/home">Home Page</a>
+    <a href="/feed">Feed</a>
+    <a href="{{'/tags'}}">Tags</a>
+    <a href="{{'/questions'}}">Questions</a>
+    <a href="{{'/users'}}">Users</a>
+    @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+        <a href="{{'/moderatecontent'}}">Blocked Content</a>
+    @endif
+</div>
+<h1 style=" display:flex;    justify-content: center;">Create a New Tag</h1>
+    <form method="post" action="{{ route('tagcreate') }}" style="border:1px solid black; margin-top:1em;" onsubmit="disableSubmitButton()">
         @csrf
         <div class="form-group">
             @if ($errors->has('title'))
@@ -9,15 +20,15 @@
                     {{ $errors->first('title') }}
                 </span>
             @endif
-            <label for="title">Title:</label>
-            <textarea class="form-control" id="title" name="title" rows="1" required></textarea>
+            <label for="title">New Title:</label>
+            <textarea placeholder="title" class="form-control" id="title" name="title" rows="1" required></textarea>
             @if ($errors->has('description'))
                 <span class="error">
                     {{ $errors->first('description') }}
                 </span>
             @endif
-            <label for="description">Description:</label>
-            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            <label for="description">New Description:</label>
+            <textarea placeholder="description" class="form-control" id="description" name="description" rows="4" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary" style="background-color:black; border:black;">Submit</button>
     </form>
