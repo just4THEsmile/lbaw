@@ -20,30 +20,39 @@ class CommentController extends Controller
      * Creates a new Comment.
      */
     public function createform(string $id){
-        if (Auth::check()) {
-            return view('pages.commentcreate', [
-                'commentable_id' => $id
-            ]);
-        } else {
-            return redirect('/login');
+        if (!Auth::check()) {
+            redirect('/login');
         }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
+        $commentable = Commentable::find($id);
+        if($commentable === null){
+            return redirect()->route('home')->withErrors(['page' => 'The provided Answer or question does not exist.']);
+        }
+        return view('pages.commentcreate', [
+            'commentable_id' => $id
+        ]);
 
     }
     public function create(Request $request,string $id)
     {
-        // Create a blank new Comment.
-        $comment = new Comment();
-
         // Check if the current user is authorized to create this Comment.
-
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
+        $commentable = Commentable::find($id);
+        if($commentable === null){
+            return redirect()->route('home')->withErrors(['page' => 'The provided Answer or question does not exist.']);
+        }
         // Save the Comment and return it as JSON.
         $result = TransactionsController::createComment(Auth::user()->id,$id,$request->input('content'));
-        echo "ok";
-
-        if($result=== null){
-
+        if($result=== False){
+            return redirect()->route('home')->withErrors(['page' => 'There was an error when creating the comment.']);
         }
-
         $answer = Answer::find($result->commentable_id);
         if($answer === null){
             $question = Question::find($result->commentable_id);
@@ -60,7 +69,16 @@ class CommentController extends Controller
     {
         // Find the Comment.
         $comment = Comment::find($comment_id);
-
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
+        $comment = Comment::find($comment_id);
+        if($comment === null){
+            return redirect()->route('home')->withErrors(['page' => 'The provided Comment does not exist.']);
+        }
         // Check if the current user is authorized to delete this Comment.
         $this->authorize('delete', $comment);
         $content1 = Content::find($comment->id);
@@ -78,28 +96,41 @@ class CommentController extends Controller
         }  
     }
     public function editform(string $id,string $comment_id){
-        $comment = Comment::find($comment_id);
-        if (Auth::check()) {
-            return view('pages.commentedit', [
-                'comment' => $comment
-            ]);
-        } else {
+        if (!Auth::check()) {
             return redirect('/login');
         }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
+        $comment = Comment::find($comment_id);
+        if($comment === null){
+            return redirect()->route('home')->withErrors(['page' => 'The provided Comment does not exist.']);
+        }
+        return view('pages.commentedit', [
+            'comment' => $comment
+        ]);
     }
 
     public function edit(Request $request, string $id , string $comment_id)
     {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        if(Auth::user()->blocked === true){
+            return redirect('/home');
+        }
         // Find the Comment.
         $comment = Comment::find($comment_id);
-
+        if($comment === null){
+            return redirect()->route('home')->withErrors(['page' => 'The provided Comment does not exist.']);
+        }
         // Check if the current user is authorized to delete this Comment.
         $this->authorize('edit', $comment);
         $content1 = Content::find($comment->id);
-        // Delete the question and return it as JSON.
-        //probably transaction
+
         $content1->content =$request->input('content');
         $content1->edited = true;
+        $content1->date = now();
         $content1->save();
         $answer = Answer::find($comment->commentable_id);
         if($answer === null){
@@ -109,34 +140,4 @@ class CommentController extends Controller
             return redirect("/question/". $answer->question_id);
         } 
     }
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    //isto vai dar trabalho
-    /*
-    public function listuserComments()
-    {
-        // Check if the user is logged in.
-        if (!Auth::check()) {
-            // Not logged in, redirect to login.
-            return redirect('/login');
-
-        } else {
-            // The user is logged in.
-
-            // Get Comments for user ordered by id.
-            $comments = Comment::orderBy('id')->get();
-            // Check if the current user can list the Comments.
-            $this->authorize('list', Comment::class);
-
-            // The current user is authorized to list Comments.
-
-            // Use the pages.comments template to display all Comments.
-            return view('pages.comments', [
-                'Comment' => $comment,
-                'Comments' => $comments
-            ]);
-        }
-    }*/
 }

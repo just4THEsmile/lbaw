@@ -20,8 +20,12 @@
     </div>
 
     <div style="color:white; font-size:0.0001em;">Home</div>
-    <div id="error"></div>
     <section id="answers">
+        <div id="error" class="error">
+            @if ($errors->has('question'))
+                {{ $errors->first('question') }}
+            @endif
+        </div>
         @include('partials.question', ['question' => $question,'answers' => $answers])
         {{ $answers->links() }}
     </section>

@@ -67,7 +67,9 @@
                 <a href="{{ url('/profile/'.$question->commentable->content->user->id) }}">{{ $question->commentable->content->user->username }}</a>
                 <p>{{ $question->date }}</p>
             </div>
-            @include('partials.question_buttons', ['question' => $question])
+            @if (!auth()->user()->blocked)
+                @include('partials.question_buttons', ['question' => $question])
+            @endif
         @endif
     </div>
     </header>
@@ -75,17 +77,8 @@
     @each('partials.comment', $question->commentable->comments()->orderBy('id')->get(), 'comment')
     </div>
     <ul>
-    @php
-    $answers = $question->answers()->orderBy('id')->get();
-    @endphp
-
     @foreach ($answers as $answer)
         @include('partials.answer', ['answer' => $answer, 'correct' => $correct])
     @endforeach
-    <?php // 
-
-    //    @each('partials.answer',DB::table('answer')->where('question_id', $question->commentable_id)->get(), 'answer') 
-    //
-    ?>
     </ul>
 </article>

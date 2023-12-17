@@ -78,18 +78,19 @@ $vote = $answer->commentable->content->get_vote();
                 <a href="{{ url('/profile/'.$answer->commentable->content->user->id) }}">{{ $answer->commentable->content->user->username }}</a>
                 <p>{{ $answer->commentable->content->compileddate()}}</p>
             </div>
-            <div class= "commentbuttons">
-                <form id='createcomment' action="{{ route('create_comment_form',['id' => $answer->id]) }}" method='get'>
-                    @csrf
-                    <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
-                </form>
-                @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'moderator')
-        
-                @include('partials.editanswer', ['answer' => $answer,'answer' => $answer])
-                @endif
-                
-            </div>   
-
+            @if (!auth()->user()->blocked)
+                <div class= "commentbuttons">
+                    <form id='createcomment' action="{{ route('create_comment_form',['id' => $answer->id]) }}" method='get'>
+                        @csrf
+                        <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
+                    </form>
+                    @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'moderator')
+            
+                    @include('partials.editanswer', ['answer' => $answer,'answer' => $answer])
+                    @endif
+                    
+                </div>   
+            @endif
         @endif
 </div>
 </span>

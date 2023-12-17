@@ -72,7 +72,7 @@ Route::controller(ProfileController::class)->group(function () {
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/createquestion', 'createform');
     Route::post('/createquestion', 'create');
-    Route::get('/question/{id}', 'show')->name("question.show");
+    Route::get('/question/{id}', 'show')->name('question_show');
     Route::post('/question/{id}/delete', 'delete');
     Route::get('/question/{id}/edit', 'editform');
     Route::post('/question/{id}/edit', 'edit');

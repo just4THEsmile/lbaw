@@ -1,5 +1,5 @@
 function loadNotifications(){
-    const error = document.getElementById("error");
+    const error = document.getElementById("errorNotifications");
     console.log("Notification script loaded")
     const notification_counter = document.getElementById("notification_numbers");
     fetch(`/notification/number`)

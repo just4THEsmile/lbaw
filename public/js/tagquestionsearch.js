@@ -55,41 +55,6 @@ function showPage(results,links){
         const questionCard = document.createElement("div");
         questionCard.classList.add("question");
 
-        //votes
-        const votes = document.createElement("div");
-        votes.classList.add("votes");
-        const upvote = document.createElement("button");
-        upvote.classList.add("arrow-up");
-
-        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_less"
-        const upvoteSpan = document.createElement("span");
-        upvoteSpan.classList.add("material-symbols-outlined");
-        upvoteSpan.textContent = "expand_less";
-
-        upvote.appendChild(upvoteSpan);
-
-        // Create the <p> element with the class "votesnum" and set its content dynamically using data from the server
-        const votesNum = document.createElement("p");
-        votesNum.classList.add("votesnum");
-        votesNum.textContent = result.votes; // Replace with actual data
-
-        // Create the <button> element for downvote with the class "arrow-down"
-        const downvote = document.createElement("button");
-        downvote.classList.add("arrow-down");
-
-        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_more"
-        const downvoteSpan = document.createElement("span");
-        downvoteSpan.classList.add("material-symbols-outlined");
-        downvoteSpan.textContent = "expand_more";
-
-        // Append the <span> element to the downvote button
-        downvote.appendChild(downvoteSpan);
-
-        // Append the created elements to the <div> element
-        votes.appendChild(upvote);
-        votes.appendChild(votesNum);
-        votes.appendChild(downvote);
-
 
 
         // Content
@@ -148,7 +113,6 @@ function showPage(results,links){
 
         contentDiv.appendChild(questionbottom);
 
-        questionCard.appendChild(votes);
         questionCard.appendChild(contentDiv);
 
         // Append the answer card to the search results

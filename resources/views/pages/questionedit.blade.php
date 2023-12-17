@@ -21,7 +21,7 @@
     </div>
     <div class="create">
         <div class="forms">
-            <div id="error"></div>
+            <div id="questionerror" class="error"></div>
             <input id="questionid" hidden value="{{ $question->id }}">
             <div class="form-group">
                 <div id="titleError" class="error"></div>

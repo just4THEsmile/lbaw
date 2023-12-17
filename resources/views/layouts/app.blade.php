@@ -47,11 +47,15 @@
                         <a id="profile" class="button" href="{{ route('profile', ['id' => $user->id]) }}">
                             <img style=" max-width: none; margin:0em;" src="{{ $user->getProfileImage() }}" alt="Profile Picture">
                         </a>
-                    <div>
+                    </div>
                 @endif
             </header>
             <section id="content">
-                <div id="error" class="error"><div>
+                <div id="errorNotifications" class="error">
+                @if ($errors->has('page'))
+                    {{ $errors->first('page') }}
+                @endif
+                </div>
                 @yield('content')
             </section>
 
