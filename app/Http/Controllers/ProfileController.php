@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
 use App\Models\Content;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 class ProfileController extends Controller
 {
     /**
@@ -18,7 +19,12 @@ class ProfileController extends Controller
     public function index($id)
     {    if(Auth::check()){
             $user = User::find($id);
-            return view('pages.profile', ['user' => $user]);
+            $badges = $user->badgeAttainments()->with('badge')->get();
+            foreach($badges as $badge){
+                $someDate = Carbon::parse($badge->date);
+                $badge->date = $someDate->diffForHumans();
+            }
+            return view('pages.profile', ['user' => $user, 'badges' => $badges]);
         }else{
             return redirect('/login');
         }

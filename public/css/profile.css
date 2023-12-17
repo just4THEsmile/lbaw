@@ -240,12 +240,13 @@ body {
     list-style: none;
     display:flex;
     flex-direction: column;
+  }
 
-
-
+  .flexbadge{
+    display: flex;
+    align-items: center;
   }
   #badges >ul>li{
-
     margin-bottom: 0em;
   }
   .badgename>span{
@@ -263,6 +264,10 @@ body {
   .badgecontent{
     display: flex;
     margin-bottom: 0.5em;
+    justify-content: space-between;
+  }
+  .badgedate{
+    font-size: 0.7em;
   }
   .button{
     font-size: 1em;

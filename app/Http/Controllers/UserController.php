@@ -144,6 +144,13 @@ class UserController extends Controller
         $userBeingUnblocked = User::find($id);
         $this->authorize('unblockform', $userBeingUnblocked);
         $request->validate(['appeal' => 'required|string|max:255']);
+
+        $existingRequest = UnblockAccount::where('user_id', $userBeingUnblocked->id)->first();
+        if ($existingRequest) {
+            return redirect()->route('unblockaccountform', ['id' => $userBeingUnblocked->id])
+                ->with('message', 'Unblock request already exists.');
+        }
+
         $unblockAccount = UnblockAccount::create([
             'user_id' => $userBeingUnblocked->id,
             'appeal' => $request->input('appeal')

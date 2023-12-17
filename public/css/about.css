@@ -1,0 +1,23 @@
+.about-container{
+    margin-left: 10em;
+}
+
+.about-container > h2{
+    text-align: center;
+}
+.card img {
+    max-width: 10em;
+    max-height: 10em;
+}
+
+.column .card{
+ display: flex;
+ flex-direction: row;
+}
+
+@media screen and (max-width: 50em) {
+    .about-container {
+        margin-left: 0em;
+    }
+    
+}

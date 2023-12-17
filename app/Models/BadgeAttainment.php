@@ -26,6 +26,19 @@ class BadgeAttainment extends Model
     ];
 
     protected $table = 'badgeattainment';
-    protected $primaryKey = ['user_id', 'badge_id']; 
+    protected $primaryKey = 'id'; 
 
+    public function badge()
+    {
+        return $this->belongsTo(Badge::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function compileddate()
+    {
+        return $this->date->format('Y-m-d');
+    }
 }

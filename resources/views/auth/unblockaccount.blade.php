@@ -4,6 +4,11 @@
 @endsection
 @section('content')
 
+@if (session('message'))
+    <div class="alert alert-info">
+        {{ session('message') }}
+    </div>
+@endif
 
 <form method="POST" action="{{ route('unblockaccount', ['id' => Auth::user()->id]) }}">
     @csrf
@@ -11,7 +16,7 @@
     <p>If you believe your account has been blocked in error, please submit an appeal using the form below:</p>
     <p>Appeal:</p>
     <textarea id="appeal" name="appeal" rows="10" cols="30" required></textarea>
-    <button type="submit">
+    <button class="button-submit"type="submit">
         Submit Unblock Request
     </button>
 </form>
