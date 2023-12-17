@@ -2,11 +2,19 @@
 <div class='edit-answer'>
     <form id='deletequestion' action="{{ $answer->question_id }}/answer/{{ $answer->id }}/delete" method='post' onsubmit="disableSubmitButton()">
         @csrf
-        <button type='submit' class='delete' name="delete-button">delete</button>
+        <button type='submit' class='delete' name="delete-button">
+            <span class="material-symbols-outlined">
+                delete
+            </span>
+        </button>
     </form>
     <form class="editquestion" action="{{ $answer->question_id }}/answer/{{ $answer->id }}/edit" method='get' onsubmit="disableSubmitButton()">
         @csrf
-        <button type='submit' class='edit' name="edit-button">Edit</button>
+        <button type='submit' class='edit' name="edit-button">
+        <span class="material-symbols-outlined">
+            edit
+        </span>
+        </button>
     </form>
     <form  class='report' action="{{route('report',['content_id'=> $answer->commentable->content->id])}}" method='post' onsubmit="disableSubmitButton()">
         @csrf

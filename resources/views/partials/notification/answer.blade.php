@@ -14,7 +14,7 @@
                 <input type="hidden" name="notification_id" value="{{ $notification->notification_id }}">
                 <button id="contentRequestsButton" type='submit' class="btn btn-light btn-sm rounded" data-toggle="dropdown" aria-haspopup="true" name="delete-button">X</button>
             </form>
-            <button type="button" class="btn btn-light btn-sm rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            
                 <i class="mdi mdi-dots-vertical"></i>
         </div>
         <br />

@@ -51,8 +51,8 @@ class ContentController extends Controller
         }
         $user = auth()->user();
         $vote = Vote::where('user_id', $user->id)->where('content_id', $content_id)->first();
-        $question = Content::find($content_id);
-        if($question === null || $question->deleted){
+        $content = Content::find($content_id);
+        if($content === null || $content->deleted){
             return response()->json([
                 'message' => 'question does not exist or is deleted',
             ], 500);

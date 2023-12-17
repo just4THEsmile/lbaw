@@ -54,8 +54,20 @@
 
 button.delete{
     border: 1px solid rgba(255, 0, 0, 1) !important;
+    padding: 0em !important;
+    height: 2em !important;
 
+}
+button.edit{
 
+    padding: 0em !important;
+    height: 2em !important;
+}
+button.edit>span:hover{
+    color: rgba(255, 255, 255, 1) !important;
+}
+button.delete>span:hover{
+    color: rgba(255, 0, 0, 1) !important;
 }
 
 .edit-comment,

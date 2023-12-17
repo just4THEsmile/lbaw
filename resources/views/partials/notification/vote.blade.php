@@ -16,7 +16,6 @@
             </button>
             <div class="dropdown-menu dropdown-menu-right">
                 <button class="dropdown-item" type="button"><i class="mdi mdi-delete"></i> Delete</button>
-                <button class="dropdown-item" type="button"><i class="mdi mdi-close"></i> Turn Off</button>
             </div>
         </div>
         <br />

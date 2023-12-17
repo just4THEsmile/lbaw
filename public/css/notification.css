@@ -16,3 +16,41 @@ body{
     background-color: #e5f7f0;
     border-color: #d8f7eb;
 }
+
+section#content>div.container{
+    margin-left: 10em ;
+    width: 80%;
+}
+div.row{
+    width: 100%;
+}
+div.row>div{
+    width: 100%;
+}
+.dropdown-list-image{
+    max-width: none;
+    width: 4em;
+}
+.ml-auto{
+    width: 10em;
+}
+.ml-auto>.text-right{
+    font-size: 0.7em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.text-truncate{
+    white-space:normal !important;
+}
+
+@media (max-width: 50em) {
+    .dropdown-list-image{
+        display: none;
+    }
+    section#content > div.container{
+        margin-left: 0em;
+        width: 100%;
+    }
+    
+}

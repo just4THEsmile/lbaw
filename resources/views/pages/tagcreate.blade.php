@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="{{ route('tagcreate') }}" onsubmit="disableSubmitButton()">
+    <form method="post" action="{{ route('tagcreate') }}" style="border:1px solid black;" onsubmit="disableSubmitButton()">
         @csrf
         <div class="form-group">
             @if ($errors->has('title'))
@@ -19,6 +19,6 @@
             <label for="description">Description:</label>
             <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" style="background-color:black; border:black;">Submit</button>
     </form>
 @endsection
