@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="{{ route('tagcreate') }}" onsubmit="disableSubmitButton()">
+    <form method="post" action="{{ route('tagedit',['id' => $tag->id]) }}" onsubmit="disableSubmitButton()">
         @csrf
         <div class="form-group">
             @if ($errors->has('title'))
