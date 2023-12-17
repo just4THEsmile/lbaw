@@ -47,7 +47,7 @@ function showPage(results,links){
         // Create the answer content container
         var questiontitle = document.createElement("h3");
         var questionLink = document.createElement("a");
-        questionLink.href = `/question/${result.questionid}`; // Replace with the actual question URL
+        questionLink.href = `/question/${result.question_id}`; // Replace with the actual question URL
         questionLink.textContent = result.tile; // Replace with the actual question title
         questiontitle.appendChild(questionLink);
         console.log(result.tile);
@@ -73,7 +73,7 @@ function showPage(results,links){
       
         // Create the profile link
         var profileLink = document.createElement("a");
-        profileLink.href = "http://example.com/profile/123"; // Replace with the actual profile URL
+        profileLink.href = `/profile/${result.userid}`; // Replace with the actual profile URL
         profileLink.textContent = result.username; // Replace with the actual username
       
         // Create the timestamp paragraph

@@ -158,7 +158,7 @@ function showPage(results,links){
 
         contentDiv.appendChild(questionbottom);
 
-        if(result.correct_answer_id !== null){
+        if(result.correct_answer_id != null){
             questionCard.appendChild(correctdiv);
         }
         questionCard.appendChild(votes);

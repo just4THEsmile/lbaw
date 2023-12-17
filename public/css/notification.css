@@ -43,7 +43,42 @@ div.row>div{
 .text-truncate{
     white-space:normal !important;
 }
+div.btn-group{
+    margin: 0em;
+}
+div.btn-group >form{
+    margin:0em;
+}
+div.btn-group >form>button{
+    margin:0em;
+}
+span.ml-auto{
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ul.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ul.pagination>.active>span{
+    color: #FFF !important;
+    background-color: black !important;
+    border-color: black !important;
+}
 
+div.container>form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+div.container>form>button{
+    margin-top: 1em;
+    background-color: black;
+    border: black;
+}
 @media (max-width: 50em) {
     .dropdown-list-image{
         display: none;

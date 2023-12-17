@@ -18,7 +18,6 @@ function updateQuestions(){
                 }
             })
             .then(data => {
-                console.log(data);
                 // Update the search results in the DOM
                 showPage(data.data,data.links);
             })
@@ -142,7 +141,7 @@ function showPage(results,links){
         questionbottom.append(profileInfoDiv);
 
         contentDiv.appendChild(questionbottom);
-        if(result.correctanswerid !== null){
+        if(result.correctanswerid != null){
             questionCard.appendChild(correctdiv);
         }
         questionCard.appendChild(votes);
