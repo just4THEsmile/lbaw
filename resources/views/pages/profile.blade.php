@@ -56,17 +56,22 @@
             <form method="POST" action="{{ route('deleteaccount',['id' => $user->id]) }}" onsubmit="return confirmDelete()">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ $user->id }}">
-                <button type="submit" class="button">Delete Account</button>
+                <button type="submit" class="button" style="text-transform: none !important;" >Delete Account</button>
             </form>
             @if(Auth::user()->usertype === 'admin')
             <form method="POST" action="{{ route('blockaccount',['id' => $user->id]) }}" onsubmit="return confirmBlock()">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                 @if($user->blocked)
-                <button type="submit" class="button">Unblock Account</button>
+                <button type="submit" class="button" style="text-transform: none !important;" >Unblock Account</button>
                 @else
-                <button type="submit" class="button">Block Account</button>
+                <button type="submit" class="button" style="text-transform: none !important;" >Block Account</button>
                 @endif
+            </form>
+            @endif
+            @if(Auth::user()->id === $user->id && $user->blocked)
+            <form method="GET" action="{{ route('unblockaccountform', ['id' => Auth::user()->id]) }}">
+                <button type="submit" class="button" style="text-transform: none !important;">Unblock Account Request</button>
             </form>
             @endif
             <a class="button" href="{{ route('editprofile', ['id' => $user->id]) }}">Edit Profile</a>  

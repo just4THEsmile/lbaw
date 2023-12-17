@@ -11,7 +11,7 @@
     <p>If you believe your account has been blocked in error, please submit an appeal using the form below:</p>
     <p>Appeal:</p>
     <textarea id="appeal" name="appeal" rows="10" cols="30" required></textarea>
-    <button type="submit">
+    <button class="button-submit"type="submit">
         Submit Unblock Request
     </button>
 </form>
