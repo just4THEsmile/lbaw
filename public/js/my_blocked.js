@@ -6,7 +6,13 @@ let results = [];
 function updateBlocked(){
     let currentPage = 1;
         fetch(`/api/myblocked/${user_id.textContent}`)
-            .then(response => response.json())
+            .then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                }else{
+                    error.textContent = "Error fetching blocked content";
+                }
+            })
             .then(data => {
                 // Update the search results in the DOM
                 results = data;

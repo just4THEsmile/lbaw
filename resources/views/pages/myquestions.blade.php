@@ -26,6 +26,7 @@
             <option value="date">Time</option>
             <option value="votes">Votes</option>
         </select>
+        <div class="error" id="error"></div>
         <span class="error" id ="error"></span>
         <ul id="Questions"></ul>
         <div id ="pagination"></div>

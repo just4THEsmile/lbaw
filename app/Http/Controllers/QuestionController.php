@@ -14,22 +14,22 @@ use App\Models\Commentable;
 use App\Models\FollowQuestion;
 use App\Models\User;
 use Exception;
-
+use Illuminate\Support\Facades\Validator;
 use App\Models\Answer;
 class QuestionController extends Controller
 {
-    public function show(string $id): View
+    public function show(string $id)
     {
         // Get the question.
-        $question = Question::findOrFail($id);
+        $question = Question::find($id);
         // Check if the current user can see (show) the question.
         if($question === null){
-            return redirect('/login');
+            return redirect('/home')->withErrors(['page' => 'The provided question was not found.']);
         }
         $this->authorize('show', $question);  
 
         $question->date = $question->commentable->content->compileddate();
-        $answers = Answer::where('question_id' , $id)->paginate(15);
+        $answers = Answer::join('content','content.id','=','answer.id')->orderBy('content.votes','desc')->where('question_id' , $id)->paginate(15);
         // Use the pages.question template to display the question.
         return view('pages.question', [
             'question' => $question , 'answers' => $answers
@@ -52,16 +52,23 @@ class QuestionController extends Controller
         
         // Check if the current user is authorized to delete this question.
         $this->authorize('create', $question);
-        if(sizeof(explode(",", $request->input('tags'))) > 5){
+        $tags = $request->input('tags');
+        if(sizeof(explode(",", $tags)) > 5){
             return response()->json([
-                'message' => 'Too many tags',
-            ],500);
+                'messages' => ['tags' => 'Too many tags only 5 tags are allowed'],
+            ],400);
         }
+        $validator=Validator::make($request->all(),['title' => 'required|string|min:4|max:70','content' => 'required|string|min:16|max:255']);
+        if ($validator->fails()) {
+            return response()->json(['messages'=>$validator->getMessageBag()], 400);
+        }
+        $title = $request->input('title');
+        $content = $request->input('content');
         //dd($request->input('tags'));
-        $question = TransactionsController::createQuestion(Auth::user()->id,$request->input('title'),$request->input('content'),$request->input('tags'));
-        if($question === null){
+        $question = TransactionsController::createQuestion(Auth::user()->id,$title,$content,$tags);
+        if($question === false){
             return response()->json([
-                //'message' => $request->input($result),
+                'messages' => ['message' => "something went wrong when creating the question"],
             ], 500);
         }
         return response()->json($question->id);
@@ -87,10 +94,12 @@ class QuestionController extends Controller
     }
 
     public function editform(string $id){
-        $question = Question::findOrFail($id);
-        
+        $question = Question::find($id);
+        if($question === null || $question->commentable->content->deleted === true){
+            return redirect('/home');
+        }
         if (Auth::check()) {
-            if(Auth::user()->id == $question->commentable->content->user_id || Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'){
+            if(Auth::user()->id === $question->commentable->content->user_id || Auth::user()->usertype === 'admin' || Auth::user()->usertype === 'moderator'){
                 return view('pages.questionedit', ['question' => $question]);
             }
             return redirect('/home');
@@ -102,27 +111,41 @@ class QuestionController extends Controller
     {
         // Find the question.
         $question = Question::find($id);
-
+        if($question === null || $question->commentable->content->deleted === true){
+            return redirect('/home');
+        }
         // Check if the current user is authorized to delete this question.
         $this->authorize('edit', $question);
         if(sizeof(explode(",", $request->input('tags'))) > 5){
             return response()->json([
-                'message' => 'Too many tags',
-            ],500);
+                'messages' =>['tags' => 'Too many tags'],
+            ],400);
+        }
+        $validator=Validator::make($request->all(),['title' => 'required|string|min:4|max:70','content' => 'required|string|min:16|max:255']);
+        if ($validator->fails()) {
+            return response()->json(['messages'=>$validator->getMessageBag()], 400);
         }
         //dd($request->input('tags'));
         $result = TransactionsController::editQuestion($question->id,$request->input('title'),$request->input('content'),$request->input('tags'));
-        if($result === null){
+        if($result === false){
             return response()->json([
-                'message' => $request->input('tags'),
-            ], 404);
+               'messages' => ['message' => "something went wrong when creating the question"],
+            ], 500);
         }
         return response()->json($result);
     }
 
     public function follow(Request $request, $id){
-
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        if(Auth::user()->blocked === true){
+            return redirect('/home')->withErrors(['page' => 'You are blocked']);
+        }
         $question = Question::find($id);
+        if($question === null || $question->commentable->content->deleted === true){
+            return redirect('/home')->withErrors(['page' => 'The provided question was not found.']);
+        }
         $this->authorize('follow', $question);
         
 
@@ -145,18 +168,25 @@ class QuestionController extends Controller
 
     public function correctanswer(Request $request, $questionid){
         try{
-            $user = auth()->user();
-            if($user === null){
+            if(!Auth::check()){
                 return response()->json([
                     'message' => 'not logged in',
-                ], 500);
+                ], 400);
             }
-
+            if(Auth::user()->blocked === true){
+                return response()->json([
+                    'message' => 'user is blocked',
+                ], 400);
+            }
             $question = Question::find($questionid);
-
+            if($question === null || $question->commentable->content->deleted === true){
+                return response()->json([
+                    'message' => 'question is deleted or cannot be found, cannot add correct answer',
+                ], 400);
+            }
             $this->authorize('correctanswer', $question);
-            if($question->correct_answer_id != null){
-                if($question->correct_answer_id == $request->input('answerid')){
+            if($question->correct_answer_id !== null){
+                if($question->correct_answer_id === $request->input('answerid')){
                     $question->correct_answer_id = null;
                     $question->save();
                     return response()->json([

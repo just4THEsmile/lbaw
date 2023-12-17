@@ -28,6 +28,7 @@
 
 
 <div id="user_id" hidden>{{$user->id}}</div>
+    <div class="error" id="error"></div>
         <ul id="Questions"></ul>
         <div id ="pagination"></div>
         <script type="text/javascript" src={{ url('js/followedQuestions.js') }} defer></script>

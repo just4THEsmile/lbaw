@@ -5,7 +5,7 @@
     <div class="font-weight-bold mr-3">
         <div class="text-truncate">Someone answered one of your question</div>
         <div class="small">{{ $notification->answer_username}} answer to "{{ $notification->title }}" with "{{ $notification->answer_content }}"</div>
-        <a href="{{ route('question.show', $notification->question_id) }}" class="btn btn-outline-success btn-sm">View Question</a>
+        <a href="{{ route('question_show', $notification->question_id) }}" class="btn btn-outline-success btn-sm">View Question</a>
     </div>
     <span class="ml-auto mb-auto">
         <div class="btn-group">

@@ -21,7 +21,7 @@
     </div>
     <div class="create">
         <div class="forms">
-            <div id="error"></div>
+                <div id="questionerror" class="error"></div>
                 <div class="form-group">
                     <div id="titleError" class="error"></div>
                     <label for="title">Title:</label>

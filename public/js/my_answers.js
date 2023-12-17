@@ -11,7 +11,13 @@ function updateAnswers(){
     const user_id = document.getElementById("user_id")
     console.log(searchOrderedBy_Selector.value)
     fetch(`/api/myanswers/${user_id.textContent}?OrderBy=${searchOrderedBy_Selector.value}`)
-        .then(response => response.json())
+        .then(response => {
+            if (response.status == 200) {
+                return response.json();
+            }else{
+                error.textContent = "Error fetching awnswers";
+            }
+        })
         .then(data => {
             console.log(data.data);
             showPage(data.data,data.links);   

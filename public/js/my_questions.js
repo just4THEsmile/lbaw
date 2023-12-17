@@ -7,10 +7,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 function updateQuestions(){
-
+    const error = document.getElementById("error");
         // Perform an AJAX request to your Laravel backend
         fetch(`/api/myquestions/${user_id.textContent}?OrderBy=${searchOrderedBy_Selector.value}`)
-            .then(response => response.json())
+            .then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                }else{
+                    error.textContent = "Error fetching questions";
+                }
+            })
             .then(data => {
                 console.log(data);
                 // Update the search results in the DOM

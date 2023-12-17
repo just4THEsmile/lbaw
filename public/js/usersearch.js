@@ -19,10 +19,16 @@ function searchUsers(){
     const sortSelect = document.getElementById("sortSelect");
     const query = searchInput.value;
     const sortBy = sortSelect.value;
-
+    const error = document.getElementById("error");
 
     fetch(`/search/users?q=${encodeURIComponent(query)}&SearchBy=${sortBy}`)
-        .then(response => response.json())
+        .then(response => {         
+            if (response.status == 200) {
+                return response.json();
+            }else{
+                error.textContent = "Error fetching users";
+            }
+        })
         .then(data => {
             if(query== searchInput.value && sortBy == sortSelect.value){
                 console.log(data);

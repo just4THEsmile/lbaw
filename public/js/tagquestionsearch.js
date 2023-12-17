@@ -15,9 +15,16 @@ document.addEventListener("DOMContentLoaded", function () {
 function searchQuestions(){
     const query = searchInput.value;
     const tag_id = document.getElementById("tag_id").textContent;
+    const error = document.getElementById("error");
     fetch(`/api/tag/${tag_id}/questions?OrderBy=${searchOrderedBy_Selector.value}&q=${encodeURIComponent(query)}`)
 
-        .then(response => response.json())
+        .then(response => {         
+            if (response.status == 200) {
+                return response.json();
+            }else{
+                error.textContent = "Error fetching questions";
+            }
+        })
         .then(data => {
             if(searchInput.value==query){
 
@@ -51,38 +58,21 @@ function showPage(results,links){
         //votes
         const votes = document.createElement("div");
         votes.classList.add("votes");
-        const upvote = document.createElement("button");
-        upvote.classList.add("arrow-up");
 
-        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_less"
-        const upvoteSpan = document.createElement("span");
-        upvoteSpan.classList.add("material-symbols-outlined");
-        upvoteSpan.textContent = "expand_less";
-
-        upvote.appendChild(upvoteSpan);
-
+        const answernum = document.createElement("p");
+        answernum.classList.add("answernum");
+        answernum.textContent = result.answernum + " answers"; // Replace with actual data
         // Create the <p> element with the class "votesnum" and set its content dynamically using data from the server
         const votesNum = document.createElement("p");
         votesNum.classList.add("votesnum");
-        votesNum.textContent = result.votes; // Replace with actual data
+        votesNum.textContent = result.votes + " votes"; // Replace with actual data
 
-        // Create the <button> element for downvote with the class "arrow-down"
-        const downvote = document.createElement("button");
-        downvote.classList.add("arrow-down");
 
-        // Create the <span> element with the class "material-symbols-outlined" and text content "expand_more"
-        const downvoteSpan = document.createElement("span");
-        downvoteSpan.classList.add("material-symbols-outlined");
-        downvoteSpan.textContent = "expand_more";
 
-        // Append the <span> element to the downvote button
-        downvote.appendChild(downvoteSpan);
 
-        // Append the created elements to the <div> element
-        votes.appendChild(upvote);
+
+        votes.appendChild(answernum);
         votes.appendChild(votesNum);
-        votes.appendChild(downvote);
-
 
 
         // Content
@@ -119,6 +109,7 @@ function showPage(results,links){
 
         // Create a dictionary object with tag IDs as keys and tag names as values
         for (let i = 0; i < tagsArray.length; i++) {
+            if(tagsArray[i] == null) continue;
             const tagElement = document.createElement("div");
             tagElement.classList.add("tag");
         
@@ -146,7 +137,6 @@ function showPage(results,links){
 
         // Append the answer card to the search results
         searchResults.appendChild(questionCard);
-        
     }
     renderPaginationButtons(links);
 }

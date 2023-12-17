@@ -1,6 +1,6 @@
 const hashtagInput = document.getElementById('TagsInput');
 var autocomplete = document.getElementById('autocomplete');
-const errorDiv = document.getElementById('error');
+const errorDiv = document.getElementById('questionerror');
 const questionId = document.getElementById('questionid').value;
 // const stopshowingtagsbutton = document.getElementById('stopShowingTags');
 var hashtags = [];
@@ -39,8 +39,26 @@ function refreshHashtags() {
 }
 function submitHandler() {
   if (this.status != 200){
-    let error = JSON.parse(this.responseText);
-    errorDiv.textContent = error.message;
+    const errorTitle = document.getElementById('titleError');
+    const errorContent = document.getElementById('contentError');
+    const errorTags = document.getElementById('errorAddTag');
+    errorTitle.textContent = '';
+    errorContent.textContent = '';
+    errorTags.textContent = '';
+    const error = JSON.parse(this.responseText);
+    const messages = error.messages;
+    if(messages.title){
+      errorTitle.textContent = messages.title;
+    }
+    if(messages.content){
+      errorContent.textContent = messages.content;
+    }
+    if(messages.tags){
+      errorTags.textContent = messages.tags;
+    }
+    if(messages.message){
+      errorDiv.textContent = messages.message;
+    }
   } else{
     window.location = '/question/' + questionId;
   }
@@ -52,24 +70,12 @@ button.addEventListener('click', function(event) { //Close Autocomplete
 
 function submitAction(){
   title = document.getElementById('title').value;
-  errorTitle = document.getElementById('titleError');
-  errorContent = document.getElementById('contentError');
   description = document.getElementById('questionContent').value;
-  if(title == ''){
-    errorTitle.textContent = 'title cant be empty';
-  }else if(title.length > 70){
-    errorTitle.textContent = 'title cant be longer than 70 characters';
-  }else if(description == ''){
-    errorContent.textContent = 'Content cant be empty';
-  }else if(description.length > 300){
-    errorContent.textContent = 'Content cant be shorter than 300 characters';
-  }else{
     let TagIds = [];
     for(let i = 0; i < hashtags.length; i++){
       TagIds.push(hashtags[i].id);
     }
     sendAjaxRequest('post', '/question/'+questionId+'/edit', {'title':title , 'content':description , 'tags':TagIds}, submitHandler);
-  }
 }
 // stopshowingtagsbutton.addEventListener('click', async (event) => {
 // stopshowingtagsbutton.style.display = "none";
