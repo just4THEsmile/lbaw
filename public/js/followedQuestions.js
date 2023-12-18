@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function updateQuestions(){
 
     // Perform an AJAX request to your Laravel backend
-    let currentPage = 1;
+
     fetch(`/api/followedQuestions/${user_id.textContent}?OrderBy=${searchOrderedBy_Selector.value}`)
         .then(response => {
             if (response.status == 200) {
