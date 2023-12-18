@@ -10,14 +10,14 @@
                 </span>
             @endif
             <label for="title">Title:</label>
-            <textarea class="form-control" id="title" name="title" rows="1" required></textarea>
+            <textarea placeholder="Enter your new Tag Name" class="form-control" id="title" name="title" rows="1" required></textarea>
             @if ($errors->has('description'))
                 <span class="error">
                     {{ $errors->first('description') }}
                 </span>
             @endif
             <label for="description">Description:</label>
-            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            <textarea placeholder="Enter your new Tag Description" class="form-control" id="description" name="description" rows="4" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
