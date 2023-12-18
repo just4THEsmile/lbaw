@@ -414,4 +414,34 @@ class TransactionsController extends Controller
             return false;
         }
     }
+
+    public static function countPoints(User $user):bool{
+        try{
+            DB::beginTransaction();
+            $points = 0;
+            $questions = $user->questions();
+            foreach($questions as $question){
+                $points += $question->commentable->content->votes;
+                $points += $question->answers->count();
+            }
+            $answers = $user->answers();
+            foreach($answers as $answer){
+                $points += $answer->commentable->content->votes;
+            }
+            $badges = $user->badges();
+            $points += $badges->count()*20;
+            $user->points = $points;
+            $user->save();
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            // An error occurred, rollback the transaction
+            DB::rollback();
+        
+            // Handle the exception (log it, show an error message, etc.)
+            // For example, you might log the error like this:
+            \Log::error('Transaction failed: ' . $e->getMessage());
+            return false;
+        }
+    }
 }
