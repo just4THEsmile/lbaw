@@ -50,7 +50,7 @@
 
         <div class="column">
             <div class="card">
-              <img src="{{ asset('images/transferir.png') }}" alt="Tomas">
+              <img src="{{ asset('images/transferir.png') }}" alt="Tomás">
               <div class="container">
                 <h2>Tomás Sarmento</h2>
                 <p class="title">Project Developer</p>

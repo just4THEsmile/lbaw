@@ -1,6 +1,6 @@
 <div class="p-3 d-flex align-items-center bg-light border-bottom osahan-post-header">
     <div class="dropdown-list-image mr-3">
-        <img class="rounded-circle" src="{{asset('profile/' . $notification->vote_user_profile_pick)}}"  alt="" />
+        <img class="rounded-circle" src="{{asset('profile/' . $notification->vote_user_profile_pick)}}"  alt="Profile Picture" />
     </div>
     <div class="font-weight-bold mr-3">
         @if($notification->vote == True)
