@@ -16,17 +16,19 @@ class UsersController extends Controller
     // If the query is empty, return all users
     if(Auth::check()){
             // Use where() with the 'like' operator to search usernames containing the query string
-            if($searchBy == 'relevance'){
-                if($query == null){
-                    $results = User::where('name','<>','Deleted')->paginate(15)->withQueryString();
-                    return response()->json($results);
-                }
+            if($query === null){
+                $results = User::where('name','<>','Deleted')->paginate(15)->withQueryString();
+                return response()->json($results);
+            }
+            if($searchBy === 'relevance'){
                 $results = User::whereRaw("tsvectors @@ plainto_tsquery(?)", [$query])
                 ->orderByRaw("ts_rank(tsvectors, plainto_tsquery(?)) DESC", [$query])
                 ->where('name','<>','Deleted')->paginate(15)->withQueryString()->withQueryString();
                 return response()->json($results);
             }
-            $results = User::where($searchBy, 'ilike', "%$query%")->where('name','<>','Deleted')->paginate(15)->withQueryString()->withQueryString();
+            $results = User::whereFullText($searchBy,$query)
+            ->orderByRaw("ts_rank(tsvectors, plainto_tsquery(?)) DESC", [$query])
+            ->where('name','<>','Deleted')->paginate(15)->withQueryString()->withQueryString();
             return response()->json($results);
     }else{
         return response()->json([
