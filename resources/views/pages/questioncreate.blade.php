@@ -2,7 +2,7 @@
 
 @section('style')
     <link href="{{ asset('css/createquestion.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/error.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/errors.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tag.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
