@@ -127,16 +127,3 @@ async function activateAutocomplete() {
     });
   
 }
-/*
-var NewTag = document.getElementById("NewTag");
-var Tag = document.getElementById("AddTag");
-
-NewTag.addEventListener("click", function() {
-  if (Tag.style.display === "none") {
-    Tag.style.display = "block";
-    NewTag.textContent= "-"
-  } else {
-    Tag.style.display = "none";
-    NewTag.textContent= "+"
-  }
-});*/

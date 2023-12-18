@@ -26,8 +26,6 @@ function searchQuestions(){
     }
     )
         .then(data => {
-            console.log(data);
-            console.log(query);
             if(searchInput.value==query){
 
                 results = data;
@@ -68,7 +66,6 @@ function showPage(results,links){
         const votesNum = document.createElement("p");
         votesNum.classList.add("votesnum");
         votesNum.textContent = result.votes + " votes"; // Replace with actual data
-        console.log(result);
 
 
 

@@ -26,7 +26,7 @@
                 @endif
                 <div class="form-group">
                     <label for="content">Edit your Answer:</label>
-                    <textarea class="form-control" id="content" name="content" rows="4"required>{{ $answer->commentable->content->content}}</textarea>
+                    <textarea placeholder="Edit Your Answer Here" class="form-control" id="content" name="content" rows="4"required>{{ $answer->commentable->content->content}}</textarea>
                 </div>
 
 

@@ -31,7 +31,7 @@
                 @endif
                 <div class="form-group">
                     <label for="content">Create your Answer</label>
-                    <textarea placeholder="write here" class="form-control" id="content" name="content" rows="4" required></textarea>
+                    <textarea placeholder="Enter Your Answer Here" class="form-control" id="content" name="content" rows="4" required></textarea>
                 </div>
 
 

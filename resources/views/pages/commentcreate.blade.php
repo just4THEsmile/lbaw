@@ -27,7 +27,7 @@
                 @endif
                 <div class="form-group">
                     <label for="content">Create your Comment</label>
-                    <textarea placeholder="write here" class="form-control" id="content" name="content" rows="4"required></textarea>
+                    <textarea placeholder="Enter Your Comment Here" class="form-control" id="content" name="content" rows="4"required></textarea>
                 </div>
 
 

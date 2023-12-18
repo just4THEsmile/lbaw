@@ -186,7 +186,7 @@ class QuestionController extends Controller
             }
             $this->authorize('correctanswer', $question);
             if($question->correct_answer_id !== null){
-                if($question->correct_answer_id === $request->input('answerid')){
+                if($question->correct_answer_id == $request->input('answerid')){
                     $question->correct_answer_id = null;
                     $question->save();
                     return response()->json([
