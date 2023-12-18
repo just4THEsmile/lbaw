@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\TransactionsController;
 
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -24,6 +25,7 @@ class ProfileController extends Controller
                 $someDate = Carbon::parse($badge->date);
                 $badge->date = $someDate->diffForHumans();
             }
+            $points = TransactionsController::countPoints($user);
             return view('pages.profile', ['user' => $user, 'badges' => $badges]);
         }else{
             return redirect('/login');
