@@ -27,18 +27,18 @@
             <div class="form-group">
                 <div id="titleError" class="error"></div>
                 <label for="title">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ $question->title}}" required>
+                <input type="text" class="form-control" id="title" name="title" value="{{ $question->title}}" placeholder="Enter Your Question Title" required>
             </div>
             <div class="form-group">
             <span id="contentError" class="error"></span>
                 <label for="content">Content:</label>
-                <textarea class="form-control" id="questionContent" name="content" rows="4" required>{{ $question->commentable->content->content}}</textarea>
+                <textarea class="form-control" id="questionContent" name="content" rows="4" placeholder="Enter Your Question Content" required>{{ $question->commentable->content->content}}</textarea>
             </div>
             <div id="selectedtags">
             </div>
             <div id="errorAddTag" class="error"></div>
             <label>Add Tags:</label>
-            <input type="text" class="form-control" id="TagsInput" name="title" value="" required>
+            <input type="text" class="form-control" id="TagsInput" name="title" value="" placeholder="Enter your tags here" required>
             <div id="autocomplete"></div>
             <button id="submitbutton" class="btn btn-primary">Submit</button>
         </div>    
