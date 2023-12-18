@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('style')
-
+<link href="{{ asset('css/home.css') }}" rel="stylesheet">
 <link href="{{ asset('css/tag.css') }}" rel="stylesheet">
 <link href="{{ asset('css/search.css') }}" rel="stylesheet">
 <link href="{{ asset('css/question_card.css') }}" rel="stylesheet">
@@ -29,7 +29,7 @@
     <div id="tag_id" hidden>{{$tag_id}}</div>
     <div style="color:white; font-size:0.0001em;">Home</div>
     <div class="realcontent">
-        <div id="tag_title">Questions with the tag [{{ $tag_title }}]</div>
+        <div id="tag_title"><h1>Questions with the tag [{{ $tag_title }}]</h1></div>
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
         <span class="error" id ="error"></span>
         <label for="sortSelect">Sort By:</label>
