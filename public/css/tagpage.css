@@ -69,3 +69,9 @@
 .Tagcard >.content>div>form{
     margin-top: 0em !important;
 }
+.delete>span:hover{
+    color: red;
+}
+.edit>span:hover{
+    color: #FFF;
+}

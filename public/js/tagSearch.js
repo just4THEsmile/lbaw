@@ -82,22 +82,28 @@ function showPage(results,links){
             crf.name = "_token";
             crf.value = document.querySelector('meta[name="csrf-token"]').content;
             crf.autocomplete = "off";
+            const deletespan = document.createElement("span");
+            deletespan.classList.add("material-symbols-outlined");
+            deletespan.textContent = "delete";
             const deletebutton = document.createElement("button");
             deletebutton.type = "submit";
             deletebutton.classList.add("delete");
-            deletebutton.classList.add("material-icons")
-            deletebutton.textContent = "delete";
+            deletebutton.classList.add("material-icons");
+            deletebutton.appendChild(deletespan);
             deleteform.appendChild(crf);
             deleteform.appendChild(deletebutton);
             // edit form
             const editform = document.createElement("form");
             editform.method = "GET";    
             editform.action = `../tag/${result.id}/edit`;
+            const editspan = document.createElement("span");
+            editspan.classList.add("material-symbols-outlined");
+            editspan.textContent = "edit";
             const editbutton = document.createElement("button");
             editbutton.type = "submit";
             editbutton.classList.add("edit");
             editbutton.classList.add("material-icons")
-            editbutton.textContent = "edit";
+            editbutton.appendChild(editspan);
             editform.appendChild(editbutton);
             buttonDiv.appendChild(deleteform);
             buttonDiv.appendChild(editform);
