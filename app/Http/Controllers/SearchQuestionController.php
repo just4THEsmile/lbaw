@@ -28,8 +28,8 @@ class SearchQuestionController extends Controller
         }
         $query = $request->input('q');
         $sortby = $request->input('OrderBy');
-        if($sortby == 'relevance'){
-            if($query == null){
+        if($sortby === 'relevance'){
+            if($query === null){
 
                 $results = Question::select(
                     'question.correct_answer_id',
