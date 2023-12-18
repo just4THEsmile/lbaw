@@ -51,6 +51,12 @@ class ContentController extends Controller
         }
         $user = auth()->user();
         $vote = Vote::where('user_id', $user->id)->where('content_id', $content_id)->first();
+        $content = Content::find($content_id);
+        if($content === null || $content->deleted){
+            return response()->json([
+                'message' => 'question does not exist or is deleted',
+            ], 500);
+        }
         if($vote != null){
             if($vote->vote == True){
                 if($request->input('value') == "up"){
@@ -66,8 +72,7 @@ class ContentController extends Controller
                             'message' => 'none',
                         ], 200);
                     }
-                }
-                else{
+                }else{
                     $transaction = TransactionsController::deletevote($user->id, $content_id);
                     if($transaction === null or !is_int($transaction)){
                         return response()->json([

@@ -155,7 +155,7 @@ class ProfileController extends Controller
     public function listmyanswers(Request $request,$id){
         $orderBy = $request->input('OrderBy');
         if(Auth::check()){
-            $answers = Content::select('question.id as question_id','content.content as content','content.votes as votes', 'content.reports as reports','question.title as tile','content.blocked as blocked', 'question.correct_answer_id as correct_answer_id','content.date as date', 'content.deleted as deleted','content.edited as edited','content.id as id', 'appuser.username as username')
+            $answers = Content::select('question.id as question_id','content.content as content','content.votes as votes', 'content.reports as reports','question.title as tile','content.blocked as blocked', 'question.correct_answer_id as correct_answer_id','content.date as date', 'content.deleted as deleted','content.edited as edited','content.id as id', 'appuser.username as username', 'appuser.id as userid')
             ->join('answer','content.id','=','answer.id')
             ->join('question','question.id','=','answer.question_id')
             ->join('appuser','appuser.id','=','content.user_id')
