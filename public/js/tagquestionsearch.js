@@ -153,7 +153,6 @@ function showPage(results,links){
         questionbottom.appendChild(questiontags);
         questionbottom.append(profileInfoDiv);
         contentDiv.appendChild(questionbottom);
-        console.log(result.correct_answer_id);
         if(result.correct_answer_id !== null){
             questionCard.appendChild(correctdiv);
         }

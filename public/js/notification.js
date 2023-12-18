@@ -6,18 +6,24 @@ function loadNotifications(){
         if (response.status == 200) {
             return response.json();
         }else{
-            if(response.status == 302){
-                window.location = '/login';
-            }
-          error.textContent = "Error fetching notifications";
+            return response.json().then(error1 => {
+                if(error1.message != "Not logged in"){
+                    error.textContent = "Error fetching notifications";
+                }
+            });
         }
     })
     .then(data => {
-        if(data > 0){
+        try{        
+            if(data > 0){
             notification_counter.textContent = data;
-        }else{
-            notification_counter.hidden = true;
+            }else{
+                notification_counter.hidden = true;
+            }
+        }catch(err){
+            
         }
+
     })
     .catch(error => {
         console.error('Error fetching search results', error);

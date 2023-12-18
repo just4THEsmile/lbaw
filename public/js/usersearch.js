@@ -31,7 +31,6 @@ function searchUsers(){
         })
         .then(data => {
             if(query== searchInput.value && sortBy == sortSelect.value){
-                console.log(data);
                 showPage(data.data, data.links);
             }
         })
