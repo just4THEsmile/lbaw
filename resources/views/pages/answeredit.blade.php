@@ -3,6 +3,9 @@
 @section('style')
     <link href="{{ asset('css/createquestion.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+Edit Answer
+@endsection 
 
 @section('content')
     <div class="sidebar">

@@ -8,6 +8,9 @@
   <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 @endsection
 
+@section('pagename')
+Home
+@endsection 
 
 @section('title', 'content')
 
@@ -25,7 +28,7 @@
 
 <div style="color:white; font-size:0.0001em;">Home</div>
   <div class="questionslist"> 
-  <a class="createquestionbutton" href="./createquestion"><button> Create Question</button></a>
+  <a class="createquestionbutton" href="./createquestion"> Create Question</a>
       @if ($errors->has('page'))
         <div class="error">
           {{ $errors->first('page') }}

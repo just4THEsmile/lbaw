@@ -8,6 +8,10 @@
     <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 @endsection
 
+@section('pagename')
+Tags
+@endsection 
+
 @section('content')
 <div class="sidebar">
   <a href="/home">Home Page</a>
@@ -35,7 +39,7 @@
         <input id="searchTagInput" placeholder="Search Tag..." ></input>
         <div id="user_type" hidden>{{ $user_type }}</div>
         @if(Auth::user() && Auth::user()->usertype === 'admin')
-        <a class="createquestionbutton" href="{{ route('tagcreateform') }}"><button> Create Tag</button></a>
+        <a class="createquestionbutton" href="{{ route('tagcreateform') }}"> Create Tag</a>
         @endif
         @if ($errors->has('tag'))
                 <span class="error">

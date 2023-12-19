@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('pagename')
+Create a Tag
+@endsection 
 
 @section('content')
 <div class="sidebar">

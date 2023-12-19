@@ -12,6 +12,10 @@
 </style>
 @endsection
 
+@section('pagename')
+{{ $user->username }}'s Profile
+@endsection   
+
 @section('sidebar')
 <a class='aside active' style="border-top: 4px solid black;" href="{{ route('profile', ['id' => $user->id]) }}" >{{$user->username}}'s Profile</a>
 <a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">{{$user->username}}'s Followed Questions</a>

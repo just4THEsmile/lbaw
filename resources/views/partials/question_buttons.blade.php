@@ -1,9 +1,9 @@
 <div class="questionbuttons">
-    <form id='createanswer' action="./{{ $question->id }}/answer" method='get'>
+    <form action="./{{ $question->id }}/answer" method='get'>
         @csrf
         <button type='submit' class='createquestionButton' name="createquestion-button">New Answer</button>
     </form>
-    <form id='createcomment' action="{{ route('create_comment_form',['id' => $question->id]) }}" method='get' >
+    <form action="{{ route('create_comment_form',['id' => $question->id]) }}" method='get' >
         @csrf
         <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
     </form>
@@ -11,7 +11,7 @@
         @include('partials.editquestion', ['question' => $question])
     @endif
     @if ($question->commentable->content->user_id != auth()->user()->id)
-        <form id='followquestion' action="{{ $question->id }}/followquestion" method=POST>
+        <form  action="{{ $question->id }}/followquestion" method=POST>
             @csrf
             @if ($question->isFollowed(auth()->user()))
                 <button type='submit' class='unfollowquestionButton' name="followquestion-button">Unfollow Question</button>

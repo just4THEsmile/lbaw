@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('pagename')
+Edit a Tag
+@endsection 
 @section('content')
 
 <div class="sidebar">

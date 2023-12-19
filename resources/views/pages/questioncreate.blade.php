@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 @endsection    
+@section('pagename')
+Create Question
+@endsection    
 
 @section('content')
     <div class="sidebar">
@@ -29,7 +32,7 @@
                 </div>
                 <div class="form-group">
                 <span id="contentError" class="error"></span>
-                    <label for="content">Content:</label>
+                    <label for="questionContent">Content:</label>
                     <textarea class="form-control" id="questionContent" name="content" rows="4" placeholder="Enter Your Question Content" required></textarea>
                 </div>
                 <div id="selectedtags">

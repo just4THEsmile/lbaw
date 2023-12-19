@@ -30,7 +30,6 @@
             <div class="container">
               <h2>Diogo Sarmento</h2>
               <p class="title">Project Developer</p>
-              <p>Não sei</p>
               <p>diogosarmento@example.com</p>
             </div>
           </div>
@@ -42,7 +41,6 @@
             <div class="container">
               <h2>Rodrigo Póvoa</h2>
               <p class="title">Project Developer</p>
-              <p>Fixe</p>
               <p>rodrigopovoa@example.com</p>
             </div>
           </div>
@@ -54,7 +52,6 @@
               <div class="container">
                 <h2>Tomás Sarmento</h2>
                 <p class="title">Project Developer</p>
-                <p>setenta</p>
                 <p>tomassarmento@example.com</p>
               </div>
             </div>

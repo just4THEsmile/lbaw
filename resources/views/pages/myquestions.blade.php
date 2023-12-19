@@ -9,6 +9,10 @@
 
 @endsection
 
+@section('pagename')
+{{$user->username}}'s questions
+@endsection   
+
 @section('content2')
 
     <style>

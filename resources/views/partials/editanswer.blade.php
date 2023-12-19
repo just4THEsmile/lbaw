@@ -1,6 +1,6 @@
 
 <div class='edit-answer'>
-    <form id='deletequestion' action="{{ $answer->question_id }}/answer/{{ $answer->id }}/delete" method='post' onsubmit="disableSubmitButton()">
+    <form action="{{ $answer->question_id }}/answer/{{ $answer->id }}/delete" method='post' onsubmit="disableSubmitButton()">
         @csrf
         <button type='submit' class='delete' name="delete-button">
             <span class="material-symbols-outlined">

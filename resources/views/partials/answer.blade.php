@@ -2,18 +2,18 @@
 use App\Enums\vote;
 $vote = $answer->commentable->content->get_vote();
 @endphp
-<span class="answer" data-id="{{$answer->id}}">
+<li class="answer" data-id="{{$answer->id}}">
     @if(!$answer->commentable->content->deleted)
-        <div class="correctbutton" id = "{{ $answer->id }}">
+        <div class="correctbutton" data-id  = "{{ $answer->id }}">
             @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin')
-                <button type='submit' id="{{ $answer->id }}" class='correctanswerButton' name="correctanswer-button">
+                <button type='submit' data-id ="{{ $answer->id }}" class='correctanswerButton' name="correctanswer-button">
                     <span class="material-symbols-outlined">
                         check
                     </span>
                 </button>
             @endif
         </div>
-        <div class="correct" id= "{{ $answer->id }}"> 
+        <div class="correct" data-id= "{{ $answer->id }}"> 
             @if($correct!=null)
             @if($correct == $answer->id)
             <span class="material-symbols-outlined">
@@ -24,13 +24,13 @@ $vote = $answer->commentable->content->get_vote();
         </div> 
         @if ($vote == vote::VOTEUP)
             <div class="votes" >
-                <button type="submit" class="arrow-up voted" id = "{{ $answer->id }}">
+                <button type="submit" class="arrow-up voted" data-id = "{{ $answer->id }}">
                     <span class="material-symbols-outlined">
                         expand_less 
                     </span>
                 </button>
                 <p class="votesnum" class=>{{ $answer->commentable->content->votes }}</p> 
-                <button type = "submit" class="arrow-down" id = "{{ $answer->id }}">
+                <button type = "submit" class="arrow-down" data-id = "{{ $answer->id }}">
                     <span class="material-symbols-outlined">
                         expand_more 
                     </span>
@@ -38,13 +38,13 @@ $vote = $answer->commentable->content->get_vote();
             </div>
         @elseif ($vote == App\Enums\vote::VOTEDOWN)
             <div class="votes" >
-                <button type="submit" class="arrow-up" id = "{{ $answer->id }}">
+                <button type="submit" class="arrow-up" data-id= "{{ $answer->id }}">
                     <span class="material-symbols-outlined">
                         expand_less 
                     </span>
                 </button>
                 <p class="votesnum" class=>{{ $answer->commentable->content->votes }}</p> 
-                <button type = "submit" class="arrow-down voted" id = "{{ $answer->id }}">
+                <button type = "submit" class="arrow-down voted" data-id = "{{ $answer->id }}">
                     <span class="material-symbols-outlined">
                         expand_more 
                     </span>
@@ -52,13 +52,13 @@ $vote = $answer->commentable->content->get_vote();
             </div>
         @else        
         <div class="votes" >
-            <button type="submit" class="arrow-up" id = "{{ $answer->id }}">
+            <button type="submit" class="arrow-up" data-id = "{{ $answer->id }}">
                 <span class="material-symbols-outlined">
                     expand_less 
                 </span>
             </button>
         <p class="votesnum" class=>{{ $answer->commentable->content->votes }}</p> 
-            <button type = "submit" class="arrow-down" id = "{{ $answer->id }}">
+            <button type = "submit" class="arrow-down" data-id = "{{ $answer->id }}">
                 <span class="material-symbols-outlined">
                     expand_more 
                 </span>
@@ -80,7 +80,7 @@ $vote = $answer->commentable->content->get_vote();
             </div>
             @if (!auth()->user()->blocked)
                 <div class= "commentbuttons">
-                    <form id='createcomment' action="{{ route('create_comment_form',['id' => $answer->id]) }}" method='get'>
+                    <form action="{{ route('create_comment_form',['id' => $answer->id]) }}" method='get'>
                         @csrf
                         <button type='submit' class='createcommentButton' name="createcomment-button">New Comment</button>
                     </form>
@@ -93,8 +93,8 @@ $vote = $answer->commentable->content->get_vote();
             @endif
         @endif
 </div>
-</span>
-<span class="comments">
+</li>
+<li class="comments">
     @each('partials.comment', $answer->commentable->comments()->orderBy('id')->get(), 'comment')
-</span>
+</li>
 

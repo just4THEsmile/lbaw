@@ -9,7 +9,7 @@
             <form action="{{ route('deletenotification')}}" method='post' >
                 @csrf
                 <input type="hidden" name="notification_id" value="{{ $notification->notification_id }}">
-                <button id="contentRequestsButton" type='submit' class="btn btn-light btn-sm rounded" data-toggle="dropdown" aria-haspopup="true" name="delete-button">
+                <button type='submit' class="btn btn-light btn-sm rounded" data-toggle="dropdown" aria-haspopup="true" name="delete-button">
                 <span class="material-symbols-outlined">
                     delete
                 </span>                    

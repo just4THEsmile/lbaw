@@ -8,6 +8,9 @@
 <a class='aside' href="{{ route('myblocked', ['id' => $user->id]) }}">{{$user->username}}'s blocked content</a>
 
 @endsection
+@section('pagename')
+{{$user->username}}'s Followed Questions
+@endsection 
 
 @section('content2')
 

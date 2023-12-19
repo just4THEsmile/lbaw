@@ -105,19 +105,23 @@ button{
 div.content{
     width: 100%;
 }
-.createquestionbutton>button{
-        padding: 0.6em 1em;
+.questionslist>a.createquestionbutton{
+    font-size: 2em !important;
+    white-space: nowrap;
+
+}
+.createquestionbutton{
+        padding: 0.6em 1em !important;
         border: 4px solid #000 !important;
         transition: ease-in-out 0.3s;
-        background-color: transparent;
+        background-color: transparent !important;
         color: #000 !important;
         font-weight: bolder;
-        font-size: 16px;
 
-        width:auto;
+        width:auto !important;
 }
-.createquestionbutton>button:hover {
-    transform: scale(1.2) rotate(10deg);
+.createquestionbutton:hover {
+    transform: scale(1.2) rotate(10deg) !important;
     background-color: #000!important;
     color: white !important;
    }

@@ -1,4 +1,4 @@
-<span class="comment" data-id="{{$comment->id}}">
+<div class="comment" data-id="{{$comment->id}}">
     <div>
         @if (!$comment->content->deleted)
                 @if($comment->content->edited )
@@ -14,4 +14,4 @@
                 @include('partials.editcomment', ['comment' => $comment])
             @endif
     </div>
-</span>
+</div>
