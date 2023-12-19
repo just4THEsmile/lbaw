@@ -2,6 +2,9 @@
 @section ('style')
   <link href="{{ url('css/auth.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+Review {{ $unblockaccount->username }}'s Account
+@endsection
 @section('content')
 <div class="sidebar">
     <a href="/home">Home Page</a>

@@ -3,6 +3,9 @@
 @section('style')
     <link href="{{ url('css/editprofile.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+Edit Profile
+@endsection 
 @section('content')
             <div class="sidebar">
                 <a href="/home">Home Page</a>

@@ -1,5 +1,8 @@
 
 @extends('layouts.app')
+@section('pagename')
+Questions with the tag [{{ $tag_title }}]
+@endsection 
 
 @section('style')
 <link href="{{ asset('css/home.css') }}" rel="stylesheet">

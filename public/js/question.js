@@ -1,6 +1,6 @@
 
 const errorDiv = document.getElementById('error');
-const questionid = document.querySelector(`header > .votes > .arrow-up`).id;
+const questionid = document.querySelector(`header > .votes > .arrow-up`).getAttribute('data-id');
 
 const correct = document.getElementsByClassName("correctanswerButton");
 
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let i = 0; i < correct.length; i++) {
 
         correct[i].addEventListener("click", function () {
-            sendAjaxRequest('post', '/api/correct/'+questionid,{ 'answerid' :correct[i].id}, correctHandler);
+            sendAjaxRequest('post', '/api/correct/'+questionid,{ 'answerid' :correct[i].getAttribute('data-id')}, correctHandler);
         });
     }
 
@@ -20,12 +20,12 @@ document.addEventListener("DOMContentLoaded", function () {
     //updatevoteStates();
     for (let i = 0; i < votesup.length; i++) {
         votesup[i].addEventListener("click", function () {
-            upvote(votesup[i].id);
+            upvote(votesup[i].getAttribute('data-id'));
         });
     }
     for (let i = 0; i < votesdown.length; i++) {
         votesdown[i].addEventListener("click", function () {
-            downvote(votesup[i].id);
+            downvote(votesdown[i].getAttribute('data-id'));
         });
     }
 
@@ -50,8 +50,8 @@ function downvoteHandler() {
     }
     let vote = JSON.parse(this.responseText);
     let id = vote.id;
-    let element = document.querySelector(`[id='${id}'].arrow-down`);
-    let element2 = document.querySelector(`[id='${id}'].arrow-up`);
+    let element = document.querySelector(`[data-id='${id}'].arrow-down`);
+    let element2 = document.querySelector(`[data-id='${id}'].arrow-up`);
     if(vote.message == "down"){
         element2.classList.remove("voted");
         element.classList.add("voted");
@@ -73,8 +73,8 @@ function upvoteHandler() {
     }
     let vote = JSON.parse(this.responseText);
     let id = vote.id;
-    let element = document.querySelector(`[id='${id}'].arrow-up`);
-    let element2 = document.querySelector(`[id='${id}'].arrow-down`);
+    let element = document.querySelector(`[data-id='${id}'].arrow-up`);
+    let element2 = document.querySelector(`[data-id='${id}'].arrow-down`);
     if(vote.message == "up"){
         element2.classList.remove("voted");
         element.classList.add("voted");
@@ -102,7 +102,7 @@ function correctHandler() {
     console.log(oldcorrect);
     if(answer.message == 'removed correct answer'){
         for(let i = 0; i < oldcorrect.length; i++){
-            if(oldcorrect[i].id == id){
+            if(oldcorrect[i].getAttribute('data-id') == id){
                 oldcorrect[i].innerHTML = '';
             }
         }
@@ -110,7 +110,7 @@ function correctHandler() {
     }
 
     for(let i = 0; i < oldcorrect.length; i++){
-        if(oldcorrect[i].id == id){
+        if(oldcorrect[i].getAttribute('data-id') == id){
             oldcorrect[i].innerHTML = '<span class="material-symbols-outlined">check</span>';
         }else{
             oldcorrect[i].innerHTML = '';

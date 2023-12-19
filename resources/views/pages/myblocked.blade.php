@@ -4,6 +4,9 @@
     
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 @endsection
+@section('pagename')
+{{$user->username}}'s blocked content
+@endsection  
 
 @section('sidebar')
 <a class='aside' style="border-top: 4px solid black;" href="{{ route('profile', ['id' => $user->id]) }}" >{{$user->username}}'s Profile</a>

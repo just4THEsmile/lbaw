@@ -441,7 +441,7 @@ align-items: center;
 #edits{
   margin-top:7em;
 }
-.createquestionbutton>button{
+.createquestionbutton{
 
   width:auto;
   font-size: 3em !important;
@@ -462,12 +462,21 @@ align-items: center;
 
 
 }
+.realcontent>a.createquestionbutton{
+  font-size: 2em !important;
+  white-space: nowrap;
+
+}
 .createquestionbutton{
   font-size: 1.5em;
   line-height: 1.5em !important;
   height: 2em;
-  margin-left: 1em;
+  margin-left: 0.2em;
+  margin-top: 0.1em;
   margin-right: auto;
+}
+.questionslist{
+  padding-top: 1em;
 }
 #content>.userpage{
   margin-left: 11em;
@@ -504,3 +513,6 @@ header>h1>a:hover{
   color: gray !important;
 }
 
+li{
+  list-style-type: none;
+}

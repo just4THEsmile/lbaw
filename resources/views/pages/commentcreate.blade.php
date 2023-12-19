@@ -4,6 +4,9 @@
 <link href="{{ asset('css/createquestion.css') }}" rel="stylesheet">
 
 @endsection
+@section('pagename')
+Create Comment
+@endsection 
 
 @section('content')
     <div class="sidebar">

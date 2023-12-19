@@ -2,6 +2,9 @@
 @section('style')
     <link href="{{ url('css/faq.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+FAQ
+@endsection 
 
 @section ('content')
     <div class="sidebar">

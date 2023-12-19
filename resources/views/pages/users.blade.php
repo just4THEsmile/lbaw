@@ -10,6 +10,9 @@
 
 @section('title', 'content')
 
+@section('pagename')
+Users
+@endsection 
 @section('content')
 <div class="sidebar">
   <a href="/home">Home Page</a>

@@ -31,8 +31,12 @@ div.row>div{
     max-width: none;
     width: 4em;
 }
+.p-3{
+    display: flex;
+    justify-content: space-between;
+}
 .ml-auto{
-    width: 10em;
+    width: 5em;
 }
 .ml-auto>.text-right{
     font-size: 0.7em;
@@ -79,10 +83,10 @@ div.container>form>button{
     background-color: black;
     border: black;
 }
+.dropdown-list-image{
+    margin:0.6em !important;
+}
 @media (max-width: 50em) {
-    .dropdown-list-image{
-        display: none;
-    }
     section#content > div.container{
         margin-left: 0em;
         width: 100%;

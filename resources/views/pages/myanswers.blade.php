@@ -3,6 +3,9 @@
 @section('style')
     <link href="{{ asset('css/question.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+{{$user->username}}'s answers
+@endsection 
 
 @section('sidebar')
 
