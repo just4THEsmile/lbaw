@@ -37,11 +37,12 @@
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01 | AppUser(<ins>id</ins> **PK**, name **NN**, username **UK NN**, email **UK NN**, password **NN**, bio, points **NN CK** points >= 0 **DF** points = 0, nquestion **NN** **CK** nquestion >=0 **DF** nquestion = 0, nanswer **NN** **CK** nanswer >=0 **DF** nanswer = 0, profilepicture **NN**, paylink **UK**,usertype **NN**) |
+| R01 | AppUser(<ins>id</ins> **PK**, name **NN**, username **UK**, email **UK**, password **NN**, bio, points **NN CK** points >= 0 **DF** points = 0, nquestion **NN** **CK** nquestion >=0 **DF** nquestion = 0, nanswer **NN** **CK** nanswer >=0 **DF** nanswer = 0, profilepicture **NN**, paylink **UK**,usertype **NN**,blocked **DF** blocked = false) |
 | R02 | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**) |
 | R03 | Badge(<ins>id</ins> **PK**, name **UK NN**, description **NN**) |
 | R04 | BadgeAttainment((<ins>appuser_id</ins>→ AppUser, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
-| R05 | UnblockRequest(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, title **NN**, description **NN**) |
+|R06 | Content(<ins>id</ins> **PK**,appuser_id→ AppUser **NN**,content **NN**,votes INTEGER **DF** 0,reports INTEGER **CK** (reports >= 0) **DF** 0,date TIMESTAMP **NN CK** (date <= now()) **DF** now(),edited BOOLEAN **DF** false,deleted BOOLEAN **DF** false,blocked BOOLEAN **DF** false)
+|
 | R06 | Content(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, content **NN**, votes **NN** **DF** votes = 0, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false) |
 | R07 | Commentable(<ins>content_id</ins>→ Content **PK**) |
 | R08 | Question(<ins>commentable_id</ins>→ Commentable **PK**, title **NN**,correct_anwser_id→Anwser) |
@@ -52,13 +53,17 @@
 | R13 | Notification(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, date **NN CK** date <= today, viewed **NN** **DF** false)|
 | R14 | AnswerNotification(<ins>notification_id</ins>→ Notification **PK**, question_id→ Question **NN**, answer_id→ Answer **NN**)|
 | R15 | CommentNotification(<ins>notification_id</ins>→ Notification **PK**, comment_id→ Comment **NN**)|
-| R16 | Report((<ins>appuser_id</ins>→ AppUser, <ins>content_id</ins>→ Content) **PK**)|
+| R16 | Report(<ins>user_id</ins>→ AppUser **PK**,<ins>content_id</ins>→ Content **PK**)|
 | R17 | Vote((<ins>appuser_id</ins>→ appUser, <ins>content_id</ins>→ Content) **PK**, Vote **NN**)|
-| R18 | VoteNotification(<ins>notification_id</ins>→ Notification **PK**, (appuser_id,content_id)→ Vote **FK**)|
+| R18 | VoteNotification(<ins>notification_id</ins>→ Notification **PK**,(<ins>user_id</ins>, <ins>content_id</ins>)→ Vote **FK**)|
 | R19 | BadgeAttatinmentNotification(<ins>notification_id</ins>→ Notification **PK**,(appuser_id,badge_id)→ BadgeAttainment **FK**)|
 | R20 | FollowTag((<ins>appuser_id</ins>→ appUser, <ins>tag_id</ins>→ Content) **PK**)|
 | R21 | FollowQuestion((<ins>appuser_id</ins>→ appUser, <ins>question_id</ins>→ Question) **PK**)|
-
+| R22 | UnblockAccount(
+    <ins>id</ins> **PK**,
+    <ins>user_id</ins>→ AppUser **NN**,
+    appeal TEXT **NN**
+)|
 *Table 11:  QthenA Relational Schema*
 
 Legend:
