@@ -2040,7 +2040,11 @@ VALUES
 ## Revision history
 
 Changes made to the first submission:
-None
+1. Added to Appuser table remembertoken for the forget password funcionality added blocked to the user so that if a user is blocked the flag will be set to true so that we know if a user is blocked
+
+2. Added unblockAccount table
+
+3. added elements to Notifications
 
 ***
 
