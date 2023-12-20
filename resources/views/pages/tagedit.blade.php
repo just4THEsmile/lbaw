@@ -14,6 +14,7 @@ Edit a Tag
         <a href="{{'/moderatecontent'}}">Blocked Content</a>
     @endif
 </div>
+    <h1 style="display:flex; justify-content: center;">Edit a Tag</h1>
     <form method="post" action="{{ route('tagedit',['id' => $tag->id]) }}" style=" border:1px solid black;margin-top:0em;" onsubmit="disableSubmitButton()">
     <fieldset>
             <legend>Edit Tag</legend>

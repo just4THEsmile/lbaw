@@ -26,15 +26,6 @@ Tags
 
 <div style="color:white; font-size:0.0001em;">Home</div>
 
-    <style>
-        #MyAnswers{
-            background-color: #0000FF;
-            
-        }
-        #MyAnswers > a{
-            color:white;
-        } 
-    </style>
     <div class="realcontent">
         <input id="searchTagInput" placeholder="Search Tag..." ></input>
         <div id="user_type" hidden>{{ $user_type }}</div>

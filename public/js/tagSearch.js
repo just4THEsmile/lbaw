@@ -44,7 +44,7 @@ function showPage(results,links){
     for (let i = 0; i < results.length; i++) {
         let result = results[i];
         // Create the main Tag card div
-        const TagCard = document.createElement("div");
+        const TagCard = document.createElement("li");
         TagCard.classList.add("Tagcard");
 
         // Create the content div
