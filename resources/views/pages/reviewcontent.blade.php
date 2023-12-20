@@ -5,6 +5,15 @@
 @section('pagename')
 review content
 @endsection 
+
+@section('og')
+  <meta property="og:title" content="Review Content" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ url('/reviewcontent/'.$unblockRequest->id) }}" />
+  <meta property="og:description" content="Review Content: $unblockRequest->description" />
+  <meta property="og:image" content="{{ url('/images/logo.png') }}" />
+@endsection
+
 @section('content')
 <div class="sidebar">
     <a href="/home">Home Page</a>

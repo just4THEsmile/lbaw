@@ -8,7 +8,15 @@
 @endsection
 @section('pagename')
 {{$question->title}}
-@endsection    
+@endsection  
+
+@section('og')
+    <meta property="og:title" content="{{$question->title}}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/question/'.$question->id) }}" />
+    <meta property="og:description" content="{{$question->commentable->content->content}}" />
+    <meta property="og:image" content="{{ $question->commentable->content->user->getProfileImage() }}" />
+@endsection
 
 @section('content')
     

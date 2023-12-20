@@ -11,7 +11,15 @@
 @endsection
 @section('pagename')
 {{$user->username}}'s Followed Questions
-@endsection 
+@endsection
+
+@section('og')
+    <meta property="og:title" content="{{$user->username}}'s Followed Questions" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/followquestion/'.$user->id) }}" />
+    <meta property="og:description" content="{{$user->username}}'s Followed Questions" />
+    <meta property="og:image" content="{{ $user->getProfileImage() }}" />
+@endsection
 
 @section('content2')
 

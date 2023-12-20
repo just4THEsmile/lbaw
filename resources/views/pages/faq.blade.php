@@ -4,7 +4,15 @@
 @endsection
 @section('pagename')
 FAQ
-@endsection 
+@endsection
+
+@section('og')
+    <meta property="og:title" content="FAQ" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/faq') }}" />
+    <meta property="og:description" content="FAQ" />
+    <meta property="og:image" content="{{ asset('images/icon.png') }}" />
+@endsection
 
 @section ('content')
     <div class="sidebar">

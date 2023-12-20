@@ -8,6 +8,14 @@
 {{$user->username}}'s blocked content
 @endsection  
 
+@section('og')
+    <meta property="og:title" content="{{$user->username}}'s blocked content" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/myblocked/'.$user->id) }}" />
+    <meta property="og:description" content="{{$user->username}}'s blocked content" />
+    <meta property="og:image" content="{{ $user->getProfileImage() }}" />
+@endsection 
+
 @section('sidebar')
 <a class='aside' style="border-top: 4px solid black;" href="{{ route('profile', ['id' => $user->id]) }}" >{{$user->username}}'s Profile</a>
 <a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">{{$user->username}}'s Followed Questions</a>

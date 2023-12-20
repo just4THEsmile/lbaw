@@ -14,6 +14,14 @@ Questions with the tag [{{ $tag_title }}]
 
 @endsection
 
+@section('og')
+  <meta property="og:title" content="Questions with the tag [{{ $tag_title }}]" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ url('/tag/'.$tag_id) }}" />
+  <meta property="og:description" content="Questions with the tag [{{ $tag_title }}]" />
+  <meta property="og:image" content="{{ url('/images/logo.png') }}" />
+@endsection
+
 @section('title', 'content')
 
 @section('content')
