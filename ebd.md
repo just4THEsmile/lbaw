@@ -37,7 +37,7 @@
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01 | AppUser(<ins>id</ins> **PK**, name **NN**, username **UK**, email **UK**, password **NN**, bio, points **NN CK** points >= 0 **DF** points = 0, nquestion **NN** **CK** nquestion >=0 **DF** nquestion = 0, nanswer **NN** **CK** nanswer >=0 **DF** nanswer = 0, profilepicture **NN**, paylink **UK**,usertype **NN**,blocked **DF** blocked = false) |
+| R01 | AppUser(<ins>id</ins> **PK**, name **NN**, username **UK**, email **UK**, password **NN**, bio, points **NN CK** points >= 0 **DF** points = 0, nquestion **NN** **CK** nquestion >=0 **DF** nquestion = 0, nanswer **NN** **CK** nanswer >=0 **DF** nanswer = 0, profilepicture **NN**, paylink **UK**,usertype **NN**,blocked **DF** blocked = false,remenbertoken Varchar) |
 | R02 | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**) |
 | R03 | Badge(<ins>id</ins> **PK**, name **UK NN**, description **NN**) |
 | R04 | BadgeAttainment((<ins>appuser_id</ins>→ AppUser, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
@@ -54,7 +54,7 @@
 | R15 | CommentNotification(<ins>notification_id</ins>→ Notification **PK**, comment_id→ Comment **NN**)|
 | R16 | Report(<ins>user_id</ins>→ AppUser **PK**,<ins>content_id</ins>→ Content **PK**)|
 | R17 | Vote((<ins>appuser_id</ins>→ appUser, <ins>content_id</ins>→ Content) **PK**, Vote **NN**)|
-| R18 | VoteNotification(<ins>notification_id</ins>→ Notification **PK**,(<ins>user_id</ins>, <ins>content_id</ins>)→ Vote **FK**)|
+| R18 | VoteNotification(<ins>notification_id</ins>→ Notification **PK**,(user_id, content_id)→ Vote **FK**)|
 | R19 | BadgeAttatinmentNotification(<ins>notification_id</ins>→ Notification **PK**,(appuser_id,badge_id)→ BadgeAttainment **FK**)|
 | R20 | FollowTag((<ins>appuser_id</ins>→ appUser, <ins>tag_id</ins>→ Content) **PK**)|
 | R21 | FollowQuestion((<ins>appuser_id</ins>→ appUser, <ins>question_id</ins>→ Question) **PK**)|
@@ -88,7 +88,7 @@ Definition of additional Domains.
 | --------------  | ---                |
 | **Keys**        | { id }             |
 | **Functional Dependencies:** |       |
-| FD0101          | id → {name, username, email, password, bio, points, nquestion, nanswer, profilepicture, paylink} |
+| FD0101          | id → {name, username, email, password, bio, points, nquestion, nanswer, profilepicture, paylink,deleted,blocked,remembertoken} |
 | **NORMAL FORM** | BCNF               |
 
 *Table 13:  App AppUser Schema Validation*
