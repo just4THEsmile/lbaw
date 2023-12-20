@@ -5,8 +5,9 @@
 <a class='aside' href="{{ route('followquestion', ['id' => $user->id]) }}">{{$user->username}}'s Followed Questions</a>
 <a class='aside active' href="{{ route('myquestions', ['id' => $user->id]) }}" >{{$user->username}}'s questions</a>
 <a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">{{$user->username}}'s answers</a>
+@if(Auth::user()->id === $user->id)
 <a class='aside' href="{{ route('myblocked', ['id' => $user->id]) }}">{{$user->username}}'s blocked content</a>
-
+@endif
 @endsection
 
 @section('pagename')

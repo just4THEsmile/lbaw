@@ -29,7 +29,7 @@ review content
             <input type="hidden" name="content_id" value="{{ $content->id }}">
             <div class="form-group">
               <label>Content</label>
-              <div class="form-control" readonly style="white-space: pre-wrap;">{{$content}}</div>
+              <div class="form-control" readonly style="white-space: pre-wrap;">{{$content->content}}</div>
             </div>
             <div class="form-group">
               <label>Question Title</label>
