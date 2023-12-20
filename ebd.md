@@ -272,6 +272,17 @@ Definition of additional Domains.
 
 *Table 33:  FollowQuestion Schema Validation*
 
+| **TABLE R22**   | UnblockAccount          |
+| --------------  | ---                |
+| **Keys**        | { id } |
+| **Functional Dependencies:** |   |
+| FD1901         | { notification_id } → {appuser_id → AppUser_id, appeal } |
+
+| **NORMAL FORM** | BCNF               |
+
+*Table 34:  FollowQuestion Schema Validation*
+
+
 
 Since all relationships adhere to the Boyce–Codd Normal Form (BCNF), the relational schema is inherently in BCNF. Hence, there is no need for further normalization of the schema.
 
