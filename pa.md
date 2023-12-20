@@ -87,8 +87,8 @@
 > The owner of the user story should have the name in **bold**.
 > This table should be updated when a user story is completed and another one started. 
 
-|Us Identifier|Name|module|Priority|Team Members|State
-|---|---|---|---|---|---|
+| US Identifier | Name    | Module | Priority                       | Team Members               | State  |
+| ------------- | ------- | ------ | ------------------------------ | -------------------------- | ------ |
 |US01|View Top Questions |M01|High|Tomás|100%|
 |US02|View Recent Questions|M01|High|Tomás|100%|
 |US03|Browse Questions|High|M01|Tomás|100%|
