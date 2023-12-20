@@ -46,7 +46,7 @@
 
 ### 4. Input Validation
 
-> According to our implementation, additionally to using the laravel built-in functions, we also created some php function to validate the inputs. For example, we ask for a minimum of length 8 for the password, or we ask for a minimum of 16 in content of the question.
+> According to our implementation, additionally to using the laravel built-in functions, we also created some php function to validate the inputs. For example, we ask for a minimum of length 8 for the password, or we ask for a minimum of 16 in content of the question we require a unique username and a unique email as well as every tag has an unique name.
 
 ### 5. Check Accessibility and Usability
 
