@@ -13,16 +13,7 @@
 @endsection 
 
 @section('content2')
-
-<style>
-        #Follow{
-            background-color: #0000FF;
-            
-        }
-        #Follow > a{
-            color:white;
-        } 
-</style>
+    <h2>{{$user->username}}'s Followed Questions</h2>
     <label for="sortSelect">Sort By:</label>
     <select id="sortSelect">
         <option value="date">Time</option>

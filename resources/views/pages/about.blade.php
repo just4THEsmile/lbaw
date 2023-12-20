@@ -11,6 +11,9 @@
     <a href="{{'/tags'}}">Tags</a>
     <a href="{{'/questions'}}">Questions</a>
     <a href="{{'/users'}}">Users</a>
+    @if (Auth::check() && (Auth::user()->usertype == 'admin' || Auth::user()->usertype == 'moderator'))
+        <a href="{{'/moderatecontent'}}">Blocked Content</a>
+    @endif
 </div>
 <div class="about-container">
     <div class="about-section">
@@ -65,7 +68,11 @@
 
       </div>
 
-      
+    <h2>Contact Us Directly</h2>
+    <div class="contacts" style="padding:1em;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <p>By Email:  qthena@example.com</p>
+        <p style="margin-bottom:0em">By Phone: +351 123 456 789</p>
+    </div>
 </div>
 
 @endsection
