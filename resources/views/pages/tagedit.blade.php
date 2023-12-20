@@ -14,9 +14,9 @@ Edit a Tag
         <a href="{{'/moderatecontent'}}">Blocked Content</a>
     @endif
 </div>
-    <h1 style=" display:flex;    justify-content: center;">Edit Tag</h1>
-    <form method="post" action="{{ route('tagedit',['id' => $tag->id]) }}" style="border:1px solid black;margin-top:0em;" onsubmit="disableSubmitButton()">
-
+    <form method="post" action="{{ route('tagedit',['id' => $tag->id]) }}" style=" border:1px solid black;margin-top:0em;" onsubmit="disableSubmitButton()">
+    <fieldset>
+            <legend>Edit Tag</legend>
         @csrf
         <div class="form-group">
             @if ($errors->has('title'))
@@ -35,5 +35,6 @@ Edit a Tag
             <textarea class="form-control" id="description" name="description" rows="4" required>{{$tag->description}}</textarea>
         </div>
         <button type="submit" style="background-color:black; border:black;"class="btn btn-primary">Submit</button>
+    </fieldset>
     </form>
 @endsection
