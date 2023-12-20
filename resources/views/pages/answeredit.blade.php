@@ -7,6 +7,14 @@
 Edit Answer
 @endsection 
 
+@section('og')
+    <meta property="og:title" content="Edit Answer" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/answer') }}" />
+    <meta property="og:description" content="Edit Answer" />
+    <meta property="og:image" content="{{ asset('images/icon.png') }}" />
+@endsection
+
 @section('content')
     <div class="sidebar">
         <a href="/home">Home Page</a>

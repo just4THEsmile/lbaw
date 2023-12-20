@@ -12,6 +12,14 @@
 Home
 @endsection 
 
+@section('og')
+    <meta property="og:title" content="Home" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/home') }}" />
+    <meta property="og:description" content="Home" />
+    <meta property="og:image" content="{{ asset('images/icon.png') }}" />
+@endsection
+
 @section('title', 'content')
 
 @section('content')

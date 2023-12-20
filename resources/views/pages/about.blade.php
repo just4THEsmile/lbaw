@@ -4,6 +4,14 @@
     <link href="{{ url('css/about.css') }}" rel="stylesheet">
 @endsection
 
+@section('og')
+    <meta property="og:title" content="About Us" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/about') }}" />
+    <meta property="og:description" content="About Us" />
+    <meta property="og:image" content="{{ asset('images/icon.png') }}" />
+@endsection
+
 @section ('content')
 <div class="sidebar">
     <a href="/home">Home Page</a>

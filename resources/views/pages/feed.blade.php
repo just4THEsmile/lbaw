@@ -11,6 +11,14 @@
 Feed
 @endsection 
 
+@section('og')
+    <meta property="og:title" content="Feed" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/feed') }}" />
+    <meta property="og:description" content="Feed" />
+    <meta property="og:image" content="{{ asset('images/icon.png') }}" />
+@endsection
+
 @section('title', 'content')
 
 @section('content')

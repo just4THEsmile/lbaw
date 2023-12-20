@@ -7,6 +7,13 @@
 {{$user->username}}'s answers
 @endsection 
 
+@section('og')
+    <meta property="og:title" content="{{$user->username}}'s answers" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/myanswers/'.$user->id) }}" />
+    <meta property="og:description" content="{{$user->username}}'s answers" />
+    <meta property="og:image" content="{{ $user->getProfileImage() }}" />
+
 @section('sidebar')
 
 <a class='aside' style="border-top: 4px solid black;" href="{{ route('profile', ['id' => $user->id]) }}" >{{$user->username}}'s Profile</a>

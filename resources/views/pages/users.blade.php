@@ -13,6 +13,16 @@
 @section('pagename')
 Users
 @endsection 
+
+
+@section('og')
+  <meta property="og:title" content="Users" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ url('/users') }}" />
+  <meta property="og:description" content="Users" />
+  <meta property="og:image" content="{{ url('/images/logo.png') }}" />
+@endsection
+
 @section('content')
 <div class="sidebar">
   <a href="/home">Home Page</a>
