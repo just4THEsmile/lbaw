@@ -41,8 +41,9 @@
 | R02 | Faq(<ins>id</ins> **PK**, question **NN**, answer **NN**) |
 | R03 | Badge(<ins>id</ins> **PK**, name **UK NN**, description **NN**) |
 | R04 | BadgeAttainment((<ins>appuser_id</ins>→ AppUser, <ins>badge_id</ins>→ Badge) **PK**,date **NN CK** date <= today ) |
-|R06 | Content(<ins>id</ins> **PK**,appuser_id→ AppUser **NN**,content **NN**,votes INTEGER **DF** 0,reports INTEGER **CK** (reports >= 0) **DF** 0,date TIMESTAMP **NN CK** (date <= now()) **DF** now(),edited BOOLEAN **DF** false,deleted BOOLEAN **DF** false,blocked BOOLEAN **DF** false)|
-| R06 | Content(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, content **NN**, votes **NN** **DF** votes = 0, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false)|
+|R06 | Content(<ins>id</ins> **PK**,appuser_id→ AppUser **NN**,content **NN**,votes INTEGER **DF** 0,reports INTEGER **CK** (reports >= 0) **DF** 0,date TIMESTAMP **NN CK** (date <= now()) **DF** now(),edited BOOLEAN **DF** false,deleted BOOLEAN **DF** false,blocked BOOLEAN **DF** false)
+|
+| R06 | Content(<ins>id</ins> **PK**, appuser_id→ AppUser **NN**, content **NN**, votes **NN** **DF** votes = 0, reports **NN CK** reports >= 0 **DF** reports = 0, date **NN CK** date <= today, edited **NN DF** false) |
 | R07 | Commentable(<ins>content_id</ins>→ Content **PK**) |
 | R08 | Question(<ins>commentable_id</ins>→ Commentable **PK**, title **NN**,correct_anwser_id→Anwser) |
 | R09 | Answer(<ins>commentable_id</ins>→ Commentable **PK**, question_id→ Question **NN**) |
@@ -58,11 +59,7 @@
 | R19 | BadgeAttatinmentNotification(<ins>notification_id</ins>→ Notification **PK**,(appuser_id,badge_id)→ BadgeAttainment **FK**)|
 | R20 | FollowTag((<ins>appuser_id</ins>→ appUser, <ins>tag_id</ins>→ Content) **PK**)|
 | R21 | FollowQuestion((<ins>appuser_id</ins>→ appUser, <ins>question_id</ins>→ Question) **PK**)|
-| R22 | UnblockAccount(
-    <ins>id</ins> **PK**,
-    <ins>user_id</ins>→ AppUser **NN**,
-    appeal TEXT **NN**
-)|
+| R22 | UnblockAccount(<ins>id</ins> **PK**,<ins>user_id</ins>→AppUser **NN**,appeal TEXT **NN** )|
 *Table 11:  QthenA Relational Schema*
 
 Legend:
