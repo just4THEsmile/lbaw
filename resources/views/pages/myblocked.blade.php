@@ -19,6 +19,7 @@
 
 @section('content2')
 
+
     <link href="{{ asset('css/blocked.css') }}" rel="stylesheet">
     <style>
         #MyBlocked{
@@ -29,6 +30,12 @@
             color:white;
         } 
     </style>
+
+    @if (session('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
     <div id="user_id" hidden>{{$user->id}}</div>
     <div class="card-container">
     <span class="error" id ="error"></span>

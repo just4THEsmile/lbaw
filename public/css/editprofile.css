@@ -28,3 +28,8 @@ h3{
     }
     
 }
+
+.scrollable-badge-container {
+    max-height: 12em; 
+    overflow-y: auto;
+}

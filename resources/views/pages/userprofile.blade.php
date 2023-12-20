@@ -112,7 +112,7 @@ Edit Profile
                                             <option value="admin" @if($user->usertype === 'admin') selected @endif>Admin</option>
                                         </select>
                                         <h3>Badges</h3>
-                                        <div class='right-card'>
+                                        <div class='right-card scrollable-badge-container'>
                                             @php $badges = App\Models\Badge::all(); @endphp
                                             @php $userbadges = $user->badges()->get()->pluck('id')->toArray(); @endphp
                                             @foreach($badges as $badge)
