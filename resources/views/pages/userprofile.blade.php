@@ -6,6 +6,15 @@
 @section('pagename')
 Edit Profile
 @endsection 
+
+
+@section('og')
+    <meta property="og:title" content="Edit Profile" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/editprofile/'.$user->id) }}" />
+    <meta property="og:description" content="Edit Profile" />
+    <meta property="og:image" content="{{ $user->getProfileImage() }}" />
+@endsection
 @section('content')
             <div class="sidebar">
                 <a href="/home">Home Page</a>

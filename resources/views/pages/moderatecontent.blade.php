@@ -6,6 +6,15 @@
 @section('pagename')
 Moderate Content
 @endsection 
+
+@section('og')
+    <meta property="og:title" content="Moderate Content" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/moderatecontent') }}" />
+    <meta property="og:description" content="Moderate Content" />
+    <meta property="og:image" content="{{ asset('images/icon.png') }}" />
+@endsection
+
 @section('content')
 <link href="{{ asset('css/moderatecontent.css') }}" rel="stylesheet">
 <div class="sidebar">

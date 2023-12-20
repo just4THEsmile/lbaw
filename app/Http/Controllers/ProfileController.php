@@ -37,7 +37,13 @@ class ProfileController extends Controller
             return redirect('/login');
         }
         if(Auth::user()->id !== $user->id && Auth::user()->usertype !== 'admin'){
-            return view('pages.profile', ['user' => $user]);
+            $badges = $user->badgeAttainments()->with('badge')->get();
+            foreach($badges as $badge){
+                $someDate = Carbon::parse($badge->date);
+                $badge->date = $someDate->diffForHumans();
+            }
+            $points = TransactionsController::countPoints($user);
+            return view('pages.profile', ['user' => $user, 'badges' => $badges]);
         }
         
         return view('pages.userprofile', ['user' => $user]);
@@ -77,7 +83,11 @@ class ProfileController extends Controller
             return redirect('/login');
         }
         $user = User::find($id);
-    
+        
+        if(Auth::user()->id != $id){
+            return redirect('/profile/'.$id);
+        }
+
         $blockedContent = Content::where('user_id', $id)
             ->where('blocked', true)
             ->with(['comment', 'question', 'answer'])
@@ -238,6 +248,7 @@ class ProfileController extends Controller
                 'message' => 'Not logged in',
             ], 302);
         }
+
         $blockedContent = Content::where('user_id', $id)->where('blocked', true)->get();
         foreach($blockedContent as $result){
             $result->date = $result->compileddate();
