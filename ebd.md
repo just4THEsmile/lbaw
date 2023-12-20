@@ -58,7 +58,8 @@
 | R19 | BadgeAttatinmentNotification(<ins>notification_id</ins>→ Notification **PK**,(appuser_id,badge_id)→ BadgeAttainment **FK**)|
 | R20 | FollowTag((<ins>appuser_id</ins>→ appUser, <ins>tag_id</ins>→ Content) **PK**)|
 | R21 | FollowQuestion((<ins>appuser_id</ins>→ appUser, <ins>question_id</ins>→ Question) **PK**)|
-| R22 | UnblockAccount(<ins>id</ins> **PK**,<ins>user_id</ins>→AppUser **NN**,appeal TEXT **NN** )|
+| R22 | UnblockAccount(<ins>id</ins> **PK**,<ins>user_id</ins>→AppUser **NN**,appeal TEXT **NN** )
+|
 *Table 11:  QthenA Relational Schema*
 
 Legend:
