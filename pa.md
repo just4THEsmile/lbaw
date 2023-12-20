@@ -87,13 +87,67 @@
 > The owner of the user story should have the name in **bold**.
 > This table should be updated when a user story is completed and another one started. 
 
-| US Identifier | Name    | Module | Priority                       | Team Members               | State  |
-| ------------- | ------- | ------ | ------------------------------ | -------------------------- | ------ |
-|  US01          | US Name 1 | Module A | High | **John Silva**, Ana Alice   |  100%  |
-|  US02          | US Name 2 | Module A | Medium | **Ana Alice**, John Silva                 |   75%  | 
-|  US03          | US Name 3 | Module B | Low | **Francisco Alves**                 |   5%  | 
-|  US04          | US Name 4 | Module A | Low | -                 |   0%  | 
-
+|Us Identifier|Name|module|Priority|Team Members|State
+|---|---|---|---|---|---|
+|US01|View Top Questions |M01|High|Tomás|100%|
+|US02|View Recent Questions|M01|High|Tomás|100%|
+|US03|Browse Questions|High|M01|Tomás|100%|
+|US04|Browse Questions by Tags|M01|Medium|Tomás|100%|
+|US05|View Question Details|M01|Medium|Tomás|100%|
+|US06|View User Profiles|M01|Medium|Rodrigo Tomás Diogo|100%|
+|US07|Log-in the System|M02|High|Rodrigo|100%|
+|US08|Register in the System|M02|High|Rodrigo|100%|
+|US09|Logout|M03|High|Rodrigo|100%|
+|US10|View Profile|M03|High|Rodrigo Diogo|100%|
+|US12|Edit Profile|M03|High|Rodrigo|100%|
+|US13|Search Exact Match|M03|High|Tomás|100%|
+|US14|Search Full-Text|M03|Low|Tomás|100%|
+|US15|View Personal Feed|M03|High|Tomás Diogo|100%|
+|US16|Post Question|M03|High|Tomás|100%|
+|US17|Post Answer|M03|High|Tomás|100%|
+|US18|View My Questions|M03|High|Tomás Rodrigo|100%|
+|US19|View My Answers|M03|High|Tomás Rodrigo|100%|
+|US20|Recover Password|M03|Medium|Rodrigo|100%|
+|US21|Delete Account|M03|Medium|Rodrigo|100%|
+|US22|Support Profile Picture|M03|Low|Rodrigo|100%|
+|US23|View Personal Notifications|M03|Medium|Tomás|100%|
+|US24|Search over Multiple Attributes|M03|Low|Tomás|100%|
+|US25|Search Filters|M03|Medium|Tomás|100%|
+|US26|Vote on Questions|M03|Medium|Diogo|100%|
+|US27|Vote on Answers|M03|Medium|Diogo|100%|
+|US28|Comment on Questions|M03|Medium|Tomás|100%|
+|US29|Comment on Answers|M03|Medium|Tomás|100%|
+|US30|Follow Question|M03|Medium|Rodrigo|100%|
+|US31|Follow Tags|M03|Medium|Tomás|100%|
+|US32|Placeholders in Form Inputs|M03|Medium|Diogo Rodrigo|100%|
+|US33|Contextual Error Messages|M03|Medium|Rodrigo Tomás Diogo|100%|
+|US34|Contextual Help|M03|Low|Rodrigo Tomás Diogo|100%|
+|US35|About US|M03|Low|Rodrigo Diogo|100%|
+|US36|Main Features|M03|Low|Diogo Rodrigo|100%|
+|US37|Contacts|M03|Medium|Diogo Rodrigo|100%|
+|US38|Appeal for Unblock|M03|Low|Rodrigo|100%|
+|US39|Ordering of the results|M03|Low|Tomás Rodrigo|100%|
+|US40|Report Content|M03|Low|Rodrigo|100%|
+|US41|Support User Badges|M03|Low|Rodrigo|100%|
+|US42|Donations|M03|Low|Diogo|100%|
+|US43|User number of Answers|M03|Low|Rodrigo|100%|
+|US44|User number of Questions|M03|Low|Rodrigo|100%|
+|US44|User Points|M03|Low|Rodrigo|100%|
+|US45|Edit Question|M04|High|Tomás|100%| 
+|US46|Delete Question|M04|High|Tomás|100%| 
+|US47|Edit Answer|M04|High|Tomás|100%| 
+|US48|Delete Answer|M04|High|Tomás|100%|
+|US49|Delete Comment|M04|Medium|Tomás|100%|
+|US50|Edit Question Tags|M04|Medium|Tomás|100%|
+|US51|Mark Answer as Correct|M04|Medium|Diogo|100%|
+|US51|Delete Content|M05|Medium|Tomás Rodrigo|100%|
+|US52|Edit Question Tags|M05|Medium|Tomás|100%|
+|US53|Manage Content Reports|M05|Low|Rodrigo|100%|
+|US54|Administer User Accounts (search, view, edit, create)|M06|High|Rodrigo|100%|
+|US55|Manage Tags|M06|Medium|Tomás Diogo Rodrigo|100%|
+|US56|Administrator Accounts|M06|Medium|Rodrigo|100%|
+|US57|Block and Unblock User Accounts|M06|Medium|Rodrigo|100%|
+|US58|Delete User Account|M06|Medium|Rodrigo|100%|
 *Table 74: Implemented User Stories*
 
 
