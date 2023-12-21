@@ -26,6 +26,9 @@ class QuestionController extends Controller
         if($question === null){
             return redirect('/home')->withErrors(['page' => 'The provided question was not found.']);
         }
+        if(!Auth::check()){
+            return redirect ('/login');
+        }
         $this->authorize('show', $question);  
 
         $question->date = $question->commentable->content->compileddate();
