@@ -67,14 +67,14 @@ _Table 72: User credentials_
 
 > There were a lot of changes in the database, from the tables itself to the populate, so we thougth that we should resume the most important ones:
 >
-> * Added 2 new attributes to the user table : _blocked_  and  _remember_token_ (for block actions and recover password, respectively. Removed some required's and not null's from the table.
+> * Added 2 new attributes to the user table : _blocked_ and _remember_token_ (for block actions and recover password, respectively. Removed some required's and not null's from the table.
 > * Removed some double primary keys from some tables , such as BadgeAttainment. We eventually found a piece of code that could force Laravel to work with double primary keys
-> * Added 2 new attributes to the content table : _deleted_ and  _blocked_. 
-> * Changed most tables named id's to id. For example, in  the _Question_ table, we changed the id from commentable_id to id.
+> * Added 2 new attributes to the content table : _deleted_ and _blocked_.
+> * Changed most tables named id's to id. For example, in the _Question_ table, we changed the id from commentable_id to id.
 > * Created a new table named _UnblockAccount_. Used for unblock account apeals that the users do.
 > * Removed _select_correct_answer,_ _update_points, generate_answer_notification, generate_comment_notification_ triggers from the database and implemented these in the php.
-> * Removed _prevent_self_vote_  trigger as it was the complete opposite of what the business rules asked.
-> * Removed _question_minimum_tag_ trigger. 
+> * Removed _prevent_self_vote_ trigger as it was the complete opposite of what the business rules asked.
+> * Removed _question_minimum_tag_ trigger.
 > * Changed the old populate by other one that has way more data and it's slighty more realistic. The following python code is the one that generated the database:
 >
 > ```python
@@ -218,7 +218,7 @@ _Table 72: User credentials_
 > * Changed Badge Order of Magnitude from 1k to 20 and Growth from 100 to 1
 > * Changed Unblock Request Order of Magnitude from 10 to 100 and Growth from 1 to 10
 
-###  8\. Implementation Details
+### 8\. Implementation Details
 
 #### 8.1. Libraries Used
 
@@ -226,7 +226,7 @@ _Table 72: User credentials_
 |------|-----------|--------------------|---------|
 | Laravel | [Reference](https://laravel.com/) | Laravel is utilized to expedite back-end development by establishing a secure and modular framework that implements standard website functionalities. | [Using laravel csrf to login](https://lbaw2357.lbaw.fe.up.pt/login) |
 | Bootstrap | [Reference](https://getbootstrap.com/) | Employed to front-end development, it enhances aesthetics and responsiveness, elevating the visual appeal and usability of designs. | [User Profile Settings](https://lbaw2357.lbaw.fe.up.pt/editprofile/13) |
-| MailTrap | \[Reference\] (https://mailtrap.io/) | MailTrap is utilized to send emails between the "server" and the end user. In this case we implemented it to send the forgot password emails, so that the user can change it. | [Forgot Password](https://lbaw2357.lbaw.fe.up.pt/forgot) |
+| MailTrap | [Reference](https://mailtrap.io/) | MailTrap is utilized to send emails between the "server" and the end user. In this case we implemented it to send the forgot password emails, so that the user can change it. | [Forgot Password](https://lbaw2357.lbaw.fe.up.pt/forgot) |
 
 _Table 73: Libraries Used_
 
