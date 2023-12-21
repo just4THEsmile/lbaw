@@ -311,7 +311,8 @@ _Table 74: Implemented User Stories_
 > URL to the product: https://lbaw2357.lbaw.fe.up.pt/login
 
 ### 2\. Video presentation
-
+>
+>![video print](https://git.fe.up.pt./lbaw/lbaw2324/lbaw2357/-/blob/main/reports/print.png)
 > [Video presentation](https://git.fe.up.pt./lbaw/lbaw2324/lbaw2357/-/blob/main/reports/lbaw2357.mp4?ref_type=heads)
 
 
@@ -334,4 +335,4 @@ GROUP2357, 21/12/2023
 
 * Group member 1 Diogo Sarmento, up202109663@fe.up.pt (editor of A9/A10)
 * Group member 2 Rodrigo Povoa , up202108890@fe.up.pt (editor of A9/A10)
-* Group member 3 Tomás Sarmento, up202108778@fe.up.pt (editor of A9/A10)
+* Group member 3 Tomás Sarmento, up202108778@fe.up.pt (editor of A9/A10
