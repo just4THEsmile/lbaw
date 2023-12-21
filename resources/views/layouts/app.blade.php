@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>@yield('pagename')</title>
 
         <!-- Styles -->
         @yield('style')
@@ -17,6 +17,9 @@
         <link href="{{ url('css/milligram.min.css') }}" rel="stylesheet">
         <link href="{{ url('css/app.css') }}" rel="stylesheet">
         <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/footers/">
+        <link href="{{asset('images/webicon.ico')}}" rel = "icon">
+
+        @yield('og')
                 <script type="text/javascript">
                     
             // Fix for Firefox autofocus CSS bug
@@ -27,6 +30,7 @@
         </script>
         <script type="text/javascript" src={{ url('js/notification.js') }} defer>
         
+
         </script>
     </head>
     <body>
@@ -62,6 +66,7 @@
                         <li class="nav-item"><a href="/home" class="nav-link px-2 text-muted">Home</a></li>
                         <li class="nav-item"><a href="/faq" class="nav-link px-2 text-muted">FAQs</a></li>
                         <li class="nav-item"><a href="/about" class="nav-link px-2 text-muted">Contacts</a></li>
+                        <li class="nav-item"><a href="/about" class="nav-link px-2 text-muted">About Us</a></li>
                     </ul>
                     <p class="text-center text-muted">© 2023 QthenA, Inc</p>
                 </footer>

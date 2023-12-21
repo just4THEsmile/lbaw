@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 @endsection    
+@section('pagename')
+Create Question
+@endsection    
 
 @section('content')
     <div class="sidebar">
@@ -21,6 +24,7 @@
     </div>
     <div class="create">
         <div class="forms">
+                <h1 style=" display:flex;    justify-content: center;">Create a New Question</h1>
                 <div id="questionerror" class="error"></div>
                 <div class="form-group">
                     <div id="titleError" class="error"></div>
@@ -29,7 +33,7 @@
                 </div>
                 <div class="form-group">
                 <span id="contentError" class="error"></span>
-                    <label for="content">Content:</label>
+                    <label for="questionContent">Content:</label>
                     <textarea class="form-control" id="questionContent" name="content" rows="4" placeholder="Enter Your Question Content" required></textarea>
                 </div>
                 <div id="selectedtags">
@@ -39,8 +43,7 @@
                 <input type="text" class="form-control" id="TagsInput" name="title" value="" placeholder="Enter your tags here" required>
                 <div id="autocomplete"></div>
                 <button id="submitbutton" class="btn btn-primary">Submit</button>
-            </div>
-        </div>    
-    </div>    
+        </div>
+    </div>       
     <script type="text/javascript" src={{ url('js/create_question_form.js') }} defer></script>
 @endsection

@@ -6,8 +6,10 @@
     <link href="{{ asset('css/tag.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
+@endsection
+@section('pagename')
+Edit Question
 @endsection    
-
 
 @section('content')
     <div class="sidebar">
@@ -22,6 +24,7 @@
     </div>
     <div class="create">
         <div class="forms">
+            <h1 style=" display:flex;    justify-content: center;">Edit a Question</h1>
             <div id="questionerror" class="error"></div>
             <input id="questionid" hidden value="{{ $question->id }}">
             <div class="form-group">
@@ -31,7 +34,7 @@
             </div>
             <div class="form-group">
             <span id="contentError" class="error"></span>
-                <label for="content">Content:</label>
+                <label for="questionContent">Content:</label>
                 <textarea class="form-control" id="questionContent" name="content" rows="4" placeholder="Enter Your Question Content" required>{{ $question->commentable->content->content}}</textarea>
             </div>
             <div id="selectedtags">

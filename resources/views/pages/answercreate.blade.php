@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="{{ asset('css/createquestion.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+Create Answer
+@endsection 
 
 @section('content')
     <div class="sidebar">

@@ -2,6 +2,9 @@
 @section ('style')
   <link href="{{ url('css/unblock.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+Unblock Request
+@endsection 
 @section('content')
 
 <div class="sidebar">

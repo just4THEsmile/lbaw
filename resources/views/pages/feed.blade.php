@@ -7,7 +7,17 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+Feed
+@endsection 
 
+@section('og')
+    <meta property="og:title" content="Feed" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/feed') }}" />
+    <meta property="og:description" content="Feed" />
+    <meta property="og:image" content="{{ asset('images/icon.png') }}" />
+@endsection
 
 @section('title', 'content')
 
@@ -23,8 +33,8 @@
   @endif
 </div>
 
-<div style="color:white; font-size:0.0001em;">Home</div>
   <div class="questionslist"> 
+  <h2 style="margin-left:1em;">Feed</h2>
   @if ($questions->isEmpty())
     <h3>No questions found Follow tags to have a feed</h3>
   @endif

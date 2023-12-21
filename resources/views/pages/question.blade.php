@@ -6,6 +6,17 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="{{ asset('css/question.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+{{$question->title}}
+@endsection  
+
+@section('og')
+    <meta property="og:title" content="{{$question->title}}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/question/'.$question->id) }}" />
+    <meta property="og:description" content="{{$question->commentable->content->content}}" />
+    <meta property="og:image" content="{{ $question->commentable->content->user->getProfileImage() }}" />
+@endsection
 
 @section('content')
     

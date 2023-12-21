@@ -207,6 +207,16 @@ class ContentController extends Controller
         if(Content::find($request->input('content_id')) === null){
             return redirect()->route('myblocked', ['id' => $user_id])->withErrors(['content' => 'The provided content does not exist']);
         }
+        
+        $existingRequest = UnblockRequest::where([
+            ['user_id', '=', $user_id],
+            ['content_id', '=', $content_id]
+        ])->first();
+        if ($existingRequest) {
+            return redirect()->route('myblocked', ['id' => $user_id])
+                ->with('message', 'Unblock request already exists.');
+        }
+
         $unblockRequest = new UnblockRequest;
         $unblockRequest->user_id = $user_id;
         $unblockRequest->content_id = $content_id;

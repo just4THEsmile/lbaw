@@ -8,6 +8,18 @@
     <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 @endsection
 
+@section('pagename')
+Tags
+@endsection 
+
+@section('og')
+    <meta property="og:title" content="Tags" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/tags') }}" />
+    <meta property="og:description" content="Tags" />
+    <meta property="og:image" content="{{ url('/images/logo.png') }}" />
+@endsection
+
 @section('content')
 <div class="sidebar">
   <a href="/home">Home Page</a>
@@ -22,20 +34,11 @@
 
 <div style="color:white; font-size:0.0001em;">Home</div>
 
-    <style>
-        #MyAnswers{
-            background-color: #0000FF;
-            
-        }
-        #MyAnswers > a{
-            color:white;
-        } 
-    </style>
     <div class="realcontent">
         <input id="searchTagInput" placeholder="Search Tag..." ></input>
         <div id="user_type" hidden>{{ $user_type }}</div>
         @if(Auth::user() && Auth::user()->usertype === 'admin')
-        <a class="createquestionbutton" href="{{ route('tagcreateform') }}"><button> Create Tag</button></a>
+        <a class="createquestionbutton" href="{{ route('tagcreateform') }}"> Create Tag</a>
         @endif
         @if ($errors->has('tag'))
                 <span class="error">

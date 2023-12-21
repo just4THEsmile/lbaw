@@ -5,21 +5,24 @@
 <a class='aside active' href="{{ route('followquestion', ['id' => $user->id]) }}">{{$user->username}}'s Followed Questions</a>
 <a class='aside' href="{{ route('myquestions', ['id' => $user->id]) }}" >{{$user->username}}'s questions</a>
 <a class='aside' href="{{ route('myanswers', ['id' => $user->id]) }}">{{$user->username}}'s answers</a>
+@if(Auth::user()->id === $user->id)
 <a class='aside' href="{{ route('myblocked', ['id' => $user->id]) }}">{{$user->username}}'s blocked content</a>
+@endif
+@endsection
+@section('pagename')
+{{$user->username}}'s Followed Questions
+@endsection
 
+@section('og')
+    <meta property="og:title" content="{{$user->username}}'s Followed Questions" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/followquestion/'.$user->id) }}" />
+    <meta property="og:description" content="{{$user->username}}'s Followed Questions" />
+    <meta property="og:image" content="{{ $user->getProfileImage() }}" />
 @endsection
 
 @section('content2')
-
-<style>
-        #Follow{
-            background-color: #0000FF;
-            
-        }
-        #Follow > a{
-            color:white;
-        } 
-</style>
+    <h2>{{$user->username}}'s Followed Questions</h2>
     <label for="sortSelect">Sort By:</label>
     <select id="sortSelect">
         <option value="date">Time</option>

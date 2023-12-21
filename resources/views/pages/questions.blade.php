@@ -11,6 +11,18 @@
 <link href="{{ asset('css/home.css') }}" rel="stylesheet">
 
 @endsection
+@section('pagename')
+Questions
+@endsection
+
+@section('og')
+  <meta property="og:title" content="Questions" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ url('/questions') }}" />
+  <meta property="og:description" content="Questions" />
+  <meta property="og:image" content="{{ url('/images/logo.png') }}" />
+@endsection
+
 
 @section('title', 'content')
 
@@ -30,6 +42,7 @@
 <div>
     <div style="color:white; font-size:0.0001em;">Home</div>
     <div class="realcontent">
+      <h2 style="display:flex;">Questions</h2>
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
         <span class="error" id ="error"></span>
         <label for="sortSelect">Sort By:</label>

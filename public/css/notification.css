@@ -31,8 +31,12 @@ div.row>div{
     max-width: none;
     width: 4em;
 }
+.p-3{
+    display: flex;
+    justify-content: space-between;
+}
 .ml-auto{
-    width: 10em;
+    width: 5em;
 }
 .ml-auto>.text-right{
     font-size: 0.7em;
@@ -70,22 +74,25 @@ ul.pagination>.active>span{
 }
 
 div.container>form{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 div.container>form>button{
     margin-top: 1em;
     background-color: black;
     border: black;
 }
+.dropdown-list-image{
+    margin:0.6em !important;
+}
 @media (max-width: 50em) {
-    .dropdown-list-image{
-        display: none;
-    }
     section#content > div.container{
         margin-left: 0em;
         width: 100%;
+    }
+    #content form{
+        margin-top: 0em !important;
     }
     
 }

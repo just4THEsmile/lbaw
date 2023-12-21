@@ -3,6 +3,18 @@
 @section('style')
     <link href="{{ url('css/editprofile.css') }}" rel="stylesheet">
 @endsection
+@section('pagename')
+Edit Profile
+@endsection 
+
+
+@section('og')
+    <meta property="og:title" content="Edit Profile" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/editprofile/'.$user->id) }}" />
+    <meta property="og:description" content="Edit Profile" />
+    <meta property="og:image" content="{{ $user->getProfileImage() }}" />
+@endsection
 @section('content')
             <div class="sidebar">
                 <a href="/home">Home Page</a>
@@ -109,7 +121,7 @@
                                             <option value="admin" @if($user->usertype === 'admin') selected @endif>Admin</option>
                                         </select>
                                         <h3>Badges</h3>
-                                        <div class='right-card'>
+                                        <div class='right-card scrollable-badge-container'>
                                             @php $badges = App\Models\Badge::all(); @endphp
                                             @php $userbadges = $user->badges()->get()->pluck('id')->toArray(); @endphp
                                             @foreach($badges as $badge)

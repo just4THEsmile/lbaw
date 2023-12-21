@@ -4,6 +4,17 @@
 <link href="{{ asset('css/createquestion.css') }}" rel="stylesheet">
 
 @endsection
+@section('pagename')
+Create Comment
+@endsection 
+
+@section('og')
+    <meta property="og:title" content="Create Comment" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/comment') }}" />
+    <meta property="og:description" content="Create Comment" />
+    <meta property="og:image" content="{{ asset('images/icon.png') }}" />
+@endsection
 
 @section('content')
     <div class="sidebar">

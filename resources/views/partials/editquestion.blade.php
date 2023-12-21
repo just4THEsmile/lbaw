@@ -1,6 +1,6 @@
 
 <div class='right-card'>
-    <form id='passwordform' action="{{ $question->id }}/delete" method='post' onsubmit="disableSubmitButton()">
+    <form action="{{ $question->id }}/delete" method='post' onsubmit="disableSubmitButton()">
         @csrf
         <button type='submit' class='delete' name="delete-button">
             <span class="material-symbols-outlined">

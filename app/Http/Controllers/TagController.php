@@ -53,7 +53,6 @@ class TagController extends Controller
         return redirect()->route('tagquestions', ['id' => $tag->id]);
     }
     public function editform(Request $request, $id){
-        $this->authorize('edit', Tag::class);
         if(!Auth::check()){
             return redirect('/login');
         }

@@ -3,6 +3,18 @@
 @section('style')
 @endsection
 
+@section('pagename')
+Moderate Content
+@endsection 
+
+@section('og')
+    <meta property="og:title" content="Moderate Content" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('/moderatecontent') }}" />
+    <meta property="og:description" content="Moderate Content" />
+    <meta property="og:image" content="{{ asset('images/icon.png') }}" />
+@endsection
+
 @section('content')
 <link href="{{ asset('css/moderatecontent.css') }}" rel="stylesheet">
 <div class="sidebar">
@@ -19,10 +31,10 @@
 
 <div id="buttonlist">
 <form action="{{ route('moderatecontent')}}" method='get' >
-    <button id="contentRequestsButton" class="active"type='submit' class='edit' name="edit-button">View Content Unblock Requests</button>
+    <button class="active"type='submit' class='edit' name="edit-button">View Content Unblock Requests</button>
 </form>
 <form action="{{ route('moderateusers') }}" method='get' >
-    <button id="contentRequestsButton" type='submit' class='edit' name="edit-button">View Account Unblock Requests</button>
+    <button type='submit' class='edit' name="edit-button">View Account Unblock Requests</button>
 </form>
 </div>
 
