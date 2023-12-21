@@ -312,7 +312,7 @@ _Table 74: Implemented User Stories_
 
 ### 2\. Video presentation
 >
->![video print](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/blob/main/reports/print.png)
+>![video print]![image](uploads/c952eebb57510e9f4f02bdf5fcdba091/image.png)
 >
 > [Video presentation](https://git.fe.up.pt./lbaw/lbaw2324/lbaw2357/-/blob/main/reports/lbaw2357.mp4?ref_type=heads)
 
