@@ -317,6 +317,14 @@ _Table 74: Implemented User Stories_
 > - Upload the lbawYYgg.mp4 file to Moodle.
 > - The video must not exceed 2 minutes.
 
+
+## Revision history
+
+Changes made to the first submission:
+1. ...
+
+***
+
 Checklist: https://docs.google.com/spreadsheets/d/1vSBmSlKg5PRKLTYRqQey_n-NZASlNTnItmUiX50-mJU/edit?usp=sharing
 
 ---
