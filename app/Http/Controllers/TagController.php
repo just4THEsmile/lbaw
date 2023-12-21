@@ -134,7 +134,8 @@ class TagController extends Controller
                 }
                 return response()->json($results);
             }
-            $results = Tag::whereRaw("tsvectors @@ plainto_tsquery(?)", [$query])
+            $results = Tag::whereFullText('title',$query)
+            ->orWhereFullText('description',$query)
             ->orderByRaw("ts_rank(tsvectors, plainto_tsquery(?)) DESC", [$query])
             ->leftjoin('followtag', function ($join) {
                 $join->on('followtag.tag_id', '=', 'tag.id')
