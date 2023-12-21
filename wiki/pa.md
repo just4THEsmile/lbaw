@@ -54,14 +54,14 @@
 >
 > Accessibility: [Accessibility](../reports/acessibilidade.pdf) [17/18]
 >
-> Usability: [Accessibility](../reports/usabilidade.pdf) [27/28]
+> Usability: [Usability](../reports/usabilidade.pdf) [27/28]
 
 ### 6. HTML & CSS Validation
 
 > Provide the results of the validation of the HTML and CSS code using the following tools. Include the results as PDF files in the group's repository. Add individual links to those files here.
 >   
-> HTML: https://validator.w3.org/nu/  
-> CSS: https://jigsaw.w3.org/css-validator/  
+> HTML: [HTML](../reports/html)
+> CSS: [CSS](../reports/css/css.pdf)
 
 ### 7. Revisions to the Project
 
