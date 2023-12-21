@@ -37,7 +37,7 @@
         <option value="votes">Votes</option>
     </select>
     <div class="error" id="error"></div>
-        <ul id="Answers"></ul>
+        <ul style="margin-left:0em;"id="Answers"></ul>
         <div id ="pagination"></div>
         <script type="text/javascript" src={{ url('js/my_answers.js') }} defer></script>
 
