@@ -4,9 +4,10 @@
 @endsection
 @section('content')
 
-<p style="margin-top:6em">
+<h2 style= "display: flex;
+    justify-content: space-evenly;">
     Hello {{ $user->name }}
-</p>
+</h2>
 <form class="form" method="POST" action="{{ route('resetpassword') }}">
     @csrf
 
