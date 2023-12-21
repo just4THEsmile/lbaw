@@ -71,6 +71,7 @@ _Table 72: User credentials_
 |------|-----------|--------------------|---------|
 | Laravel | [Reference](https://laravel.com/) | Laravel is utilized to expedite back-end development by establishing a secure and modular framework that implements standard website functionalities. | [Using laravel csrf to login](https://lbaw2357.lbaw.fe.up.pt/login) |
 | Bootstrap | [Reference](https://getbootstrap.com/) | Employed to front-end development, it enhances aesthetics and responsiveness, elevating the visual appeal and usability of designs. | [User Profile Settings](https://lbaw2357.lbaw.fe.up.pt/editprofile/13) |
+|MailTrap|[Reference] (https://mailtrap.io/)| MailTrap is utilized to send emails between the "server" and the end user. In this case we implemented it to send the forgot password emails, so that the user can change it. |[Forgot Password](https://lbaw2357.lbaw.fe.up.pt/forgot)|
 
 _Table 73: Libraries Used_
 
