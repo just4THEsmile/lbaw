@@ -52,15 +52,15 @@
 
 > Provide the results of accessibility and usability tests using the following checklists. Include the results as PDF files in the group's repository. Add individual links to those files here.
 >
-> Accessibility: [Accessibility](../reports/Accessibility.pdf)
-> Usability: [Usability](../reports/Accessibility.pdf)
+> Accessibility: [Accessibility](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/blob/main/reports/acessibilidade.pdf?ref_type=heads)
+> Usability: [Usability](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/blob/main/reports/usabilidade.pdf?ref_type=heads)
 
 ### 6. HTML & CSS Validation
 
 > Provide the results of the validation of the HTML and CSS code using the following tools. Include the results as PDF files in the group's repository. Add individual links to those files here.
 >   
 > HTML: [HTML](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/tree/main/reports/html?ref_type=heads)
-> CSS: [CSS](../reports/css/css.pdf)
+> CSS: [CSS](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/blob/main/reports/css/css.pdf?ref_type=heads)
 
 ### 7. Revisions to the Project
 
@@ -182,8 +182,8 @@ Changes made to the first submission:
 1. ..
 
 ***
-GROUPYYgg, DD/MM/20YY
+GROUP2357, 21/12/2023
 
-* Group member 1 name, email (Editor)
-* Group member 2 name, email
-* ...
+* Group member 1 Diogo Sarmento, [up202109663@fe.up.pt](mailto:up202109663@fe.up.pt) (editor of A4/A5/A6)
+* Group member 2 Rodrigo Povoa , [up202108890@fe.up.pt](mailto:up202108890@fe.up.pt) (editor of A4/A5/A6)
+* Group member 3 Tomás Sarmento, [up202108778@fe.up.pt](mailto:up202108778@fe.up.pt) (editor of A4/A5/A6)
