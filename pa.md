@@ -52,15 +52,15 @@
 
 > Provide the results of accessibility and usability tests using the following checklists. Include the results as PDF files in the group's repository. Add individual links to those files here.
 >
-> Accessibility: https://ux.sapo.pt/checklists/acessibilidade/  
-> Usability: https://ux.sapo.pt/checklists/usabilidade/  
+> Accessibility: [Accessibility](../reports/Accessibility.pdf)
+> Usability: [Usability](../reports/Accessibility.pdf)
 
 ### 6. HTML & CSS Validation
 
 > Provide the results of the validation of the HTML and CSS code using the following tools. Include the results as PDF files in the group's repository. Add individual links to those files here.
 >   
-> HTML: https://validator.w3.org/nu/  
-> CSS: https://jigsaw.w3.org/css-validator/  
+> HTML: [HTML](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/tree/main/reports/html?ref_type=heads)
+> CSS: [CSS](../reports/css/css.pdf)
 
 ### 7. Revisions to the Project
 
@@ -91,8 +91,8 @@
 | ------------- | ------- | ------ | ------------------------------ | -------------------------- | ------ |
 |US01|View Top Questions |M01|High|Tomás|100%|
 |US02|View Recent Questions|M01|High|Tomás|100%|
-|US03|Browse Questions|High|M01|Tomás|100%|
-|US04|Browse Questions by Tags|M01|Medium|Tomás|100%|
+|US03|Browse Questions|High|M01|Tomás Diogo|100%|
+|US04|Browse Questions by Tags|M01|Medium|Tomás Diogo|100%|
 |US05|View Question Details|M01|Medium|Tomás|100%|
 |US06|View User Profiles|M01|Medium|Rodrigo Tomás Diogo|100%|
 |US07|Log-in the System|M02|High|Rodrigo|100%|
@@ -129,7 +129,7 @@
 |US39|Ordering of the results|M03|Low|Tomás Rodrigo|100%|
 |US40|Report Content|M03|Low|Rodrigo|100%|
 |US41|Support User Badges|M03|Low|Rodrigo|100%|
-|US42|Donations|M03|Low|Diogo|100%|
+|US42|Donations|M03|Low|Diogo|80%|
 |US43|User number of Answers|M03|Low|Rodrigo|100%|
 |US44|User number of Questions|M03|Low|Rodrigo|100%|
 |US44|User Points|M03|Low|Rodrigo|100%|
