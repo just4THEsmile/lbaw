@@ -79,7 +79,7 @@
     </div>
     <ul>
     @foreach ($answers as $answer)
-        @include('partials.answer', ['answer' => $answer, 'correct' => $correct])
+        @include('partials.answer', ['answer' => $answer, 'correct' => $correct,'question' => $question])
     @endforeach
     </ul>
 </article>

@@ -5,7 +5,7 @@ $vote = $answer->commentable->content->get_vote();
 <li class="answer" data-id="{{$answer->id}}">
     @if(!$answer->commentable->content->deleted)
         <div class="correctbutton" data-id  = "{{ $answer->id }}">
-            @if ($answer->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin')
+            @if ($question->commentable->content->user->id === auth()->user()->id || auth()->user()->usertype === 'admin')
                 <button type='submit' data-id ="{{ $answer->id }}" class='correctanswerButton' name="correctanswer-button">
                     <span class="material-symbols-outlined">
                         check
