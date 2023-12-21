@@ -50,16 +50,17 @@
 
 ### 5. Check Accessibility and Usability
 
-> Provide the results of accessibility and usability tests using the following checklists. Include the results as PDF files in the group's repository. Add individual links to those files here.
+
 >
 > Accessibility: [Accessibility](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/blob/main/reports/acessibilidade.pdf?ref_type=heads)
+>
 > Usability: [Usability](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/blob/main/reports/usabilidade.pdf?ref_type=heads)
 
 ### 6. HTML & CSS Validation
 
-> Provide the results of the validation of the HTML and CSS code using the following tools. Include the results as PDF files in the group's repository. Add individual links to those files here.
 >   
 > HTML: [HTML](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/tree/main/reports/html?ref_type=heads)
+>
 > CSS: [CSS](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2357/-/blob/main/reports/css/css.pdf?ref_type=heads)
 
 ### 7. Revisions to the Project
