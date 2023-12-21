@@ -30,6 +30,7 @@ class UserController extends Controller
 
         if($user->username !== $request->input('username')){
             $request->validate(['username' => 'required|string|max:16|unique:appuser']);
+            $user->username = $request->input('username');
             
         }
         $user->name = $request->input('name');
