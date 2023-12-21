@@ -23,6 +23,7 @@
 |-------|----------|
 | admin@example.com | 1234 |
 | moderator@example.com | 12345678 |
+|dragon29r@gmail.com|12345678|
 
 _Table 71: Administration credentials_
 
@@ -173,6 +174,6 @@ Changes made to the first submission:
 
 GROUP2357, 21/12/2023
 
-* Group member 1 Diogo Sarmento, up202109663@fe.up.pt (editor of A4/A5/A6)
-* Group member 2 Rodrigo Povoa , up202108890@fe.up.pt (editor of A4/A5/A6)
-* Group member 3 Tomás Sarmento, up202108778@fe.up.pt (editor of A4/A5/A6)
+* Group member 1 Diogo Sarmento, up202109663@fe.up.pt (editor of A9/A10)
+* Group member 2 Rodrigo Povoa , up202108890@fe.up.pt  (editor of A9/A10)
+* Group member 3 Tomás Sarmento, up202108778@fe.up.pt (editor of A9/A10)
