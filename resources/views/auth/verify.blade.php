@@ -4,7 +4,8 @@
 @endsection
 @section('content')
 
-<p>
+<p style= "display: flex;
+    justify-content: space-evenly;">
     Hello {{ $user->name }}
 </p>
 <p>
