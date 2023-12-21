@@ -61,9 +61,164 @@ _Table 72: User credentials_
 
 ### 7\. Revisions to the Project
 
-> Describe the revisions made to the project since the requirements specification stage.
+> As we expected, our project suffered major changes since the submission of the er:
 
-### 8\. Implementation Details
+#### 7.1 Database
+
+> There were a lot of changes in the database, from the tables itself to the populate, so we thougth that we should resume the most important ones:
+>
+> * Added 2 new attributes to the user table : _blocked_  and  _remember_token_ (for block actions and recover password, respectively. Removed some required's and not null's from the table.
+> * Removed some double primary keys from some tables , such as BadgeAttainment. We eventually found a piece of code that could force Laravel to work with double primary keys
+> * Added 2 new attributes to the content table : _deleted_ and  _blocked_. 
+> * Changed most tables named id's to id. For example, in  the _Question_ table, we changed the id from commentable_id to id.
+> * Created a new table named _UnblockAccount_. Used for unblock account apeals that the users do.
+> * Removed _select_correct_answer,_ _update_points, generate_answer_notification, generate_comment_notification_ triggers from the database and implemented these in the php.
+> * Removed _prevent_self_vote_  trigger as it was the complete opposite of what the business rules asked.
+> * Removed _question_minimum_tag_ trigger. 
+> * Changed the old populate by other one that has way more data and it's slighty more realistic. The following python code is the one that generated the database:
+>
+> ```python
+> from faker import Faker
+> import random
+> fake = Faker()
+> random.seed(0)
+> nnames = 1000
+> nquestions = 1000
+> ncomments = 10000
+> nanswers = 10000
+> variation_days = 90
+> f = open("1.txt", "w")
+> f.write("INSERT INTO AppUser (name, username, email, password, bio, profilepicture, usertype) \n VALUES \n")
+> names = []
+> emails = []
+> content_user = {}
+> nnotification = 1
+> for i in range(nnames):
+>     user_name = fake.name()
+>     while(user_name in names):
+>         user_name = fake.name()
+>     names.append(user_name)
+>     user_email = fake.email()
+>     while(user_email in emails):
+>         user_email = fake.email()
+>     emails.append(user_email)
+>     f.write("('" + fake.name() + "','" + user_name +"','" + user_email+ "'," + "'password'" + ",'" + fake.sentence() + "','NcIkXUq1IpkhshOeSYHMyDmX6u0q7Deku5FNMiWv.png','user')")
+>     if(i < nnames-1):
+>         f.write(",\n")
+> f.write(";\n")
+> for i in range(nquestions):
+>     f.write("INSERT INTO Content (user_id, content ,date , edited)\nVALUES\n")
+>     edited = "false"
+>     if(random.random() < 0.5):
+>         edited = "true"
+>     author_id = int((nnames - 1)*random.random() + 1)
+>     f.write("(" + str(author_id) + ",'" + fake.text()+ "'," "NOW() - INTERVAL '" + str(int((50 - 1)*random.random() + 1)) + " days'," +edited+ ");\n")
+>     f.write("INSERT INTO Commentable (id)\nVALUES")
+>     index = i + 1
+>     f.write("("+ str(index) + ");\n")
+>     f.write("INSERT INTO Question (id, title , correct_answer_id)\nVALUES")
+>     f.write("("+ str(index)+",'"+ fake.sentence()[:-1] +"?',"+"NULL"+");\n")
+>     content_user[index] = author_id
+>     ntags = random.randrange(1, 5)
+>     tags = random.sample(range(1, 20), ntags)
+>     f.write("INSERT INTO QuestionTag (question_id, tag_id)\nVALUES\n")
+>     for tag in tags:
+>         f.write("("+ str(index)+","+ str(tag) + ")")
+>         if(tag != tags[-1]):
+>             f.write(",\n")
+>     f.write(";\n")
+>     nvotes = random.randrange(2, 50)
+>     votes = random.sample(range(1, nnames), nvotes)
+>     f.write("INSERT INTO Vote (user_id, content_id, vote)\nVALUES\n")
+>     votec = 0
+>     for vote in votes:
+>         like = "false"
+>         if(author_id == vote):
+>             continue
+>         if(random.random() < 0.8):
+>             like = "true"
+>         if(votec != 0):
+>             f.write(",\n")
+>         f.write("("+ str(vote)+","+ str(index) + ",'" + like + "')")
+>         votec = 1
+>     f.write(";\n")
+>     nreports = random.randrange(2, 10)
+>     reports = random.sample(range(1, nnames), nreports)
+>     f.write("INSERT INTO Report (user_id, content_id)\nVALUES\n")
+>     rep = 0
+>     for report in reports:
+>         if(author_id == report):
+>             continue
+>         if(rep != 0):
+>             f.write(",\n")
+>         rep = 1
+>         f.write("("+ str(report)+","+ str(index) + ")")
+>     f.write(";\n")
+> for i in range(nanswers):
+>     f.write("INSERT INTO Content (user_id, content ,date , edited)\nVALUES\n")
+>     edited = "false"
+>     if(random.random() < 0.5):
+>         edited = "true"
+>     date = int((50 - 1)*random.random() + 1)
+>     question_id = int((nquestions - 1)*random.random() + 1)
+>     author_id = int((nnames - 1)*random.random() + 1)
+>     f.write("(" + str(author_id) + ",'" + fake.text()+ "'," "NOW() - INTERVAL '" + str(date) + " days'," +edited+ ");\n")
+>     f.write("INSERT INTO Commentable (id)\nVALUES\n")
+>     index = nquestions+i + 1
+>     content_user[index] = author_id
+>     f.write("("+ str(index) + ");\n")
+>     f.write("INSERT INTO Answer (id, question_id)\nVALUES\n")
+>     f.write("("+ str(index)+","+ str(question_id) + ");\n")
+>     f.write("INSERT INTO Notification (user_id, date, viewed)\nVALUES\n")
+>     viewed = "false"
+>     if(random.random() < 0.2):
+>         viewed = "true"
+>     f.write("("+ str(content_user[question_id])+","+"NOW() - INTERVAL '" + str(date) + " days',"+ viewed+");\n")
+> 
+>     f.write("INSERT INTO AnswerNotification (notification_id, question_id, answer_id)\nVALUES\n")
+>     f.write("("+ str(nnotification)+","+ str(question_id) + ","+ str(index) + ");\n")
+>     nnotification += 1
+> for i in range(ncomments):
+>     f.write("INSERT INTO Content (user_id, content ,date , edited)\nVALUES\n")
+>     edited = "false"
+>     if(random.random() < 0.5):
+>         edited = "true"
+>     ncontent = nquestions+nanswers
+>     f.write("(" + str(int((nnames - 1)*random.random() + 1)) + ",'" + fake.text()+ "'," "NOW() - INTERVAL '" + str(int((50 - 1)*random.random() + 1)) + " days'," +edited+ ");\n")
+>     f.write("INSERT INTO Comment (id,commentable_id)\nVALUES\n")
+>     index = nanswers+nquestions+i + 1
+>     f.write("("+ str(index) + ","+str(int((ncontent - 1)*random.random() + 1)) +");\n")
+>     f.write("INSERT INTO Notification (user_id, date, viewed)\nVALUES\n")
+>     viewed = "false"
+>     if(random.random() < 0.2):
+>         viewed = "true"
+>     f.write("("+ str(content_user[question_id])+","+"NOW() - INTERVAL '" + str(date) + " days',"+ viewed+");\n")
+>     f.write("INSERT INTO CommentNotification (notification_id, comment_id)\nVALUES\n")
+>     f.write("("+ str(nnotification)+","+str(index)+");\n")
+>     nnotification += 1
+> #for i in range(100):
+> #    f.write(fake.text())
+> #    f.write("\n")
+> #f.close()
+> 
+> #open and read the file after the appending:
+> ```
+
+#### 7.2 Sitemap
+
+> * There isn't a Terms of service and Privacy Policy page
+
+#### 7.3 Additional Business Rules
+
+> * Admin can also select the correct answer
+> * Removed Rule: a user cannot report another user more than once.
+
+#### 7.4 Database Workload
+
+> * Changed Badge Order of Magnitude from 1k to 20 and Growth from 100 to 1
+> * Changed Unblock Request Order of Magnitude from 10 to 100 and Growth from 1 to 10
+
+###  8\. Implementation Details
 
 #### 8.1. Libraries Used
 
