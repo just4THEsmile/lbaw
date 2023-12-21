@@ -48,7 +48,7 @@ Notifications
                     @elseif ($notification->type === 'Badge Attainment')
                         @include('partials.notification.badge', ['notification' => $notification])
                     @elseif ($notification->type === 'Vote')
-
+                        @include('partials.notification.vote', ['notification' => $notification])
                     @endif
                 @endforeach
                 <div class="box-body p-0">
@@ -60,17 +60,16 @@ Notifications
                     <h6 class="m-0">Earlier</h6>
                 </div>
                 @foreach ($notifications as $notification)
-                    @if (! $notification->viewed)
-                        @continue
-                    @endif
-                    @if ($notification->type == 'Answer')
-                        @include('partials.notification.answer', ['notification' => $notification])
-                    @elseif ($notification->type == 'Comment')
-                        @include('partials.notification.comment', ['notification' => $notification])
-                    @elseif ($notification->type == 'Badge Attainment')
-                        @include('partials.notification.badge', ['notification' => $notification])
-                    @elseif ($notification->type == 'Vote')
-
+                    @if ($notification->viewed === true)
+                        @if ($notification->type === 'Answer')
+                            @include('partials.notification.answer', ['notification' => $notification])
+                        @elseif ($notification->type === 'Comment')
+                            @include('partials.notification.comment', ['notification' => $notification])
+                        @elseif ($notification->type === 'Badge Attainment')
+                            @include('partials.notification.badge', ['notification' => $notification])
+                        @elseif ($notification->type === 'Vote')
+                            @include('partials.notification.vote', ['notification' => $notification])
+                        @endif
                     @endif
                 @endforeach
             </div>

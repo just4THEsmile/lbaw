@@ -30,7 +30,18 @@ class TransactionsController extends Controller
             ]);
             $vote->save();
             $content = Content::find($content_id);
-            
+            $notification = new Notification([
+                'user_id' => $content->user_id,
+            ]);
+            $notification->save();
+
+            $votenotification = new VoteNotification([
+                'notification_id' => $notification->id,
+                'user_id' => $user_id,
+                'content_id' => $content_id,
+                'vote' => False,
+            ]);
+            $votenotification->save();
 
             // Commit the transaction
             DB::commit();
@@ -51,6 +62,7 @@ class TransactionsController extends Controller
         try {
              // Start the transaction
              DB::beginTransaction();
+            
              $vote = new vote([
                  'user_id' => $user_id,
                  'content_id' => $content_id,
@@ -59,6 +71,18 @@ class TransactionsController extends Controller
              $vote->save();
              $content = Content::find($content_id);
              // Commit the transaction
+             $notification = new Notification([
+                'user_id' => $content->user_id,
+            ]);
+            $notification->save();
+
+            $votenotification = new VoteNotification([
+                'notification_id' => $notification->id,
+                'user_id' => $user_id,
+                'content_id' => $content_id,
+                'vote' => True,
+            ]);
+            $votenotification->save();
              DB::commit();
             return ($content->votes);
         
@@ -218,6 +242,7 @@ class TransactionsController extends Controller
         try {
             // Start the transaction
             DB::beginTransaction();
+            $questionContent = Content::find($question_id);
             // Insert Content
             $content1 = new Content([
                 'user_id' => $user_id,
@@ -237,7 +262,7 @@ class TransactionsController extends Controller
 
             $answer->save();
             $notification = new Notification([
-                'user_id' => $user_id,
+                'user_id' => $questionContent->user_id,
             ]);
             $notification->save();
 
@@ -268,6 +293,7 @@ class TransactionsController extends Controller
             // Start the transaction
             DB::beginTransaction();
             // Insert Content
+            $commentable_content = Content::find($commentable_id);
             $content1 = new Content([
                 'user_id' => $user_id,
                 'content' => $content,
@@ -284,7 +310,7 @@ class TransactionsController extends Controller
 
             $comment->save();
             $notification = new Notification([
-                'user_id' => $user_id,
+                'user_id' => $commentable_content->user_id,
             ]);
             $notification->save();
 
