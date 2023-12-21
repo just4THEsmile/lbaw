@@ -4,10 +4,10 @@
 @endsection
 @section('content')
 <div style ="padding:1em;">
-<p style= "display: flex;
+<h2 style= "display: flex;
     justify-content: space-evenly;">
     Hello {{ $user->name }}
-</p>
+</h2>
 <p style= "display: flex;
     justify-content: space-evenly;">
     You have requested to reset your password. Please click the link below to reset your password.
