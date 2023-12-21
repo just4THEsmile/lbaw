@@ -311,11 +311,11 @@ _Table 74: Implemented User Stories_
 > URL to the product: https://lbaw2357.lbaw.fe.up.pt/login
 
 ### 2\. Video presentation
+{{image.png}}
 
-> Screenshot of the video plus the link to the lbawYYgg.mp4 file.
+> [Video presentation](https://git.fe.up.pt./lbaw/lbaw2324/lbaw2357/-/blob/main/reports/lbaw2357.mp4?ref_type=heads)
 
-> - Upload the lbawYYgg.mp4 file to Moodle.
-> - The video must not exceed 2 minutes.
+
 
 
 ## Revision history
