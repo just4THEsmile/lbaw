@@ -39,7 +39,7 @@ function showPage(results,links){
     for (let i = 0; i < results.length; i++) {
         let result = results[i];
         // Create the main answer card div
-        const questionCard = document.createElement("div");
+        const questionCard = document.createElement("li");
         questionCard.classList.add("question");
 
         //votes

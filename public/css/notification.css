@@ -74,9 +74,9 @@ ul.pagination>.active>span{
 }
 
 div.container>form{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 div.container>form>button{
     margin-top: 1em;
@@ -90,6 +90,9 @@ div.container>form>button{
     section#content > div.container{
         margin-left: 0em;
         width: 100%;
+    }
+    #content form{
+        margin-top: 0em !important;
     }
     
 }

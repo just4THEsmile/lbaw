@@ -42,6 +42,7 @@ Questions
 <div>
     <div style="color:white; font-size:0.0001em;">Home</div>
     <div class="realcontent">
+      <h2 style="display:flex;">Questions</h2>
         <input class="searchbar" type="text" id="searchInput" placeholder="Search..." >
         <span class="error" id ="error"></span>
         <label for="sortSelect">Sort By:</label>

@@ -33,8 +33,8 @@ Feed
   @endif
 </div>
 
-<div style="color:white; font-size:0.0001em;">Home</div>
   <div class="questionslist"> 
+  <h2 style="margin-left:1em;">Feed</h2>
   @if ($questions->isEmpty())
     <h3>No questions found Follow tags to have a feed</h3>
   @endif

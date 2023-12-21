@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
-@section('sytle')
+@section('style')
 <link href="{{ asset('css/notification.css') }}" rel="stylesheet">
+@endsection
+
 @section('pagename')
 Notifications
 @endsection   

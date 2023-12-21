@@ -24,6 +24,7 @@ Create Question
     </div>
     <div class="create">
         <div class="forms">
+                <h1 style=" display:flex;    justify-content: center;">Create a New Question</h1>
                 <div id="questionerror" class="error"></div>
                 <div class="form-group">
                     <div id="titleError" class="error"></div>
@@ -42,8 +43,7 @@ Create Question
                 <input type="text" class="form-control" id="TagsInput" name="title" value="" placeholder="Enter your tags here" required>
                 <div id="autocomplete"></div>
                 <button id="submitbutton" class="btn btn-primary">Submit</button>
-            </div>
-        </div>    
-    </div>    
+        </div>
+    </div>       
     <script type="text/javascript" src={{ url('js/create_question_form.js') }} defer></script>
 @endsection

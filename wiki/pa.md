@@ -50,17 +50,18 @@
 
 ### 5. Check Accessibility and Usability
 
-> Provide the results of accessibility and usability tests using the following checklists. Include the results as PDF files in the group's repository. Add individual links to those files here.
+> we had two forms that forms that were sent by javascript althought we could do them without we implemented tag search when selecting making them more easy to select
 >
-> Accessibility: https://ux.sapo.pt/checklists/acessibilidade/  
-> Usability: https://ux.sapo.pt/checklists/usabilidade/  
+> Accessibility: [Accessibility](../reports/acessibilidade.pdf) [17/18]
+>
+> Usability: [Usability](../reports/usabilidade.pdf) [27/28]
 
 ### 6. HTML & CSS Validation
 
 > Provide the results of the validation of the HTML and CSS code using the following tools. Include the results as PDF files in the group's repository. Add individual links to those files here.
 >   
-> HTML: https://validator.w3.org/nu/  
-> CSS: https://jigsaw.w3.org/css-validator/  
+> HTML: [HTML](../reports/html)
+> CSS: [CSS](../reports/css/css.pdf)
 
 ### 7. Revisions to the Project
 

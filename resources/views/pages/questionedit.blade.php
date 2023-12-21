@@ -24,6 +24,7 @@ Edit Question
     </div>
     <div class="create">
         <div class="forms">
+            <h1 style=" display:flex;    justify-content: center;">Edit a Question</h1>
             <div id="questionerror" class="error"></div>
             <input id="questionid" hidden value="{{ $question->id }}">
             <div class="form-group">

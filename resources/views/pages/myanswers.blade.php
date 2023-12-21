@@ -29,24 +29,15 @@
 @section('content2')
 
 
-    <style>
-        #MyAnswers{
-            background-color: #0000FF;
-            
-        }
-        #MyAnswers > a{
-            color:white;
-        } 
-    </style>
     <div id="user_id" hidden>{{$user->id}}</div>
+    <h2>{{$user->username}}'s answers</h2>
     <label for="sortSelect">Sort By:</label>
     <select id="sortSelect">
         <option value="date">Time</option>
         <option value="votes">Votes</option>
     </select>
     <div class="error" id="error"></div>
-    <span class="error" id ="error"></span>
-        <ul id="Answers"></ul>
+        <ul style="margin-left:0em;"id="Answers"></ul>
         <div id ="pagination"></div>
         <script type="text/javascript" src={{ url('js/my_answers.js') }} defer></script>
 

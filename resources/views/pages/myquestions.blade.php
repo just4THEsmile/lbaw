@@ -24,16 +24,8 @@
 
 @section('content2')
 
-    <style>
-        #MyQuestions{
-            background-color: #0000FF;
-            
-        }
-        #MyQuestions > a{
-            color:white;
-        } 
-    </style>
     <div id="user_id" hidden>{{$user->id}}</div>
+    <h2>{{$user->username}}'s questions</h2>
     <label for="sortSelect">Sort By:</label>
         <select id="sortSelect">
             <option value="date">Time</option>

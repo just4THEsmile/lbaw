@@ -15,7 +15,7 @@ function updateAnswers(){
             if (response.status == 200) {
                 return response.json();
             }else{
-                error.textContent = "Error fetching awnswers";
+                error.textContent = "Error fetching answers";
             }
         })
         .then(data => {
@@ -40,7 +40,7 @@ function showPage(results,links){
     for (let i = 0; i < results.length ; i++) {
         let result = results[i];
         console.log(result);
-        var answerSpan = document.createElement("span");
+        var answerSpan = document.createElement("li");
         answerSpan.classList.add("answer");
         answerSpan.setAttribute("data-id", result.id); // Replace "123" with the actual answer ID
       

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -71,6 +71,7 @@
                     <li class="nav-item"><a href="/home" class="nav-link px-2 text-muted">Home</a></li>
                     <li class="nav-item"><a href="/faq" class="nav-link px-2 text-muted">FAQs</a></li>
                     <li class="nav-item"><a href="/about" class="nav-link px-2 text-muted">Contacts</a></li>
+                    <li class="nav-item"><a href="/about" class="nav-link px-2 text-muted">About Us</a></li>
                     </ul>
                     <p class="text-center text-muted">© 2023 Company, Inc</p>
                 </footer>
