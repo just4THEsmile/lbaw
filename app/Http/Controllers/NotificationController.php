@@ -44,13 +44,13 @@ class NotificationController extends Controller
             ->paginate(5);
             $notifications = $results->items();
             foreach($notifications as $notification){
-                if($notification->badge_id != null){
+                if($notification->badge_id !== null){
                     $notification->type = 'Badge Attainment';
-                }else if($notification->answer_id != null){
+                }else if($notification->answer_id !== null){
                     $notification->type = 'Answer';
-                }else if($notification->vote != null){
+                }else if($notification->vote !== null){
                     $notification->type = 'Vote';
-                }else if($notification->comment_id != null){
+                }else if($notification->comment_id !== null){
                     $notification->type = 'Comment';
                 }
                 //echo $notification;

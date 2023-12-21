@@ -20,12 +20,14 @@ class VoteNotification extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'notification_id',
         'user_id',
+        'content_id',
         'vote'
     ];
 
     protected $table = 'votenotification';
-    protected $primaryKey = ['notification_id','user_id', 'content_id'];
+    protected $primaryKey = 'notification_id';
 
     public function notification() : BelongsTo
     {

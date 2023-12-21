@@ -57,9 +57,9 @@ class ContentController extends Controller
                 'message' => 'question does not exist or is deleted',
             ], 500);
         }
-        if($vote != null){
-            if($vote->vote == True){
-                if($request->input('value') == "up"){
+        if($vote !== null){
+            if($vote->vote === True){
+                if($request->input('value') === "up"){
                     $transaction = TransactionsController::deletevote($user->id, $content_id);
                     if($transaction === null or !is_int($transaction)){
                         return response()->json([
@@ -93,7 +93,7 @@ class ContentController extends Controller
                     }
                 }
             }else{
-                if($request->input('value') == "up"){
+                if($request->input('value') === "up"){
                     $transaction=TransactionsController::deletevote($user->id, $content_id);
                     if($transaction === null or !is_int($transaction)){
                         return response()->json([
@@ -131,7 +131,7 @@ class ContentController extends Controller
             }
         }else{
 
-            if($request->input('value') == "up"){
+            if($request->input('value') === "up"){
                 $transaction = TransactionsController::voteupcontent($user->id, $content_id);
                 if($transaction === null or !is_int($transaction)){
                     return response()->json([
